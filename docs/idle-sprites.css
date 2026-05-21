@@ -1,0 +1,65 @@
+.home-art {
+  position: absolute;
+  left: 50%;
+  bottom: 14%;
+  width: min(720px, 68vw);
+  transform: translateX(-50%);
+  z-index: 3;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 22px 0 rgba(0,0,0,.18));
+}
+
+.avatar-art {
+  position: absolute;
+  left: 50%;
+  bottom: 7%;
+  width: 210px;
+  transform: translateX(-50%);
+  z-index: 6;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 12px 0 rgba(0,0,0,.2));
+  animation: sprite-breathe 3.4s ease-in-out infinite;
+}
+
+@keyframes sprite-breathe {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(4px); }
+}
+
+.tree-art {
+  position: absolute;
+  bottom: 26%;
+  width: 190px;
+  z-index: 2;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 12px 0 rgba(0,0,0,.12));
+}
+
+.tree-left { left: 4%; }
+.tree-right { right: 4%; transform: scaleX(-1); }
+
+.scene-frame .tree,
+.scene-frame .home,
+.scene-frame .avatar {
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  .home-art {
+    width: 650px;
+    bottom: 17%;
+  }
+
+  .avatar-art {
+    width: 185px;
+    bottom: 7%;
+  }
+
+  .tree-art {
+    width: 132px;
+    bottom: 31%;
+  }
+
+  .tree-left { left: -4%; }
+  .tree-right { right: -4%; }
+}
