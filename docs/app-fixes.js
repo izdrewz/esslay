@@ -2,6 +2,13 @@
 // This runs after app.js and repairs save/state details that a static app cannot migrate through a backend.
 (function repairStaticAppState() {
   try {
+    if (!document.querySelector('link[href="styles-v2.css"]')) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "styles-v2.css";
+      document.head.appendChild(link);
+    }
+
     if (typeof state !== "undefined" && Array.isArray(state.academicQuests)) {
       let changed = false;
       state.academicQuests.forEach((quest) => {
