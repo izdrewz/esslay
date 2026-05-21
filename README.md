@@ -21,6 +21,47 @@ The intended workflow is:
 
 A draft is not treated as finished when the writing is complete. It is only complete when the submitted checkpoint is confirmed.
 
+## Test checklist for the current version
+
+Use one tiny fake TMA and tick these off manually in the browser. This is a testing checklist, not proof that every item has been verified on every browser.
+
+Suggested fake task text:
+
+```text
+TMA task: Discuss one challenge students face when managing study time and explain one form of support that could help. Use one source from the module material. Word count: 150 words. Learning outcome: explain how support can reduce barriers to study. Marking criteria: answer the question directly, use evidence, and keep the paragraph relevant.
+
+Source extract: Study planning can reduce pressure because it breaks a larger task into smaller steps. Citation note: Open University study skills material.
+```
+
+| Test step | Expected result | Status |
+| --- | --- | --- |
+| 1. Add/select task file or paste copied task text. | Pasted text or file appears in the Documents list and the active document viewer. | Untested |
+| 2. Capture task question. | Highlight saved under Task question and the task checkpoint can complete. | Untested |
+| 3. Highlight command words. | Words such as discuss and explain save under Key task words. | Untested |
+| 4. Highlight guidance, learning outcome, marking criteria, word count, and source requirements. | Each highlight saves into its own section. Word count should fill the target word field when possible. | Partial: automatic word-count capture is basic and looks for a number. |
+| 5. Add a useful quote/source area. | Quote/source text can be sent to Quote Geodes or added manually. | Untested |
+| 6. Link the quote geode to a task/guidance target. | The geode shows the selected linked target in its card. | Untested |
+| 7. Create a plan checkpoint. | Mind map or template plan text saves, and its checkpoint can be marked complete. | Untested |
+| 8. Draft a short paragraph. | Draft text saves in Plan + Draft. | Untested |
+| 9. Add/check citation-style notes. | Citation note appears on the geode card and in the exported summary. | Partial: this is a citation note field, not full bibliography support yet. |
+| 10. Use Flow Diary sentence by sentence. | Draft loads as separate sentences, edits save, relevance notes save, and checks appear. | Untested |
+| 11. Add wording to personal dictionary chapters. | Manual dictionary entries save under the selected chapter. Submitted drafts also add finished wording. | Untested |
+| 12. Unlock XP/gold/checkpoint rewards. | Completing a checkpoint awards XP, gold, and loot once. | Untested after latest repair. |
+| 13. Try a blocked reward before it is earned. | Reward button should stay blocked until the linked requirement is complete and enough gold is available. | Untested |
+| 14. Buy/unlock/place a home item. | Built-in shop item can be bought with gold, displayed, moved, and removed from display. | Untested |
+| 15. Import a home item link or uploaded item. | Imported item appears in the shop but is not usable until bought/unlocked. | Untested |
+| 16. Export save JSON. | Export output contains saved app data and can be copied. | Untested |
+| 17. Export TMA summary `.txt`. | A text file downloads with task sections, quote bank, plan, draft, and quest status. | Untested |
+| 18. Export draft `.txt`. | A draft text file downloads. | Untested |
+| 19. Re-import the save. | Pasted JSON restores documents, sections, quests, quotes, rewards, home items, draft, and dictionary data. | Untested |
+
+Known current limits for testing:
+
+- PDF and DOCX extraction depends on browser-loaded libraries. If extraction fails, paste copied text instead.
+- Highlighting is text-selection based inside the extracted/pasted text box, not a visual PDF highlighter yet.
+- Citation support is a local note field and exported summary support, not full tmazing bibliography support yet.
+- Direct tmazing and Tma-workbench-local integration is not active in this static version.
+
 ## What it does now
 
 - Turns a TMA into an academic quest chain with editable XP, progress percentages, and task statuses.
