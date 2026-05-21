@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 192" shape-rendering="crispEdges">
+  <rect width="128" height="192" fill="none"/>
+  <ellipse cx="64" cy="184" rx="34" ry="5" fill="#2d2118" opacity="0.28"/>
+
+  <!-- long blonde hair behind body -->
+  <path d="M38 20h52v8h8v28h6v42h-6v34h-8v28h-10v-20h-8v36H56v-36h-8v20H38v-28h-8V98h-6V56h6V28h8z" fill="#d59b4f"/>
+  <path d="M44 18h40v8h8v30h6v36h-8v28h-8v-24h-6v58h-8v-44h-8v44h-8V96h-6v24h-8V92h-8V56h6V26h8z" fill="#f1c978"/>
+  <path d="M52 22h10v132h-6V70h-8V34h4zM74 22h10v30h-8v82h-6V58h4z" fill="#ffe2a1" opacity="0.75"/>
+
+  <!-- face -->
+  <rect x="46" y="30" width="36" height="42" fill="#f5c3a3"/>
+  <rect x="42" y="38" width="8" height="20" fill="#f5c3a3"/>
+  <rect x="78" y="38" width="8" height="20" fill="#f5c3a3"/>
+  <rect x="46" y="30" width="36" height="6" fill="#5a3928" opacity="0.22"/>
+
+  <!-- fringe -->
+  <path d="M38 22h52v8h-8v8h-8v6h-8v-6h-8v8h-8v8H38z" fill="#f6d78a"/>
+  <rect x="52" y="48" width="5" height="5" fill="#2f5843"/>
+  <rect x="72" y="48" width="5" height="5" fill="#2f5843"/>
+  <rect x="58" y="60" width="12" height="3" fill="#9f6f68"/>
+
+  <!-- neck and shoulders -->
+  <rect x="58" y="72" width="12" height="10" fill="#f5c3a3"/>
+  <rect x="42" y="80" width="44" height="12" fill="#f5c3a3"/>
+
+  <!-- teal bandeau / academic adventurer top -->
+  <rect x="38" y="86" width="52" height="28" fill="#123f46"/>
+  <rect x="38" y="90" width="52" height="4" fill="#456f5d"/>
+  <rect x="38" y="98" width="52" height="4" fill="#765166"/>
+  <rect x="38" y="106" width="52" height="4" fill="#8b7b4a"/>
+  <rect x="42" y="86" width="8" height="28" fill="#ffffff" opacity="0.14"/>
+  <rect x="84" y="86" width="6" height="28" fill="#000000" opacity="0.18"/>
+
+  <!-- arms -->
+  <rect x="25" y="84" width="12" height="44" fill="#f5c3a3"/>
+  <rect x="91" y="84" width="12" height="44" fill="#f5c3a3"/>
+  <rect x="23" y="124" width="14" height="10" fill="#f5c3a3"/>
+  <rect x="91" y="124" width="14" height="10" fill="#f5c3a3"/>
+  <rect x="96" y="96" width="4" height="6" fill="#e5b85b"/>
+  <rect x="100" y="102" width="4" height="4" fill="#6f5130"/>
+  <rect x="94" y="110" width="4" height="4" fill="#3f6b45"/>
+
+  <!-- satchel strap and necklace -->
+  <path d="M38 82h8v8h6v8h6v8h6v8h6v8h6v8h6v8h6v8h4v8h-8v-8h-6v-8h-6v-8h-6v-8h-6v-8h-6v-8h-6v-8h-6z" fill="#2d2118"/>
+  <rect x="60" y="78" width="8" height="4" fill="#d3a54f"/>
+  <rect x="64" y="82" width="4" height="6" fill="#d3a54f"/>
+
+  <!-- loose black pants -->
+  <rect x="32" y="114" width="28" height="52" fill="#26222a"/>
+  <rect x="68" y="114" width="28" height="52" fill="#26222a"/>
+  <rect x="28" y="120" width="8" height="34" fill="#1a171d"/>
+  <rect x="92" y="120" width="8" height="34" fill="#1a171d"/>
+  <rect x="40" y="166" width="18" height="10" fill="#e2c6a8"/>
+  <rect x="70" y="166" width="18" height="10" fill="#e2c6a8"/>
+  <rect x="34" y="176" width="28" height="10" fill="#5d3928"/>
+  <rect x="66" y="176" width="28" height="10" fill="#5d3928"/>
+  <rect x="30" y="184" width="34" height="6" fill="#32251d"/>
+  <rect x="64" y="184" width="34" height="6" fill="#32251d"/>
+
+  <!-- small bag -->
+  <rect x="88" y="124" width="18" height="22" fill="#2b2523"/>
+  <rect x="92" y="128" width="10" height="8" fill="#4d3426"/>
+  <rect x="96" y="140" width="4" height="4" fill="#d3a54f"/>
+
+  <!-- soft outline pixels -->
+  <path d="M38 18h52v4h8v8h4v26h6v42h-6v34h-8v28h-8v18h12v12H30v-12h12v-18h-8v-28h-8V98h-6V56h6V30h4v-8h8z" fill="none" stroke="#2d2118" stroke-width="4"/>
+</svg>
