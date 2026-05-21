@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Esslay</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <p class="eyebrow">Quest-based TMA builder</p>
+        <h1>Esslay</h1>
+        <p class="intro">Build TMAs, notes, and daily tasks through quests, XP, gold, rewards, and a customisable room.</p>
+      </header>
+
+      <section class="player-card" aria-labelledby="player-title">
+        <div>
+          <h2 id="player-title">Player progress</h2>
+          <p id="level-line">Level 1 apprentice planner</p>
+        </div>
+        <div class="stat-grid">
+          <div class="stat"><span id="xp-total">0</span><small>XP</small></div>
+          <div class="stat"><span id="gold-total">0</span><small>Gold</small></div>
+          <div class="stat"><span id="loot-total">0</span><small>Loot</small></div>
+          <div class="stat"><span id="reward-total">0</span><small>Rewards</small></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Next level</span><span id="next-level-text">0 / 100 XP</span></div>
+          <div class="progress-track"><div id="level-progress" class="progress-fill"></div></div>
+        </div>
+      </section>
+
+      <nav class="tabs" aria-label="App sections">
+        <button class="tab active" data-tab="battle">TMA Battle</button>
+        <button class="tab" data-tab="notes">Training Notes</button>
+        <button class="tab" data-tab="domestic">Domestic Quests</button>
+        <button class="tab" data-tab="rewards">Rewards</button>
+        <button class="tab" data-tab="home">Home</button>
+        <button class="tab" data-tab="diary">Flow Diary</button>
+        <button class="tab" data-tab="sync">Files and Sync</button>
+      </nav>
+
+      <section id="battle" class="panel active-panel">
+        <div class="panel-heading">
+          <h2>TMA Battle</h2>
+          <p>Turn the assignment into a quest chain. Each checkpoint gives XP, gold, and sometimes loot.</p>
+        </div>
+
+        <div class="card">
+          <h3>Assignment setup</h3>
+          <div class="form-grid">
+            <label>Assignment name<input id="assignment-name" type="text" placeholder="K102 TMA04"></label>
+            <label>Module<input id="assignment-module" type="text" placeholder="Module code or topic"></label>
+            <label>Deadline<input id="assignment-deadline" type="date"></label>
+            <label>Target words<input id="target-words" type="number" min="1" placeholder="1500"></label>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Task extraction</h3>
+          <p class="helper">For now, paste the bits you would have highlighted. This keeps the phone version simple and avoids needing file parsing.</p>
+          <label>Task question<textarea id="task-question" placeholder="Paste the exact task question or highlighted extract."></textarea></label>
+          <label>Guidance and marking criteria<textarea id="task-guidance" placeholder="Paste guidance, learning outcomes, marking criteria, or tutor notes."></textarea></label>
+          <label>Required sources<textarea id="task-sources" placeholder="Paste any source rules, required module materials, or source limits."></textarea></label>
+          <div class="inline-form">
+            <input id="keyword-input" type="text" placeholder="Add task keyword, e.g. discuss">
+            <button id="add-keyword" type="button">Add keyword</button>
+          </div>
+          <div id="keyword-list" class="chip-list"></div>
+        </div>
+
+        <div class="card">
+          <h3>Battle checkpoints</h3>
+          <div id="battle-quests" class="quest-list"></div>
+        </div>
+
+        <div class="card">
+          <h3>Quote bank geodes</h3>
+          <p class="helper">Add quote bank items and link each one to the part of the task or guidance it helps with.</p>
+          <div class="form-grid">
+            <label>Source<input id="quote-source" type="text" placeholder="Author, topic, page, or file"></label>
+            <label>Bank area<input id="quote-area" type="text" placeholder="Intro, paragraph 1, support, challenge"></label>
+          </div>
+          <label>Quote or evidence<textarea id="quote-text" placeholder="Paste the quote, paraphrase, or evidence note."></textarea></label>
+          <label>Why it matters<textarea id="quote-purpose" placeholder="How this helps answer the task."></textarea></label>
+          <button id="add-quote" type="button">Add geode to quote bank</button>
+          <div id="quote-list" class="item-list"></div>
+        </div>
+      </section>
+
+      <section id="notes" class="panel">
+        <div class="panel-heading">
+          <h2>Training Notes</h2>
+          <p>Build notes as preparation for battle. This mode gives XP without the combat framing.</p>
+        </div>
+        <div class="card">
+          <div class="form-grid">
+            <label>Note title<input id="note-title" type="text" placeholder="Topic or reading"></label>
+            <label>Note type<select id="note-type"><option>Reading notes</option><option>Concept notes</option><option>Quote notes</option><option>Revision notes</option></select></label>
+          </div>
+          <label>Notes<textarea id="note-body" placeholder="Build your note here."></textarea></label>
+          <button id="add-note" type="button">Complete training note</button>
+        </div>
+        <div id="note-list" class="item-list"></div>
+      </section>
+
+      <section id="domestic" class="panel">
+        <div class="panel-heading">
+          <h2>Domestic Quests</h2>
+          <p>Daily tasks count too. Add cleaning, admin, food, rest, or life-maintenance quests.</p>
+        </div>
+        <div class="card">
+          <div class="form-grid">
+            <label>Quest<input id="domestic-title" type="text" placeholder="Vacuum bedroom"></label>
+            <label>Category<select id="domestic-category"><option>Cleaning</option><option>Admin</option><option>Food</option><option>Health</option><option>Reset</option></select></label>
+            <label>Difficulty<select id="domestic-difficulty"><option value="10">Tiny</option><option value="20">Small</option><option value="35">Medium</option><option value="50">Hard</option></select></label>
+            <label>Progress %<input id="domestic-progress" type="number" min="0" max="100" value="0"></label>
+          </div>
+          <button id="add-domestic" type="button">Add domestic quest</button>
+        </div>
+        <div id="domestic-list" class="quest-list"></div>
+      </section>
+
+      <section id="rewards" class="panel">
+        <div class="panel-heading">
+          <h2>Reward Vault</h2>
+          <p>Add real-life rewards, links, prices, and whether they are little or big rewards.</p>
+        </div>
+        <div class="card">
+          <div class="form-grid">
+            <label>Reward name<input id="reward-name" type="text" placeholder="Coffee trip, book, game item"></label>
+            <label>Reward vibe<select id="reward-vibe"><option>Little reward</option><option>Medium reward</option><option>Big reward</option><option>Place to go</option><option>Thing to do</option></select></label>
+            <label>Gold cost<input id="reward-cost" type="number" min="0" value="50"></label>
+            <label>Link<input id="reward-link" type="url" placeholder="Optional link"></label>
+          </div>
+          <label>Description<textarea id="reward-description" placeholder="Why you want it, when it unlocks, or any rules for buying it."></textarea></label>
+          <button id="add-reward" type="button">Add reward</button>
+        </div>
+        <div id="reward-list" class="item-list"></div>
+      </section>
+
+      <section id="home" class="panel">
+        <div class="panel-heading">
+          <h2>Home Room</h2>
+          <p>Spend in-game gold to unlock room items. Use image links only for art you have permission to use.</p>
+        </div>
+        <div class="card room-card">
+          <div id="room" class="room" aria-label="Custom room"></div>
+        </div>
+        <div class="card">
+          <div class="form-grid">
+            <label>Item name<input id="home-item-name" type="text" placeholder="Crystal lamp"></label>
+            <label>Gold cost<input id="home-item-cost" type="number" min="0" value="25"></label>
+            <label>Image link<input id="home-item-image" type="url" placeholder="Optional image URL"></label>
+            <label>Category<select id="home-item-category"><option>Decor</option><option>Desk</option><option>Wall</option><option>Loot display</option><option>Comfort</option></select></label>
+          </div>
+          <button id="add-home-item" type="button">Add shop item</button>
+        </div>
+        <div id="home-shop" class="item-list"></div>
+      </section>
+
+      <section id="diary" class="panel">
+        <div class="panel-heading">
+          <h2>Flow Diary</h2>
+          <p>Paste a draft, move sentence by sentence, and edit for flow, coherence, relevance, and Esslayit-style suggestions.</p>
+        </div>
+        <div class="card">
+          <label>Draft<textarea id="draft-input" placeholder="Paste your full draft here."></textarea></label>
+          <button id="split-draft" type="button">Start sentence diary</button>
+        </div>
+        <div id="sentence-workbench" class="card hidden">
+          <div class="sentence-nav">
+            <button id="prev-sentence" type="button">Previous</button>
+            <span id="sentence-count">Sentence 0 of 0</span>
+            <button id="next-sentence" type="button">Next</button>
+          </div>
+          <label>Current sentence<textarea id="sentence-editor"></textarea></label>
+          <div class="actions-row">
+            <button id="save-sentence" type="button">Save sentence</button>
+            <button id="check-sentence" type="button">Check sentence</button>
+            <button id="export-draft" type="button">Export edited draft</button>
+          </div>
+          <div id="sentence-suggestions" class="item-list"></div>
+        </div>
+      </section>
+
+      <section id="sync" class="panel">
+        <div class="panel-heading">
+          <h2>Files and Sync</h2>
+          <p>This first phone version stores data in your browser. Export often so you do not lose progress.</p>
+        </div>
+        <div class="card">
+          <h3>Repo and calendar links</h3>
+          <p class="helper">A static phone page cannot directly read your private repos or calendar without a secure login system. This area stores links and planned sync targets for a later connected version.</p>
+          <div class="form-grid">
+            <label>TMA builder repo link<input id="repo-link" type="url" placeholder="Repo or folder link"></label>
+            <label>Calendar link or note<input id="calendar-link" type="text" placeholder="Calendar, task list, or reminder link"></label>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Export and import</h3>
+          <div class="actions-row">
+            <button id="export-data" type="button">Export save data</button>
+            <button id="copy-summary" type="button">Copy TMA summary</button>
+          </div>
+          <label>Import save data<textarea id="import-data" placeholder="Paste exported JSON here."></textarea></label>
+          <button id="import-button" type="button">Import save data</button>
+          <pre id="export-output"></pre>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
