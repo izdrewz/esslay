@@ -16,6 +16,11 @@
           quest.id = `quest-${quest.key || Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
           changed = true;
         }
+
+        if ((quest.status === "done" || quest.progress >= 100) && quest.awarded !== true) {
+          quest.awarded = true;
+          changed = true;
+        }
       });
 
       if (changed) {
