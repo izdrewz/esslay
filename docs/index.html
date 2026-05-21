@@ -3,346 +3,78 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Esslay</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
-    <script src="https://unpkg.com/mammoth/mammoth.browser.min.js" defer></script>
+    <title>Esslay Idle Camp</title>
+    <link rel="stylesheet" href="idle.css">
   </head>
   <body>
-    <main class="app-shell">
-      <header class="hero">
-        <p class="eyebrow">Laptop-first quest builder</p>
-        <h1>Esslay</h1>
-        <p class="intro">A fantasy quest interface for TMA building, source work, drafting, sentence checks, rewards, and a customisable base.</p>
-      </header>
-
-      <section class="player-card" aria-labelledby="player-title">
-        <div>
-          <h2 id="player-title">Player progress</h2>
-          <p id="level-line">Level 1 apprentice planner</p>
-        </div>
-        <div class="stat-grid">
-          <div class="stat"><span id="xp-total">0</span><small>XP</small></div>
-          <div class="stat"><span id="gold-total">0</span><small>Gold</small></div>
-          <div class="stat"><span id="loot-total">0</span><small>Loot</small></div>
-          <div class="stat"><span id="submitted-total">0</span><small>Submitted</small></div>
-        </div>
-        <div class="progress-wrap">
-          <div class="progress-label"><span>Next level</span><span id="next-level-text">0 / 100 XP</span></div>
-          <div class="progress-track"><div id="level-progress" class="progress-fill"></div></div>
-        </div>
-      </section>
-
-      <nav class="tabs" aria-label="App sections">
-        <button class="tab active" data-tab="workflow">TMA Quest</button>
-        <button class="tab" data-tab="files">Files + Highlights</button>
-        <button class="tab" data-tab="sources">Quote Geodes</button>
-        <button class="tab" data-tab="plan">Plan + Draft</button>
-        <button class="tab" data-tab="diary">Flow Diary</button>
-        <button class="tab" data-tab="notes">Training</button>
-        <button class="tab" data-tab="domestic">Domestic</button>
-        <button class="tab" data-tab="rewards">Rewards</button>
-        <button class="tab" data-tab="home">Base</button>
-        <button class="tab" data-tab="dictionary">Dictionary</button>
-        <button class="tab" data-tab="sync">Export</button>
-      </nav>
-
-      <section id="workflow" class="panel active-panel">
-        <div class="panel-heading">
-          <h2>TMA Quest</h2>
-          <p>Main loop: file, task, guidance, quote bank, plan, draft, citations, flow check, final review, submitted.</p>
-        </div>
-
-        <div class="card">
-          <h3>Assignment setup</h3>
-          <div class="form-grid">
-            <label>Assignment name<input id="assignment-name" type="text" placeholder="K102 TMA04"></label>
-            <label>Module<input id="assignment-module" type="text" placeholder="Module code or topic"></label>
-            <label>Deadline<input id="assignment-deadline" type="date"></label>
-            <label>Target words<input id="target-words" type="number" min="1" placeholder="1500"></label>
+    <main class="idle-shell">
+      <section class="idle-card" aria-labelledby="idle-title">
+        <header class="idle-header">
+          <div>
+            <p class="eyebrow">Esslay</p>
+            <h1 id="idle-title">Idle Camp</h1>
+            <p class="intro">Your character waits outside home before the quest day begins.</p>
           </div>
-        </div>
-
-        <div class="card">
-          <h3>Editable XP defaults</h3>
-          <p class="helper">Defaults start low so small actions count. You can edit each checkpoint before ticking it off.</p>
-          <div class="form-grid">
-            <label>Minimal task XP<input id="xp-minimal" type="number" min="0" value="10"></label>
-            <label>Prep task XP<input id="xp-prep" type="number" min="0" value="10"></label>
-            <label>Checkpoint XP<input id="xp-checkpoint" type="number" min="0" value="10"></label>
-            <label>Submitted draft XP<input id="xp-submitted" type="number" min="0" value="100"></label>
+          <div class="status-box">
+            <span id="season-label">Season</span>
+            <span id="time-label">Time</span>
+            <span><strong id="xp-label">0</strong> XP</span>
           </div>
-        </div>
+        </header>
 
-        <div class="card">
-          <h3>Academic quest chain</h3>
-          <div id="academic-quests" class="quest-list"></div>
-        </div>
-      </section>
-
-      <section id="files" class="panel">
-        <div class="panel-heading">
-          <h2>Files + Highlights</h2>
-          <p>Upload or paste a task file, then highlight task question, command words, guidance, outcomes, marking criteria, word count, and source requirements.</p>
-        </div>
-
-        <div class="card warning-card">
-          <h3>Honest browser limit</h3>
-          <p>This static version can store uploaded files in the browser and extract plain text/Markdown directly. It will try browser-based PDF and DOCX extraction when the libraries load. If extraction fails, paste the relevant text into the copied-text box. Proper shared-source integration belongs to the later connected version with tmazing.</p>
-        </div>
-
-        <div class="card">
-          <h3>Add file or pasted text</h3>
-          <div class="form-grid">
-            <label>Upload PDF, DOCX, Markdown, TXT, or text file<input id="file-input" type="file" accept=".pdf,.docx,.md,.txt,.text,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown"></label>
-            <label>Document label<input id="paste-label" type="text" placeholder="TMA guidance, source extract, tutor note"></label>
+        <div class="scene-frame" aria-label="Seasonal pixel scene">
+          <div id="sky-particles" class="sky-particles" aria-hidden="true"></div>
+          <div class="sun-moon" aria-hidden="true"></div>
+          <div class="tree tree-left" aria-hidden="true">
+            <span class="trunk"></span>
+            <span class="tree-top"></span>
           </div>
-          <label>Copied or pasted text<textarea id="paste-text" placeholder="Paste task guidance, copied PDF text, source material, or notes here."></textarea></label>
-          <div class="actions-row">
-            <button id="add-pasted-document" type="button">Add pasted document</button>
-            <button id="download-active-document" type="button">Download active text as .txt</button>
-          </div>
-        </div>
-
-        <div class="two-column">
-          <div class="card">
-            <h3>Documents</h3>
-            <div id="document-list" class="item-list"></div>
+          <div class="tree tree-right" aria-hidden="true">
+            <span class="trunk"></span>
+            <span class="tree-top"></span>
           </div>
 
-          <div class="card">
-            <h3>Highlight workspace</h3>
-            <p class="helper">Select text in the document box, choose what it is, then save it. Highlighting works on extracted files and pasted text.</p>
-            <div class="form-grid">
-              <label>Highlight type<select id="highlight-type">
-                <option value="taskQuestion">Task question</option>
-                <option value="commandWord">Key task word</option>
-                <option value="guidance">Guidance</option>
-                <option value="learningOutcome">Learning outcome</option>
-                <option value="markingCriteria">Marking criteria</option>
-                <option value="wordCount">Word count</option>
-                <option value="sourceRequirement">Source requirement</option>
-                <option value="quote">Useful quote/source area</option>
-              </select></label>
-              <label>Link to<select id="highlight-link-target"></select></label>
+          <div id="home" class="home peasant" aria-label="Upgradeable medieval home">
+            <div class="chimney"></div>
+            <div class="roof"></div>
+            <div class="walls">
+              <div class="window left-window"></div>
+              <div class="door"></div>
+              <div class="window right-window"></div>
             </div>
-            <div class="actions-row">
-              <button id="save-highlight" type="button">Save selected highlight</button>
-              <button id="send-highlight-quote" type="button">Send selected text to quote bank</button>
+            <div class="house-shadow"></div>
+          </div>
+
+          <div class="avatar" aria-label="Player character">
+            <div class="hair back-hair"></div>
+            <div class="head">
+              <span class="eye left-eye"></span>
+              <span class="eye right-eye"></span>
             </div>
-            <textarea id="document-viewer" class="document-viewer" placeholder="Select a document or paste text first."></textarea>
+            <div class="hair fringe"></div>
+            <div class="body">
+              <div class="bodice"></div>
+              <div class="skirt"></div>
+            </div>
+            <div class="arm left-arm"></div>
+            <div class="arm right-arm"></div>
+            <div class="leg left-leg"></div>
+            <div class="leg right-leg"></div>
           </div>
+
+          <div class="ground"></div>
         </div>
 
-        <div class="card">
-          <h3>Saved extraction sections</h3>
-          <div id="section-summary" class="section-grid"></div>
-        </div>
-      </section>
-
-      <section id="sources" class="panel">
-        <div class="panel-heading">
-          <h2>Quote Geodes</h2>
-          <p>tmazing remains the source-library authority. This section is a local bridge until proper repo integration exists.</p>
-        </div>
-        <div class="card warning-card">
-          <h3>Source-library boundary</h3>
-          <p>This app does not pretend to read tmazing yet. Export/import should be used as the bridge until a connected version can reuse tmazing source storage, source search, PDF/DOCX extraction, draft-source matching, citations, bibliography support, ignore dictionary, and export/import.</p>
-        </div>
-        <div class="card">
-          <h3>Add geode manually</h3>
-          <div class="form-grid">
-            <label>Source<input id="quote-source" type="text" placeholder="Author, topic, page, file, or source ID"></label>
-            <label>Bank area<input id="quote-area" type="text" placeholder="Intro, paragraph 1, challenge, support"></label>
-            <label>Linked task/guidance area<select id="quote-link-target"></select></label>
-            <label>Citation note<input id="quote-citation" type="text" placeholder="In-text citation or page note"></label>
+        <footer class="idle-footer">
+          <div>
+            <h2 id="home-tier">Peasant cottage</h2>
+            <p id="home-note">Earn XP to make the home warmer, richer, and more magical.</p>
           </div>
-          <label>Quote, paraphrase, or source area<textarea id="quote-text" placeholder="Paste the source wording or useful note."></textarea></label>
-          <label>Why it belongs here<textarea id="quote-purpose" placeholder="Explain how it helps the task, plan, or paragraph."></textarea></label>
-          <button id="add-quote" type="button">Add geode</button>
-        </div>
-        <div id="quote-list" class="item-list"></div>
-      </section>
-
-      <section id="plan" class="panel">
-        <div class="panel-heading">
-          <h2>Plan + Draft</h2>
-          <p>Build the answer shape before moving into sentence-by-sentence flow checking.</p>
-        </div>
-        <div class="card">
-          <h3>Mind map</h3>
-          <label>Mind map notes<textarea id="mind-map" placeholder="Add rough ideas, links, paragraph purposes, and off-task warnings."></textarea></label>
-          <button id="complete-mind-map" type="button">Mark mind map completed</button>
-        </div>
-        <div class="card">
-          <h3>Template plan</h3>
-          <label>Template plan<textarea id="template-plan" placeholder="Build the paragraph-by-paragraph answer skeleton."></textarea></label>
-          <button id="complete-template-plan" type="button">Mark template plan completed</button>
-        </div>
-        <div class="card">
-          <h3>Draft builder</h3>
-          <label>Draft<textarea id="draft-input" placeholder="Write or paste your draft here. This is not finished until you confirm it is submitted."></textarea></label>
-          <div class="actions-row">
-            <button id="mark-citations-added" type="button">Citations added</button>
-            <button id="mark-final-review" type="button">Final review completed</button>
-            <button id="confirm-submitted" type="button">Confirm submitted</button>
-            <button id="download-draft" type="button">Download draft .txt</button>
-          </div>
-        </div>
-      </section>
-
-      <section id="diary" class="panel">
-        <div class="panel-heading">
-          <h2>Flow Diary</h2>
-          <p>Work one sentence at a time, move with Space when you are not typing, and check flow, coherence, relevance, and Esslayit-style issues.</p>
-        </div>
-        <div class="card">
-          <button id="split-draft" type="button">Load draft into sentence diary</button>
-        </div>
-        <div id="sentence-workbench" class="card hidden">
-          <div class="sentence-nav">
-            <button id="prev-sentence" type="button">Previous</button>
-            <span id="sentence-count">Sentence 0 of 0</span>
-            <button id="next-sentence" type="button">Next</button>
-          </div>
-          <label>Current sentence<textarea id="sentence-editor"></textarea></label>
-          <label>Relevance note<textarea id="sentence-relevance" placeholder="How this sentence serves the task, guidance, or paragraph purpose."></textarea></label>
-          <div class="actions-row">
-            <button id="save-sentence" type="button">Save sentence</button>
-            <button id="check-sentence" type="button">Check sentence</button>
-            <button id="mark-flow-checked" type="button">Flow checked</button>
-            <button id="export-draft" type="button">Export edited draft</button>
-          </div>
-          <div id="sentence-suggestions" class="item-list"></div>
-        </div>
-      </section>
-
-      <section id="notes" class="panel">
-        <div class="panel-heading">
-          <h2>Training Notes</h2>
-          <p>Notes are training for battle, not combat.</p>
-        </div>
-        <div class="card">
-          <div class="form-grid">
-            <label>Note title<input id="note-title" type="text" placeholder="Topic or reading"></label>
-            <label>Note type<select id="note-type"><option>Reading notes</option><option>Concept notes</option><option>Quote notes</option><option>Revision notes</option></select></label>
-            <label>XP<input id="note-xp" type="number" min="0" value="10"></label>
-          </div>
-          <label>Notes<textarea id="note-body" placeholder="Build your note here."></textarea></label>
-          <button id="add-note" type="button">Complete training note</button>
-        </div>
-        <div id="note-list" class="item-list"></div>
-      </section>
-
-      <section id="domestic" class="panel">
-        <div class="panel-heading">
-          <h2>Domestic Quests</h2>
-          <p>Cleaning, admin, room setup, rest, and other life tasks live here.</p>
-        </div>
-        <div class="card">
-          <div class="form-grid">
-            <label>Quest<input id="domestic-title" type="text" placeholder="Vacuum bedroom"></label>
-            <label>Category<select id="domestic-category"><option>Cleaning</option><option>Admin</option><option>Room setup</option><option>Food</option><option>Rest</option><option>Health</option><option>Reset</option></select></label>
-            <label>Status<select id="domestic-status"><option>not started</option><option>scheduled</option><option>in progress</option><option>done</option><option>skipped</option><option>unplanned</option></select></label>
-            <label>Progress %<input id="domestic-progress" type="number" min="0" max="100" value="0"></label>
-            <label>XP<input id="domestic-xp" type="number" min="0" value="10"></label>
-          </div>
-          <button id="add-domestic" type="button">Add domestic quest</button>
-        </div>
-        <div id="domestic-list" class="quest-list"></div>
-      </section>
-
-      <section id="rewards" class="panel">
-        <div class="panel-heading">
-          <h2>Reward Vault</h2>
-          <p>Rewards stay blocked until the linked requirement is completed.</p>
-        </div>
-        <div class="card">
-          <div class="form-grid">
-            <label>Reward name<input id="reward-name" type="text" placeholder="Coffee trip, book, game item"></label>
-            <label>Reward category<select id="reward-category"><option>Pat on the back = free reward</option><option>Little treat = small reward</option><option>Reward = medium reward</option><option>Bounty = large reward</option></select></label>
-            <label>Gold cost<input id="reward-cost" type="number" min="0" value="0"></label>
-            <label>Unlock requirement<select id="reward-requirement"></select></label>
-            <label>Link<input id="reward-link" type="url" placeholder="Optional reward link"></label>
-          </div>
-          <label>Description<textarea id="reward-description" placeholder="Why you want it, when it unlocks, or any rules for buying/doing it."></textarea></label>
-          <button id="add-reward" type="button">Add blocked reward</button>
-        </div>
-        <div id="reward-list" class="item-list"></div>
-      </section>
-
-      <section id="home" class="panel">
-        <div class="panel-heading">
-          <h2>Home Base</h2>
-          <p>Unlock, buy, place, move, display, and remove built-in or imported items using gold and loot.</p>
-        </div>
-        <div class="card room-card">
-          <div id="room" class="room" aria-label="Custom base grid"></div>
-        </div>
-        <div class="card">
-          <h3>Import home item</h3>
-          <p class="helper">Imported items go into the shop first. They still need to be unlocked or bought before placement.</p>
-          <div class="form-grid">
-            <label>Item name<input id="home-item-name" type="text" placeholder="Crystal lamp"></label>
-            <label>Gold cost<input id="home-item-cost" type="number" min="0" value="25"></label>
-            <label>Image link<input id="home-item-image" type="url" placeholder="Optional image URL"></label>
-            <label>Upload image<input id="home-item-upload" type="file" accept="image/*"></label>
-            <label>Category<select id="home-item-category"><option>Decor</option><option>Desk</option><option>Wall</option><option>Loot display</option><option>Comfort</option></select></label>
-          </div>
-          <button id="add-home-item" type="button">Add imported shop item</button>
-        </div>
-        <div id="home-shop" class="item-list"></div>
-      </section>
-
-      <section id="dictionary" class="panel">
-        <div class="panel-heading">
-          <h2>Personal Dictionary</h2>
-          <p>Finished/submitted wording is saved into chapters rather than one messy list.</p>
-        </div>
-        <div class="card">
-          <div class="form-grid">
-            <label>Chapter<select id="dictionary-chapter"><option>approvedWording</option><option>usefulPhrases</option><option>sentencePatterns</option><option>sourceLinkedTerms</option><option>avoidedWording</option><option>ignoreWords</option><option>moduleVocabulary</option><option>finishedDraftWording</option></select></label>
-            <label>Entry<input id="dictionary-entry" type="text" placeholder="Add wording, phrase, term, or ignore word"></label>
-          </div>
-          <button id="add-dictionary-entry" type="button">Add dictionary entry</button>
-        </div>
-        <div id="dictionary-list" class="section-grid"></div>
-      </section>
-
-      <section id="sync" class="panel">
-        <div class="panel-heading">
-          <h2>Export + Integration Plan</h2>
-          <p>This browser app stores data locally. Export often so laptop and phone can share progress until proper repo connection is possible.</p>
-        </div>
-        <div class="card warning-card">
-          <h3>Future connected version</h3>
-          <p>Do not fake direct connection. Later, tmazing should be the source-library authority and Tma-workbench-local should provide planner/calendar tasks. This version keeps integration notes and export/import bridges only.</p>
-        </div>
-        <div class="card">
-          <h3>Repo and planner targets</h3>
-          <div class="form-grid">
-            <label>tmazing repo/link<input id="tmazing-link" type="url" placeholder="Source library authority"></label>
-            <label>Tma-workbench-local link<input id="workbench-link" type="url" placeholder="Planner/calendar task source"></label>
-            <label>Other TMA builder repo<input id="repo-link" type="url" placeholder="Optional repo or folder link"></label>
-            <label>Calendar/planner note<input id="calendar-link" type="text" placeholder="Local planner notes or calendar reference"></label>
-          </div>
-        </div>
-        <div class="card">
-          <h3>Export and import</h3>
-          <div class="actions-row">
-            <button id="export-data" type="button">Export save data JSON</button>
-            <button id="copy-summary" type="button">Copy TMA summary</button>
-            <button id="download-summary" type="button">Download TMA summary .txt</button>
-            <button id="download-ics" type="button">Download deadline .ics</button>
-          </div>
-          <label>Import save data<textarea id="import-data" placeholder="Paste exported JSON here."></textarea></label>
-          <button id="import-button" type="button">Import save data</button>
-          <pre id="export-output"></pre>
-        </div>
+          <a class="begin-button" href="hub.html">Begin</a>
+        </footer>
       </section>
     </main>
 
-    <script src="app.js"></script>
-    <script src="app-fixes.js"></script>
+    <script src="idle.js"></script>
   </body>
 </html>
