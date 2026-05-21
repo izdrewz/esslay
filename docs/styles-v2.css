@@ -1,0 +1,133 @@
+.warning-card {
+  background: #fff3dc;
+  border-left: 6px solid var(--gold);
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.7fr) minmax(320px, 1.3fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.document-viewer {
+  min-height: 420px;
+  line-height: 1.65;
+  font-family: Arial, Helvetica, sans-serif;
+  white-space: pre-wrap;
+}
+
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.section-box {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.section-box h3 {
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+.section-box p {
+  margin-bottom: 8px;
+}
+
+.compact-grid {
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  margin-top: 12px;
+}
+
+.pixel-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 12px;
+  border: 2px solid #c7aa89;
+  background: linear-gradient(135deg, #fff8ef, #e6d1bb);
+  font-size: 1.8rem;
+  color: var(--accent);
+}
+
+.room {
+  grid-template-columns: repeat(4, 1fr);
+  min-height: 380px;
+  background:
+    linear-gradient(#f6e7d5 0 18%, #ead5bd 18% 58%, #caa57e 58% 100%),
+    repeating-linear-gradient(90deg, transparent, transparent 18px, rgba(92, 83, 75, 0.12) 18px, rgba(92, 83, 75, 0.12) 20px);
+}
+
+.room-slot {
+  min-height: 92px;
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.item a {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.quest select,
+.quest input,
+.item select,
+.item input {
+  min-width: 0;
+}
+
+textarea#draft-input,
+textarea#mind-map,
+textarea#template-plan {
+  min-height: 220px;
+}
+
+textarea#sentence-editor {
+  min-height: 150px;
+}
+
+textarea#sentence-relevance {
+  min-height: 90px;
+}
+
+#export-output {
+  max-height: 340px;
+  overflow: auto;
+}
+
+[data-claim-reward]:disabled {
+  background: #e7ddd2;
+  color: #85776a;
+}
+
+@media (max-width: 900px) {
+  .two-column,
+  .section-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .compact-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .document-viewer {
+    min-height: 300px;
+  }
+
+  .compact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .room {
+    grid-template-columns: repeat(2, 1fr);
+    min-height: 420px;
+  }
+}
