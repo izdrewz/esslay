@@ -1,32 +1,22 @@
-// Small compatibility layer for the static app.
-// It keeps first-run quest records stable if the save file was created before IDs existed.
-(function ensureStableQuestIds() {
-  if (!window.localStorage) return;
-
-  const key = "esslay-game-save-v2";
-  const raw = localStorage.getItem(key);
-  if (!raw) return;
-
+// Compatibility and first-run repair layer for the static app.
+// This runs after app.js and repairs save/state details that a static app cannot migrate through a backend.
+(function repairStaticAppState() {
   try {
-    const save = JSON.parse(raw);
-    let changed = false;
-
-    if (Array.isArray(save.academicQuests)) {
-      save.academicQuests = save.academicQuests.map((quest) => {
-        if (quest.id) return quest;
-        changed = true;
-        return {
-          ...quest,
-          id: `quest-${quest.key || Date.now()}-${Math.random().toString(36).slice(2, 7)}`
-        };
+    if (typeof state !== "undefined" && Array.isArray(state.academicQuests)) {
+      let changed = false;
+      state.academicQuests.forEach((quest) => {
+        if (!quest.id) {
+          quest.id = `quest-${quest.key || Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+          changed = true;
+        }
       });
-    }
 
-    if (changed) {
-      localStorage.setItem(key, JSON.stringify(save));
-      window.location.reload();
+      if (changed) {
+        saveState();
+        render();
+      }
     }
   } catch {
-    // Leave invalid local saves untouched. Import/export can repair them manually.
+    // If the main app is not available, leave the page alone.
   }
 })();
