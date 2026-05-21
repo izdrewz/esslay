@@ -1,0 +1,262 @@
+:root {
+  --ink: #1f1a16;
+  --paper: #fff4df;
+  --panel: #fff8ec;
+  --border: #4d3022;
+  --gold: #d6a354;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at 50% 20%, rgba(255, 223, 147, .25), transparent 34%), linear-gradient(180deg, #2d2118, #181210);
+}
+
+.house-shell {
+  min-height: 100vh;
+  padding: 18px;
+}
+
+.house-header,
+.house-status {
+  width: min(1180px, 100%);
+  margin: 0 auto 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  padding: 18px 22px;
+  border: 5px solid var(--border);
+  border-radius: 22px;
+  background: var(--paper);
+}
+
+.house-status {
+  margin-top: 14px;
+  margin-bottom: 0;
+}
+
+.eyebrow {
+  margin: 0 0 5px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #8b5732;
+}
+
+h1,
+h2,
+p { margin-top: 0; }
+
+h1 {
+  margin-bottom: 6px;
+  font-size: clamp(2rem, 7vw, 4.2rem);
+  line-height: .95;
+}
+
+h2 { margin-bottom: 6px; }
+
+p { color: #6a5d50; }
+
+.house-nav {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.house-nav a,
+.room-hotspot,
+.mirror-card button,
+.outfit-card {
+  border: 3px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: #fffaf0;
+  color: var(--ink);
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,.12);
+}
+
+.room-shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  border: 6px solid #2d2118;
+  border-radius: 26px;
+  overflow: hidden;
+  background: #211713;
+  box-shadow: 0 22px 60px rgba(0,0,0,.35);
+}
+
+.room-stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  min-height: 540px;
+  overflow: hidden;
+}
+
+.room-background,
+.placed-items {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.room-background {
+  object-fit: cover;
+  z-index: 1;
+}
+
+.placed-items { z-index: 2; pointer-events: none; }
+
+.avatar-layer {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  width: min(280px, 24vw);
+  transform: translateX(-50%);
+  z-index: 4;
+  filter: drop-shadow(0 16px 10px rgba(0,0,0,.25));
+}
+
+.room-hotspot {
+  position: absolute;
+  z-index: 7;
+  cursor: pointer;
+  background: rgba(255, 250, 240, .88);
+}
+
+.mirror-hotspot {
+  left: 44%;
+  top: 23%;
+}
+
+.desk-hotspot {
+  right: 10%;
+  top: 58%;
+}
+
+.shelf-hotspot {
+  left: 28%;
+  top: 20%;
+}
+
+.room-hotspot:hover,
+.outfit-card:hover {
+  transform: translateY(-2px);
+}
+
+.layer-note {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 3px solid var(--border);
+  border-radius: 18px;
+  background: #fffaf0;
+}
+
+.layer-note span {
+  color: #6a5d50;
+}
+
+.mirror-panel {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  padding: 18px;
+  background: rgba(22, 15, 12, .66);
+  z-index: 20;
+}
+
+.mirror-panel.open {
+  display: grid;
+}
+
+.mirror-card {
+  width: min(980px, 100%);
+  max-height: min(780px, calc(100vh - 36px));
+  overflow: auto;
+  border: 6px solid var(--border);
+  border-radius: 24px;
+  background: var(--panel);
+  padding: 20px;
+  box-shadow: 0 28px 90px rgba(0,0,0,.42);
+}
+
+.mirror-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.outfit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.outfit-card {
+  border-radius: 18px;
+  text-align: left;
+  cursor: pointer;
+  background: #fffdf7;
+}
+
+.outfit-card[aria-pressed="true"] {
+  outline: 5px solid rgba(214, 163, 84, .55);
+}
+
+.outfit-card img {
+  display: block;
+  height: 220px;
+  width: 100%;
+  object-fit: contain;
+  margin-bottom: 8px;
+  background: linear-gradient(180deg, #fbefd8, #ead2ad);
+  border: 2px solid #d3aa72;
+  border-radius: 14px;
+}
+
+.outfit-card strong,
+.outfit-card span {
+  display: block;
+}
+
+.outfit-card span {
+  margin-top: 4px;
+  color: #6a5d50;
+  font-weight: 600;
+}
+
+@media (max-width: 760px) {
+  .house-header,
+  .house-status,
+  .mirror-card-header {
+    display: block;
+  }
+
+  .house-nav {
+    margin-top: 12px;
+  }
+
+  .room-stage {
+    min-height: 580px;
+  }
+
+  .avatar-layer {
+    width: 260px;
+    bottom: 3%;
+  }
+
+  .mirror-hotspot { left: 38%; top: 22%; }
+  .desk-hotspot { right: 5%; top: 62%; }
+  .shelf-hotspot { left: 18%; top: 20%; }
+}
