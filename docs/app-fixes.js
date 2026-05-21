@@ -28,6 +28,19 @@
         render();
       }
     }
+
+    if (typeof completeQuest === "function") {
+      completeQuest = function patchedCompleteQuest(key) {
+        const quest = state.academicQuests.find((item) => item.key === key);
+        if (!quest || isComplete(quest) || quest.awarded === true) return;
+        quest.status = "done";
+        quest.progress = 100;
+        quest.awarded = true;
+        award(Number(quest.xp) || 0, Number(quest.gold) || 0, quest.loot, `${quest.title} complete`);
+        saveState();
+        render();
+      };
+    }
   } catch {
     // If the main app is not available, leave the page alone.
   }
