@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Esslay House Asset Preview</title>
+    <link rel="stylesheet" href="house.css?v=2">
+    <style>
+      body { background: #181210; }
+      .preview-shell { width: min(1180px, 100%); margin: 0 auto; padding: 18px; }
+      .preview-card { border: 5px solid #4d3022; border-radius: 22px; background: #fff4df; padding: 18px; margin-bottom: 18px; }
+      .preview-card h2 { margin-bottom: 8px; }
+      .asset-frame { position: relative; border: 6px solid #2d2118; border-radius: 14px; background: #241914; overflow: hidden; image-rendering: pixelated; }
+      .asset-frame.room-only { aspect-ratio: 16 / 9; }
+      .asset-frame.sprite-only { min-height: 260px; display: grid; place-items: center; background: #c9b08e; }
+      .asset-frame img { image-rendering: pixelated; }
+      .room-only img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .sprite-only img { width: 128px; height: auto; }
+      .composite-preview { position: relative; aspect-ratio: 16 / 9; }
+      .composite-preview .room-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .composite-preview .sprite { position: absolute; left: 50%; bottom: 11%; width: min(128px, 13vw); transform: translateX(-50%); filter: drop-shadow(0 8px 0 rgba(0,0,0,.24)); }
+      code { background: #fffaf0; border: 1px solid #d3aa72; border-radius: 8px; padding: 2px 6px; }
+      .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+      .links a { border: 3px solid #4d3022; border-radius: 999px; padding: 10px 14px; background: #fffaf0; color: #1f1a16; font-weight: 800; text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <main class="preview-shell">
+      <section class="preview-card">
+        <p class="eyebrow">Esslay asset preview</p>
+        <h1>Current inserted house image layers</h1>
+        <p>This page shows the exact assets currently inserted into the house screen. The room is the fixed background, and the girl is a separate avatar layer.</p>
+        <div class="links">
+          <a href="house.html?v=pixelhouse2">Open house screen</a>
+          <a href="hub.html?v=pixelhouse2">Open hub</a>
+        </div>
+      </section>
+
+      <section class="preview-card">
+        <h2>1. Room background currently inserted</h2>
+        <p><code>assets/rooms/level-1-room.svg?v=2</code></p>
+        <div class="asset-frame room-only">
+          <img src="assets/rooms/level-1-room.svg?v=2" alt="Current inserted house room background">
+        </div>
+      </section>
+
+      <section class="preview-card">
+        <h2>2. Avatar sprite currently inserted</h2>
+        <p><code>assets/avatar/outfits/teal-adventurer.svg?v=2</code></p>
+        <div class="asset-frame sprite-only">
+          <img src="assets/avatar/outfits/teal-adventurer.svg?v=2" alt="Current inserted teal adventurer avatar sprite">
+        </div>
+      </section>
+
+      <section class="preview-card">
+        <h2>3. Combined layer preview</h2>
+        <p>This is the same layering idea used in the house screen: room background plus avatar layer.</p>
+        <div class="asset-frame composite-preview">
+          <img class="room-bg" src="assets/rooms/level-1-room.svg?v=2" alt="">
+          <img class="sprite" src="assets/avatar/outfits/teal-adventurer.svg?v=2" alt="">
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
