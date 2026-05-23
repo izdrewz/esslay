@@ -4,14 +4,14 @@ const outfits = [
   {
     id: "teal-adventurer",
     name: "Teal adventurer",
-    note: "Starter academic-adventurer outfit.",
-    src: "assets/avatar/outfits/teal-adventurer.svg?v=1"
+    note: "Small pixel sprite with teal adventurer outfit.",
+    src: "assets/avatar/outfits/teal-adventurer.svg?v=2"
   },
   {
     id: "scholar-burgundy",
     name: "Scholar burgundy",
-    note: "Mirror test outfit. Room stays the same.",
-    src: "assets/avatar/outfits/scholar-burgundy.svg?v=1"
+    note: "Small pixel sprite with darker scholar outfit.",
+    src: "assets/avatar/outfits/scholar-burgundy.svg?v=2"
   }
 ];
 
