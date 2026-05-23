@@ -1,30 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 560" preserveAspectRatio="xMidYMax meet">
-  <defs>
-    <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0b7"/><stop offset="0.45" stop-color="#e4b763"/><stop offset="1" stop-color="#9d632c"/></linearGradient>
-    <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd7bd"/><stop offset="1" stop-color="#e8a985"/></linearGradient>
-  </defs>
-  <g transform="translate(34 12)">
-    <ellipse cx="106" cy="528" rx="68" ry="12" fill="#1d1513" opacity="0.28"/>
-    <path d="M58 34c-34 46-32 150-20 244 8 62 5 128-8 224h44c8-100 12-204 12-320h40c0 116 4 220 12 320h44c-13-96-16-162-8-224 12-94 14-198-20-244-28-42-68-42-96 0z" fill="url(#hair)"/>
-    <path d="M70 24h72c22 10 34 34 34 70v64c-18 28-42 48-70 48s-52-20-70-48V94c0-36 12-60 34-70z" fill="url(#hair)"/>
-    <path d="M40 64c22 12 48 8 66-18 32 22 54 18 70 42-22-56-108-76-136-24z" fill="#ffe6a2" opacity="0.9"/>
-    <rect x="76" y="82" width="60" height="70" rx="24" fill="url(#skin)"/>
-    <ellipse cx="90" cy="114" rx="5" ry="7" fill="#2d6847"/><ellipse cx="122" cy="114" rx="5" ry="7" fill="#2d6847"/>
-    <path d="M96 140c8 5 18 5 26 0" stroke="#9f6f68" stroke-width="4" fill="none" stroke-linecap="round"/>
-    <rect x="96" y="152" width="20" height="24" fill="url(#skin)"/>
-    <path d="M48 186h116l16 118H32z" fill="#4a1f24"/>
-    <path d="M56 200h100M58 222h96M60 244h92" stroke="#7d4b4a" stroke-width="6" opacity=".8"/>
-    <path d="M70 186v112M142 186v112" stroke="#d6a354" stroke-width="4" opacity=".8"/>
-    <path d="M48 186 22 210 14 344h34l16-114zM164 186l26 24 8 134h-34l-16-114z" fill="#4a1f24"/>
-    <path d="M58 304h96l34 102H24z" fill="#1f2430"/>
-    <path d="M42 324h128l-20 92H62z" fill="#232837"/>
-    <path d="M64 304v112M88 304v112M112 304v112M136 304v112" stroke="#3f4555" stroke-width="4"/>
-    <path d="M42 416h50v70H44zM120 416h50v70h-48z" fill="#211f23"/>
-    <path d="M34 482h62v30H26zM114 482h68v30h-72z" fill="#5b3a2a"/>
-    <path d="M24 508h78v18H16zM106 508h84v18h-88z" fill="#2b211b"/>
-    <path d="M44 180l116 218" stroke="#2c211b" stroke-width="14"/>
-    <rect x="150" y="326" width="64" height="76" rx="10" fill="#2a211e"/>
-    <rect x="164" y="344" width="36" height="24" fill="#5c3c2b"/><circle cx="190" cy="382" r="7" fill="#d9a84f"/>
-    <path d="M96 176q10 12 24 0" stroke="#d9a84f" stroke-width="5" fill="none"/><path d="M108 180v26" stroke="#d9a84f" stroke-width="5"/><circle cx="108" cy="210" r="6" fill="#2d6847"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 96" preserveAspectRatio="xMidYMax meet" shape-rendering="crispEdges">
+  <rect width="64" height="96" fill="none"/>
+  <rect x="20" y="10" width="24" height="46" fill="#b77a32"/>
+  <rect x="17" y="16" width="30" height="42" fill="#e7b95f"/>
+  <rect x="22" y="6" width="20" height="13" fill="#f2d68a"/>
+  <rect x="18" y="12" width="8" height="12" fill="#f2d68a"/>
+  <rect x="38" y="12" width="8" height="12" fill="#f2d68a"/>
+  <rect x="22" y="18" width="20" height="17" fill="#f2c2a2"/>
+  <rect x="26" y="25" width="3" height="3" fill="#2d6847"/>
+  <rect x="36" y="25" width="3" height="3" fill="#2d6847"/>
+  <rect x="30" y="31" width="5" height="1" fill="#8c5d5b"/>
+  <rect x="29" y="36" width="6" height="4" fill="#f2c2a2"/>
+  <rect x="18" y="39" width="28" height="26" fill="#4a1f24"/>
+  <rect x="21" y="42" width="22" height="2" fill="#7d4b4a"/>
+  <rect x="21" y="48" width="22" height="2" fill="#7d4b4a"/>
+  <rect x="21" y="54" width="22" height="2" fill="#7d4b4a"/>
+  <rect x="31" y="40" width="2" height="22" fill="#d6a354"/>
+  <rect x="16" y="40" width="6" height="24" fill="#4a1f24"/>
+  <rect x="42" y="40" width="6" height="24" fill="#4a1f24"/>
+  <rect x="15" y="62" width="8" height="5" fill="#f2c2a2"/>
+  <rect x="41" y="62" width="8" height="5" fill="#f2c2a2"/>
+  <rect x="20" y="64" width="24" height="11" fill="#1f2430"/>
+  <rect x="16" y="68" width="32" height="13" fill="#232837"/>
+  <rect x="20" y="68" width="2" height="13" fill="#3f4555"/>
+  <rect x="29" y="68" width="2" height="13" fill="#3f4555"/>
+  <rect x="38" y="68" width="2" height="13" fill="#3f4555"/>
+  <rect x="20" y="80" width="11" height="7" fill="#211f23"/>
+  <rect x="34" y="80" width="11" height="7" fill="#211f23"/>
+  <rect x="17" y="86" width="14" height="7" fill="#5b3a2a"/>
+  <rect x="33" y="86" width="14" height="7" fill="#5b3a2a"/>
+  <rect x="15" y="92" width="17" height="3" fill="#2b211b"/>
+  <rect x="32" y="92" width="17" height="3" fill="#2b211b"/>
+  <rect x="18" y="39" width="4" height="4" fill="#2b211b"/>
+  <rect x="22" y="43" width="4" height="4" fill="#2b211b"/>
+  <rect x="26" y="47" width="4" height="4" fill="#2b211b"/>
+  <rect x="30" y="51" width="4" height="4" fill="#2b211b"/>
+  <rect x="34" y="55" width="4" height="4" fill="#2b211b"/>
+  <rect x="38" y="59" width="4" height="4" fill="#2b211b"/>
+  <rect x="42" y="63" width="4" height="4" fill="#2b211b"/>
+  <rect x="43" y="60" width="11" height="12" fill="#2b211b"/>
+  <rect x="46" y="63" width="5" height="4" fill="#5c3c2b"/>
+  <rect x="49" y="70" width="2" height="2" fill="#d8a64e"/>
 </svg>
