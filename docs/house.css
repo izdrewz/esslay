@@ -59,7 +59,6 @@ h1 {
 }
 
 h2 { margin-bottom: 6px; }
-
 p { color: #6a5d50; }
 
 .house-nav {
@@ -85,8 +84,8 @@ p { color: #6a5d50; }
 .room-shell {
   width: min(1180px, 100%);
   margin: 0 auto;
-  border: 6px solid #2d2118;
-  border-radius: 26px;
+  border: 8px solid #2d2118;
+  border-radius: 18px;
   overflow: hidden;
   background: #211713;
   box-shadow: 0 22px 60px rgba(0,0,0,.35);
@@ -97,6 +96,17 @@ p { color: #6a5d50; }
   aspect-ratio: 16 / 9;
   min-height: 540px;
   overflow: hidden;
+  image-rendering: pixelated;
+  background: #241914;
+}
+
+.room-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 6px rgba(255, 244, 223, .14), inset 0 -24px 0 rgba(0,0,0,.08);
 }
 
 .room-background,
@@ -110,6 +120,7 @@ p { color: #6a5d50; }
 .room-background {
   object-fit: cover;
   z-index: 1;
+  image-rendering: pixelated;
 }
 
 .placed-items { z-index: 2; pointer-events: none; }
@@ -117,39 +128,29 @@ p { color: #6a5d50; }
 .avatar-layer {
   position: absolute;
   left: 50%;
-  bottom: 4%;
-  width: min(280px, 24vw);
+  bottom: 11%;
+  width: min(128px, 13vw);
   transform: translateX(-50%);
   z-index: 4;
-  filter: drop-shadow(0 16px 10px rgba(0,0,0,.25));
+  image-rendering: pixelated;
+  filter: drop-shadow(0 8px 0 rgba(0,0,0,.24));
 }
 
 .room-hotspot {
   position: absolute;
-  z-index: 7;
+  z-index: 9;
   cursor: pointer;
   background: rgba(255, 250, 240, .88);
+  border-radius: 12px;
+  font-size: .86rem;
 }
 
-.mirror-hotspot {
-  left: 44%;
-  top: 23%;
-}
-
-.desk-hotspot {
-  right: 10%;
-  top: 58%;
-}
-
-.shelf-hotspot {
-  left: 28%;
-  top: 20%;
-}
+.mirror-hotspot { left: 46%; top: 27%; }
+.desk-hotspot { left: 14%; top: 58%; }
+.shelf-hotspot { left: 32%; top: 24%; }
 
 .room-hotspot:hover,
-.outfit-card:hover {
-  transform: translateY(-2px);
-}
+.outfit-card:hover { transform: translateY(-2px); }
 
 .layer-note {
   display: grid;
@@ -160,9 +161,7 @@ p { color: #6a5d50; }
   background: #fffaf0;
 }
 
-.layer-note span {
-  color: #6a5d50;
-}
+.layer-note span { color: #6a5d50; }
 
 .mirror-panel {
   position: fixed;
@@ -174,9 +173,7 @@ p { color: #6a5d50; }
   z-index: 20;
 }
 
-.mirror-panel.open {
-  display: grid;
-}
+.mirror-panel.open { display: grid; }
 
 .mirror-card {
   width: min(980px, 100%);
@@ -216,19 +213,19 @@ p { color: #6a5d50; }
 
 .outfit-card img {
   display: block;
-  height: 220px;
+  height: 180px;
   width: 100%;
   object-fit: contain;
+  image-rendering: pixelated;
   margin-bottom: 8px;
-  background: linear-gradient(180deg, #fbefd8, #ead2ad);
-  border: 2px solid #d3aa72;
+  background: linear-gradient(180deg, #ead8bb, #c9b08e);
+  border: 3px solid #8a6240;
   border-radius: 14px;
+  padding: 10px;
 }
 
 .outfit-card strong,
-.outfit-card span {
-  display: block;
-}
+.outfit-card span { display: block; }
 
 .outfit-card span {
   margin-top: 4px;
@@ -237,26 +234,25 @@ p { color: #6a5d50; }
 }
 
 @media (max-width: 760px) {
+  .house-shell { padding: 10px; }
+
   .house-header,
   .house-status,
-  .mirror-card-header {
-    display: block;
-  }
+  .mirror-card-header { display: block; }
 
-  .house-nav {
-    margin-top: 12px;
-  }
+  .house-nav { margin-top: 12px; }
 
   .room-stage {
-    min-height: 580px;
+    min-height: 500px;
+    aspect-ratio: 9 / 12;
   }
 
   .avatar-layer {
-    width: 260px;
-    bottom: 3%;
+    width: 108px;
+    bottom: 15%;
   }
 
-  .mirror-hotspot { left: 38%; top: 22%; }
-  .desk-hotspot { right: 5%; top: 62%; }
-  .shelf-hotspot { left: 18%; top: 20%; }
+  .mirror-hotspot { left: 42%; top: 27%; }
+  .desk-hotspot { left: 9%; top: 60%; }
+  .shelf-hotspot { left: 26%; top: 24%; }
 }
