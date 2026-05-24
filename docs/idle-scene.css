@@ -1,7 +1,7 @@
 .solid-scene {
   min-height: 560px;
   height: min(72vh, 690px);
-  background: #1f1a16;
+  background: #f4ead5;
 }
 
 .scene-background {
@@ -13,6 +13,11 @@
   object-position: center center;
   z-index: 1;
   display: block;
+  filter: brightness(1.12) contrast(1.04) saturate(1.06);
+}
+
+.reference-idle-scene::after {
+  display: none;
 }
 
 .idle-avatar-layer {
@@ -40,7 +45,7 @@
   inset: 0;
   z-index: 4;
   pointer-events: none;
-  background: radial-gradient(circle at 42% 58%, transparent 0 18%, rgba(43, 29, 18, .08) 62%, rgba(43, 29, 18, .18) 100%);
+  background: none;
 }
 
 .solid-scene .sun-moon,
@@ -54,12 +59,14 @@
   display: none !important;
 }
 
+body.night .reference-idle-scene .scene-background,
 body.night .solid-scene .scene-background {
-  filter: brightness(0.72) saturate(0.85);
+  filter: brightness(1.12) contrast(1.04) saturate(1.06);
 }
 
+body.night .reference-idle-scene .idle-avatar-layer,
 body.night .solid-scene .idle-avatar-layer {
-  filter: brightness(0.72) saturate(0.85) drop-shadow(0 16px 10px rgba(0,0,0,.34));
+  filter: drop-shadow(0 16px 10px rgba(0,0,0,.26));
 }
 
 @media (max-width: 760px) {
