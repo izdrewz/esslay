@@ -96,7 +96,6 @@ p { color: #6a5d50; }
   aspect-ratio: 16 / 9;
   min-height: 540px;
   overflow: hidden;
-  image-rendering: pixelated;
   background: #241914;
 }
 
@@ -120,7 +119,6 @@ p { color: #6a5d50; }
 .room-background {
   object-fit: cover;
   z-index: 1;
-  image-rendering: pixelated;
 }
 
 .placed-items { z-index: 2; pointer-events: none; }
@@ -128,12 +126,12 @@ p { color: #6a5d50; }
 .avatar-layer {
   position: absolute;
   left: 50%;
-  bottom: 11%;
-  width: min(128px, 13vw);
+  bottom: 2%;
+  width: min(310px, 28vw);
+  max-height: 92%;
   transform: translateX(-50%);
   z-index: 4;
-  image-rendering: pixelated;
-  filter: drop-shadow(0 8px 0 rgba(0,0,0,.24));
+  filter: drop-shadow(0 18px 12px rgba(0,0,0,.24));
 }
 
 .room-hotspot {
@@ -176,8 +174,8 @@ p { color: #6a5d50; }
 .mirror-panel.open { display: grid; }
 
 .mirror-card {
-  width: min(980px, 100%);
-  max-height: min(780px, calc(100vh - 36px));
+  width: min(1080px, 100%);
+  max-height: min(820px, calc(100vh - 36px));
   overflow: auto;
   border: 6px solid var(--border);
   border-radius: 24px;
@@ -196,7 +194,7 @@ p { color: #6a5d50; }
 
 .outfit-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 14px;
 }
 
@@ -213,12 +211,11 @@ p { color: #6a5d50; }
 
 .outfit-card img {
   display: block;
-  height: 180px;
+  height: 300px;
   width: 100%;
   object-fit: contain;
-  image-rendering: pixelated;
   margin-bottom: 8px;
-  background: linear-gradient(180deg, #ead8bb, #c9b08e);
+  background: linear-gradient(180deg, #fffaf2, #ead8bb);
   border: 3px solid #8a6240;
   border-radius: 14px;
   padding: 10px;
@@ -243,16 +240,18 @@ p { color: #6a5d50; }
   .house-nav { margin-top: 12px; }
 
   .room-stage {
-    min-height: 500px;
+    min-height: 620px;
     aspect-ratio: 9 / 12;
   }
 
   .avatar-layer {
-    width: 108px;
-    bottom: 15%;
+    width: 260px;
+    bottom: 2%;
   }
 
   .mirror-hotspot { left: 42%; top: 27%; }
   .desk-hotspot { left: 9%; top: 60%; }
   .shelf-hotspot { left: 26%; top: 24%; }
+
+  .outfit-card img { height: 260px; }
 }
