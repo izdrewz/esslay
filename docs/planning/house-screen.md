@@ -4,14 +4,19 @@
 
 The house screen should not use a CSS-built doll character. The character should be treated as artwork.
 
-The room background should stay untouched. The avatar should be a separate transparent layer placed on top so it can be swapped through the mirror without changing the room art.
+The room background should stay untouched. The avatar should be a separate layer placed on top so it can be swapped through the mirror without changing the room art.
+
+The current tiny chibi-style placeholder sprite is not the intended final direction. The avatar should be closer to the uploaded house base model and outfit references: a taller paper-doll / illustrated game avatar with the same blonde character identity across outfits.
 
 Layer order:
 
 ```text
 house-room-background
 placed-furniture-and-decor
+avatar-base-model
 avatar-current-outfit
+avatar-bag-accessory
+avatar-jewellery-or-hair-accessory
 foreground-lighting-or-seasonal-effects
 UI-buttons
 ```
@@ -22,6 +27,7 @@ The room must include a clickable mirror. The mirror opens the appearance panel.
 
 The mirror should control:
 
+- base model / pose
 - outfit
 - hair variant
 - accessories
@@ -30,6 +36,33 @@ The mirror should control:
 - saved looks
 
 The mirror should not change the room background.
+
+The mirror UI should feel like character customisation rather than a plain web form. It should show the current avatar preview and outfit cards.
+
+## Avatar art direction
+
+The avatar should follow the uploaded base model and outfit artwork direction.
+
+Core character traits:
+
+- long blonde hair
+- soft academic-adventurer style
+- layered necklaces
+- satchel
+- boots
+- tattoo details
+- whimsical medieval/cottage-adventure clothing
+
+Outfit direction from the uploaded references:
+
+- neutral base model for customisation
+- pink babydoll dress outfit
+- teal bandeau / patterned trouser outfit
+- dark bodice / adventurer outfit
+- plaid skirt or scholar outfit
+- dark trouser scholar outfit
+
+The character should remain recognisably the same person across outfit changes.
 
 ## Artwork storage
 
@@ -47,6 +80,24 @@ assets/rooms/furniture/
 ```
 
 Transparent avatar layers should be PNG or SVG when possible.
+
+If transparent cut-outs are not available yet, the app can use temporary preview images inside the mirror panel, but the room stage should ultimately use transparent avatar layers.
+
+## House exterior / idle art direction
+
+The outside idle screen should use a single finished cottage scene background, not separate CSS-built pieces.
+
+The cottage direction should follow the uploaded cottage references:
+
+- medieval / Tudor-style cottage
+- warm cream walls
+- brown tiled roof
+- wooden shutters and beams
+- vines, plants, and small flower boxes
+- cosy path and grass
+- seasonal ambience layered above the background
+
+The character should be placed as a separate avatar layer in front of the house when needed.
 
 ## House levels
 
