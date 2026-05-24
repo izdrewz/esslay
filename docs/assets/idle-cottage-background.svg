@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3e8cf"/>
+      <stop offset="0.52" stop-color="#efe3c7"/>
+      <stop offset="0.53" stop-color="#99b873"/>
+      <stop offset="1" stop-color="#587444"/>
+    </linearGradient>
+    <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7b4b31"/>
+      <stop offset="1" stop-color="#3d271c"/>
+    </linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e3d4b7"/>
+      <stop offset="1" stop-color="#b9a17a"/>
+    </linearGradient>
+    <pattern id="tiles" width="42" height="28" patternUnits="userSpaceOnUse">
+      <rect width="42" height="28" fill="#6b402b"/>
+      <path d="M0 25h42M0 5q21 10 42 0" stroke="#3f271d" stroke-width="3" fill="none" opacity=".7"/>
+      <path d="M21 5v20" stroke="#8e5c39" stroke-width="2" opacity=".5"/>
+    </pattern>
+    <pattern id="stone" width="54" height="36" patternUnits="userSpaceOnUse">
+      <rect width="54" height="36" fill="#9b9078"/>
+      <path d="M0 34h54M28 0v34" stroke="#6f6756" stroke-width="3" opacity=".55"/>
+    </pattern>
+  </defs>
+
+  <rect width="1280" height="720" fill="url(#sky)"/>
+  <circle cx="1078" cy="92" r="48" fill="#efd078" opacity=".78"/>
+  <path d="M0 610c130-36 240-28 370-12 126 16 238 12 364-6 158-22 334-10 546 18v110H0z" fill="#496c42" opacity=".48"/>
+  <path d="M0 640c160-48 320-26 472-16 210 14 432-30 808 6v90H0z" fill="#3d5e37" opacity=".45"/>
+
+  <!-- distant trees -->
+  <g opacity=".38" fill="#6f845a">
+    <circle cx="78" cy="430" r="84"/><circle cx="154" cy="430" r="70"/><circle cx="118" cy="372" r="78"/>
+    <circle cx="1120" cy="430" r="84"/><circle cx="1200" cy="430" r="70"/><circle cx="1168" cy="372" r="78"/>
+    <circle cx="230" cy="455" r="52"/><circle cx="1010" cy="462" r="58"/>
+  </g>
+
+  <!-- left tree -->
+  <g transform="translate(48 118)">
+    <path d="M96 510c-14-154-10-270 32-420l44 8c-36 130-34 260-10 416z" fill="#5d4934"/>
+    <path d="M130 118c-82 28-108 84-96 150 18 90 124 104 194 62 86-52 72-170-12-210-28-14-58-14-86-2z" fill="#9a9b68"/>
+    <path d="M70 188c-40 36-44 98-8 134 36 36 100 28 132-12 34-42 18-110-28-136-36-20-70-12-96 14z" fill="#7f8a58" opacity=".72"/>
+    <path d="M176 170c42 18 70 62 62 108-8 50-62 82-114 64 42-42 56-98 52-172z" fill="#686f47" opacity=".45"/>
+  </g>
+
+  <!-- cottage shadow -->
+  <ellipse cx="642" cy="634" rx="370" ry="42" fill="#241714" opacity=".25"/>
+
+  <!-- cottage body -->
+  <g transform="translate(285 92)">
+    <rect x="122" y="248" width="548" height="292" fill="#58402e"/>
+    <rect x="148" y="270" width="496" height="244" fill="url(#wall)"/>
+    <path d="M148 270h496v244H148z" fill="none" stroke="#4c3728" stroke-width="10"/>
+
+    <!-- timber beams -->
+    <path d="M178 270v244M330 270v244M512 270v244M612 270v244" stroke="#5c3f2c" stroke-width="14"/>
+    <path d="M148 332h496M148 424h496" stroke="#5c3f2c" stroke-width="12"/>
+    <path d="M148 270l182 244M644 270L512 514" stroke="#5c3f2c" stroke-width="10" opacity=".72"/>
+
+    <!-- main roof -->
+    <path d="M58 284h690L410 28z" fill="#3f271d"/>
+    <path d="M94 270h626L410 58z" fill="url(#tiles)"/>
+    <path d="M92 270h628" stroke="#2d1c16" stroke-width="16"/>
+    <path d="M410 58L722 270" stroke="#2d1c16" stroke-width="14" opacity=".8"/>
+    <path d="M410 58L94 270" stroke="#2d1c16" stroke-width="14" opacity=".8"/>
+
+    <!-- side roof -->
+    <path d="M502 236h282l-144-104z" fill="#3f271d"/>
+    <path d="M536 226h212l-108-76z" fill="url(#tiles)"/>
+    <rect x="536" y="226" width="212" height="18" fill="#3b241b"/>
+
+    <!-- chimney -->
+    <rect x="520" y="48" width="58" height="154" fill="url(#stone)" stroke="#4c453a" stroke-width="8"/>
+    <rect x="504" y="32" width="90" height="24" fill="#776d59" stroke="#4c453a" stroke-width="6"/>
+    <rect x="590" y="62" width="42" height="118" fill="url(#stone)" stroke="#4c453a" stroke-width="8"/>
+    <rect x="578" y="46" width="66" height="24" fill="#776d59" stroke="#4c453a" stroke-width="6"/>
+
+    <!-- upper gable -->
+    <path d="M262 250h280L410 76z" fill="#d8c6a5" stroke="#4c3728" stroke-width="10"/>
+    <path d="M410 82v168M292 250l118-168M528 250L410 82" stroke="#5c3f2c" stroke-width="11"/>
+
+    <!-- windows -->
+    <g>
+      <rect x="210" y="354" width="94" height="74" fill="#4b3325"/>
+      <rect x="224" y="368" width="66" height="48" fill="#9ec7d8"/>
+      <path d="M257 368v48M224 392h66" stroke="#4b3325" stroke-width="7"/>
+      <rect x="200" y="344" width="114" height="14" fill="#704a31"/>
+      <rect x="202" y="426" width="112" height="18" fill="#704a31"/>
+      <path d="M214 438c22-28 68-28 92 0" stroke="#547447" stroke-width="16" fill="none"/>
+    </g>
+    <g>
+      <rect x="508" y="354" width="104" height="78" fill="#4b3325"/>
+      <rect x="524" y="370" width="72" height="50" fill="#9ec7d8"/>
+      <path d="M560 370v50M524 396h72" stroke="#4b3325" stroke-width="7"/>
+      <rect x="496" y="344" width="128" height="14" fill="#704a31"/>
+      <rect x="500" y="432" width="120" height="18" fill="#704a31"/>
+      <path d="M512 442c24-32 76-30 102 0" stroke="#547447" stroke-width="16" fill="none"/>
+    </g>
+    <g>
+      <rect x="360" y="174" width="100" height="68" fill="#4b3325"/>
+      <rect x="376" y="188" width="68" height="42" fill="#a9d4dd"/>
+      <path d="M410 188v42M376 210h68" stroke="#4b3325" stroke-width="6"/>
+      <rect x="348" y="166" width="124" height="14" fill="#704a31"/>
+      <rect x="352" y="240" width="116" height="16" fill="#704a31"/>
+    </g>
+
+    <!-- door and steps -->
+    <rect x="360" y="394" width="96" height="140" rx="44" fill="#3f271d"/>
+    <rect x="378" y="414" width="60" height="120" rx="28" fill="#74482e"/>
+    <path d="M408 414v120" stroke="#4c2e20" stroke-width="5"/>
+    <circle cx="428" cy="476" r="6" fill="#e0b35f"/>
+    <path d="M356 536h108l26 24H330zM330 560h160l32 24H300z" fill="#b9aa8e" stroke="#675d4f" stroke-width="4"/>
+
+    <!-- vines and garden -->
+    <path d="M250 336c10-62 50-118 116-150M550 360c22-58 66-94 132-104M176 500c70-54 160-50 224-14M470 504c68-50 156-48 220-6" stroke="#49663e" stroke-width="14" fill="none" opacity=".86"/>
+    <g fill="#6d874e">
+      <circle cx="266" cy="316" r="18"/><circle cx="302" cy="268" r="16"/><circle cx="350" cy="214" r="18"/><circle cx="542" cy="344" r="18"/><circle cx="584" cy="300" r="16"/><circle cx="638" cy="268" r="19"/>
+      <circle cx="182" cy="496" r="30"/><circle cx="232" cy="484" r="28"/><circle cx="294" cy="496" r="30"/><circle cx="548" cy="500" r="32"/><circle cx="614" cy="488" r="30"/><circle cx="672" cy="500" r="34"/>
+    </g>
+    <g fill="#f2d6d3" opacity=".9">
+      <circle cx="230" cy="452" r="5"/><circle cx="278" cy="462" r="5"/><circle cx="586" cy="454" r="5"/><circle cx="638" cy="456" r="5"/><circle cx="364" cy="202" r="5"/><circle cx="650" cy="274" r="5"/>
+    </g>
+  </g>
+
+  <!-- fence and path foreground -->
+  <path d="M532 604c42-64 114-80 176 0 36 46 42 78 44 116H458c4-40 26-76 74-116z" fill="#d7c7a8" opacity=".9"/>
+  <path d="M572 626c34-22 80-20 122 0M530 666c72-18 144-18 214 0" stroke="#b6a17e" stroke-width="6" fill="none"/>
+  <g fill="#704a31" stroke="#422a1e" stroke-width="4">
+    <rect x="72" y="580" width="18" height="78"/><rect x="118" y="572" width="18" height="86"/><rect x="164" y="584" width="18" height="74"/><rect x="1016" y="580" width="18" height="78"/><rect x="1062" y="572" width="18" height="86"/><rect x="1108" y="584" width="18" height="74"/>
+  </g>
+  <path d="M40 616h260M980 616h260" stroke="#704a31" stroke-width="14"/>
+</svg>
