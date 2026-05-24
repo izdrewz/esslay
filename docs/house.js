@@ -1,17 +1,29 @@
-const HOUSE_SAVE_KEY = "esslay-house-state-v1";
+const HOUSE_SAVE_KEY = "esslay-house-state-v2";
 
 const outfits = [
   {
-    id: "teal-adventurer",
-    name: "Teal adventurer",
-    note: "Small pixel sprite with teal adventurer outfit.",
-    src: "assets/avatar/outfits/teal-adventurer.svg?v=2"
+    id: "base-neutral",
+    name: "Base model",
+    note: "Neutral avatar layer for customisation.",
+    src: "assets/avatar/paperdoll/base-neutral.svg?v=1"
   },
   {
-    id: "scholar-burgundy",
-    name: "Scholar burgundy",
-    note: "Small pixel sprite with darker scholar outfit.",
-    src: "assets/avatar/outfits/scholar-burgundy.svg?v=2"
+    id: "teal-adventurer",
+    name: "Teal adventurer",
+    note: "Teal academic-adventurer outfit with satchel.",
+    src: "assets/avatar/paperdoll/teal-adventurer.svg?v=1"
+  },
+  {
+    id: "dark-adventurer",
+    name: "Dark bodice adventurer",
+    note: "Dark bodice and boots outfit.",
+    src: "assets/avatar/paperdoll/dark-adventurer.svg?v=1"
+  },
+  {
+    id: "babydoll-pink",
+    name: "Pink babydoll dress",
+    note: "Pink dress outfit with satchel and boots.",
+    src: "assets/avatar/paperdoll/babydoll-pink.svg?v=1"
   }
 ];
 
@@ -36,7 +48,7 @@ function saveHouseState(state) {
 let houseState = loadHouseState();
 
 function currentOutfit() {
-  return outfits.find((outfit) => outfit.id === houseState.outfit) || outfits[0];
+  return outfits.find((outfit) => outfit.id === houseState.outfit) || outfits[1];
 }
 
 function applyOutfit() {
