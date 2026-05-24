@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Home Base</title>
-    <link rel="stylesheet" href="house.css?v=2">
+    <link rel="stylesheet" href="house.css?v=3">
   </head>
   <body>
     <main class="house-shell">
@@ -12,7 +12,7 @@
         <div>
           <p class="eyebrow">Esslay</p>
           <h1>Home Base</h1>
-          <p>The room stays fixed. The avatar is a small pixel sprite layered on top and changed through the mirror.</p>
+          <p>The room stays fixed. The avatar is a taller paper-doll layer changed through the mirror.</p>
         </div>
         <nav class="house-nav" aria-label="House navigation">
           <a href="hub.html">Village</a>
@@ -22,9 +22,9 @@
 
       <section class="room-shell" aria-label="Inside the house">
         <div class="room-stage" id="room-stage">
-          <img class="room-background" src="assets/rooms/level-1-room.svg?v=2" alt="Level 1 pixel peasant cottage room">
+          <img class="room-background" src="assets/rooms/level-1-room.svg?v=2" alt="Level 1 peasant cottage room">
           <div class="placed-items" id="placed-items" aria-hidden="true"></div>
-          <img class="avatar-layer" id="avatar-layer" src="assets/avatar/outfits/teal-adventurer.svg?v=2" alt="Current outfit">
+          <img class="avatar-layer" id="avatar-layer" src="assets/avatar/paperdoll/teal-adventurer.svg?v=1" alt="Current outfit">
 
           <button class="room-hotspot mirror-hotspot" id="open-mirror" type="button" aria-label="Open mirror to change outfit and appearance">
             Mirror
@@ -40,12 +40,12 @@
 
       <section class="house-status">
         <div>
-          <h2 id="room-level-title">Level 1: Pixel peasant cottage room</h2>
-          <p id="room-level-note">Starter room: bed, plants, mirror, desk, wardrobe, and a small shelf for first geodes.</p>
+          <h2 id="room-level-title">Level 1: Starter cottage room</h2>
+          <p id="room-level-note">Starter room with fixed background art and a separate avatar/outfit layer.</p>
         </div>
         <div class="layer-note">
           <strong>Layer system</strong>
-          <span>Pixel room background + swappable avatar sprite + future decor layers</span>
+          <span>Room background + paper-doll avatar + outfit switching through mirror</span>
         </div>
       </section>
 
@@ -55,7 +55,7 @@
             <div>
               <p class="eyebrow">Magic mirror</p>
               <h2 id="mirror-title">Change outfit / appearance</h2>
-              <p>The room background does not change. Only the avatar sprite swaps.</p>
+              <p>The room background does not change. Only the avatar outfit layer swaps.</p>
             </div>
             <button id="close-mirror" type="button">Close</button>
           </div>
@@ -65,6 +65,6 @@
       </aside>
     </main>
 
-    <script src="house.js?v=2"></script>
+    <script src="house.js?v=3"></script>
   </body>
 </html>
