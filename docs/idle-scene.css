@@ -14,6 +14,17 @@
   display: block;
 }
 
+.idle-avatar-layer {
+  position: absolute;
+  left: 50%;
+  bottom: 3%;
+  width: min(250px, 22vw);
+  max-height: 86%;
+  transform: translateX(-50%);
+  z-index: 2;
+  filter: drop-shadow(0 16px 10px rgba(0,0,0,.26));
+}
+
 .solid-scene .sky-particles {
   position: absolute;
   inset: 0;
@@ -36,8 +47,17 @@ body.night .solid-scene .scene-background {
   filter: brightness(0.72) saturate(0.85);
 }
 
+body.night .solid-scene .idle-avatar-layer {
+  filter: brightness(0.72) saturate(0.85) drop-shadow(0 16px 10px rgba(0,0,0,.34));
+}
+
 @media (max-width: 760px) {
   .solid-scene {
     min-height: 520px;
+  }
+
+  .idle-avatar-layer {
+    width: 210px;
+    bottom: 2%;
   }
 }
