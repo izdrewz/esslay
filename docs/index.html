@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Idle Camp</title>
-    <link rel="stylesheet" href="idle.css?v=2">
-    <link rel="stylesheet" href="idle-scene.css?v=3">
+    <link rel="stylesheet" href="idle.css?v=3">
+    <link rel="stylesheet" href="idle-scene.css?v=4">
   </head>
   <body>
     <main class="idle-shell">
@@ -24,7 +24,10 @@
         </header>
 
         <div class="scene-frame solid-scene reference-idle-scene" aria-label="Seasonal idle scene">
-          <img id="home" class="scene-background" src="assets/idle-reference-scene.svg?v=1" alt="Cottage with academic adventurer standing outside">
+          <picture>
+            <source srcset="assets/idle-reference-scene.png?v=1" type="image/png">
+            <img id="home" class="scene-background" src="assets/idle-reference-scene.svg?v=1" alt="Cottage with academic adventurer standing outside">
+          </picture>
           <div id="sky-particles" class="sky-particles" aria-hidden="true"></div>
         </div>
 
@@ -38,6 +41,6 @@
       </section>
     </main>
 
-    <script src="idle.js?v=2"></script>
+    <script src="idle.js?v=3"></script>
   </body>
 </html>
