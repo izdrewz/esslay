@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Home Base</title>
-    <link rel="stylesheet" href="house.css?v=3">
+    <link rel="stylesheet" href="house.css?v=4">
   </head>
   <body>
     <main class="house-shell">
@@ -55,16 +55,35 @@
             <div>
               <p class="eyebrow">Magic mirror</p>
               <h2 id="mirror-title">Change outfit / appearance</h2>
-              <p>The room background does not change. Only the avatar outfit layer swaps.</p>
+              <p>The room background does not change. The selected avatar artwork is layered over it.</p>
             </div>
             <button id="close-mirror" type="button">Close</button>
           </div>
+
+          <section class="import-avatar-panel" aria-label="Import avatar artwork">
+            <div>
+              <h3>Import paper-doll artwork</h3>
+              <p>Use this for the actual base model or outfit artwork. Transparent PNGs work best. Imported artwork is saved in this browser.</p>
+            </div>
+            <form id="import-avatar-form" class="import-avatar-form">
+              <label>
+                Name
+                <input id="import-avatar-name" type="text" placeholder="Pink dress, teal trousers, base model">
+              </label>
+              <label>
+                Image
+                <input id="import-avatar-file" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+              </label>
+              <button type="submit">Import and wear</button>
+            </form>
+            <p class="import-status" id="import-status" aria-live="polite"></p>
+          </section>
 
           <div class="outfit-grid" id="outfit-grid"></div>
         </div>
       </aside>
     </main>
 
-    <script src="house.js?v=3"></script>
+    <script src="house.js?v=4"></script>
   </body>
 </html>
