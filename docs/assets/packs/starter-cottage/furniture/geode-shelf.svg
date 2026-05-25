@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 160" preserveAspectRatio="xMidYMid meet">
+  <defs><linearGradient id="wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7c4d31"/><stop offset="1" stop-color="#3d2519"/></linearGradient></defs>
+  <ellipse cx="110" cy="146" rx="86" ry="10" fill="#1b120e" opacity=".25"/>
+  <rect x="30" y="24" width="160" height="116" rx="10" fill="url(#wood)" stroke="#2b1b13" stroke-width="7"/>
+  <rect x="46" y="42" width="128" height="24" rx="4" fill="#3d2519"/>
+  <rect x="46" y="82" width="128" height="24" rx="4" fill="#3d2519"/>
+  <rect x="48" y="62" width="124" height="8" fill="#b9834d" opacity=".7"/>
+  <rect x="48" y="102" width="124" height="8" fill="#b9834d" opacity=".7"/>
+  <g>
+    <path d="M66 48l12-12 14 10-4 16H70z" fill="#8fd0ce" stroke="#315d63" stroke-width="4"/>
+    <path d="M110 46l10-14 15 12-5 18h-20z" fill="#a889d5" stroke="#4f3b75" stroke-width="4"/>
+    <path d="M146 50l12-13 13 13-8 15h-18z" fill="#e8b65b" stroke="#80532b" stroke-width="4"/>
+    <path d="M78 88l12-13 14 12-6 18H80z" fill="#81b96f" stroke="#3d6536" stroke-width="4"/>
+    <path d="M128 88l12-13 14 12-6 18h-18z" fill="#d97993" stroke="#8a4355" stroke-width="4"/>
+  </g>
+</svg>
