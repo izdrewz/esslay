@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 160" preserveAspectRatio="xMidYMid meet">
+  <defs><linearGradient id="wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a5a35"/><stop offset="1" stop-color="#4a2e20"/></linearGradient></defs>
+  <ellipse cx="110" cy="146" rx="86" ry="10" fill="#1b120e" opacity=".25"/>
+  <rect x="28" y="46" width="164" height="28" rx="6" fill="#3b2418"/>
+  <rect x="18" y="28" width="184" height="38" rx="8" fill="url(#wood)" stroke="#2b1b13" stroke-width="6"/>
+  <path d="M32 46h156M52 30v34M108 30v34M166 30v34" stroke="#b9834d" stroke-width="3" opacity=".55"/>
+  <rect x="38" y="68" width="26" height="74" fill="#5c3825" stroke="#2b1b13" stroke-width="5"/>
+  <rect x="156" y="68" width="26" height="74" fill="#5c3825" stroke="#2b1b13" stroke-width="5"/>
+  <rect x="76" y="78" width="68" height="38" rx="5" fill="#6f442a" stroke="#2b1b13" stroke-width="5"/>
+  <circle cx="110" cy="98" r="5" fill="#d5a04f"/>
+  <path d="M70 22h58l12 16H62z" fill="#f4e7c8" stroke="#6d5439" stroke-width="4"/>
+  <path d="M76 30h48" stroke="#6d5439" stroke-width="3"/>
+</svg>
