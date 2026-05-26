@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "rules": [
+    "Public does not mean free to reuse.",
+    "Only commit assets that are original, commissioned, owned, CC0, CC-BY, MIT, or otherwise clearly licensed for reuse.",
+    "Stardew Valley, Fields of Mistria, mod assets, Pinterest images, and other game assets stay as inspiration unless the creator/license explicitly allows reuse outside that game.",
+    "Imported local assets are saved in the browser and should not be treated as cleared for the public repo unless their licence is known."
+  ],
+  "packs": [
+    {
+      "id": "starter-cottage",
+      "manifest": "assets/packs/starter-cottage/pack.json",
+      "status": "safe-built-in",
+      "creditRequired": false
+    }
+  ],
+  "licenseLabels": [
+    "Own art",
+    "Commissioned with permission",
+    "CC0",
+    "CC-BY",
+    "MIT",
+    "Permission granted",
+    "Reference only",
+    "Unclear / do not commit"
+  ]
+}
