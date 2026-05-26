@@ -4,21 +4,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Study Cave</title>
-    <link rel="stylesheet" href="cave.css?v=1">
+    <link rel="stylesheet" href="cave.css?v=2">
   </head>
-  <body>
+  <body data-quest-id="demo-tma-battle">
     <main class="cave-shell">
       <header class="cave-header">
         <div>
           <p class="eyebrow">Esslay</p>
           <h1>Study Cave</h1>
-          <p>TMA combat screen. This should stay inside the app, not open GitHub.</p>
+          <p>TMA combat now uses the shared quest economy. Writing is not finished until submission is confirmed.</p>
         </div>
         <nav class="cave-nav" aria-label="Study cave navigation">
           <a href="hub.html">Village</a>
           <a href="house.html">Home Base</a>
         </nav>
       </header>
+
+      <section class="quest-stats" aria-label="Player quest stats">
+        <div><strong data-esslay-level>1</strong><span>Level</span></div>
+        <div><strong data-esslay-xp>0</strong><span>XP</span></div>
+        <div><strong data-esslay-gold>75</strong><span>Gold</span></div>
+        <div><strong data-quest-percent="demo-tma-battle">0%</strong><span>TMA progress</span></div>
+      </section>
 
       <section class="cave-stage" aria-label="Study cave combat area">
         <div class="cave-scene">
@@ -30,7 +37,9 @@
           <div class="monster-card">
             <p class="eyebrow">Current enemy</p>
             <h2>Blank Page Wraith</h2>
-            <p>Defeat it by capturing the task question, making a plan, drafting, citing, and flow checking.</p>
+            <p>Status: <strong data-quest-status="demo-tma-battle">Not started</strong></p>
+            <div class="quest-progress"><span data-quest-progress-bar="demo-tma-battle"></span></div>
+            <p>Defeat it by moving through the TMA checkpoints. The final XP bonus only unlocks when you confirm submission.</p>
           </div>
         </div>
       </section>
@@ -38,17 +47,32 @@
       <section class="combat-panel">
         <h2>TMA battle checkpoints</h2>
         <div class="checkpoint-grid">
-          <button type="button">1. Capture task</button>
-          <button type="button">2. Highlight command words</button>
-          <button type="button">3. Build quote geodes</button>
-          <button type="button">4. Create plan</button>
-          <button type="button">5. Draft paragraph</button>
-          <button type="button">6. Add citation notes</button>
-          <button type="button">7. Flow Diary</button>
-          <button type="button">8. Confirm submitted</button>
+          <button type="button" data-checkpoint-id="capture-task">1. Capture task</button>
+          <button type="button" data-checkpoint-id="command-words">2. Highlight command words</button>
+          <button type="button" data-checkpoint-id="quote-geodes">3. Build quote geodes</button>
+          <button type="button" data-checkpoint-id="plan-created">4. Create plan</button>
+          <button type="button" data-checkpoint-id="paragraph-drafted">5. Draft paragraph</button>
+          <button type="button" data-checkpoint-id="citation-notes">6. Add citation notes</button>
+          <button type="button" data-checkpoint-id="flow-diary">7. Flow Diary</button>
+          <button type="button" data-checkpoint-id="submitted">8. Confirm submitted</button>
         </div>
-        <p class="screen-note">This is the local cave screen shell. Next fixes can connect these buttons to the existing TMA builder flow.</p>
+        <p class="screen-note" data-quest-announcement>Click a checkpoint to test XP, gold, progress, and reward blocking.</p>
+      </section>
+
+      <section class="combat-panel reward-panel">
+        <h2>Blocked rewards</h2>
+        <p>Try claiming a reward before its linked checkpoint is done. It should stay blocked.</p>
+        <div class="reward-grid" data-reward-grid></div>
+      </section>
+
+      <section class="combat-panel history-panel">
+        <h2>Recent quest history</h2>
+        <ul data-history-list></ul>
       </section>
     </main>
+
+    <script src="game-state.js?v=1"></script>
+    <script src="quest-ui.js?v=1"></script>
+    <script>EsslayQuestUI.init({ questId: "demo-tma-battle" });</script>
   </body>
 </html>
