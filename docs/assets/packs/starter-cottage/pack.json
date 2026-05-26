@@ -1,0 +1,44 @@
+{
+  "id": "starter-cottage",
+  "name": "Starter Cottage Pack",
+  "description": "Built-in Esslay starter furniture and room items made for this app.",
+  "creator": "Esslay app",
+  "license": "Original app asset",
+  "source": "Built into izdrewz/esslay",
+  "creditRequired": false,
+  "items": [
+    {
+      "id": "starter-writing-desk",
+      "name": "Writing desk",
+      "type": "furniture",
+      "category": "study",
+      "file": "assets/packs/starter-cottage/furniture/writing-desk.svg?v=1",
+      "cost": 25,
+      "unlockMethod": "gold",
+      "starterUnlocked": false,
+      "place": { "x": 8, "y": 58, "w": 18 }
+    },
+    {
+      "id": "starter-geode-shelf",
+      "name": "Geode shelf",
+      "type": "furniture",
+      "category": "loot-display",
+      "file": "assets/packs/starter-cottage/furniture/geode-shelf.svg?v=1",
+      "cost": 40,
+      "unlockMethod": "gold",
+      "starterUnlocked": false,
+      "place": { "x": 29, "y": 20, "w": 18 }
+    },
+    {
+      "id": "starter-potted-ivy",
+      "name": "Potted ivy",
+      "type": "furniture",
+      "category": "decor",
+      "file": "assets/packs/starter-cottage/furniture/potted-ivy.svg?v=1",
+      "cost": 10,
+      "unlockMethod": "gold",
+      "starterUnlocked": true,
+      "place": { "x": 72, "y": 58, "w": 13 }
+    }
+  ]
+}
