@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Esslay Edit Room</title>
+    <link rel="stylesheet" href="edit-room.css?v=1">
+  </head>
+  <body>
+    <main class="edit-room-shell">
+      <header class="edit-room-header">
+        <div>
+          <p class="eyebrow">Esslay</p>
+          <h1>Edit Room</h1>
+          <p>A cosy scholar-planning room for the mood board, writing desk, sources, and fix-later scraps.</p>
+        </div>
+        <nav class="edit-room-nav" aria-label="Edit room navigation">
+          <a href="house.html">Home Base</a>
+          <a href="hub.html">Village</a>
+          <a href="cave.html">Study Cave</a>
+        </nav>
+      </header>
+
+      <section class="edit-room-stage-shell" aria-label="Static edit room scene">
+        <div class="edit-room-stage">
+          <img class="edit-room-background" src="assets/rooms/edit-room/edit-room-placeholder.svg?v=1" alt="Cosy fantasy scholar edit room with mood board, desk, source shelf, and scrap chest">
+
+          <button class="edit-hotspot mood-board-hotspot" type="button" data-edit-hotspot="mood_board" aria-label="Open mood board placeholder">
+            <span>Mood Board</span>
+          </button>
+          <button class="edit-hotspot desk-hotspot" type="button" data-edit-hotspot="desk" aria-label="Open desk placeholder">
+            <span>Desk</span>
+          </button>
+          <a class="edit-hotspot door-hotspot" href="house.html" aria-label="Back to house">
+            <span>Back to House</span>
+          </a>
+          <button class="edit-hotspot source-hotspot" type="button" data-edit-hotspot="source_shelf" aria-label="Open sources placeholder">
+            <span>Sources</span>
+          </button>
+          <button class="edit-hotspot chest-hotspot" type="button" data-edit-hotspot="chest" aria-label="Open scraps placeholder">
+            <span>Scraps</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="edit-room-panel" aria-live="polite">
+        <div>
+          <p class="eyebrow">Placeholder response</p>
+          <h2 id="edit-room-message-title">Mood board ready</h2>
+          <p id="edit-room-message">Version 0.1 uses fixed hotspots only. Full board editing, source extraction, drag-and-drop, and AI writing tools are future work.</p>
+        </div>
+      </section>
+
+      <section class="edit-room-panel notes-panel" aria-labelledby="future-board-title">
+        <div>
+          <p class="eyebrow">Future mood board</p>
+          <h2 id="future-board-title">What this room will hold later</h2>
+          <p>Inspiration images, colour swatches, pattern swatches, wallpaper ideas, carpet ideas, furniture references, outfit references, command words, essay keywords, quote scraps, mind-map fragments, fix-later notes, missed-loot notes, and cave quest reminders.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="edit-room.js?v=1"></script>
+  </body>
+</html>

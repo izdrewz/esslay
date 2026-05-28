@@ -1,0 +1,6 @@
+.edit-room-hotspot { right: 15%; top: 36%; text-decoration: none; }
+.cave-hotspot { left: 7%; top: 76%; text-decoration: none; }
+@media (max-width: 760px) {
+  .edit-room-hotspot { right: 8%; top: 36%; }
+  .cave-hotspot { left: 7%; top: 78%; }
+}

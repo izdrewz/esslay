@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Home Base</title>
-    <link rel="stylesheet" href="house.css?v=5">
+    <link rel="stylesheet" href="house.css?v=6">
+    <link rel="stylesheet" href="house-links.css?v=1">
   </head>
   <body>
     <main class="house-shell">
@@ -16,6 +17,8 @@
         </div>
         <nav class="house-nav" aria-label="House navigation">
           <a href="hub.html">Village</a>
+          <a href="edit-room.html">Edit Room</a>
+          <a href="cave.html">Study Cave</a>
           <a href="index.html">Idle</a>
           <a href="credits.html">Asset credits</a>
         </nav>
@@ -30,19 +33,25 @@
           <button class="room-hotspot mirror-hotspot" id="open-mirror" type="button" aria-label="Open mirror to change outfit and appearance">
             Mirror
           </button>
-          <button class="room-hotspot desk-hotspot" type="button" aria-label="Open home shop and asset library">
-            Shop
+          <button class="room-hotspot desk-hotspot" type="button" aria-label="Open wardrobe, home items, and asset library">
+            Wardrobe
           </button>
           <button class="room-hotspot shelf-hotspot" type="button" aria-label="Geode display area">
             Shelf
           </button>
+          <a class="room-hotspot edit-room-hotspot" href="edit-room.html" aria-label="Open edit room and mood board">
+            Edit Room
+          </a>
+          <a class="room-hotspot cave-hotspot" href="cave.html" aria-label="Open study cave and academic quest area">
+            Study Cave
+          </a>
         </div>
       </section>
 
       <section class="house-status">
         <div>
           <h2 id="room-level-title">Level 1: Starter cottage room</h2>
-          <p id="room-level-note">Starter room with fixed background art, avatar layers, and locked placeable items.</p>
+          <p id="room-level-note">Starter room with fixed background art, avatar layers, locked placeable items, and links to the edit room and cave.</p>
         </div>
         <div class="layer-note">
           <strong>Wallet</strong>
