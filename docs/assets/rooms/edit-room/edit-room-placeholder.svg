@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Edit room placeholder</title>
+  <desc id="desc">Cosy fantasy scholar planning room placeholder with mood board, desk, source shelf, and scrap chest.</desc>
+  <defs>
+    <linearGradient id="wall" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#d7b78d"/>
+      <stop offset="1" stop-color="#a97955"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" x2="1">
+      <stop offset="0" stop-color="#5a3422"/>
+      <stop offset="1" stop-color="#8b5a35"/>
+    </linearGradient>
+    <pattern id="plaster" width="80" height="80" patternUnits="userSpaceOnUse">
+      <rect width="80" height="80" fill="rgba(255,255,255,0)"/>
+      <path d="M6 20 C30 5, 48 35, 76 16 M8 60 C34 44, 50 74, 78 55" fill="none" stroke="#8b6647" stroke-opacity=".18" stroke-width="4"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="#2b1d17"/>
+  <rect x="0" y="0" width="1600" height="620" fill="url(#wall)"/>
+  <rect x="0" y="0" width="1600" height="620" fill="url(#plaster)"/>
+  <path d="M0 620 L1600 590 L1600 900 L0 900 Z" fill="url(#floor)"/>
+  <path d="M0 620 L1600 590" stroke="#3f261a" stroke-width="12"/>
+
+  <rect x="20" y="130" width="220" height="560" rx="20" fill="#5f3b27" stroke="#2b1d17" stroke-width="12"/>
+  <rect x="58" y="180" width="144" height="460" rx="12" fill="#8d5c37" stroke="#2b1d17" stroke-width="8"/>
+  <circle cx="190" cy="410" r="12" fill="#d7aa56"/>
+  <text x="130" y="730" text-anchor="middle" font-family="Georgia, serif" font-size="38" fill="#fff4df">Door</text>
+
+  <rect x="500" y="70" width="660" height="380" rx="22" fill="#6d4a32" stroke="#2b1d17" stroke-width="14"/>
+  <rect x="535" y="105" width="590" height="310" rx="16" fill="#c99b68" stroke="#3e281b" stroke-width="8"/>
+  <g font-family="Georgia, serif" font-size="28" fill="#332116">
+    <rect x="580" y="140" width="150" height="88" rx="12" fill="#fff4df" stroke="#5f3b27" stroke-width="5"/>
+    <text x="655" y="192" text-anchor="middle">keywords</text>
+    <rect x="765" y="132" width="170" height="100" rx="12" fill="#e8b8c0" stroke="#5f3b27" stroke-width="5"/>
+    <text x="850" y="190" text-anchor="middle">swatches</text>
+    <rect x="960" y="154" width="120" height="140" rx="12" fill="#d9e0bc" stroke="#5f3b27" stroke-width="5"/>
+    <text x="1020" y="228" text-anchor="middle">map</text>
+    <rect x="620" y="270" width="230" height="95" rx="12" fill="#f3dfbd" stroke="#5f3b27" stroke-width="5"/>
+    <text x="735" y="326" text-anchor="middle">fix later</text>
+    <rect x="885" y="285" width="180" height="80" rx="12" fill="#fff4df" stroke="#5f3b27" stroke-width="5"/>
+    <text x="975" y="335" text-anchor="middle">quotes</text>
+  </g>
+  <text x="830" y="40" text-anchor="middle" font-family="Georgia, serif" font-size="42" fill="#332116">Mood Board</text>
+
+  <rect x="1185" y="150" width="165" height="390" rx="18" fill="#65422e" stroke="#2b1d17" stroke-width="10"/>
+  <rect x="1215" y="185" width="105" height="72" rx="8" fill="#fff4df" stroke="#2b1d17" stroke-width="5"/>
+  <rect x="1215" y="285" width="105" height="72" rx="8" fill="#d7b78d" stroke="#2b1d17" stroke-width="5"/>
+  <rect x="1215" y="385" width="105" height="72" rx="8" fill="#a7b57d" stroke="#2b1d17" stroke-width="5"/>
+  <text x="1268" y="590" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#fff4df">Sources</text>
+
+  <rect x="1010" y="560" width="470" height="170" rx="20" fill="#6b4028" stroke="#2b1d17" stroke-width="12"/>
+  <rect x="1085" y="520" width="280" height="70" rx="14" fill="#8d5c37" stroke="#2b1d17" stroke-width="8"/>
+  <rect x="1065" y="600" width="330" height="34" rx="8" fill="#fff4df" opacity=".75"/>
+  <rect x="1085" y="655" width="260" height="28" rx="8" fill="#d7aa56" opacity=".75"/>
+  <text x="1240" y="775" text-anchor="middle" font-family="Georgia, serif" font-size="42" fill="#fff4df">Desk</text>
+
+  <rect x="18" y="650" width="220" height="190" rx="22" fill="#6b4028" stroke="#2b1d17" stroke-width="12"/>
+  <path d="M25 705 C90 665, 165 665, 232 705" fill="none" stroke="#d7aa56" stroke-width="10"/>
+  <text x="128" y="790" text-anchor="middle" font-family="Georgia, serif" font-size="38" fill="#fff4df">Scraps</text>
+
+  <circle cx="1450" cy="110" r="40" fill="#f2c879" opacity=".7"/>
+  <circle cx="1450" cy="110" r="78" fill="#f2c879" opacity=".17"/>
+</svg>
