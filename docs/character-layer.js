@@ -1,6 +1,6 @@
 const CHARACTER_HOUSE_SAVE_KEY = "esslay-house-state-v4";
 const CHARACTER_FINAL_AVATAR_PATH = "assets/characters/academic-adventurer/final";
-const CHARACTER_AVATAR_VERSION = "v=2";
+const CHARACTER_AVATAR_VERSION = "v=3";
 
 const characterBuiltInOutfits = [
   {
@@ -88,3 +88,4 @@ renderCharacterLayers();
 window.addEventListener("storage", (event) => {
   if (event.key === CHARACTER_HOUSE_SAVE_KEY) renderCharacterLayers();
 });
+
