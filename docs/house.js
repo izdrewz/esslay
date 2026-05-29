@@ -1,33 +1,49 @@
 const HOUSE_SAVE_KEY = "esslay-house-state-v4";
 
+const finalAvatarPath = "assets/characters/academic-adventurer/final";
+
 const builtInOutfits = [
   {
     id: "base-neutral",
     type: "built-in",
     name: "Base model",
-    note: "Neutral avatar layer for customisation.",
-    src: "assets/avatar/paperdoll/base-neutral.svg?v=1"
+    note: "Approved neutral base avatar layer for customisation.",
+    src: `${finalAvatarPath}/avatar_base_neutral.png?v=1`
   },
   {
     id: "teal-adventurer",
     type: "built-in",
-    name: "Teal adventurer",
-    note: "Teal academic-adventurer outfit with satchel.",
-    src: "assets/avatar/paperdoll/teal-adventurer.svg?v=1"
+    name: "Default teal explorer",
+    note: "Approved default academic-adventurer outfit.",
+    src: `${finalAvatarPath}/avatar_default_teal_explorer.png?v=1`
+  },
+  {
+    id: "plaid-bodice-trousers",
+    type: "built-in",
+    name: "Plaid bodice trousers",
+    note: "Approved alternate outfit with trousers.",
+    src: `${finalAvatarPath}/avatar_alt_plaid_bodice_trousers.png?v=1`
+  },
+  {
+    id: "plaid-skirt-outfit",
+    type: "built-in",
+    name: "Plaid skirt outfit",
+    note: "Approved alternate skirt outfit.",
+    src: `${finalAvatarPath}/avatar_alt_plaid_skirt_outfit.png?v=1`
   },
   {
     id: "dark-adventurer",
     type: "built-in",
-    name: "Dark bodice adventurer",
-    note: "Dark bodice and boots outfit.",
-    src: "assets/avatar/paperdoll/dark-adventurer.svg?v=1"
+    name: "Revised dark scholar",
+    note: "Approved revised dark scholar outfit.",
+    src: `${finalAvatarPath}/avatar_alt_dark_scholar_revised.png?v=1`
   },
   {
     id: "babydoll-pink",
     type: "built-in",
-    name: "Pink babydoll dress",
-    note: "Pink dress outfit with satchel and boots.",
-    src: "assets/avatar/paperdoll/babydoll-pink.svg?v=1"
+    name: "Pink adventurer dress",
+    note: "Approved pink dress alternate outfit.",
+    src: `${finalAvatarPath}/avatar_alt_pink_adventurer_dress.png?v=1`
   }
 ];
 
@@ -184,7 +200,7 @@ function renderOutfitGrid() {
       <img src="${outfit.src}" alt="">
       <strong>${outfit.name}</strong>
       <span>${outfit.note}</span>
-      <small>${outfit.type === "imported" ? "Imported artwork" : "Built-in placeholder"}</small>
+      <small>${outfit.type === "imported" ? "Imported artwork" : "Approved avatar art"}</small>
     `;
     button.addEventListener("click", () => {
       houseState.outfit = outfit.id;
