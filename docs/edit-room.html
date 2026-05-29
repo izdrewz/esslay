@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Edit Room</title>
-    <link rel="stylesheet" href="edit-room.css?v=3">
+    <link rel="stylesheet" href="edit-room.css?v=6">
   </head>
-  <body>
+  <body data-room-id="edit-room">
     <main class="edit-room-shell">
       <header class="edit-room-header">
         <div>
@@ -24,6 +24,7 @@
       <section class="edit-room-stage-shell" aria-label="Static edit room scene">
         <div class="edit-room-stage">
           <img class="edit-room-background" src="assets/rooms/edit-room/edit-room-background.jpg?v=2" onerror="this.onerror=null; this.src='assets/rooms/edit-room/edit-room-placeholder.svg?v=2';" alt="Characterless cosy fantasy scholar edit room with interior design board, desk, source shelf, and scrap chest">
+          <img class="edit-room-avatar" data-character-layer data-room-id="edit-room" src="assets/characters/academic-adventurer/final/avatar_default_teal_explorer.png?v=1" alt="Current edit room outfit">
 
           <a class="edit-hotspot mood-board-hotspot" href="interior-design-board.html" data-edit-hotspot="interior_design_board" aria-label="Open interior design board placeholder">
             <span>Interior Design Board</span>
@@ -62,5 +63,6 @@
 
     <script src="edit-room.js?v=2"></script>
     <script src="edit-room-lighting.js?v=1"></script>
+    <script src="character-layer.js?v=2"></script>
   </body>
 </html>
