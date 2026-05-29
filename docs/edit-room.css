@@ -142,37 +142,6 @@ p { color: #6a5d50; }
   box-shadow: inset 0 0 0 6px rgba(255, 244, 223, .14), inset 0 -24px 0 rgba(0,0,0,.08);
 }
 
-.edit-room-stage[data-lighting-mode="morning"]::before {
-  opacity: .32;
-  background: linear-gradient(100deg, rgba(255, 245, 206, .08), rgba(255, 215, 150, .34) 62%, rgba(255, 246, 220, .22));
-}
-
-.edit-room-stage[data-lighting-mode="afternoon"]::before {
-  opacity: .42;
-  background: linear-gradient(110deg, rgba(255, 235, 175, .10), rgba(240, 190, 120, .34) 58%, rgba(130, 90, 45, .12));
-}
-
-.edit-room-stage[data-lighting-mode="evening"]::before {
-  opacity: .66;
-  background: radial-gradient(circle at 72% 58%, rgba(255, 183, 88, .50), transparent 26%), radial-gradient(circle at 78% 45%, rgba(255, 155, 70, .32), transparent 18%), linear-gradient(180deg, rgba(90, 45, 20, .10), rgba(40, 24, 18, .34));
-}
-
-.edit-room-stage[data-lighting-mode="night"]::before {
-  opacity: .78;
-  background: radial-gradient(circle at 72% 58%, rgba(255, 168, 82, .54), transparent 23%), radial-gradient(circle at 48% 34%, rgba(255, 215, 150, .18), transparent 22%), linear-gradient(180deg, rgba(10, 18, 38, .42), rgba(11, 13, 25, .62));
-}
-
-.edit-room-stage[data-lighting-mode="rainy"]::before {
-  opacity: .62;
-  background: radial-gradient(circle at 72% 58%, rgba(255, 170, 88, .36), transparent 23%), linear-gradient(100deg, rgba(34, 46, 55, .32), rgba(95, 104, 105, .24) 58%, rgba(255, 212, 145, .14));
-}
-
-.edit-room-stage[data-lighting-mode="evening"]::after,
-.edit-room-stage[data-lighting-mode="night"]::after,
-.edit-room-stage[data-lighting-mode="rainy"]::after {
-  box-shadow: inset 0 0 0 6px rgba(255, 244, 223, .10), inset 0 0 120px rgba(10, 8, 8, .36), inset 0 -34px 0 rgba(0,0,0,.16);
-}
-
 .edit-room-background {
   position: absolute;
   inset: 0;
@@ -180,6 +149,69 @@ p { color: #6a5d50; }
   height: 100%;
   object-fit: cover;
   z-index: 1;
+  transition: filter .2s ease;
+}
+
+.edit-room-stage[data-lighting-mode="morning"] .edit-room-background {
+  filter: brightness(1.04) saturate(1.04) contrast(.98);
+}
+
+.edit-room-stage[data-lighting-mode="afternoon"] .edit-room-background {
+  filter: brightness(1) saturate(1.12) contrast(1.02) sepia(.08);
+}
+
+.edit-room-stage[data-lighting-mode="evening"] .edit-room-background {
+  filter: brightness(.66) saturate(1.22) contrast(1.1) sepia(.2);
+}
+
+.edit-room-stage[data-lighting-mode="night"] .edit-room-background {
+  filter: brightness(.34) saturate(.9) contrast(1.18) sepia(.1) hue-rotate(8deg);
+}
+
+.edit-room-stage[data-lighting-mode="rainy"] .edit-room-background {
+  filter: brightness(.52) saturate(.78) contrast(1.08) sepia(.02) hue-rotate(178deg);
+}
+
+.edit-room-stage[data-lighting-mode="morning"]::before {
+  opacity: .38;
+  background: linear-gradient(100deg, rgba(255, 245, 206, .10), rgba(255, 215, 150, .38) 62%, rgba(255, 246, 220, .24));
+}
+
+.edit-room-stage[data-lighting-mode="afternoon"]::before {
+  opacity: .48;
+  background: linear-gradient(110deg, rgba(255, 235, 175, .12), rgba(240, 190, 120, .38) 58%, rgba(130, 90, 45, .14));
+}
+
+.edit-room-stage[data-lighting-mode="evening"]::before {
+  opacity: .95;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle at 72% 58%, rgba(255, 185, 82, .72), transparent 27%), radial-gradient(circle at 79% 42%, rgba(255, 135, 50, .52), transparent 18%), radial-gradient(circle at 49% 38%, rgba(255, 190, 100, .22), transparent 19%), linear-gradient(180deg, rgba(95, 45, 18, .20), rgba(34, 18, 12, .52));
+}
+
+.edit-room-stage[data-lighting-mode="night"]::before {
+  opacity: 1;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle at 72% 58%, rgba(255, 170, 70, .78), transparent 24%), radial-gradient(circle at 80% 42%, rgba(255, 115, 42, .44), transparent 16%), radial-gradient(circle at 49% 36%, rgba(255, 220, 145, .24), transparent 18%), linear-gradient(180deg, rgba(8, 15, 38, .64), rgba(8, 9, 18, .86));
+}
+
+.edit-room-stage[data-lighting-mode="rainy"]::before {
+  opacity: .82;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle at 72% 58%, rgba(255, 160, 78, .54), transparent 23%), linear-gradient(100deg, rgba(25, 34, 46, .48), rgba(78, 92, 100, .34) 58%, rgba(255, 194, 126, .20));
+}
+
+.edit-room-stage[data-lighting-mode="evening"]::after {
+  box-shadow: inset 0 0 0 6px rgba(255, 244, 223, .08), inset 0 0 155px rgba(18, 10, 6, .52), inset 0 -42px 0 rgba(0,0,0,.20);
+}
+
+.edit-room-stage[data-lighting-mode="night"]::after {
+  background: linear-gradient(90deg, rgba(2, 5, 16, .62) 0%, rgba(2, 5, 16, .48) 24%, rgba(0, 0, 0, 0) 48%), linear-gradient(180deg, rgba(5, 8, 20, .34), rgba(4, 4, 10, .64));
+  box-shadow: inset 0 0 0 6px rgba(255, 244, 223, .07), inset 0 0 180px rgba(0, 0, 0, .72), inset 0 -52px 0 rgba(0,0,0,.28);
+}
+
+.edit-room-stage[data-lighting-mode="rainy"]::after {
+  background: linear-gradient(90deg, rgba(28, 38, 48, .46) 0%, rgba(30, 42, 52, .36) 28%, rgba(0, 0, 0, 0) 58%);
+  box-shadow: inset 0 0 0 6px rgba(255, 244, 223, .08), inset 0 0 150px rgba(8, 10, 16, .52), inset 0 -40px 0 rgba(0,0,0,.20);
 }
 
 .edit-hotspot {
