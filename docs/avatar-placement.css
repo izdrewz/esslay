@@ -13,7 +13,7 @@
   width: min(190px, 13vw);
   height: min(44px, 3.2vw);
   transform: translateX(-50%);
-  z-index: 3;
+  z-index: 13;
 }
 
 .edit-room-stage .avatar-floor-shadow {
@@ -22,7 +22,7 @@
   width: min(170px, 12vw);
   height: min(40px, 3vw);
   transform: translateX(-50%) rotate(-3deg);
-  z-index: 7;
+  z-index: 13;
 }
 
 .avatar-layer {
@@ -43,6 +43,20 @@
   filter: drop-shadow(14px 18px 14px rgba(0, 0, 0, .34)) !important;
 }
 
+.scene-warm-grade {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  background: rgba(225, 161, 89, .08);
+  mix-blend-mode: soft-light;
+}
+
+.room-hotspot,
+.edit-hotspot {
+  z-index: 20 !important;
+}
+
 .room-hotspot {
   display: inline-flex !important;
   align-items: center !important;
@@ -53,12 +67,7 @@
   padding: 8px 13px !important;
   white-space: nowrap !important;
   line-height: 1.1 !important;
-  z-index: 10 !important;
   transform: translate(-50%, -50%) !important;
-}
-
-.edit-hotspot {
-  z-index: 10 !important;
 }
 
 .room-hotspot:hover,
