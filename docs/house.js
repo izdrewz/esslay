@@ -1,6 +1,6 @@
 const HOUSE_SAVE_KEY = "esslay-house-state-v4";
-
 const finalAvatarPath = "assets/characters/academic-adventurer/final";
+const avatarVersion = "v=2";
 
 const builtInOutfits = [
   {
@@ -8,42 +8,42 @@ const builtInOutfits = [
     type: "built-in",
     name: "Base model",
     note: "Approved neutral base avatar layer for customisation.",
-    src: `${finalAvatarPath}/avatar_base_neutral.png?v=1`
+    src: `${finalAvatarPath}/avatar_base_neutral.png?${avatarVersion}`
   },
   {
     id: "teal-adventurer",
     type: "built-in",
     name: "Default teal explorer",
     note: "Approved default academic-adventurer outfit.",
-    src: `${finalAvatarPath}/avatar_default_teal_explorer.png?v=1`
+    src: `${finalAvatarPath}/avatar_default_teal_explorer.png?${avatarVersion}`
   },
   {
     id: "plaid-bodice-trousers",
     type: "built-in",
     name: "Plaid bodice trousers",
     note: "Approved alternate outfit with trousers.",
-    src: `${finalAvatarPath}/avatar_alt_plaid_bodice_trousers.png?v=1`
+    src: `${finalAvatarPath}/avatar_alt_plaid_bodice_trousers.png?${avatarVersion}`
   },
   {
     id: "plaid-skirt-outfit",
     type: "built-in",
     name: "Plaid skirt outfit",
     note: "Approved alternate skirt outfit.",
-    src: `${finalAvatarPath}/avatar_alt_plaid_skirt_outfit.png?v=1`
+    src: `${finalAvatarPath}/avatar_alt_plaid_skirt_outfit.png?${avatarVersion}`
   },
   {
     id: "dark-adventurer",
     type: "built-in",
     name: "Revised dark scholar",
     note: "Approved revised dark scholar outfit.",
-    src: `${finalAvatarPath}/avatar_alt_dark_scholar_revised.png?v=1`
+    src: `${finalAvatarPath}/avatar_alt_dark_scholar_revised.png?${avatarVersion}`
   },
   {
     id: "babydoll-pink",
     type: "built-in",
     name: "Pink adventurer dress",
     note: "Approved pink dress alternate outfit.",
-    src: `${finalAvatarPath}/avatar_alt_pink_adventurer_dress.png?v=1`
+    src: `${finalAvatarPath}/avatar_alt_pink_adventurer_dress.png?${avatarVersion}`
   }
 ];
 
@@ -148,17 +148,15 @@ function saveHouseState(state) {
 let houseState = loadHouseState();
 
 function allOutfits() {
-  return [
-    ...builtInOutfits,
-    ...houseState.importedOutfits.map((outfit) => ({ ...outfit, type: "imported" }))
-  ];
+  return builtInOutfits.concat(
+    (houseState.importedOutfits || []).map((outfit) => ({ ...outfit, type: "imported" }))
+  );
 }
 
 function allItems() {
-  return [
-    ...builtInHomeItems,
-    ...houseState.importedItems.map((item) => ({ ...item, type: "imported" }))
-  ];
+  return builtInHomeItems.concat(
+    (houseState.importedItems || []).map((item) => ({ ...item, type: "imported" }))
+  );
 }
 
 function currentOutfit() {
@@ -179,8 +177,10 @@ function setStatus(message) {
 
 function applyOutfit() {
   const outfit = currentOutfit();
-  avatarLayer.src = outfit.src;
-  avatarLayer.alt = outfit.name;
+  if (avatarLayer) {
+    avatarLayer.src = outfit.src;
+    avatarLayer.alt = outfit.name;
+  }
 
   document.querySelectorAll(".outfit-card").forEach((button) => {
     button.setAttribute("aria-pressed", button.dataset.outfit === outfit.id ? "true" : "false");
@@ -188,6 +188,7 @@ function applyOutfit() {
 }
 
 function renderOutfitGrid() {
+  if (!outfitGrid) return;
   outfitGrid.innerHTML = "";
 
   allOutfits().forEach((outfit) => {
@@ -199,7 +200,7 @@ function renderOutfitGrid() {
     button.innerHTML = `
       <img src="${outfit.src}" alt="">
       <strong>${outfit.name}</strong>
-      <span>${outfit.note}</span>
+      <span>${outfit.note || "Imported paper-doll artwork."}</span>
       <small>${outfit.type === "imported" ? "Imported artwork" : "Approved avatar art"}</small>
     `;
     button.addEventListener("click", () => {
@@ -293,6 +294,7 @@ function handleAssetAction(item) {
 }
 
 function setMirrorOpen(open) {
+  if (!mirrorPanel) return;
   mirrorPanel.classList.toggle("open", open);
   mirrorPanel.setAttribute("aria-hidden", open ? "false" : "true");
 }
@@ -407,11 +409,13 @@ function renderAll() {
   renderAssetGrid();
 }
 
-openMirror.addEventListener("click", () => setMirrorOpen(true));
-closeMirror.addEventListener("click", () => setMirrorOpen(false));
-mirrorPanel.addEventListener("click", (event) => {
-  if (event.target === mirrorPanel) setMirrorOpen(false);
-});
+if (openMirror) openMirror.addEventListener("click", () => setMirrorOpen(true));
+if (closeMirror) closeMirror.addEventListener("click", () => setMirrorOpen(false));
+if (mirrorPanel) {
+  mirrorPanel.addEventListener("click", (event) => {
+    if (event.target === mirrorPanel) setMirrorOpen(false);
+  });
+}
 
 if (shopButton) {
   shopButton.addEventListener("click", () => {
@@ -419,13 +423,8 @@ if (shopButton) {
   });
 }
 
-if (importAvatarForm) {
-  importAvatarForm.addEventListener("submit", importAvatar);
-}
-
-if (importItemForm) {
-  importItemForm.addEventListener("submit", importHomeItem);
-}
+if (importAvatarForm) importAvatarForm.addEventListener("submit", importAvatar);
+if (importItemForm) importItemForm.addEventListener("submit", importHomeItem);
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") setMirrorOpen(false);
