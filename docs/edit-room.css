@@ -120,36 +120,36 @@ p { color: #6a5d50; }
   z-index: 9;
   display: grid;
   place-items: center;
-  border: 3px solid rgba(77, 48, 34, .92);
+  border: 0;
   border-radius: 14px;
-  background: rgba(255, 244, 223, .18);
+  background: transparent;
   color: var(--ink);
   text-decoration: none;
   cursor: pointer;
-  transition: transform .16s ease, background .16s ease;
+  transition: transform .16s ease, background .16s ease, outline .16s ease;
 }
 
 .edit-hotspot span {
-  border: 3px solid var(--border);
+  border: 2px solid rgba(77, 48, 34, .82);
   border-radius: 999px;
-  padding: 7px 10px;
-  background: rgba(255, 250, 240, .92);
+  padding: 6px 10px;
+  background: rgba(255, 250, 220, .82);
   font-weight: 900;
-  box-shadow: inset 0 -3px 0 rgba(0,0,0,.12);
+  box-shadow: 0 2px 4px rgba(0,0,0,.18);
 }
 
 .edit-hotspot:hover,
 .edit-hotspot:focus-visible {
   transform: translateY(-2px);
-  background: rgba(255, 244, 223, .35);
-  outline: 4px solid rgba(214, 163, 84, .55);
+  background: rgba(255, 244, 223, .08);
+  outline: 3px solid rgba(214, 163, 84, .34);
 }
 
-.door-hotspot { left: 0%; top: 15%; width: 16%; height: 62%; }
-.mood-board-hotspot { left: 31%; top: 7%; width: 41%; height: 43%; }
-.desk-hotspot { left: 59%; top: 54%; width: 34%; height: 39%; }
-.source-hotspot { left: 72%; top: 17%; width: 11%; height: 42%; }
-.chest-hotspot { left: 0%; top: 72%; width: 14%; height: 26%; }
+.door-hotspot { left: 2%; top: 22%; width: 16%; height: 45%; }
+.mood-board-hotspot { left: 28%; top: 10%; width: 38%; height: 41%; }
+.desk-hotspot { left: 65%; top: 46%; width: 24%; height: 35%; }
+.source-hotspot { left: 84%; top: 12%; width: 14%; height: 44%; }
+.chest-hotspot { left: 3%; top: 66%; width: 17%; height: 23%; }
 
 .notes-panel {
   background: linear-gradient(180deg, #fff8ec, #f3dfbd);
