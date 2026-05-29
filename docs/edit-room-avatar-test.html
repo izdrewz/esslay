@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Esslay Avatar Edit Room Test</title>
+    <link rel="stylesheet" href="edit-room.css?v=5">
+  </head>
+  <body>
+    <main class="edit-room-shell">
+      <header class="edit-room-header">
+        <div>
+          <p class="eyebrow">Esslay</p>
+          <h1>Avatar Placement Test</h1>
+          <p>Separate avatar layer over the edit room, using the same selected outfit as the house mirror.</p>
+        </div>
+        <nav class="edit-room-nav" aria-label="Avatar test navigation">
+          <a href="house.html">Change outfit</a>
+          <a href="edit-room-layered-test.html">Layered room test</a>
+          <a href="edit-room.html">Edit Room</a>
+        </nav>
+      </header>
+
+      <section class="edit-room-stage-shell" aria-label="Avatar placement test scene">
+        <div class="edit-room-stage layered-edit-room-stage">
+          <img class="edit-room-background" src="assets/rooms/edit-room/edit-room-empty-base.png?v=1" alt="Empty edit room base architecture">
+          <img class="edit-room-layer layer-board-frame" src="assets/rooms/edit-room/furniture-layers/interior_design_board_frame.png?v=1" alt="">
+          <img class="edit-room-layer layer-board-contents" src="assets/rooms/edit-room/furniture-layers/interior_design_board_contents.png?v=1" alt="">
+          <img class="edit-room-layer layer-rug" src="assets/rooms/edit-room/furniture-layers/rug_main.png?v=1" alt="">
+          <img class="edit-room-layer layer-desk" src="assets/rooms/edit-room/furniture-layers/desk.png?v=1" alt="">
+          <img class="edit-room-layer layer-desk-books" src="assets/rooms/edit-room/furniture-layers/desk_books_and_tools.png?v=1" alt="">
+          <img class="edit-room-layer layer-chair" src="assets/rooms/edit-room/furniture-layers/desk_chair.png?v=1" alt="">
+          <img class="edit-room-avatar" data-character-layer src="assets/avatar/paperdoll/teal-adventurer.svg?v=1" alt="Selected avatar outfit">
+        </div>
+      </section>
+
+      <section class="edit-room-panel">
+        <div>
+          <p class="eyebrow">Avatar layer</p>
+          <h2>Uses the house mirror outfit</h2>
+          <p>Change the outfit in Home Base, then return here. This test page should load the saved outfit from localStorage.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="character-layer.js?v=1"></script>
+  </body>
+</html>
