@@ -142,33 +142,47 @@ p { color: #6a5d50; }
   box-shadow: inset 0 0 0 6px rgba(255, 244, 223, .14), inset 0 -24px 0 rgba(0,0,0,.08);
 }
 
-.edit-room-background {
+.edit-room-background,
+.edit-room-layer {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: 1;
   transition: filter .2s ease;
 }
 
-.edit-room-stage[data-lighting-mode="morning"] .edit-room-background {
+.edit-room-background { z-index: 1; }
+.edit-room-layer { pointer-events: none; }
+.layer-board-frame { z-index: 2; }
+.layer-board-contents { z-index: 3; }
+.layer-rug { z-index: 4; }
+.layer-desk { z-index: 5; }
+.layer-desk-books { z-index: 6; }
+.layer-chair { z-index: 7; }
+
+.edit-room-stage[data-lighting-mode="morning"] .edit-room-background,
+.edit-room-stage[data-lighting-mode="morning"] .edit-room-layer {
   filter: brightness(1.04) saturate(1.04) contrast(.98);
 }
 
-.edit-room-stage[data-lighting-mode="afternoon"] .edit-room-background {
+.edit-room-stage[data-lighting-mode="afternoon"] .edit-room-background,
+.edit-room-stage[data-lighting-mode="afternoon"] .edit-room-layer {
   filter: brightness(1) saturate(1.12) contrast(1.02) sepia(.08);
 }
 
-.edit-room-stage[data-lighting-mode="evening"] .edit-room-background {
+.edit-room-stage[data-lighting-mode="evening"] .edit-room-background,
+.edit-room-stage[data-lighting-mode="evening"] .edit-room-layer {
   filter: brightness(.66) saturate(1.22) contrast(1.1) sepia(.2);
 }
 
-.edit-room-stage[data-lighting-mode="night"] .edit-room-background {
+.edit-room-stage[data-lighting-mode="night"] .edit-room-background,
+.edit-room-stage[data-lighting-mode="night"] .edit-room-layer {
   filter: brightness(.34) saturate(.9) contrast(1.18) sepia(.1) hue-rotate(8deg);
 }
 
-.edit-room-stage[data-lighting-mode="rainy"] .edit-room-background {
+.edit-room-stage[data-lighting-mode="rainy"] .edit-room-background,
+.edit-room-stage[data-lighting-mode="rainy"] .edit-room-layer {
   filter: brightness(.52) saturate(.78) contrast(1.08) sepia(.02) hue-rotate(178deg);
 }
 
