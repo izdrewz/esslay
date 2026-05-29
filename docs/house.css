@@ -24,7 +24,7 @@ body {
 .house-header,
 .house-status,
 .asset-library {
-  width: min(1180px, 100%);
+  width: min(1360px, 100%);
   margin: 0 auto 14px;
   display: flex;
   justify-content: space-between;
@@ -98,7 +98,7 @@ p { color: #6a5d50; }
 }
 
 .room-shell {
-  width: min(1180px, 100%);
+  width: min(1360px, 100%);
   margin: 0 auto;
   border: 8px solid #2d2118;
   border-radius: 18px;
@@ -138,6 +138,7 @@ p { color: #6a5d50; }
 }
 
 .placed-items {
+  display: none;
   z-index: 2;
   pointer-events: none;
 }
@@ -151,10 +152,10 @@ p { color: #6a5d50; }
 
 .avatar-layer {
   position: absolute;
-  left: 62%;
-  bottom: 0;
-  width: min(220px, 18vw);
-  max-height: 78%;
+  left: 49.5%;
+  bottom: 1.5%;
+  width: min(175px, 12vw);
+  max-height: 54%;
   transform: translateX(-50%);
   z-index: 4;
   filter: drop-shadow(0 18px 12px rgba(0,0,0,.24));
@@ -169,11 +170,11 @@ p { color: #6a5d50; }
   font-size: .86rem;
 }
 
-.mirror-hotspot { left: 30%; top: 28%; }
-.desk-hotspot { left: 12%; top: 64%; }
-.shelf-hotspot { left: 33%; top: 30%; }
-.edit-room-hotspot { left: 78%; top: 45%; }
-.cave-hotspot { left: 8%; top: 86%; }
+.mirror-hotspot { left: 64%; top: 43%; }
+.desk-hotspot { left: 87%; top: 62%; }
+.shelf-hotspot { left: 9%; top: 28%; }
+.edit-room-hotspot { left: 45%; top: 35%; }
+.cave-hotspot { left: 43%; top: 48%; }
 
 .room-hotspot:hover,
 .outfit-card:hover,
@@ -415,16 +416,16 @@ p { color: #6a5d50; }
   }
 
   .avatar-layer {
-    left: 57%;
-    width: 210px;
-    bottom: 0;
+    left: 50%;
+    width: 175px;
+    bottom: 1%;
   }
 
-  .mirror-hotspot { left: 20%; top: 25%; }
-  .desk-hotspot { left: 7%; top: 62%; }
-  .shelf-hotspot { left: 28%; top: 28%; }
-  .edit-room-hotspot { left: 65%; top: 44%; }
-  .cave-hotspot { left: 7%; top: 84%; }
+  .mirror-hotspot { left: 60%; top: 40%; }
+  .desk-hotspot { left: 72%; top: 62%; }
+  .shelf-hotspot { left: 6%; top: 25%; }
+  .edit-room-hotspot { left: 42%; top: 32%; }
+  .cave-hotspot { left: 39%; top: 47%; }
 
   .import-avatar-form,
   .import-item-form {
