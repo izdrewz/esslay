@@ -34,6 +34,13 @@ const characterBuiltInOutfits = [
   }
 ];
 
+const characterRoomDefaults = {
+  "house": null,
+  "edit-room": "teal-adventurer",
+  "edit-room-layered-test": "teal-adventurer",
+  "edit-room-avatar-test": "teal-adventurer"
+};
+
 function readCharacterState() {
   try {
     return JSON.parse(localStorage.getItem(CHARACTER_HOUSE_SAVE_KEY)) || {};
@@ -42,18 +49,33 @@ function readCharacterState() {
   }
 }
 
-function currentCharacterOutfit() {
-  const state = readCharacterState();
+function allCharacterOutfits(state) {
   const importedOutfits = Array.isArray(state.importedOutfits) ? state.importedOutfits : [];
-  const allOutfits = characterBuiltInOutfits.concat(importedOutfits);
-  const selectedId = state.outfit || "teal-adventurer";
+  return characterBuiltInOutfits.concat(importedOutfits);
+}
+
+function roomOverrideId(state, roomId) {
+  const overrides = state.roomOutfitOverrides || {};
+  const override = overrides[roomId];
+
+  if (typeof override === "string") return override;
+  if (override && override.enabled !== false && override.outfitId) return override.outfitId;
+
+  return characterRoomDefaults[roomId] || null;
+}
+
+function currentCharacterOutfit(roomId) {
+  const state = readCharacterState();
+  const allOutfits = allCharacterOutfits(state);
+  const selectedId = roomOverrideId(state, roomId) || state.outfit || "teal-adventurer";
   return allOutfits.find((outfit) => outfit.id === selectedId) || characterBuiltInOutfits[1];
 }
 
 function renderCharacterLayers() {
-  const outfit = currentCharacterOutfit();
-
   document.querySelectorAll("[data-character-layer]").forEach((image) => {
+    const roomId = image.dataset.roomId || document.body.dataset.roomId || "house";
+    const outfit = currentCharacterOutfit(roomId);
+
     image.src = outfit.src;
     image.alt = outfit.name || "Current character outfit";
     image.dataset.outfit = outfit.id || "selected-outfit";
