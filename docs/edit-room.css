@@ -161,29 +161,46 @@ p { color: #6a5d50; }
 .layer-desk-books { z-index: 6; }
 .layer-chair { z-index: 7; }
 
+.edit-room-avatar {
+  position: absolute;
+  left: 27%;
+  bottom: 3%;
+  width: min(235px, 18vw);
+  max-height: 76%;
+  z-index: 8;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 18px 13px rgba(0,0,0,.28));
+  pointer-events: none;
+}
+
 .edit-room-stage[data-lighting-mode="morning"] .edit-room-background,
-.edit-room-stage[data-lighting-mode="morning"] .edit-room-layer {
-  filter: brightness(1.04) saturate(1.04) contrast(.98);
+.edit-room-stage[data-lighting-mode="morning"] .edit-room-layer,
+.edit-room-stage[data-lighting-mode="morning"] .edit-room-avatar {
+  filter: brightness(1.04) saturate(1.04) contrast(.98) drop-shadow(0 18px 13px rgba(0,0,0,.28));
 }
 
 .edit-room-stage[data-lighting-mode="afternoon"] .edit-room-background,
-.edit-room-stage[data-lighting-mode="afternoon"] .edit-room-layer {
-  filter: brightness(1) saturate(1.12) contrast(1.02) sepia(.08);
+.edit-room-stage[data-lighting-mode="afternoon"] .edit-room-layer,
+.edit-room-stage[data-lighting-mode="afternoon"] .edit-room-avatar {
+  filter: brightness(1) saturate(1.12) contrast(1.02) sepia(.08) drop-shadow(0 18px 13px rgba(0,0,0,.28));
 }
 
 .edit-room-stage[data-lighting-mode="evening"] .edit-room-background,
-.edit-room-stage[data-lighting-mode="evening"] .edit-room-layer {
-  filter: brightness(.66) saturate(1.22) contrast(1.1) sepia(.2);
+.edit-room-stage[data-lighting-mode="evening"] .edit-room-layer,
+.edit-room-stage[data-lighting-mode="evening"] .edit-room-avatar {
+  filter: brightness(.66) saturate(1.22) contrast(1.1) sepia(.2) drop-shadow(0 18px 13px rgba(0,0,0,.34));
 }
 
 .edit-room-stage[data-lighting-mode="night"] .edit-room-background,
-.edit-room-stage[data-lighting-mode="night"] .edit-room-layer {
-  filter: brightness(.34) saturate(.9) contrast(1.18) sepia(.1) hue-rotate(8deg);
+.edit-room-stage[data-lighting-mode="night"] .edit-room-layer,
+.edit-room-stage[data-lighting-mode="night"] .edit-room-avatar {
+  filter: brightness(.34) saturate(.9) contrast(1.18) sepia(.1) hue-rotate(8deg) drop-shadow(0 18px 13px rgba(0,0,0,.38));
 }
 
 .edit-room-stage[data-lighting-mode="rainy"] .edit-room-background,
-.edit-room-stage[data-lighting-mode="rainy"] .edit-room-layer {
-  filter: brightness(.52) saturate(.78) contrast(1.08) sepia(.02) hue-rotate(178deg);
+.edit-room-stage[data-lighting-mode="rainy"] .edit-room-layer,
+.edit-room-stage[data-lighting-mode="rainy"] .edit-room-avatar {
+  filter: brightness(.52) saturate(.78) contrast(1.08) sepia(.02) hue-rotate(178deg) drop-shadow(0 18px 13px rgba(0,0,0,.34));
 }
 
 .edit-room-stage[data-lighting-mode="morning"]::before {
@@ -279,6 +296,12 @@ p { color: #6a5d50; }
   .edit-room-stage {
     min-height: 620px;
     aspect-ratio: 9 / 12;
+  }
+
+  .edit-room-avatar {
+    left: 32%;
+    bottom: 3%;
+    width: min(220px, 36vw);
   }
 
   .edit-hotspot span,
