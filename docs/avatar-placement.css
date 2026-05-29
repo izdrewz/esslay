@@ -2,7 +2,7 @@
   position: absolute;
   display: block;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, .42) 0%, rgba(0, 0, 0, .28) 38%, rgba(0, 0, 0, 0) 74%);
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, .4) 0%, rgba(0, 0, 0, .26) 38%, rgba(0, 0, 0, 0) 74%);
   filter: blur(2.5px);
   pointer-events: none;
 }
@@ -32,13 +32,13 @@
   max-height: 78% !important;
   z-index: 14 !important;
   filter:
-    brightness(.88)
-    contrast(.94)
-    saturate(.82)
-    sepia(.22)
-    hue-rotate(-7deg)
-    drop-shadow(18px 20px 16px rgba(0, 0, 0, .38))
-    drop-shadow(-8px -2px 10px rgba(218, 154, 86, .14)) !important;
+    brightness(.97)
+    contrast(.99)
+    saturate(1.04)
+    sepia(.06)
+    hue-rotate(-2deg)
+    drop-shadow(18px 20px 16px rgba(0, 0, 0, .36))
+    drop-shadow(-6px -2px 8px rgba(218, 154, 86, .1)) !important;
 }
 
 .edit-room-avatar {
@@ -48,13 +48,13 @@
   max-height: 82% !important;
   z-index: 14 !important;
   filter:
-    brightness(.9)
-    contrast(.94)
-    saturate(.84)
-    sepia(.2)
-    hue-rotate(-6deg)
-    drop-shadow(16px 19px 15px rgba(0, 0, 0, .36))
-    drop-shadow(-6px -2px 9px rgba(218, 154, 86, .12)) !important;
+    brightness(.97)
+    contrast(.99)
+    saturate(1.03)
+    sepia(.06)
+    hue-rotate(-2deg)
+    drop-shadow(16px 19px 15px rgba(0, 0, 0, .34))
+    drop-shadow(-5px -2px 8px rgba(218, 154, 86, .1)) !important;
 }
 
 .room-hotspot {
