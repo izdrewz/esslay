@@ -1,0 +1,45 @@
+{
+  "area": "Area 1 final avatar PNGs",
+  "canvas": {
+    "width": 1024,
+    "height": 1536
+  },
+  "transparent_alpha": true,
+  "files": [
+    {
+      "id": "base-neutral",
+      "file": "avatar_base_neutral.png",
+      "label": "Base model / wardrobe neutral"
+    },
+    {
+      "id": "default-teal-explorer",
+      "file": "avatar_default_teal_explorer.png",
+      "label": "Default teal explorer"
+    },
+    {
+      "id": "pink-adventurer-dress",
+      "file": "avatar_alt_pink_adventurer_dress.png",
+      "label": "Pink adventurer dress"
+    },
+    {
+      "id": "plaid-bodice-trousers",
+      "file": "avatar_alt_plaid_bodice_trousers.png",
+      "label": "Plaid bodice and trousers"
+    },
+    {
+      "id": "plaid-skirt-outfit",
+      "file": "avatar_alt_plaid_skirt_outfit.png",
+      "label": "Plaid skirt outfit"
+    },
+    {
+      "id": "dark-scholar-revised",
+      "file": "avatar_alt_dark_scholar_revised.png",
+      "label": "Dark scholar revised"
+    },
+    {
+      "id": "contact-sheet",
+      "file": "avatar_set_contact_sheet.png",
+      "label": "Preview contact sheet"
+    }
+  ]
+}

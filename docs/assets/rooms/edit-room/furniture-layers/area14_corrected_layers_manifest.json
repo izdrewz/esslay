@@ -1,0 +1,148 @@
+{
+  "pack": "area14_corrected_transparent_layers",
+  "canvas": {
+    "width": 1536,
+    "height": 864
+  },
+  "files": {
+    "interior_design_board_frame.png": {
+      "width": 1536,
+      "height": 864,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        392,
+        130,
+        900,
+        340
+      ],
+      "target_position": [
+        392,
+        130,
+        900,
+        340
+      ],
+      "source": "wooden_frame_with_metal_rivets.png"
+    },
+    "interior_design_board_contents.png": {
+      "width": 1536,
+      "height": 864,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        415,
+        145,
+        880,
+        325
+      ],
+      "target_position": [
+        415,
+        145,
+        880,
+        325
+      ],
+      "source": "vintage_design_inspiration_moodboard_collage.png"
+    },
+    "desk.png": {
+      "width": 1536,
+      "height": 864,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        930,
+        400,
+        1536,
+        710
+      ],
+      "target_position": [
+        930,
+        400,
+        1536,
+        710
+      ],
+      "source": "wooden_credenza_with_detailed_drawers.png"
+    },
+    "desk_chair.png": {
+      "width": 1536,
+      "height": 864,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        1008,
+        438,
+        1192,
+        725
+      ],
+      "target_position": [
+        1008,
+        438,
+        1192,
+        725
+      ],
+      "source": "wooden_chair_with_leather_cushion.png"
+    },
+    "rug_main.png": {
+      "width": 1536,
+      "height": 864,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        320,
+        590,
+        1320,
+        820
+      ],
+      "target_position": [
+        320,
+        590,
+        1320,
+        820
+      ],
+      "source": "intricate_persian_rug_on_transparent_background.png"
+    },
+    "desk_books_and_tools.png": {
+      "width": 1536,
+      "height": 864,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        1085,
+        415,
+        1510,
+        535
+      ],
+      "target_position": [
+        1085,
+        415,
+        1510,
+        535
+      ],
+      "source": "vintage_desk_tools_and_studies_setup.png"
+    }
+  },
+  "confirmation": {
+    "all_pngs_are_1536x864": true,
+    "all_pngs_are_rgba_with_real_alpha": true,
+    "no_checkerboard_pixels_intentionally_baked_in": true,
+    "no_room_background_in_asset_layers": true,
+    "no_jpegs": true
+  }
+}
