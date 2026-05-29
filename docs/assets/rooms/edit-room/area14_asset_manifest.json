@@ -1,0 +1,23 @@
+{
+  "area": "Area 14",
+  "pack": "edit room V0.1 first test asset pack",
+  "canvas": {
+    "width": 1536,
+    "height": 864
+  },
+  "base": "docs/assets/rooms/edit-room/edit-room-empty-base.png",
+  "furnitureLayers": [
+    "docs/assets/rooms/edit-room/furniture-layers/interior_design_board_frame.png",
+    "docs/assets/rooms/edit-room/furniture-layers/interior_design_board_contents.png",
+    "docs/assets/rooms/edit-room/furniture-layers/desk.png",
+    "docs/assets/rooms/edit-room/furniture-layers/desk_chair.png",
+    "docs/assets/rooms/edit-room/furniture-layers/rug_main.png",
+    "docs/assets/rooms/edit-room/furniture-layers/desk_books_and_tools.png"
+  ],
+  "previews": [
+    "docs/assets/rooms/edit-room/previews/area14_v01_preview_all_assets_on_base.png",
+    "docs/assets/rooms/edit-room/previews/area14_v01_contact_sheet_preview.png",
+    "docs/assets/rooms/edit-room/previews/area14_composite_check_on_empty_base.png"
+  ],
+  "note": "Full-canvas transparent PNGs aligned to the 1536x864 edit-room base. The uploaded base was resized to 1536x864 to match the Area 14 layer pack."
+}
