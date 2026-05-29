@@ -89,3 +89,4 @@ window.addEventListener("storage", (event) => {
   if (event.key === CHARACTER_HOUSE_SAVE_KEY) renderCharacterLayers();
 });
 
+

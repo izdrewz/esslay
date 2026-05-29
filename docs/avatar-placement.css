@@ -2,25 +2,25 @@
   position: absolute;
   display: block;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, .4) 0%, rgba(0, 0, 0, .26) 38%, rgba(0, 0, 0, 0) 74%);
-  filter: blur(2.5px);
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, .52) 0%, rgba(0, 0, 0, .34) 36%, rgba(0, 0, 0, 0) 76%);
+  filter: blur(3px);
   pointer-events: none;
 }
 
 .room-stage .avatar-floor-shadow {
   left: 50.5%;
-  bottom: 1.8%;
-  width: min(175px, 12vw);
-  height: min(40px, 3vw);
+  bottom: 1.5%;
+  width: min(190px, 13vw);
+  height: min(44px, 3.2vw);
   transform: translateX(-50%);
   z-index: 3;
 }
 
 .edit-room-stage .avatar-floor-shadow {
   left: 27%;
-  bottom: 3.1%;
-  width: min(155px, 11vw);
-  height: min(38px, 3vw);
+  bottom: 2.8%;
+  width: min(170px, 12vw);
+  height: min(40px, 3vw);
   transform: translateX(-50%) rotate(-3deg);
   z-index: 7;
 }
@@ -31,14 +31,7 @@
   width: min(350px, 25vw) !important;
   max-height: 78% !important;
   z-index: 14 !important;
-  filter:
-    brightness(.97)
-    contrast(.99)
-    saturate(1.04)
-    sepia(.06)
-    hue-rotate(-2deg)
-    drop-shadow(18px 20px 16px rgba(0, 0, 0, .36))
-    drop-shadow(-6px -2px 8px rgba(218, 154, 86, .1)) !important;
+  filter: drop-shadow(16px 20px 15px rgba(0, 0, 0, .36)) !important;
 }
 
 .edit-room-avatar {
@@ -47,14 +40,7 @@
   width: min(330px, 24vw) !important;
   max-height: 82% !important;
   z-index: 14 !important;
-  filter:
-    brightness(.97)
-    contrast(.99)
-    saturate(1.03)
-    sepia(.06)
-    hue-rotate(-2deg)
-    drop-shadow(16px 19px 15px rgba(0, 0, 0, .34))
-    drop-shadow(-5px -2px 8px rgba(218, 154, 86, .1)) !important;
+  filter: drop-shadow(14px 18px 14px rgba(0, 0, 0, .34)) !important;
 }
 
 .room-hotspot {
@@ -103,14 +89,14 @@
 
   .room-stage .avatar-floor-shadow {
     left: 50% !important;
-    width: 135px !important;
-    height: 32px !important;
+    width: 145px !important;
+    height: 34px !important;
   }
 
   .edit-room-stage .avatar-floor-shadow {
     left: 31% !important;
-    width: 125px !important;
-    height: 30px !important;
+    width: 135px !important;
+    height: 32px !important;
   }
 
   .cave-hotspot { left: 30% !important; top: 52% !important; }
