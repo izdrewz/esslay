@@ -89,7 +89,7 @@ p { color: #6a5d50; }
 .import-item-form button {
   border: 3px solid var(--border);
   border-radius: 999px;
-  padding: 10px 14px;
+  padding: 9px 13px;
   background: #fffaf0;
   color: var(--ink);
   font-weight: 800;
@@ -153,9 +153,9 @@ p { color: #6a5d50; }
 .avatar-layer {
   position: absolute;
   left: 49.5%;
-  bottom: 1.5%;
-  width: min(175px, 12vw);
-  max-height: 54%;
+  bottom: 1.2%;
+  width: min(255px, 18vw);
+  max-height: 68%;
   transform: translateX(-50%);
   z-index: 4;
   filter: drop-shadow(0 18px 12px rgba(0,0,0,.24));
@@ -164,19 +164,30 @@ p { color: #6a5d50; }
 .room-hotspot {
   position: absolute;
   z-index: 9;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: 190px;
   cursor: pointer;
   background: rgba(255, 250, 240, .88);
   border-radius: 12px;
   font-size: .86rem;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
 }
 
-.mirror-hotspot { left: 64%; top: 43%; }
-.desk-hotspot { left: 87%; top: 62%; }
-.shelf-hotspot { left: 9%; top: 28%; }
-.edit-room-hotspot { left: 45%; top: 35%; }
-.cave-hotspot { left: 43%; top: 48%; }
+.mirror-hotspot { left: 66%; top: 44%; }
+.desk-hotspot { left: 90%; top: 64%; }
+.shelf-hotspot { left: 12%; top: 28%; }
+.edit-room-hotspot { left: 50%; top: 47%; }
+.cave-hotspot { left: 48%; top: 52%; }
 
 .room-hotspot:hover,
+.room-hotspot:focus-visible {
+  transform: translate(-50%, calc(-50% - 2px));
+}
+
 .outfit-card:hover,
 .asset-card button:hover { transform: translateY(-2px); }
 
@@ -417,15 +428,15 @@ p { color: #6a5d50; }
 
   .avatar-layer {
     left: 50%;
-    width: 175px;
+    width: 215px;
     bottom: 1%;
   }
 
-  .mirror-hotspot { left: 60%; top: 40%; }
-  .desk-hotspot { left: 72%; top: 62%; }
-  .shelf-hotspot { left: 6%; top: 25%; }
-  .edit-room-hotspot { left: 42%; top: 32%; }
-  .cave-hotspot { left: 39%; top: 47%; }
+  .mirror-hotspot { left: 61%; top: 42%; }
+  .desk-hotspot { left: 74%; top: 63%; }
+  .shelf-hotspot { left: 12%; top: 27%; }
+  .edit-room-hotspot { left: 49%; top: 45%; }
+  .cave-hotspot { left: 47%; top: 51%; }
 
   .import-avatar-form,
   .import-item-form {
