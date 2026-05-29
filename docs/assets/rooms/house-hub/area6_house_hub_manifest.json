@@ -1,0 +1,21 @@
+{
+  "area": "Area 6 - main house hub / living room",
+  "canvas": "1536x864",
+  "files": [
+    {
+      "path": "docs/assets/rooms/house-hub/house-hub-furnished-default.png",
+      "use": "Version 0.1 visible Home Base background",
+      "character_baked_in": false
+    },
+    {
+      "path": "docs/assets/rooms/house-hub/house-hub-empty-base.png",
+      "use": "Future editable/customisable house base architecture",
+      "character_baked_in": false
+    }
+  ],
+  "notes": [
+    "Furnished image should replace the placeholder pixel-art Home Base background.",
+    "Empty base should be kept for future layered furniture/wall/floor customisation.",
+    "Avatar remains a separate transparent PNG layer above the room."
+  ]
+}
