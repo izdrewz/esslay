@@ -151,10 +151,10 @@ p { color: #6a5d50; }
 
 .avatar-layer {
   position: absolute;
-  left: 50%;
-  bottom: 2%;
-  width: min(310px, 28vw);
-  max-height: 92%;
+  left: 62%;
+  bottom: 0;
+  width: min(220px, 18vw);
+  max-height: 78%;
   transform: translateX(-50%);
   z-index: 4;
   filter: drop-shadow(0 18px 12px rgba(0,0,0,.24));
@@ -169,9 +169,11 @@ p { color: #6a5d50; }
   font-size: .86rem;
 }
 
-.mirror-hotspot { left: 46%; top: 27%; }
-.desk-hotspot { left: 14%; top: 58%; }
-.shelf-hotspot { left: 32%; top: 24%; }
+.mirror-hotspot { left: 30%; top: 28%; }
+.desk-hotspot { left: 12%; top: 64%; }
+.shelf-hotspot { left: 33%; top: 30%; }
+.edit-room-hotspot { left: 78%; top: 45%; }
+.cave-hotspot { left: 8%; top: 86%; }
 
 .room-hotspot:hover,
 .outfit-card:hover,
@@ -413,13 +415,16 @@ p { color: #6a5d50; }
   }
 
   .avatar-layer {
-    width: 260px;
-    bottom: 2%;
+    left: 57%;
+    width: 210px;
+    bottom: 0;
   }
 
-  .mirror-hotspot { left: 42%; top: 27%; }
-  .desk-hotspot { left: 9%; top: 60%; }
-  .shelf-hotspot { left: 26%; top: 24%; }
+  .mirror-hotspot { left: 20%; top: 25%; }
+  .desk-hotspot { left: 7%; top: 62%; }
+  .shelf-hotspot { left: 28%; top: 28%; }
+  .edit-room-hotspot { left: 65%; top: 44%; }
+  .cave-hotspot { left: 7%; top: 84%; }
 
   .import-avatar-form,
   .import-item-form {
