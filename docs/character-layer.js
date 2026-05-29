@@ -1,36 +1,37 @@
 const CHARACTER_HOUSE_SAVE_KEY = "esslay-house-state-v4";
 const CHARACTER_FINAL_AVATAR_PATH = "assets/characters/academic-adventurer/final";
+const CHARACTER_AVATAR_VERSION = "v=2";
 
 const characterBuiltInOutfits = [
   {
     id: "base-neutral",
     name: "Base model",
-    src: CHARACTER_FINAL_AVATAR_PATH + "/avatar_base_neutral.png?v=1"
+    src: CHARACTER_FINAL_AVATAR_PATH + "/avatar_base_neutral.png?" + CHARACTER_AVATAR_VERSION
   },
   {
     id: "teal-adventurer",
     name: "Default teal explorer",
-    src: CHARACTER_FINAL_AVATAR_PATH + "/avatar_default_teal_explorer.png?v=1"
+    src: CHARACTER_FINAL_AVATAR_PATH + "/avatar_default_teal_explorer.png?" + CHARACTER_AVATAR_VERSION
   },
   {
     id: "plaid-bodice-trousers",
     name: "Plaid bodice trousers",
-    src: CHARACTER_FINAL_AVATAR_PATH + "/avatar_alt_plaid_bodice_trousers.png?v=1"
+    src: CHARACTER_FINAL_AVATAR_PATH + "/avatar_alt_plaid_bodice_trousers.png?" + CHARACTER_AVATAR_VERSION
   },
   {
     id: "plaid-skirt-outfit",
     name: "Plaid skirt outfit",
-    src: CHARACTER_FINAL_AVATAR_PATH + "/avatar_alt_plaid_skirt_outfit.png?v=1"
+    src: CHARACTER_FINAL_AVATAR_PATH + "/avatar_alt_plaid_skirt_outfit.png?" + CHARACTER_AVATAR_VERSION
   },
   {
     id: "dark-adventurer",
     name: "Revised dark scholar",
-    src: CHARACTER_FINAL_AVATAR_PATH + "/avatar_alt_dark_scholar_revised.png?v=1"
+    src: CHARACTER_FINAL_AVATAR_PATH + "/avatar_alt_dark_scholar_revised.png?" + CHARACTER_AVATAR_VERSION
   },
   {
     id: "babydoll-pink",
     name: "Pink adventurer dress",
-    src: CHARACTER_FINAL_AVATAR_PATH + "/avatar_alt_pink_adventurer_dress.png?v=1"
+    src: CHARACTER_FINAL_AVATAR_PATH + "/avatar_alt_pink_adventurer_dress.png?" + CHARACTER_AVATAR_VERSION
   }
 ];
 
