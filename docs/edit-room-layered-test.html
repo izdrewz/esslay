@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Esslay Layered Edit Room Test</title>
+    <link rel="stylesheet" href="edit-room.css?v=4">
+  </head>
+  <body>
+    <main class="edit-room-shell">
+      <header class="edit-room-header">
+        <div>
+          <p class="eyebrow">Esslay</p>
+          <h1>Layered Edit Room Test</h1>
+          <p>Area 14 V0.1 test: empty base room plus aligned transparent furniture layers.</p>
+        </div>
+        <nav class="edit-room-nav" aria-label="Layered edit room navigation">
+          <a href="edit-room.html">Edit Room</a>
+          <a href="interior-design-board.html">Interior Design Board</a>
+          <a href="house.html">Home Base</a>
+        </nav>
+      </header>
+
+      <section class="edit-room-stage-shell" aria-label="Layered edit room scene">
+        <div class="edit-room-stage layered-edit-room-stage">
+          <img class="edit-room-background" src="assets/rooms/edit-room/edit-room-empty-base.png?v=1" alt="Empty edit room base architecture">
+          <img class="edit-room-layer layer-board-frame" src="assets/rooms/edit-room/furniture-layers/interior_design_board_frame.png?v=1" alt="">
+          <img class="edit-room-layer layer-board-contents" src="assets/rooms/edit-room/furniture-layers/interior_design_board_contents.png?v=1" alt="">
+          <img class="edit-room-layer layer-rug" src="assets/rooms/edit-room/furniture-layers/rug_main.png?v=1" alt="">
+          <img class="edit-room-layer layer-desk" src="assets/rooms/edit-room/furniture-layers/desk.png?v=1" alt="">
+          <img class="edit-room-layer layer-desk-books" src="assets/rooms/edit-room/furniture-layers/desk_books_and_tools.png?v=1" alt="">
+          <img class="edit-room-layer layer-chair" src="assets/rooms/edit-room/furniture-layers/desk_chair.png?v=1" alt="">
+
+          <a class="edit-hotspot mood-board-hotspot" href="interior-design-board.html" data-edit-hotspot="interior_design_board" aria-label="Open interior design board placeholder">
+            <span>Interior Design Board</span>
+          </a>
+          <button class="edit-hotspot desk-hotspot" type="button" data-edit-hotspot="desk" aria-label="Open desk placeholder">
+            <span>Desk</span>
+          </button>
+          <a class="edit-hotspot door-hotspot" href="house.html" aria-label="Back to house">
+            <span>Back to House</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="edit-room-panel" aria-live="polite">
+        <div>
+          <p class="eyebrow">Layer test</p>
+          <h2 id="edit-room-message-title">Area 14 layers loaded</h2>
+          <p id="edit-room-message">This page tests whether the empty base, board frame, board contents, rug, desk, desk tools, and chair align correctly before replacing the main edit room.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="edit-room.js?v=2"></script>
+    <script src="edit-room-lighting.js?v=1"></script>
+  </body>
+</html>
