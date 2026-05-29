@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Esslay Interior Design Board</title>
+    <link rel="stylesheet" href="interior-design-board.css?v=1">
+  </head>
+  <body>
+    <main class="design-shell">
+      <header class="design-header">
+        <div>
+          <p class="eyebrow">Esslay</p>
+          <h1>Interior Design Board</h1>
+          <p>Fixed-slot room customisation test area. Version 0.1 only proves the slot idea before full furniture editing exists.</p>
+        </div>
+        <nav class="design-nav" aria-label="Interior design navigation">
+          <a href="edit-room.html">Back to Edit Room</a>
+          <a href="house.html">Home Base</a>
+        </nav>
+      </header>
+
+      <section class="design-panel design-intro">
+        <p class="eyebrow">First test slot</p>
+        <h2>rug_main</h2>
+        <p>The first customisation proof is the main rug slot. It is fixed in place, layered over the room later, and saved locally as a selected style plus simple edits.</p>
+      </section>
+
+      <section class="slot-grid" aria-label="Interior design slot placeholders">
+        <article class="slot-card active-slot">
+          <p class="slot-status">Test first</p>
+          <h2>rug_main</h2>
+          <p>Main rug placed over the floor. This will test swapping, tinting, pattern choice, and local saving.</p>
+          <div class="rug-preview" aria-hidden="true"></div>
+          <button type="button" data-rug-style="default_rug">Default Rug</button>
+          <button type="button" data-rug-style="rose_rug">Rose Rug Test</button>
+          <button type="button" data-rug-style="forest_rug">Forest Rug Test</button>
+        </article>
+
+        <article class="slot-card">
+          <p class="slot-status">Placeholder</p>
+          <h2>wallpaper</h2>
+          <p>Future wall material or pattern layer.</p>
+        </article>
+
+        <article class="slot-card">
+          <p class="slot-status">Placeholder</p>
+          <h2>paint</h2>
+          <p>Future wall colour or finish overlay.</p>
+        </article>
+
+        <article class="slot-card">
+          <p class="slot-status">Placeholder</p>
+          <h2>panelling</h2>
+          <p>Future lower-wall trim or panel layer.</p>
+        </article>
+
+        <article class="slot-card">
+          <p class="slot-status">Placeholder</p>
+          <h2>floor_main</h2>
+          <p>Future flooring material layer.</p>
+        </article>
+
+        <article class="slot-card">
+          <p class="slot-status">Placeholder</p>
+          <h2>window_curtains</h2>
+          <p>Future curtain colour, material, and pattern layer.</p>
+        </article>
+
+        <article class="slot-card">
+          <p class="slot-status">Placeholder</p>
+          <h2>wall_board</h2>
+          <p>Future board frame and board placement layer.</p>
+        </article>
+
+        <article class="slot-card">
+          <p class="slot-status">Placeholder</p>
+          <h2>board_background</h2>
+          <p>Future board surface: cork, parchment, fabric, wood, or pattern.</p>
+        </article>
+      </section>
+
+      <section class="design-panel" aria-live="polite">
+        <p class="eyebrow">Saved local test</p>
+        <h2 id="saved-rug-title">No rug choice saved yet</h2>
+        <p id="saved-rug-message">Choose a test rug above. This only saves a placeholder value in localStorage.</p>
+      </section>
+    </main>
+
+    <script src="interior-design-board.js?v=1"></script>
+  </body>
+</html>

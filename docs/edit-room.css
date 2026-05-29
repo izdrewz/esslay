@@ -37,6 +37,10 @@ body {
   background: var(--paper);
 }
 
+.edit-room-header {
+  flex-wrap: wrap;
+}
+
 .edit-room-panel {
   display: block;
   margin-top: 14px;
@@ -62,13 +66,15 @@ h1 {
 
 p { color: #6a5d50; }
 
-.edit-room-nav {
+.edit-room-nav,
+.lighting-controls {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.edit-room-nav a {
+.edit-room-nav a,
+.lighting-controls button {
   border: 3px solid var(--border);
   border-radius: 999px;
   padding: 10px 14px;
@@ -77,6 +83,26 @@ p { color: #6a5d50; }
   font-weight: 800;
   text-decoration: none;
   box-shadow: inset 0 -3px 0 rgba(0,0,0,.12);
+}
+
+.lighting-controls {
+  width: 100%;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.lighting-controls-label {
+  font-weight: 900;
+  color: #8b5732;
+}
+
+.lighting-controls button {
+  cursor: pointer;
+}
+
+.lighting-controls button[aria-pressed="true"] {
+  background: #ead19f;
+  outline: 3px solid rgba(214, 163, 84, .45);
 }
 
 .edit-room-stage-shell {
@@ -97,12 +123,22 @@ p { color: #6a5d50; }
   background: #241914;
 }
 
+.edit-room-stage::before,
 .edit-room-stage::after {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 8;
   pointer-events: none;
+}
+
+.edit-room-stage::before {
+  z-index: 7;
+  mix-blend-mode: soft-light;
+  opacity: .35;
+}
+
+.edit-room-stage::after {
+  z-index: 8;
   box-shadow: inset 0 0 0 6px rgba(255, 244, 223, .14), inset 0 -24px 0 rgba(0,0,0,.08);
 }
 
@@ -113,6 +149,69 @@ p { color: #6a5d50; }
   height: 100%;
   object-fit: cover;
   z-index: 1;
+  transition: filter .2s ease;
+}
+
+.edit-room-stage[data-lighting-mode="morning"] .edit-room-background {
+  filter: brightness(1.04) saturate(1.04) contrast(.98);
+}
+
+.edit-room-stage[data-lighting-mode="afternoon"] .edit-room-background {
+  filter: brightness(1) saturate(1.12) contrast(1.02) sepia(.08);
+}
+
+.edit-room-stage[data-lighting-mode="evening"] .edit-room-background {
+  filter: brightness(.66) saturate(1.22) contrast(1.1) sepia(.2);
+}
+
+.edit-room-stage[data-lighting-mode="night"] .edit-room-background {
+  filter: brightness(.34) saturate(.9) contrast(1.18) sepia(.1) hue-rotate(8deg);
+}
+
+.edit-room-stage[data-lighting-mode="rainy"] .edit-room-background {
+  filter: brightness(.52) saturate(.78) contrast(1.08) sepia(.02) hue-rotate(178deg);
+}
+
+.edit-room-stage[data-lighting-mode="morning"]::before {
+  opacity: .38;
+  background: linear-gradient(100deg, rgba(255, 245, 206, .10), rgba(255, 215, 150, .38) 62%, rgba(255, 246, 220, .24));
+}
+
+.edit-room-stage[data-lighting-mode="afternoon"]::before {
+  opacity: .48;
+  background: linear-gradient(110deg, rgba(255, 235, 175, .12), rgba(240, 190, 120, .38) 58%, rgba(130, 90, 45, .14));
+}
+
+.edit-room-stage[data-lighting-mode="evening"]::before {
+  opacity: .95;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle at 72% 58%, rgba(255, 185, 82, .72), transparent 27%), radial-gradient(circle at 79% 42%, rgba(255, 135, 50, .52), transparent 18%), radial-gradient(circle at 49% 38%, rgba(255, 190, 100, .22), transparent 19%), linear-gradient(180deg, rgba(95, 45, 18, .20), rgba(34, 18, 12, .52));
+}
+
+.edit-room-stage[data-lighting-mode="night"]::before {
+  opacity: 1;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle at 72% 58%, rgba(255, 170, 70, .78), transparent 24%), radial-gradient(circle at 80% 42%, rgba(255, 115, 42, .44), transparent 16%), radial-gradient(circle at 49% 36%, rgba(255, 220, 145, .24), transparent 18%), linear-gradient(180deg, rgba(8, 15, 38, .64), rgba(8, 9, 18, .86));
+}
+
+.edit-room-stage[data-lighting-mode="rainy"]::before {
+  opacity: .82;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle at 72% 58%, rgba(255, 160, 78, .54), transparent 23%), linear-gradient(100deg, rgba(25, 34, 46, .48), rgba(78, 92, 100, .34) 58%, rgba(255, 194, 126, .20));
+}
+
+.edit-room-stage[data-lighting-mode="evening"]::after {
+  box-shadow: inset 0 0 0 6px rgba(255, 244, 223, .08), inset 0 0 155px rgba(18, 10, 6, .52), inset 0 -42px 0 rgba(0,0,0,.20);
+}
+
+.edit-room-stage[data-lighting-mode="night"]::after {
+  background: linear-gradient(90deg, rgba(2, 5, 16, .62) 0%, rgba(2, 5, 16, .48) 24%, rgba(0, 0, 0, 0) 48%), linear-gradient(180deg, rgba(5, 8, 20, .34), rgba(4, 4, 10, .64));
+  box-shadow: inset 0 0 0 6px rgba(255, 244, 223, .07), inset 0 0 180px rgba(0, 0, 0, .72), inset 0 -52px 0 rgba(0,0,0,.28);
+}
+
+.edit-room-stage[data-lighting-mode="rainy"]::after {
+  background: linear-gradient(90deg, rgba(28, 38, 48, .46) 0%, rgba(30, 42, 52, .36) 28%, rgba(0, 0, 0, 0) 58%);
+  box-shadow: inset 0 0 0 6px rgba(255, 244, 223, .08), inset 0 0 150px rgba(8, 10, 16, .52), inset 0 -40px 0 rgba(0,0,0,.20);
 }
 
 .edit-hotspot {
@@ -160,14 +259,16 @@ p { color: #6a5d50; }
 
   .edit-room-header { display: block; }
 
-  .edit-room-nav { margin-top: 12px; }
+  .edit-room-nav,
+  .lighting-controls { margin-top: 12px; }
 
   .edit-room-stage {
     min-height: 620px;
     aspect-ratio: 9 / 12;
   }
 
-  .edit-hotspot span {
+  .edit-hotspot span,
+  .lighting-controls button {
     font-size: .75rem;
     padding: 5px 7px;
   }

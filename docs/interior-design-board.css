@@ -1,0 +1,126 @@
+:root {
+  --ink: #211812;
+  --paper: #fff3d8;
+  --panel: #fff8ec;
+  --border: #4b3022;
+  --gold: #d6a354;
+  --rose: #b87782;
+  --green: #6f8154;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at 50% 0%, rgba(255, 220, 150, .25), transparent 38%), linear-gradient(180deg, #2b2018, #15100d);
+}
+
+.design-shell {
+  width: min(1180px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 18px 0 32px;
+}
+
+.design-header,
+.design-panel,
+.slot-card {
+  border: 5px solid var(--border);
+  border-radius: 22px;
+  background: var(--paper);
+  box-shadow: 0 16px 40px rgba(0,0,0,.24);
+}
+
+.design-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+.eyebrow,
+.slot-status {
+  margin: 0 0 6px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #8b5732;
+}
+
+h1,
+h2,
+p { margin-top: 0; }
+
+h1 {
+  margin-bottom: 8px;
+  font-size: clamp(2rem, 7vw, 4rem);
+  line-height: .95;
+}
+
+p { color: #675747; }
+
+.design-nav {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.design-nav a,
+.slot-card button {
+  border: 3px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: #fffaf0;
+  color: var(--ink);
+  font-weight: 900;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,.12);
+}
+
+.design-panel {
+  padding: 18px 22px;
+  margin-bottom: 16px;
+}
+
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.slot-card {
+  padding: 18px;
+}
+
+.active-slot {
+  background: linear-gradient(180deg, #fff6df, #efd3a6);
+}
+
+.rug-preview {
+  height: 90px;
+  border: 4px solid #5c3928;
+  border-radius: 18px;
+  margin: 14px 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.35), transparent 36%), repeating-linear-gradient(90deg, rgba(255,255,255,.20), rgba(255,255,255,.20) 8px, transparent 8px, transparent 18px), #9b6a5f;
+  box-shadow: inset 0 0 0 8px rgba(255, 230, 190, .45), inset 0 0 25px rgba(0,0,0,.18);
+}
+
+body[data-rug-style="default_rug"] .rug-preview { background-color: #9b6a5f; }
+body[data-rug-style="rose_rug"] .rug-preview { background-color: #b77786; }
+body[data-rug-style="forest_rug"] .rug-preview { background-color: #5f7a54; }
+
+.slot-card button {
+  display: inline-block;
+  margin: 4px 4px 0 0;
+}
+
+@media (max-width: 760px) {
+  .design-header { display: block; }
+  .design-nav { margin-top: 12px; }
+}

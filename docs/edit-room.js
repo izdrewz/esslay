@@ -1,12 +1,12 @@
 const editRoomHotspots = [
   {
-    id: "mood_board",
-    label: "Mood Board",
-    target: "mood-board-placeholder",
+    id: "interior_design_board",
+    label: "Interior Design Board",
+    target: "interior-design-board-placeholder",
     rect: { x: 0.31, y: 0.07, width: 0.41, height: 0.43 },
     unlocked: true,
     placeholder: true,
-    message: "Mood Board is a Version 0.1 placeholder. Later it will hold visual inspo, swatches, command words, keywords, quote scraps, mind-map fragments, missed loot, and cave reminders."
+    message: "Interior Design Board is a Version 0.1 placeholder. Later it will hold room ideas, furniture ideas, wallpaper, carpet, colour swatches, pattern swatches, wall decor, creative design notes, and planning scraps."
   },
   {
     id: "desk",
