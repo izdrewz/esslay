@@ -4,16 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Home Base</title>
-    <link rel="stylesheet" href="house.css?v=6">
+    <link rel="stylesheet" href="house.css?v=7">
     <link rel="stylesheet" href="house-links.css?v=1">
   </head>
-  <body>
+  <body data-room-id="house">
     <main class="house-shell">
       <header class="house-header">
         <div>
           <p class="eyebrow">Esslay</p>
           <h1>Home Base</h1>
-          <p>The room stays fixed. Avatar artwork and furniture are layered over it.</p>
+          <p>The house hub is fixed background art. Avatar artwork and future furniture layers sit above it.</p>
         </div>
         <nav class="house-nav" aria-label="House navigation">
           <a href="hub.html">Village</a>
@@ -24,11 +24,11 @@
         </nav>
       </header>
 
-      <section class="room-shell" aria-label="Inside the house">
+      <section class="room-shell" aria-label="Inside the house hub">
         <div class="room-stage" id="room-stage">
-          <img class="room-background" src="assets/rooms/level-1-room.svg?v=2" alt="Level 1 peasant cottage room">
+          <img class="room-background" src="assets/rooms/house-hub/house-hub-furnished-default.png?v=1" alt="Characterless cosy medieval cottage living room house hub with fireplace, sofa, staircase, stained glass window, and study cave doorway">
           <div class="placed-items" id="placed-items" aria-label="Placed home items"></div>
-          <img class="avatar-layer" id="avatar-layer" src="assets/avatar/paperdoll/teal-adventurer.svg?v=1" alt="Current outfit">
+          <img class="avatar-layer" id="avatar-layer" src="assets/characters/academic-adventurer/final/avatar_default_teal_explorer.png?v=1" alt="Current outfit">
 
           <button class="room-hotspot mirror-hotspot" id="open-mirror" type="button" aria-label="Open mirror to change outfit and appearance">
             Mirror
@@ -36,10 +36,10 @@
           <button class="room-hotspot desk-hotspot" type="button" aria-label="Open wardrobe, home items, and asset library">
             Wardrobe
           </button>
-          <button class="room-hotspot shelf-hotspot" type="button" aria-label="Geode display area">
+          <button class="room-hotspot shelf-hotspot" type="button" aria-label="Bookshelf and living room shelf area">
             Shelf
           </button>
-          <a class="room-hotspot edit-room-hotspot" href="edit-room.html" aria-label="Open edit room and mood board">
+          <a class="room-hotspot edit-room-hotspot" href="edit-room.html" aria-label="Open edit room and interior design board">
             Edit Room
           </a>
           <a class="room-hotspot cave-hotspot" href="cave.html" aria-label="Open study cave and academic quest area">
@@ -50,8 +50,8 @@
 
       <section class="house-status">
         <div>
-          <h2 id="room-level-title">Level 1: Starter cottage room</h2>
-          <p id="room-level-note">Starter room with fixed background art, avatar layers, locked placeable items, and links to the edit room and cave.</p>
+          <h2 id="room-level-title">House Hub: Living room</h2>
+          <p id="room-level-note">Main return room with fixed background art, separate avatar overlay, and links to the edit room, cave, wardrobe, and village.</p>
         </div>
         <div class="layer-note">
           <strong>Wallet</strong>
@@ -145,11 +145,11 @@
             <p class="import-status" id="import-status" aria-live="polite"></p>
           </section>
 
-          <div class="outfit-grid" id="outfit-grid"></div>
+          <div id="outfit-grid" class="outfit-grid"></div>
         </div>
       </aside>
     </main>
 
-    <script src="house.js?v=5"></script>
+    <script src="house.js?v=6"></script>
   </body>
 </html>
