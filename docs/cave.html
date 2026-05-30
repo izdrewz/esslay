@@ -6,6 +6,7 @@
     <title>Esslay Study Cave</title>
     <link rel="stylesheet" href="studyquest.css?v=3">
     <link rel="stylesheet" href="study-cave-opening.css?v=4">
+    <link rel="stylesheet" href="quest-board.css?v=1">
   </head>
   <body>
     <main class="studyquest-shell scene-first cave-opening-screen">
@@ -29,7 +30,7 @@
 
         <div class="scene-hotspots" aria-label="Clickable Study Cave objects">
           <button type="button" class="scene-hotspot cave-entrance-hotspot" data-open-work-drawer aria-label="Enter cave"><span>Enter cave</span></button>
-          <button type="button" class="scene-hotspot quest-board-hotspot" data-open-quest-bag aria-label="Open quest board"><span>Quest board</span></button>
+          <button type="button" class="scene-hotspot quest-board-hotspot" data-open-quest-board aria-label="Open quest board"><span>Quest board</span></button>
           <button type="button" class="scene-hotspot map-board-hotspot" data-open-map-board aria-label="Open map board"><span>Map board</span></button>
           <button type="button" class="scene-hotspot warning-hotspot" data-open-quest-bag aria-label="Open warning sign"><span>Warning sign</span></button>
           <button type="button" class="scene-hotspot loot-hotspot" data-open-quest-bag aria-label="Open loot and geodes"><span>Loot / geodes</span></button>
@@ -69,6 +70,16 @@
           </div>
         </details>
 
+        <details class="quest-board-panel" id="quest-board-panel">
+          <summary>Quest board</summary>
+          <div class="quest-board-mount" data-quest-board></div>
+        </details>
+
+        <details class="quest-placeholder-panel" id="quest-placeholder-panel">
+          <summary>Selected quest</summary>
+          <div class="quest-placeholder-content" data-quest-placeholder>Select a quest card from the board.</div>
+        </details>
+
         <details class="map-board-panel" id="map-board-panel">
           <summary>Map board: chamber status</summary>
           <div class="cave-map" data-room-map></div>
@@ -76,13 +87,14 @@
         </details>
 
         <details class="quest-bag" id="quest-bag">
-          <summary>Quest board: quests, flags, missed loot, evidence</summary>
+          <summary>Quest bag: flags, missed loot, evidence</summary>
           <div class="log-list" data-quest-log></div>
         </details>
       </section>
     </main>
 
     <script src="studyquest.js?v=1"></script>
+    <script src="quest-board.js?v=1"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const openPanel = (selector) => {
@@ -94,6 +106,9 @@
         };
         document.querySelectorAll("[data-open-work-drawer]").forEach((button) => {
           button.addEventListener("click", () => openPanel("#chamber-work"));
+        });
+        document.querySelectorAll("[data-open-quest-board]").forEach((button) => {
+          button.addEventListener("click", () => openPanel("#quest-board-panel"));
         });
         document.querySelectorAll("[data-open-quest-bag]").forEach((button) => {
           button.addEventListener("click", () => openPanel("#quest-bag"));
