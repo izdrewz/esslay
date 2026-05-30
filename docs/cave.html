@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Study Cave</title>
     <link rel="stylesheet" href="studyquest.css?v=3">
-    <link rel="stylesheet" href="study-cave-opening.css?v=4">
-    <link rel="stylesheet" href="quest-board.css?v=1">
+    <link rel="stylesheet" href="study-cave-opening.css?v=5">
+    <link rel="stylesheet" href="quest-board.css?v=2">
   </head>
   <body>
     <main class="studyquest-shell scene-first cave-opening-screen">
@@ -38,6 +38,7 @@
 
         <details class="work-drawer" id="chamber-work">
           <summary>Enter chamber</summary>
+          <button type="button" class="panel-close" data-close-panel aria-label="Close popup">×</button>
           <section class="active-encounter" aria-live="polite">
             <div class="encounter-icon" aria-hidden="true"></div>
             <div class="encounter-copy">
@@ -72,29 +73,52 @@
 
         <details class="quest-board-panel" id="quest-board-panel">
           <summary>Quest board</summary>
-          <div class="quest-board-mount" data-quest-board></div>
+          <button type="button" class="panel-close" data-close-panel aria-label="Close popup">×</button>
+          <div class="quest-board-mount" data-quest-board>
+            <section class="quest-board-ui">
+              <h2 class="quest-board-title">Quest Board</h2>
+              <div class="quest-board-tools">
+                <button type="button">Add editable quest card</button>
+              </div>
+              <section class="quest-board-section">
+                <h3>Due Soon</h3>
+                <div class="quest-card-grid">
+                  <article class="quest-board-card" data-category="upcoming">
+                    <div class="quest-card-kicker">Due Soon · example</div>
+                    <h4 class="quest-card-title">K102 TMA04</h4>
+                    <p class="quest-card-task">Discuss biopsychosocial challenges in adolescence.</p>
+                    <p class="quest-card-status"><strong>Status:</strong> Not started</p>
+                    <div class="quest-card-actions"><button type="button">Start task intake</button></div>
+                  </article>
+                </div>
+              </section>
+            </section>
+          </div>
         </details>
 
         <details class="quest-placeholder-panel" id="quest-placeholder-panel">
           <summary>Selected quest</summary>
+          <button type="button" class="panel-close" data-close-panel aria-label="Close popup">×</button>
           <div class="quest-placeholder-content" data-quest-placeholder>Select a quest card from the board.</div>
         </details>
 
         <details class="map-board-panel" id="map-board-panel">
           <summary>Map board: chamber status</summary>
+          <button type="button" class="panel-close" data-close-panel aria-label="Close popup">×</button>
           <div class="cave-map" data-room-map></div>
           <button class="secondary-button reset-route" type="button" data-reset-demo>Reset test quest</button>
         </details>
 
         <details class="quest-bag" id="quest-bag">
           <summary>Quest bag: flags, missed loot, evidence</summary>
+          <button type="button" class="panel-close" data-close-panel aria-label="Close popup">×</button>
           <div class="log-list" data-quest-log></div>
         </details>
       </section>
     </main>
 
     <script src="studyquest.js?v=1"></script>
-    <script src="quest-board.js?v=1"></script>
+    <script src="quest-board.js?v=2"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const openPanel = (selector) => {
@@ -115,6 +139,14 @@
         });
         document.querySelectorAll("[data-open-map-board]").forEach((button) => {
           button.addEventListener("click", () => openPanel("#map-board-panel"));
+        });
+        document.querySelectorAll("[data-close-panel]").forEach((button) => {
+          button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            const panel = button.closest("details");
+            if (panel) panel.open = false;
+          });
         });
       });
     </script>
