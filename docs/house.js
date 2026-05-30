@@ -1,6 +1,6 @@
 const HOUSE_SAVE_KEY = "esslay-house-state-v4";
 const finalAvatarPath = "assets/characters/academic-adventurer/final";
-const avatarVersion = "v=3";
+const avatarVersion = "v=4";
 
 const builtInOutfits = [
   {
@@ -433,5 +433,6 @@ document.addEventListener("keydown", (event) => {
 renderOutfitGrid();
 applyOutfit();
 renderAll();
+
 
 
