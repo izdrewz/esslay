@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Study Cave</title>
     <link rel="stylesheet" href="studyquest.css?v=3">
+    <link rel="stylesheet" href="study-cave-opening.css?v=1">
   </head>
   <body>
-    <main class="studyquest-shell scene-first">
+    <main class="studyquest-shell scene-first cave-opening-screen">
       <header class="studyquest-header compact-header">
         <div>
           <p class="eyebrow">Esslay Version 0.1</p>
           <h1>Study Cave</h1>
-          <p class="intro">A cave route for breaking academic work into small rooms. The game guides the work but does not auto-write assignments.</p>
+          <p class="intro">Click the cave, quest board, map board, warning sign, or loot area. Work opens only after entering a chamber.</p>
         </div>
         <nav class="top-nav" aria-label="Study Cave navigation">
           <a href="hub.html">Village</a>
@@ -20,7 +21,7 @@
         </nav>
       </header>
 
-      <section class="game-cave" aria-label="Study cave scene">
+      <section class="game-cave" aria-label="Study Cave opening scene">
         <div class="cave-art" aria-hidden="true">
           <div class="cave-moon"></div>
           <div class="cave-door"></div>
@@ -37,6 +38,14 @@
           <div><span class="label">Route</span><strong data-quest-progress>0%</strong></div>
         </section>
 
+        <div class="scene-hotspots" aria-label="Clickable Study Cave objects">
+          <button type="button" class="scene-hotspot cave-entrance-hotspot" data-open-work-drawer>Enter cave</button>
+          <button type="button" class="scene-hotspot quest-board-hotspot" data-open-quest-bag>Quest board</button>
+          <a class="scene-hotspot map-board-hotspot" href="#cave-route">Map board</a>
+          <button type="button" class="scene-hotspot warning-hotspot" data-open-quest-bag>Warning sign</button>
+          <button type="button" class="scene-hotspot loot-hotspot" data-open-quest-bag>Loot / geodes</button>
+        </div>
+
         <section class="active-encounter" aria-live="polite">
           <div class="encounter-icon" aria-hidden="true"></div>
           <div class="encounter-copy">
@@ -51,7 +60,7 @@
           </div>
         </section>
 
-        <details class="work-drawer">
+        <details class="work-drawer" id="chamber-work">
           <summary>Enter chamber</summary>
           <div class="room-workspace" data-room-workspace></div>
           <section class="flag-strip" aria-label="Flags and missed loot controls">
@@ -61,29 +70,52 @@
               <button type="submit">Save flag</button>
             </form>
             <form data-missed-loot-form class="mini-form">
-              <h3>Add missed loot</h3>
+              <h3>Mark missed loot</h3>
               <label>Deliberately left rough<input name="text" type="text" placeholder="e.g. sentence smoothing left for later"></label>
               <button type="submit">Save missed loot</button>
             </form>
           </section>
           <div class="room-actions">
-            <button type="button" data-complete-room>Complete room</button>
+            <button type="button" data-complete-room>Clear chamber</button>
             <button type="button" class="secondary-button" data-export-current>Export this room</button>
           </div>
         </details>
 
-        <nav class="route-stone-trail" aria-label="StudyQuest cave route">
+        <nav class="route-stone-trail" id="cave-route" aria-label="StudyQuest cave route">
+          <div class="route-heading">Map board: chamber status</div>
           <div class="cave-map" data-room-map></div>
           <button class="secondary-button reset-route" type="button" data-reset-demo>Reset test quest</button>
         </nav>
 
-        <details class="quest-bag">
-          <summary>Open quest bag</summary>
+        <details class="quest-bag" id="quest-bag">
+          <summary>Open quest bag: quests, flags, missed loot, evidence</summary>
           <div class="log-list" data-quest-log></div>
         </details>
       </section>
     </main>
 
     <script src="studyquest.js?v=1"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("[data-open-work-drawer]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const drawer = document.querySelector("#chamber-work");
+            if (drawer) {
+              drawer.open = true;
+              drawer.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          });
+        });
+        document.querySelectorAll("[data-open-quest-bag]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const bag = document.querySelector("#quest-bag");
+            if (bag) {
+              bag.open = true;
+              bag.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>
