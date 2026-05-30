@@ -13,7 +13,7 @@
         <div>
           <p class="eyebrow">Esslay Version 0.1</p>
           <h1>Study Cave</h1>
-          <p class="intro">Click the cave, quest board, map board, warning sign, or loot area. Work opens only after entering a chamber.</p>
+          <p class="intro">Click the cave entrance, quest board, map board, warning sign, or loot area.</p>
         </div>
         <nav class="top-nav" aria-label="Study Cave navigation">
           <a href="hub.html">Village</a>
@@ -22,46 +22,34 @@
       </header>
 
       <section class="game-cave" aria-label="Study Cave opening scene">
-        <div class="cave-art" aria-hidden="true">
-          <div class="cave-moon"></div>
-          <div class="cave-door"></div>
-          <div class="cave-ground"></div>
-          <div class="cave-light light-left"></div>
-          <div class="cave-light light-right"></div>
-          <div class="player-marker"></div>
-        </div>
-
         <section class="quest-hud" aria-label="Active quest summary">
           <div><span class="label">Quest</span><strong data-quest-title>The Study Skills Trial</strong></div>
-          <div><span class="label">Task</span><strong data-quest-task-type>essay</strong></div>
-          <div><span class="label">Target</span><strong><span data-quest-word-count>800</span> words</strong></div>
           <div><span class="label">Route</span><strong data-quest-progress>0%</strong></div>
         </section>
 
         <div class="scene-hotspots" aria-label="Clickable Study Cave objects">
-          <button type="button" class="scene-hotspot cave-entrance-hotspot" data-open-work-drawer>Enter cave</button>
-          <button type="button" class="scene-hotspot quest-board-hotspot" data-open-quest-bag>Quest board</button>
-          <a class="scene-hotspot map-board-hotspot" href="#cave-route">Map board</a>
-          <button type="button" class="scene-hotspot warning-hotspot" data-open-quest-bag>Warning sign</button>
-          <button type="button" class="scene-hotspot loot-hotspot" data-open-quest-bag>Loot / geodes</button>
+          <button type="button" class="scene-hotspot cave-entrance-hotspot" data-open-work-drawer aria-label="Enter cave"><span>Enter cave</span></button>
+          <button type="button" class="scene-hotspot quest-board-hotspot" data-open-quest-bag aria-label="Open quest board"><span>Quest board</span></button>
+          <button type="button" class="scene-hotspot map-board-hotspot" data-open-map-board aria-label="Open map board"><span>Map board</span></button>
+          <button type="button" class="scene-hotspot warning-hotspot" data-open-quest-bag aria-label="Open warning sign"><span>Warning sign</span></button>
+          <button type="button" class="scene-hotspot loot-hotspot" data-open-quest-bag aria-label="Open loot and geodes"><span>Loot / geodes</span></button>
         </div>
-
-        <section class="active-encounter" aria-live="polite">
-          <div class="encounter-icon" aria-hidden="true"></div>
-          <div class="encounter-copy">
-            <p class="eyebrow" data-room-stage>Room</p>
-            <h2 data-room-title>Task Intake Chamber</h2>
-            <span class="room-status" data-room-status>Not started</span>
-            <div class="blocker-card simple-blocker">
-              <strong data-blocker-name>Brief Fog</strong>
-              <p data-blocker-problem>The task is not captured clearly yet.</p>
-            </div>
-            <p class="room-purpose" data-room-purpose></p>
-          </div>
-        </section>
 
         <details class="work-drawer" id="chamber-work">
           <summary>Enter chamber</summary>
+          <section class="active-encounter" aria-live="polite">
+            <div class="encounter-icon" aria-hidden="true"></div>
+            <div class="encounter-copy">
+              <p class="eyebrow" data-room-stage>Room</p>
+              <h2 data-room-title>Task Intake Chamber</h2>
+              <span class="room-status" data-room-status>Not started</span>
+              <div class="blocker-card simple-blocker">
+                <strong data-blocker-name>Brief Fog</strong>
+                <p data-blocker-problem>The task is not captured clearly yet.</p>
+              </div>
+              <p class="room-purpose" data-room-purpose></p>
+            </div>
+          </section>
           <div class="room-workspace" data-room-workspace></div>
           <section class="flag-strip" aria-label="Flags and missed loot controls">
             <form data-flag-form class="mini-form">
@@ -81,14 +69,14 @@
           </div>
         </details>
 
-        <nav class="route-stone-trail" id="cave-route" aria-label="StudyQuest cave route">
-          <div class="route-heading">Map board: chamber status</div>
+        <details class="map-board-panel" id="map-board-panel">
+          <summary>Map board: chamber status</summary>
           <div class="cave-map" data-room-map></div>
           <button class="secondary-button reset-route" type="button" data-reset-demo>Reset test quest</button>
-        </nav>
+        </details>
 
         <details class="quest-bag" id="quest-bag">
-          <summary>Open quest bag: quests, flags, missed loot, evidence</summary>
+          <summary>Quest board: quests, flags, missed loot, evidence</summary>
           <div class="log-list" data-quest-log></div>
         </details>
       </section>
@@ -97,23 +85,21 @@
     <script src="studyquest.js?v=1"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        const openPanel = (selector) => {
+          const panel = document.querySelector(selector);
+          if (panel) {
+            panel.open = true;
+            panel.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        };
         document.querySelectorAll("[data-open-work-drawer]").forEach((button) => {
-          button.addEventListener("click", () => {
-            const drawer = document.querySelector("#chamber-work");
-            if (drawer) {
-              drawer.open = true;
-              drawer.scrollIntoView({ behavior: "smooth", block: "center" });
-            }
-          });
+          button.addEventListener("click", () => openPanel("#chamber-work"));
         });
         document.querySelectorAll("[data-open-quest-bag]").forEach((button) => {
-          button.addEventListener("click", () => {
-            const bag = document.querySelector("#quest-bag");
-            if (bag) {
-              bag.open = true;
-              bag.scrollIntoView({ behavior: "smooth", block: "center" });
-            }
-          });
+          button.addEventListener("click", () => openPanel("#quest-bag"));
+        });
+        document.querySelectorAll("[data-open-map-board]").forEach((button) => {
+          button.addEventListener("click", () => openPanel("#map-board-panel"));
         });
       });
     </script>
