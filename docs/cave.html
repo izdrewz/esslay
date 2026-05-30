@@ -4,75 +4,106 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Study Cave</title>
-    <link rel="stylesheet" href="cave.css?v=2">
+    <link rel="stylesheet" href="studyquest.css?v=1">
   </head>
-  <body data-quest-id="demo-tma-battle">
-    <main class="cave-shell">
-      <header class="cave-header">
+  <body>
+    <main class="studyquest-shell">
+      <header class="studyquest-header">
         <div>
-          <p class="eyebrow">Esslay</p>
+          <p class="eyebrow">Esslay Version 0.1</p>
           <h1>Study Cave</h1>
-          <p>TMA combat now uses the shared quest economy. Writing is not finished until submission is confirmed.</p>
+          <p class="intro">Reusable StudyQuest route for academic work. This prototype guides the work but does not auto-write assignments.</p>
         </div>
-        <nav class="cave-nav" aria-label="Study cave navigation">
+        <nav class="top-nav" aria-label="Study Cave navigation">
           <a href="hub.html">Village</a>
           <a href="house.html">Home Base</a>
         </nav>
       </header>
 
-      <section class="quest-stats" aria-label="Player quest stats">
-        <div><strong data-esslay-level>1</strong><span>Level</span></div>
-        <div><strong data-esslay-xp>0</strong><span>XP</span></div>
-        <div><strong data-esslay-gold>75</strong><span>Gold</span></div>
-        <div><strong data-quest-percent="demo-tma-battle">0%</strong><span>TMA progress</span></div>
+      <section class="quest-banner" aria-label="Active StudyQuest summary">
+        <div>
+          <span class="label">Active test quest</span>
+          <strong data-quest-title>The Study Skills Trial</strong>
+        </div>
+        <div>
+          <span class="label">Task type</span>
+          <strong data-quest-task-type>essay</strong>
+        </div>
+        <div>
+          <span class="label">Target</span>
+          <strong><span data-quest-word-count>800</span> words</strong>
+        </div>
+        <div>
+          <span class="label">Progress</span>
+          <strong data-quest-progress>0%</strong>
+        </div>
       </section>
 
-      <section class="cave-stage" aria-label="Study cave combat area">
-        <div class="cave-scene">
-          <div class="moon"></div>
-          <div class="cave-mouth"></div>
-          <div class="torch torch-left"></div>
-          <div class="torch torch-right"></div>
-          <div class="hero-sprite" aria-hidden="true"></div>
-          <div class="monster-card">
-            <p class="eyebrow">Current enemy</p>
-            <h2>Blank Page Wraith</h2>
-            <p>Status: <strong data-quest-status="demo-tma-battle">Not started</strong></p>
-            <div class="quest-progress"><span data-quest-progress-bar="demo-tma-battle"></span></div>
-            <p>Defeat it by moving through the TMA checkpoints. The final XP bonus only unlocks when you confirm submission.</p>
+      <section class="layout-grid">
+        <aside class="cave-map-panel" aria-label="StudyQuest cave map">
+          <div class="panel-heading">
+            <p class="eyebrow">Cave map</p>
+            <h2>Reusable route</h2>
           </div>
-        </div>
-      </section>
+          <div class="cave-map" data-room-map></div>
+          <button class="secondary-button" type="button" data-reset-demo>Reset test quest</button>
+        </aside>
 
-      <section class="combat-panel">
-        <h2>TMA battle checkpoints</h2>
-        <div class="checkpoint-grid">
-          <button type="button" data-checkpoint-id="capture-task">1. Capture task</button>
-          <button type="button" data-checkpoint-id="command-words">2. Highlight command words</button>
-          <button type="button" data-checkpoint-id="quote-geodes">3. Build quote geodes</button>
-          <button type="button" data-checkpoint-id="plan-created">4. Create plan</button>
-          <button type="button" data-checkpoint-id="paragraph-drafted">5. Draft paragraph</button>
-          <button type="button" data-checkpoint-id="citation-notes">6. Add citation notes</button>
-          <button type="button" data-checkpoint-id="flow-diary">7. Flow Diary</button>
-          <button type="button" data-checkpoint-id="submitted">8. Confirm submitted</button>
-        </div>
-        <p class="screen-note" data-quest-announcement>Click a checkpoint to test XP, gold, progress, and reward blocking.</p>
-      </section>
+        <section class="room-panel" aria-live="polite">
+          <div class="room-card">
+            <div class="room-card-header">
+              <div>
+                <p class="eyebrow" data-room-stage>Room</p>
+                <h2 data-room-title>Task Intake Chamber</h2>
+              </div>
+              <span class="room-status" data-room-status>Not started</span>
+            </div>
 
-      <section class="combat-panel reward-panel">
-        <h2>Blocked rewards</h2>
-        <p>Try claiming a reward before its linked checkpoint is done. It should stay blocked.</p>
-        <div class="reward-grid" data-reward-grid></div>
-      </section>
+            <div class="blocker-card">
+              <strong data-blocker-name>Brief Fog</strong>
+              <p data-blocker-problem>The task is not captured clearly yet.</p>
+            </div>
 
-      <section class="combat-panel history-panel">
-        <h2>Recent quest history</h2>
-        <ul data-history-list></ul>
+            <p class="room-purpose" data-room-purpose></p>
+
+            <div class="room-workspace" data-room-workspace></div>
+
+            <section class="flag-strip" aria-label="Flags and missed loot controls">
+              <form data-flag-form class="mini-form">
+                <h3>Add flag</h3>
+                <label>
+                  Problem needing attention
+                  <input name="text" type="text" placeholder="e.g. This section may drift from the task">
+                </label>
+                <button type="submit">Save flag</button>
+              </form>
+              <form data-missed-loot-form class="mini-form">
+                <h3>Add missed loot</h3>
+                <label>
+                  Deliberately left rough
+                  <input name="text" type="text" placeholder="e.g. Sentence smoothing left for later">
+                </label>
+                <button type="submit">Save missed loot</button>
+              </form>
+            </section>
+
+            <div class="room-actions">
+              <button type="button" data-complete-room>Complete room</button>
+              <button type="button" class="secondary-button" data-export-current>Export this room</button>
+            </div>
+          </div>
+        </section>
+
+        <aside class="quest-log-panel" aria-label="StudyQuest saved items">
+          <div class="panel-heading">
+            <p class="eyebrow">Quest log</p>
+            <h2>Saved work</h2>
+          </div>
+          <div class="log-list" data-quest-log></div>
+        </aside>
       </section>
     </main>
 
-    <script src="game-state.js?v=1"></script>
-    <script src="quest-ui.js?v=1"></script>
-    <script>EsslayQuestUI.init({ questId: "demo-tma-battle" });</script>
+    <script src="studyquest.js?v=1"></script>
   </body>
 </html>
