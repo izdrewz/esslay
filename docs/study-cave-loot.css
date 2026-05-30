@@ -1,0 +1,80 @@
+.loot-task-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin: 14px 0 16px;
+}
+
+.loot-task {
+  position: relative;
+  min-height: 96px;
+  padding: 12px;
+  border: 2px solid rgba(255, 220, 142, .42);
+  border-radius: 18px;
+  color: #f8ebcf;
+  background: rgba(20, 13, 9, .78);
+  box-shadow: inset 0 0 26px rgba(0,0,0,.34), 0 8px 22px rgba(0,0,0,.22);
+}
+
+.loot-task strong,
+.loot-task small {
+  display: block;
+}
+
+.loot-task strong {
+  margin-top: 8px;
+  color: #fff4d2;
+}
+
+.loot-task small {
+  margin-top: 6px;
+  color: #d8bd8a;
+  font-weight: 900;
+}
+
+.loot-icon {
+  display: inline-grid;
+  place-items: center;
+  min-width: 82px;
+  padding: 6px 9px;
+  border-radius: 999px;
+  color: #23160d;
+  background: #ffe7a3;
+  font-weight: 900;
+  box-shadow: 0 3px 0 rgba(0,0,0,.28);
+}
+
+.loot-task.complete {
+  border-color: rgba(109, 230, 153, .72);
+  background: rgba(21, 63, 41, .72);
+}
+
+.loot-task.complete small {
+  color: #bff7c9;
+}
+
+.loot-task.missed {
+  border-color: rgba(245, 151, 99, .78);
+  background: rgba(78, 37, 22, .76);
+}
+
+.loot-task.missed small {
+  color: #ffc49f;
+}
+
+.inside-route-summary {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+@media (max-width: 1100px) {
+  .inside-route-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .inside-route-summary,
+  .loot-task-grid {
+    grid-template-columns: 1fr;
+  }
+}
