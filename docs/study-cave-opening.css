@@ -1,0 +1,344 @@
+body {
+  background: #09070b;
+}
+
+.cave-opening-screen {
+  width: min(1680px, 100%);
+  padding: 12px;
+}
+
+.cave-opening-screen .studyquest-header {
+  margin-bottom: 10px;
+}
+
+.cave-opening-screen .game-cave {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  min-height: auto;
+  width: 100%;
+  overflow: hidden;
+  border: 6px solid #160f0b;
+  border-radius: 28px;
+  padding: 0;
+  background-image: url("assets/study-cave-opening.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, .25), 0 18px 0 rgba(0, 0, 0, .32);
+}
+
+.cave-opening-screen .cave-art {
+  display: none;
+}
+
+.cave-opening-screen .quest-hud {
+  position: absolute;
+  left: 2.4%;
+  top: 2.8%;
+  right: auto;
+  width: min(620px, 46%);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  z-index: 20;
+}
+
+.cave-opening-screen .quest-hud div {
+  border: 2px solid rgba(52, 30, 17, .74);
+  border-radius: 12px;
+  padding: 7px 10px;
+  background: rgba(255, 241, 207, .86);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, .18);
+  backdrop-filter: blur(2px);
+}
+
+.scene-hotspots {
+  position: absolute;
+  inset: 0;
+  z-index: 18;
+  pointer-events: none;
+}
+
+.scene-hotspot {
+  position: absolute;
+  pointer-events: auto;
+  border: 2px solid rgba(255, 210, 112, .72);
+  border-radius: 18px;
+  padding: 7px 10px;
+  color: #fff8dc;
+  background: rgba(19, 12, 9, .16);
+  box-shadow: 0 0 14px rgba(255, 210, 112, .36), inset 0 0 18px rgba(255, 210, 112, .12);
+  text-decoration: none;
+  font-weight: 900;
+  font-size: clamp(.7rem, 1vw, .95rem);
+  text-shadow: 0 2px 4px rgba(0,0,0,.9);
+  opacity: .74;
+}
+
+.scene-hotspot:hover,
+.scene-hotspot:focus-visible {
+  opacity: 1;
+  outline: 3px solid rgba(255, 226, 144, .86);
+  background: rgba(19, 12, 9, .45);
+  transform: translateY(-1px);
+}
+
+.cave-entrance-hotspot {
+  left: 36%;
+  top: 22%;
+  width: 20%;
+  height: 27%;
+  display: grid;
+  place-items: end center;
+}
+
+.quest-board-hotspot {
+  left: 4.2%;
+  top: 17%;
+  width: 26%;
+  height: 30%;
+  display: grid;
+  place-items: start center;
+}
+
+.map-board-hotspot {
+  left: 65%;
+  top: 18%;
+  width: 22%;
+  height: 25%;
+  display: grid;
+  place-items: start center;
+}
+
+.warning-hotspot {
+  right: 4.5%;
+  top: 31%;
+  width: 11%;
+  height: 21%;
+  display: grid;
+  place-items: center;
+}
+
+.loot-hotspot {
+  left: 73%;
+  bottom: 12%;
+  width: 18%;
+  height: 18%;
+  display: grid;
+  place-items: end center;
+}
+
+.cave-opening-screen .active-encounter {
+  position: absolute;
+  left: 3.4%;
+  bottom: 4.5%;
+  width: min(430px, 32%);
+  margin: 0;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 10px;
+  padding: 11px;
+  border: 3px solid rgba(53, 31, 18, .84);
+  border-radius: 18px;
+  background: rgba(255, 241, 207, .86);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, .24);
+  backdrop-filter: blur(2px);
+  z-index: 19;
+}
+
+.cave-opening-screen .encounter-icon {
+  width: 48px;
+  height: 48px;
+  border-width: 3px;
+}
+
+.cave-opening-screen .encounter-copy h2 {
+  margin-bottom: 3px;
+  font-size: clamp(1rem, 2vw, 1.7rem);
+}
+
+.cave-opening-screen .room-status {
+  padding: 4px 8px;
+  margin-bottom: 7px;
+  border-width: 2px;
+  font-size: .78rem;
+}
+
+.cave-opening-screen .blocker-card {
+  padding: 8px;
+  margin-bottom: 7px;
+  border-width: 2px;
+  border-radius: 12px;
+}
+
+.cave-opening-screen .blocker-card strong {
+  font-size: .95rem;
+}
+
+.cave-opening-screen .blocker-card p,
+.cave-opening-screen .room-purpose {
+  font-size: .84rem;
+  line-height: 1.25;
+}
+
+.cave-opening-screen .work-drawer,
+.cave-opening-screen .quest-bag {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: min(920px, calc(100vw - 28px));
+  max-height: min(78vh, 760px);
+  overflow: auto;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  z-index: 60;
+  border: 5px solid #2b1d17;
+  border-radius: 24px;
+  background: rgba(255, 241, 207, .98);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .62);
+}
+
+.cave-opening-screen .work-drawer:not([open]),
+.cave-opening-screen .quest-bag:not([open]) {
+  position: absolute;
+  left: auto;
+  right: 2.5%;
+  top: 2.8%;
+  width: auto;
+  max-height: none;
+  overflow: visible;
+  transform: none;
+  z-index: 21;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.cave-opening-screen .work-drawer:not([open]) > :not(summary),
+.cave-opening-screen .quest-bag:not([open]) > :not(summary) {
+  display: none;
+}
+
+.cave-opening-screen .work-drawer summary,
+.cave-opening-screen .quest-bag summary {
+  list-style: none;
+  cursor: pointer;
+  border: 2px solid rgba(52, 30, 17, .78);
+  border-radius: 999px;
+  padding: 9px 13px;
+  color: #241914;
+  background: rgba(255, 241, 207, .9);
+  box-shadow: 0 5px 0 rgba(0,0,0,.2);
+}
+
+.cave-opening-screen .work-drawer summary::-webkit-details-marker,
+.cave-opening-screen .quest-bag summary::-webkit-details-marker {
+  display: none;
+}
+
+.cave-opening-screen .work-drawer[open] summary,
+.cave-opening-screen .quest-bag[open] summary {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  border-radius: 18px 18px 0 0;
+  border-width: 0 0 3px 0;
+  background: #fff1cf;
+}
+
+.cave-opening-screen .quest-bag:not([open]) {
+  top: 9%;
+}
+
+.cave-opening-screen .route-stone-trail {
+  position: absolute;
+  left: 31%;
+  bottom: 2.5%;
+  width: min(620px, 38%);
+  max-height: 28%;
+  overflow: auto;
+  margin: 0;
+  padding: 10px;
+  border: 3px solid rgba(33, 21, 15, .72);
+  border-radius: 22px;
+  background: rgba(10, 7, 14, .34);
+  box-shadow: 0 8px 0 rgba(0,0,0,.18);
+  z-index: 19;
+}
+
+.route-heading {
+  color: #fff1cf;
+  font-weight: 900;
+  text-align: center;
+  text-shadow: 0 2px 6px rgba(0,0,0,.9);
+  margin-bottom: 7px;
+}
+
+.cave-opening-screen .cave-map {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 2px 8px;
+}
+
+.cave-opening-screen .room-node {
+  flex: 0 0 112px;
+  min-width: 112px;
+  max-width: 112px;
+  min-height: 62px;
+  padding: 8px;
+  border-radius: 43% 48% 45% 50%;
+  font-size: .74rem;
+}
+
+.cave-opening-screen .room-node strong {
+  font-size: .72rem;
+}
+
+.cave-opening-screen .room-node small {
+  font-size: .65rem;
+}
+
+.cave-opening-screen .reset-route {
+  display: none;
+}
+
+@media (max-width: 980px) {
+  .cave-opening-screen .game-cave {
+    aspect-ratio: auto;
+    min-height: 900px;
+    background-position: center top;
+  }
+
+  .cave-opening-screen .quest-hud {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    margin: 10px;
+  }
+
+  .scene-hotspot {
+    opacity: .92;
+  }
+
+  .cave-opening-screen .active-encounter,
+  .cave-opening-screen .route-stone-trail {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    width: calc(100% - 24px);
+    margin: 12px;
+  }
+
+  .cave-opening-screen .work-drawer:not([open]),
+  .cave-opening-screen .quest-bag:not([open]) {
+    position: relative;
+    right: auto;
+    top: auto;
+    margin: 12px;
+    display: inline-block;
+  }
+}
