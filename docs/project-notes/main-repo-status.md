@@ -52,6 +52,19 @@ Relevant files:
 - UI should avoid long scrolling forms. Use compact panels, hotspots, click-to-open cards, and hover/tap previews.
 - Final Area 1 cave character poses and magic-light assets are not in repo yet.
 
+## Received area responses
+
+Received and recorded:
+
+- Area 9 — Brief Fog v0.1 field/UI workflow. Status: completed. Saved in `docs/project-notes/area-9-brief-fog-workflow.md`.
+- Area 11 — Brief Fog save/export structure. Status: completed. Saved in `docs/project-notes/area-11-save-export.md`.
+
+Still useful before or during implementation:
+
+- Area 10 — scene-first layout for Brief Fog panels, fog patches, flag marker, missed-loot stash, route-forward placement, placeholder effects, and Cave Base sharpening guidance.
+- Area 12 — exact Cave Base panel behaviour and route updates after Brief Fog clears.
+- Area 1 — final cave character poses, cave outfits, sparkle/light overlays, and cave-specific avatar polish. Not blocking placeholder build.
+
 ## Priority ownership by area
 
 Priority 1 belongs mainly to Area 9, with support from Area 10, Area 11, and Area 12.
@@ -116,6 +129,7 @@ Needed features:
 - chunk state
 - completion check that every chunk has a decision
 - output cards for command words, keywords, scope/limits, source requirements, task demand summary
+- save/export support from Area 11
 
 Priority 2:
 Improve Cave Base interaction.
