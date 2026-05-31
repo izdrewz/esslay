@@ -4,11 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Study Cave</title>
-    <link rel="stylesheet" href="studyquest.css?v=3">
     <link rel="stylesheet" href="study-cave-opening.css?v=5">
     <link rel="stylesheet" href="quest-board.css?v=2">
-    <link rel="stylesheet" href="study-cave-inside.css?v=1">
-    <link rel="stylesheet" href="study-cave-loot.css?v=1">
+    <link rel="stylesheet" href="study-cave-flow.css?v=1">
   </head>
   <body>
     <main class="studyquest-shell scene-first cave-opening-screen">
@@ -16,7 +14,7 @@
         <div>
           <p class="eyebrow">Esslay Version 0.1</p>
           <h1>Study Cave</h1>
-          <p class="intro">Click the cave entrance, quest board, map board, warning sign, or loot area.</p>
+          <p class="intro">Click the quest board, map board, cave entrance, warning sign, or loot area.</p>
         </div>
         <nav class="top-nav" aria-label="Study Cave navigation">
           <a href="hub.html">Village</a>
@@ -26,52 +24,17 @@
 
       <section class="game-cave" aria-label="Study Cave opening scene">
         <section class="quest-hud" aria-label="Active quest summary">
-          <div><span class="label">Quest</span><strong data-quest-title>The Study Skills Trial</strong></div>
-          <div><span class="label">Route</span><strong data-quest-progress>0%</strong></div>
+          <div><span class="label">Quest</span><strong data-flow-quest-title>The Study Skills Trial</strong></div>
+          <div><span class="label">Route</span><strong data-flow-progress>0 / 7</strong></div>
         </section>
 
         <div class="scene-hotspots" aria-label="Clickable Study Cave objects">
-          <button type="button" class="scene-hotspot cave-entrance-hotspot" data-open-work-drawer aria-label="Enter cave"><span>Enter cave</span></button>
+          <button type="button" class="scene-hotspot cave-entrance-hotspot" data-open-task-map aria-label="Enter Study Cave"><span>Enter cave</span></button>
           <button type="button" class="scene-hotspot quest-board-hotspot" data-open-quest-board aria-label="Open quest board"><span>Quest board</span></button>
-          <button type="button" class="scene-hotspot map-board-hotspot" data-open-map-board aria-label="Open map board"><span>Map board</span></button>
-          <button type="button" class="scene-hotspot warning-hotspot" data-open-quest-bag aria-label="Open warning sign"><span>Warning sign</span></button>
-          <button type="button" class="scene-hotspot loot-hotspot" data-open-quest-bag aria-label="Open loot and geodes"><span>Loot / geodes</span></button>
+          <button type="button" class="scene-hotspot map-board-hotspot" data-open-task-map aria-label="Open task map"><span>Task map</span></button>
+          <button type="button" class="scene-hotspot warning-hotspot" data-open-flags aria-label="Open warning sign"><span>Flags</span></button>
+          <button type="button" class="scene-hotspot loot-hotspot" data-open-loot aria-label="Open missed loot"><span>Loot</span></button>
         </div>
-
-        <details class="work-drawer" id="chamber-work">
-          <summary>Enter chamber</summary>
-          <button type="button" class="panel-close" data-close-panel aria-label="Close popup">×</button>
-          <section class="active-encounter" aria-live="polite">
-            <div class="encounter-icon" aria-hidden="true"></div>
-            <div class="encounter-copy">
-              <p class="eyebrow" data-room-stage>Room</p>
-              <h2 data-room-title>Task Intake Chamber</h2>
-              <span class="room-status" data-room-status>Not started</span>
-              <div class="blocker-card simple-blocker">
-                <strong data-blocker-name>Brief Fog</strong>
-                <p data-blocker-problem>The task is not captured clearly yet.</p>
-              </div>
-              <p class="room-purpose" data-room-purpose></p>
-            </div>
-          </section>
-          <div class="room-workspace" data-room-workspace></div>
-          <section class="flag-strip" aria-label="Flags and missed loot controls">
-            <form data-flag-form class="mini-form">
-              <h3>Add flag</h3>
-              <label>Problem needing attention<input name="text" type="text" placeholder="e.g. this section may drift from the task"></label>
-              <button type="submit">Save flag</button>
-            </form>
-            <form data-missed-loot-form class="mini-form">
-              <h3>Mark missed loot</h3>
-              <label>Deliberately left rough<input name="text" type="text" placeholder="e.g. sentence smoothing left for later"></label>
-              <button type="submit">Save missed loot</button>
-            </form>
-          </section>
-          <div class="room-actions">
-            <button type="button" data-complete-room>Clear chamber</button>
-            <button type="button" class="secondary-button" data-export-current>Export this room</button>
-          </div>
-        </details>
 
         <details class="quest-board-panel" id="quest-board-panel">
           <summary>Quest board</summary>
@@ -83,14 +46,14 @@
                 <button type="button">Add editable quest card</button>
               </div>
               <section class="quest-board-section">
-                <h3>Due Soon</h3>
+                <h3>Archive / Test</h3>
                 <div class="quest-card-grid">
-                  <article class="quest-board-card" data-category="upcoming">
-                    <div class="quest-card-kicker">Due Soon · example</div>
-                    <h4 class="quest-card-title">K102 TMA04</h4>
-                    <p class="quest-card-task">Discuss biopsychosocial challenges in adolescence.</p>
-                    <p class="quest-card-status"><strong>Status:</strong> Not started</p>
-                    <div class="quest-card-actions"><button type="button">Start task intake</button></div>
+                  <article class="quest-board-card" data-category="archive_test">
+                    <div class="quest-card-kicker">Archive / Test · example</div>
+                    <h4 class="quest-card-title">Study Skills Trial</h4>
+                    <p class="quest-card-task">Neutral 800-word practice task for testing the StudyQuest route.</p>
+                    <p class="quest-card-status"><strong>Status:</strong> Archived test quest</p>
+                    <div class="quest-card-actions"><button type="button" data-open-quest="study-skills-trial">Open test quest</button></div>
                   </article>
                 </div>
               </section>
@@ -98,60 +61,21 @@
           </div>
         </details>
 
-        <details class="quest-placeholder-panel" id="quest-placeholder-panel">
-          <summary>Selected quest</summary>
-          <button type="button" class="panel-close" data-close-panel aria-label="Close popup">×</button>
-          <div class="quest-placeholder-content" data-quest-placeholder>Select a quest card from the board.</div>
-        </details>
-
         <details class="map-board-panel" id="map-board-panel">
-          <summary>Map board: chamber status</summary>
+          <summary>Task Map threshold</summary>
           <button type="button" class="panel-close" data-close-panel aria-label="Close popup">×</button>
-          <div class="cave-map" data-room-map></div>
-          <button class="secondary-button reset-route" type="button" data-reset-demo>Reset test quest</button>
+          <div data-task-map></div>
         </details>
 
         <details class="quest-bag" id="quest-bag">
-          <summary>Quest bag: flags, missed loot, evidence</summary>
+          <summary>Flags and missed loot</summary>
           <button type="button" class="panel-close" data-close-panel aria-label="Close popup">×</button>
-          <div class="log-list" data-quest-log></div>
+          <div data-flags-loot-panel></div>
         </details>
       </section>
     </main>
 
-    <script src="studyquest.js?v=1"></script>
     <script src="quest-board.js?v=2"></script>
-    <script src="study-cave-inside.js?v=3"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const openPanel = (selector) => {
-          const panel = document.querySelector(selector);
-          if (panel) {
-            panel.open = true;
-            panel.scrollIntoView({ behavior: "smooth", block: "center" });
-          }
-        };
-        document.querySelectorAll("[data-open-work-drawer]").forEach((button) => {
-          button.addEventListener("click", () => openPanel("#chamber-work"));
-        });
-        document.querySelectorAll("[data-open-quest-board]").forEach((button) => {
-          button.addEventListener("click", () => openPanel("#quest-board-panel"));
-        });
-        document.querySelectorAll("[data-open-quest-bag]").forEach((button) => {
-          button.addEventListener("click", () => openPanel("#quest-bag"));
-        });
-        document.querySelectorAll("[data-open-map-board]").forEach((button) => {
-          button.addEventListener("click", () => openPanel("#map-board-panel"));
-        });
-        document.querySelectorAll("[data-close-panel]").forEach((button) => {
-          button.addEventListener("click", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            const panel = button.closest("details");
-            if (panel) panel.open = false;
-          });
-        });
-      });
-    </script>
+    <script src="study-cave-flow.js?v=1"></script>
   </body>
 </html>
