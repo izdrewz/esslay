@@ -8,6 +8,25 @@ Area 12 owns board/route behaviour and UI-state design.
 
 Area 12 does not design whole cave art or edit repo code directly.
 
+## Current priority for Area 12
+
+Area 12 is a support owner for Priority 1 and a lead owner for Priority 2.
+
+For Priority 1, Area 12 needs to support Brief Fog v0.1 by defining/confirming:
+- Cave Base → Brief Fog entry behaviour
+- Brief Fog completion behaviour
+- route state after Brief Fog clears
+- Source Mine placeholder unlock behaviour
+- how completed Brief Fog appears on Quest Board, Task Map, and Cave Base
+
+For Priority 2, Area 12 owns Cave Base interaction behaviour:
+- outfit chest placeholder panel behaviour
+- cave journal / route ledger panel behaviour
+- completed chamber summary behaviour
+- flags/missed loot panel behaviour
+- return to Task Map behaviour
+- continue route behaviour
+
 ## Locked route
 
 Do not send the player straight from Quest Board into the working chamber.
