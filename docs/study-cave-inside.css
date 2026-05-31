@@ -1,0 +1,375 @@
+.inside-cave-overlay[aria-hidden="true"] {
+  display: none;
+}
+
+.inside-cave-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+
+.inside-cave-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 3, 7, .78);
+  backdrop-filter: blur(4px);
+}
+
+.inside-cave-window {
+  position: relative;
+  width: min(1500px, 96vw);
+  max-height: 92vh;
+  overflow: auto;
+  border: 6px solid #1b120d;
+  border-radius: 28px;
+  color: #f8ebcf;
+  background:
+    radial-gradient(circle at 52% 38%, rgba(66, 103, 121, .46), transparent 25%),
+    radial-gradient(circle at 20% 78%, rgba(85, 57, 27, .72), transparent 28%),
+    linear-gradient(145deg, #07080d 0%, #10141c 42%, #22160f 100%);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, .86), inset 0 0 80px rgba(0, 0, 0, .58);
+}
+
+.inside-close {
+  position: sticky;
+  top: 10px;
+  float: right;
+  margin: 12px 12px 0 0;
+  z-index: 9;
+}
+
+.inside-cave-route,
+.inside-cave-chamber {
+  padding: clamp(16px, 2vw, 28px);
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.inside-route-header {
+  max-width: 720px;
+  margin-bottom: 12px;
+}
+
+.inside-route-header h2,
+.inside-chamber-card h2 {
+  margin: 0 0 6px;
+  font-size: clamp(2rem, 5vw, 4.6rem);
+  color: #fff2d2;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, .78);
+}
+
+.inside-route-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 0 14px;
+}
+
+.inside-route-summary div,
+.inside-route-node,
+.inside-chamber-card,
+.inside-log,
+.inside-two-column .mini-form {
+  border: 2px solid rgba(232, 188, 99, .45);
+  border-radius: 18px;
+  background: rgba(12, 9, 10, .72);
+  box-shadow: inset 0 0 28px rgba(0, 0, 0, .36), 0 10px 30px rgba(0, 0, 0, .25);
+}
+
+.inside-route-summary div {
+  padding: 10px 12px;
+}
+
+.inside-route-summary span,
+.inside-status-line {
+  display: block;
+  color: #d9c09a;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+
+.inside-route-summary strong {
+  display: block;
+  margin-top: 3px;
+  color: #fff5d8;
+}
+
+.inside-chamber-stage {
+  position: relative;
+  min-height: clamp(360px, 45vw, 610px);
+  overflow: hidden;
+  border: 5px solid #16100d;
+  border-radius: 30px;
+  margin: 12px 0 14px;
+  background:
+    radial-gradient(circle at 45% 56%, rgba(255, 202, 106, .30), transparent 11%),
+    radial-gradient(circle at 72% 40%, rgba(176, 196, 211, .20), transparent 15%),
+    radial-gradient(circle at 15% 68%, rgba(122, 81, 37, .48), transparent 22%),
+    radial-gradient(circle at 84% 78%, rgba(91, 51, 35, .45), transparent 16%),
+    linear-gradient(180deg, rgba(13, 18, 26, .9), rgba(20, 14, 12, .94));
+  box-shadow: inset 0 -70px 90px rgba(0,0,0,.55), inset 0 0 90px rgba(0,0,0,.48);
+}
+
+.inside-chamber-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 48% 23%, transparent 0 12%, rgba(0,0,0,.74) 21%, transparent 31%),
+    radial-gradient(circle at 8% 22%, rgba(79, 49, 36, .82), transparent 22%),
+    radial-gradient(circle at 92% 15%, rgba(52, 39, 51, .72), transparent 28%),
+    repeating-linear-gradient(108deg, rgba(255,255,255,.025) 0 2px, transparent 2px 18px);
+  opacity: .92;
+  pointer-events: none;
+}
+
+.inside-cave-depth {
+  position: absolute;
+  left: 39%;
+  top: 8%;
+  width: 23%;
+  height: 43%;
+  border-radius: 50% 50% 35% 35%;
+  background:
+    radial-gradient(circle at 50% 65%, rgba(42, 127, 158, .32), transparent 28%),
+    radial-gradient(ellipse at center, rgba(1, 3, 9, .92), rgba(0,0,0,.45) 65%, transparent 72%);
+  box-shadow: inset 0 0 35px rgba(70, 146, 189, .24), 0 0 42px rgba(43, 134, 178, .18);
+}
+
+.inside-hotspot {
+  position: absolute;
+  z-index: 2;
+  border: 2px solid rgba(255, 211, 116, .58);
+  border-radius: 24px;
+  color: #fff5d9;
+  background: rgba(6, 4, 4, .16);
+  box-shadow: 0 0 18px rgba(255, 196, 84, .18), inset 0 0 20px rgba(255, 196, 84, .07);
+  text-shadow: 0 3px 8px rgba(0,0,0,.88);
+}
+
+.inside-hotspot span {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  min-width: max-content;
+  padding: 7px 10px;
+  border-radius: 999px;
+  color: #251710;
+  background: rgba(255, 240, 205, .92);
+  font-weight: 900;
+}
+
+.inside-hotspot:hover,
+.inside-hotspot:focus-visible {
+  background: rgba(255, 211, 116, .13);
+  outline: 3px solid rgba(255, 226, 142, .78);
+}
+
+.inside-hotspot:disabled {
+  cursor: not-allowed;
+  opacity: .46;
+}
+
+.intake-desk {
+  left: 22%;
+  top: 56%;
+  width: 28%;
+  height: 20%;
+}
+
+.brief-fog {
+  right: 23%;
+  top: 44%;
+  width: 19%;
+  height: 24%;
+  border-color: rgba(194, 218, 225, .65);
+  background:
+    radial-gradient(circle at 45% 45%, rgba(224, 233, 225, .34), transparent 62%),
+    radial-gradient(circle at 60% 58%, rgba(141, 166, 164, .23), transparent 68%);
+}
+
+.flag-nook {
+  left: 8%;
+  top: 36%;
+  width: 14%;
+  height: 26%;
+}
+
+.missed-loot-stash {
+  left: 9%;
+  bottom: 10%;
+  width: 18%;
+  height: 15%;
+}
+
+.onward-route {
+  left: 43%;
+  top: 9%;
+  width: 17%;
+  height: 33%;
+  border-radius: 50% 50% 35% 35%;
+}
+
+.inside-route-map {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.inside-route-node {
+  padding: 12px;
+  color: #f7e8c7;
+  text-align: left;
+}
+
+.inside-route-node span {
+  display: block;
+  margin-top: 6px;
+  color: #d7bd91;
+}
+
+.inside-route-node.active {
+  border-color: #ffe08a;
+  background: rgba(88, 52, 19, .75);
+}
+
+.inside-route-node.complete {
+  border-color: rgba(108, 225, 148, .75);
+  background: rgba(32, 74, 48, .66);
+}
+
+.inside-route-node:disabled {
+  opacity: .48;
+}
+
+.inside-route-actions,
+.inside-save-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.inside-route-actions button,
+.inside-save-row button,
+.inside-two-column button {
+  border: 3px solid #2f2018;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #251710;
+  background: #fff0cb;
+  font-weight: 900;
+  box-shadow: 0 5px 0 rgba(0,0,0,.28);
+}
+
+.inside-route-actions .secondary-button,
+.inside-save-row .secondary-button {
+  background: #d3b98a;
+}
+
+.inside-chamber-card {
+  position: relative;
+  padding: clamp(16px, 2vw, 28px);
+}
+
+.chamber-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+}
+
+.inside-chamber-purpose {
+  max-width: 760px;
+  color: #ead3a6;
+}
+
+.task-intake-form {
+  margin-top: 12px;
+}
+
+.task-intake-form label,
+.inside-two-column label {
+  display: grid;
+  gap: 5px;
+  color: #f8ebcf;
+  font-weight: 900;
+}
+
+.task-intake-form input,
+.task-intake-form select,
+.task-intake-form textarea,
+.inside-two-column input {
+  width: 100%;
+  border: 2px solid rgba(255, 232, 179, .42);
+  border-radius: 12px;
+  padding: 9px 10px;
+  color: #241914;
+  background: rgba(255, 245, 220, .96);
+  font: inherit;
+}
+
+.task-intake-form textarea {
+  min-height: 86px;
+  resize: vertical;
+}
+
+.inside-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.inside-two-column .mini-form {
+  padding: 14px;
+}
+
+.inside-log {
+  margin-top: 16px;
+  padding: 14px;
+}
+
+.inside-record-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.inside-record-grid div {
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(255, 241, 207, .10);
+}
+
+.inside-record-grid h4 {
+  margin: 0 0 6px;
+  color: #fff2d2;
+}
+
+.inside-record-grid ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+@media (max-width: 900px) {
+  .inside-route-summary,
+  .inside-route-map,
+  .inside-two-column,
+  .inside-record-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .inside-cave-window {
+    max-height: 94vh;
+  }
+
+  .inside-chamber-stage {
+    min-height: 620px;
+  }
+}
