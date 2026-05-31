@@ -8,6 +8,26 @@ Area 10 owns visual/game-screen design, room concepts, clickable zones, scene st
 
 Area 10 does not edit repo code or make save-system decisions.
 
+## Current priority for Area 10
+
+Area 10 is a support owner for Priority 1 and a lead owner for Priority 4.
+
+For Priority 1, Area 10 needs to support Brief Fog v0.1 by defining:
+- scene-first placement for chunk cards and compact panels
+- fog patch clickable zones
+- task parchment / desk clickable zone
+- flag marker and missed-loot stash placement
+- route-forward placement
+- placeholder Command Imp / hidden-eye visual states
+
+For Priority 4, Area 10 owns asset polish:
+- sharpen Cave Base background later
+- improve placeholder Cave Base background if needed
+- define final Cave Base visual states
+- define final Brief Fog visual states
+- define Command Imp visual needs
+- define fog-clearing transition states
+
 ## Current locked Study Cave opening visuals
 
 Flow:
