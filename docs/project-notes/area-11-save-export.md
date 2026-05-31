@@ -1,159 +1,702 @@
-# Area 11 — Save, progress, missed loot, flags, export
+# Area 11 — Brief Fog save/export structure
 
-Last updated: 2026-05-31
+Task:
+Brief Fog save/export structure
 
-## Area role
+Area:
+11 / save-export-progress logic
 
-Area 11 owns save/export/progress logic only.
+Status:
+completed
 
-Area 11 does not design room art or edit repo code directly.
+What I checked:
+Area 11 checked the current Area 11 dispatch request and existing save/export rules from the chat. Area 11 reported that it could access `izdrewz/game`, where the visible README was minimal, and that it could not find `docs/project-notes/README.md` through that GitHub fetch call. Main repo note: the active repo for this project is `izdrewz/esslay`, so this missing-file report appears to come from checking the wrong repo rather than the notes actually missing in `esslay`.
 
-## Current priority for Area 11
+Output:
 
-Area 11 is a support owner for Priority 1 and the lead owner for Priority 3.
+## Brief Fog v0.1 save/export rules
 
-For Priority 1, Area 11 needs to support Brief Fog v0.1 by defining/confirming save behaviour for:
-- chunks
-- highlights
-- annotations
-- flags attached to chunks/highlights
-- missed loot attached to chunks/highlights
-- dismissed wording
-- chunk completion states
-- Brief Fog completion
-- output cards saved from Brief Fog
+Brief Fog / Question-Unpacking Chamber must save the user’s task text as chunk cards, with highlights, annotations, plain-meaning notes, action-created notes, dismissed wording, flags, missed loot, output cards, and completion state.
 
-For Priority 3, Area 11 owns the clean persistence/export layer:
-- localStorage StudyCaveSaveState
-- completed chambers persist
-- flags and missed loot persist
-- reset Study Skills Trial only
-- export updated route as `.md`, `.txt`, and Word-openable `.doc`
+Completed Brief Fog must stay completed unless reset or replay is deliberately chosen. Flags and missed loot do not undo completion.
 
-## Current flow supported
+## localStorage
 
-Study Cave entrance → Quest Board → Task Map threshold → Cave Base → Brief Fog / Question-Unpacking Chamber
+Suggested v0.1 key:
 
-## Core rule
+```ts
+localStorage.setItem("studyCaveSave:v0.1", JSON.stringify(studyCaveSave));
+```
 
-Cave Base is the persistent save hub.
+The active quest inside `StudyCaveSaveState` should include:
 
-It should save:
-- active quest
-- current chamber
-- route location
-- completed chambers
-- unlocked chambers
-- collected loot
-- missed loot
-- flags
-- progress log
-- chamber notes
-- cave outfit override
-- last saved timestamp
+```ts
+briefFog?: BriefFogSave;
+```
 
-Completed chambers must stay complete unless the user resets or deliberately replays.
+## StudyCaveSaveState additions
 
-Flags and missed loot do not undo completion.
+```ts
+type StudyCaveSaveState = {
+  version: "0.1";
+  activeQuestId: string | null;
+  quests: Record<string, StudyQuestSave>;
+  caveBase: CaveBaseSave;
+  globalProgressLog: ProgressLogEntry[];
+  lastSavedAt: string;
+};
 
-## Suggested save object
+type StudyQuestSave = {
+  questId: string;
+  questTitle: string;
 
-Use localStorage v0.1 with:
+  questStatus:
+    | "not-started"
+    | "task-map-started"
+    | "in-cave"
+    | "paused"
+    | "completed"
+    | "archived-test";
 
-- StudyCaveSaveState
-- StudyQuestSave
-- CaveBaseSave
-- ChamberSave
-- TaskMapSummary
-- LootEntry
-- MissedLootEntry
-- FlagEntry
-- ProgressLogEntry
+  currentChamberId: string;
+  currentRouteLocation: string;
 
-## Missed loot
+  completedChambers: string[];
+  unlockedChambers: string[];
 
-Missed loot means the player noticed something useful but chose not to finish it now.
+  collectedLoot: LootEntry[];
+  missedLoot: MissedLootEntry[];
+  flags: FlagEntry[];
 
-Automatic missed loot should trigger when:
-- leaving a chamber with optional tasks incomplete
-- clearing a chamber but leaving loot-linked work unfinished
-- leaving highlighted phrases without explanation notes
-- leaving available loot uncollected
-- moving on from known rough draft sections later
+  taskMapSummary: TaskMapSummary;
+  chamberSaves: Record<string, ChamberSave>;
+  briefFog?: BriefFogSave;
+  progressLog: ProgressLogEntry[];
 
-Manual missed loot is created when user clicks:
-- Mark as missed loot
-- Leave this for later
+  createdAt: string;
+  updatedAt: string;
+  lastEnteredCaveAt?: string;
+  lastExportedAt?: string;
+};
+```
 
-Missed loot should show in:
-- Cave Base summary
-- chamber summary
-- export
-- progress report
-- next action suggestions if high priority
+## BriefFogSave
 
-## Flags
+```ts
+type BriefFogSave = {
+  chamberId: "brief-fog";
+  chamberName: "Brief Fog / Question-Unpacking Chamber";
 
-Flags are not missed loot.
+  status:
+    | "locked"
+    | "unlocked"
+    | "not-started"
+    | "in-progress"
+    | "cleared"
+    | "replay-available";
 
-A flag means something needs attention, checking, clarification, improvement, or remembering.
+  rawTaskText: string;
+  chunks: BriefFogChunk[];
+  outputCards: BriefFogOutputCards;
+  chamberFlags: FlagEntry[];
+  chamberMissedLoot: MissedLootEntry[];
+  completion: BriefFogCompletionState;
+  exportHistory: ExportRecord[];
 
-Flags can attach to:
-- task sentence
-- highlighted phrase
-- chamber task
-- missed loot item
-- source/note later
-- draft section later
+  enteredAt?: string;
+  lastEditedAt: string;
+  clearedAt?: string;
+};
+```
 
-## Reset rule
+## BriefFogChunk
 
-Reset Study Skills Trial only.
+```ts
+type BriefFogChunk = {
+  chunkId: string;
+  order: number;
 
-Do not reset:
-- wardrobe data
-- house data
-- edit room data
-- unrelated quests
-- global settings
-- unlocked cosmetics outside the test quest
-- furniture data
-- calendar data
-- source library data
+  originalText: string;
+  cleanedText?: string;
 
-## Exports
+  chunkType:
+    | "question"
+    | "instruction"
+    | "guidance"
+    | "word-count"
+    | "source-requirement"
+    | "marking-grid"
+    | "case-study"
+    | "unknown";
 
-v0.1 export formats:
+  state:
+    | "not-started"
+    | "in-progress"
+    | "understood"
+    | "action-created"
+    | "dismissed"
+    | "flagged"
+    | "left-for-later";
+
+  plainMeaningNoteIds: string[];
+  actionCreatedNoteIds: string[];
+  annotationIds: string[];
+  highlightIds: string[];
+  dismissedWordingIds: string[];
+  flagIds: string[];
+  missedLootIds: string[];
+
+  createdOutputCardIds: string[];
+  isRequiredForCompletion: boolean;
+  isOptional: boolean;
+
+  createdAt: string;
+  updatedAt: string;
+};
+```
+
+Resolved chunk states for v0.1:
+
+- understood
+- action-created
+- dismissed
+- left-for-later
+
+Open flags and missed loot do not stop a chunk from being resolved if the user has deliberately moved it forward.
+
+## HighlightEntry
+
+```ts
+type HighlightEntry = {
+  highlightId: string;
+
+  questId: string;
+  chamberId: "brief-fog";
+  chunkId: string;
+
+  highlightedText: string;
+
+  highlightType:
+    | "command-word"
+    | "keyword"
+    | "scope-limit"
+    | "source-requirement"
+    | "word-count"
+    | "task-demand"
+    | "unknown-important"
+    | "dismissed";
+
+  startOffset?: number;
+  endOffset?: number;
+
+  linkedAnnotationIds: string[];
+  linkedFlagIds: string[];
+  linkedMissedLootIds: string[];
+  linkedOutputCardIds: string[];
+
+  status:
+    | "active"
+    | "converted-to-card"
+    | "dismissed"
+    | "left-for-later";
+
+  createdAt: string;
+  updatedAt: string;
+};
+```
+
+v0.1 does not need perfect text offsets if the UI cannot support them yet. It can save `highlightedText`, `chunkId`, and `highlightType` first.
+
+## BriefFogNote
+
+Use one object for plain-meaning notes, action-created notes, and normal annotations.
+
+```ts
+type BriefFogNote = {
+  noteId: string;
+
+  questId: string;
+  chamberId: "brief-fog";
+  chunkId: string;
+
+  noteType:
+    | "plain-meaning"
+    | "action-created"
+    | "annotation"
+    | "user-thought"
+    | "system-prompt-response";
+
+  noteText: string;
+
+  linkedHighlightId?: string;
+  linkedOutputCardId?: string;
+  linkedFlagIds: string[];
+  linkedMissedLootIds: string[];
+
+  status:
+    | "active"
+    | "edited"
+    | "dismissed"
+    | "left-for-later";
+
+  createdAt: string;
+  updatedAt: string;
+};
+```
+
+## DismissedWordingEntry
+
+```ts
+type DismissedWordingEntry = {
+  dismissedWordingId: string;
+
+  questId: string;
+  chamberId: "brief-fog";
+  chunkId: string;
+
+  dismissedText: string;
+
+  reason:
+    | "not-relevant"
+    | "duplicate"
+    | "too-vague"
+    | "example-only"
+    | "already-captured"
+    | "not-needed-for-v0.1"
+    | "other";
+
+  userNote?: string;
+  canRestore: boolean;
+
+  status:
+    | "dismissed"
+    | "restored";
+
+  createdAt: string;
+  restoredAt?: string;
+};
+```
+
+Dismissed wording should not be deleted. It should remain restorable.
+
+## Flag attachment
+
+Flags are attention notes. They do not undo chamber completion.
+
+```ts
+type FlagAttachment = {
+  attachedToType:
+    | "raw-task-text"
+    | "chunk"
+    | "highlight"
+    | "annotation"
+    | "plain-meaning-note"
+    | "action-created-note"
+    | "dismissed-wording"
+    | "output-card"
+    | "missed-loot"
+    | "general-chamber";
+
+  attachedToId: string;
+};
+```
+
+Full flag object:
+
+```ts
+type FlagEntry = {
+  flagId: string;
+
+  questId: string;
+  chamberId: "brief-fog" | string;
+
+  flagType:
+    | "check-guidance"
+    | "unclear-meaning"
+    | "needs-evidence"
+    | "needs-reference"
+    | "needs-smoothing"
+    | "task-drift"
+    | "too-long"
+    | "too-thin"
+    | "concept-not-named"
+    | "support-link-weak"
+    | "remember-this"
+    | "ask-for-help";
+
+  attachment: FlagAttachment;
+  note: string;
+
+  priority:
+    | "low"
+    | "medium"
+    | "high";
+
+  status:
+    | "open"
+    | "in-progress"
+    | "resolved"
+    | "left-for-later";
+
+  createdAt: string;
+  resolvedAt?: string;
+};
+```
+
+## Missed loot attachment
+
+Missed loot is not the same as a flag. It means something useful was left unfinished or uncollected so the user could continue.
+
+```ts
+type MissedLootAttachment = {
+  attachedToType:
+    | "chunk"
+    | "highlight"
+    | "annotation"
+    | "plain-meaning-note"
+    | "action-created-note"
+    | "output-card"
+    | "optional-task"
+    | "general-chamber";
+
+  attachedToId: string;
+};
+```
+
+Full missed loot object:
+
+```ts
+type MissedLootEntry = {
+  missedLootId: string;
+
+  questId: string;
+  chamberId: "brief-fog" | string;
+  chamberName: string;
+
+  itemMissed: string;
+
+  missedLootType:
+    | "optional-task"
+    | "incomplete-answer"
+    | "unfinished-highlight"
+    | "unclaimed-reward"
+    | "weak-note"
+    | "unsmoothed-writing"
+    | "missing-evidence"
+    | "manual-left-for-later";
+
+  source:
+    | "automatic"
+    | "manual";
+
+  attachment: MissedLootAttachment;
+  reasonLeft: string;
+  linkedFlagIds: string[];
+  returnLater: boolean;
+
+  priority:
+    | "low"
+    | "medium"
+    | "high";
+
+  status:
+    | "missed"
+    | "recovered"
+    | "ignored"
+    | "converted-to-flag";
+
+  createdAt: string;
+  recoveredAt?: string;
+};
+```
+
+## Output cards
+
+Brief Fog produces structured output cards for the next cave areas.
+
+```ts
+type BriefFogOutputCards = {
+  commandWordCards: CommandWordCard[];
+  keywordCards: KeywordCard[];
+  scopeLimitCards: ScopeLimitCard[];
+  sourceRequirementCards: SourceRequirementCard[];
+  taskDemandSummary: TaskDemandSummaryCard | null;
+};
+```
+
+### CommandWordCard
+
+```ts
+type CommandWordCard = {
+  cardId: string;
+  questId: string;
+  chamberId: "brief-fog";
+  commandWord: string;
+  plainMeaning: string;
+  taskDemand: string;
+  sourceChunkIds: string[];
+  sourceHighlightIds: string[];
+  sourceNoteIds: string[];
+  linkedFlagIds: string[];
+  linkedMissedLootIds: string[];
+  confidence: "low" | "medium" | "high" | "user-confirmed";
+  status: "draft" | "confirmed" | "needs-checking" | "dismissed";
+  createdAt: string;
+  updatedAt: string;
+};
+```
+
+### KeywordCard
+
+```ts
+type KeywordCard = {
+  cardId: string;
+  questId: string;
+  chamberId: "brief-fog";
+  keyword: string;
+  plainMeaning: string;
+  whyItMatters: string;
+  sourceChunkIds: string[];
+  sourceHighlightIds: string[];
+  sourceNoteIds: string[];
+  linkedFlagIds: string[];
+  linkedMissedLootIds: string[];
+  status: "draft" | "confirmed" | "needs-checking" | "dismissed";
+  createdAt: string;
+  updatedAt: string;
+};
+```
+
+### ScopeLimitCard
+
+```ts
+type ScopeLimitCard = {
+  cardId: string;
+  questId: string;
+  chamberId: "brief-fog";
+  scopeText: string;
+  scopeType:
+    | "word-count"
+    | "case-study"
+    | "module-area"
+    | "time-period"
+    | "required-focus"
+    | "excluded-focus"
+    | "format-rule"
+    | "other";
+  plainMeaning: string;
+  sourceChunkIds: string[];
+  sourceHighlightIds: string[];
+  sourceNoteIds: string[];
+  linkedFlagIds: string[];
+  linkedMissedLootIds: string[];
+  status: "draft" | "confirmed" | "needs-checking" | "dismissed";
+  createdAt: string;
+  updatedAt: string;
+};
+```
+
+### SourceRequirementCard
+
+```ts
+type SourceRequirementCard = {
+  cardId: string;
+  questId: string;
+  chamberId: "brief-fog";
+  requirementText: string;
+  sourceRequirementType:
+    | "must-use-module-material"
+    | "must-use-specific-source"
+    | "minimum-source-count"
+    | "video-or-transcript"
+    | "reader-chapter"
+    | "external-source-allowed"
+    | "external-source-not-needed"
+    | "reference-style"
+    | "other";
+  plainMeaning: string;
+  sourceChunkIds: string[];
+  sourceHighlightIds: string[];
+  sourceNoteIds: string[];
+  linkedFlagIds: string[];
+  linkedMissedLootIds: string[];
+  status: "draft" | "confirmed" | "needs-checking" | "dismissed";
+  createdAt: string;
+  updatedAt: string;
+};
+```
+
+### TaskDemandSummaryCard
+
+```ts
+type TaskDemandSummaryCard = {
+  cardId: string;
+  questId: string;
+  chamberId: "brief-fog";
+  summaryText: string;
+  answerMustDo: string[];
+  answerShouldAvoid: string[];
+  likelyNextSteps: string[];
+  linkedCommandWordCardIds: string[];
+  linkedKeywordCardIds: string[];
+  linkedScopeLimitCardIds: string[];
+  linkedSourceRequirementCardIds: string[];
+  linkedFlagIds: string[];
+  linkedMissedLootIds: string[];
+  status: "draft" | "confirmed" | "needs-checking";
+  createdAt: string;
+  updatedAt: string;
+};
+```
+
+## Brief Fog completion state
+
+```ts
+type BriefFogCompletionState = {
+  requiredChunksResolved: boolean;
+
+  outputCardsCreated: {
+    commandWords: boolean;
+    keywords: boolean;
+    scopeLimits: boolean;
+    sourceRequirements: boolean;
+    taskDemandSummary: boolean;
+  };
+
+  hasOpenFlags: boolean;
+  hasMissedLoot: boolean;
+
+  cleared: boolean;
+  clearedAt?: string;
+
+  nextUnlockedChamberId: "source-mine" | null;
+};
+```
+
+Brief Fog clears when required chunks are resolved and a task demand summary exists.
+
+On clear:
+
+- set Brief Fog status to cleared
+- add `brief-fog` to completedChambers
+- add `source-mine` to unlockedChambers
+- set next chamber to `source-mine`
+- keep current route location as Cave Base unless route design says otherwise
+- add progress log entry saying Brief Fog cleared and Source Mine unlocked
+
+Open flags and missed loot must not set Brief Fog back to in-progress.
+
+## Source Mine unlock update
+
+After Brief Fog clears:
+
+```ts
+const sourceMineUnlockUpdate = {
+  completedChambersAdd: "brief-fog",
+  unlockedChambersAdd: "source-mine",
+  currentChamberId: "source-mine",
+  currentRouteLocation: "cave-base",
+  nextAction: "Enter Source Mine to connect sources, notes, and evidence to the task demand.",
+  progressLogSummary: "Source Mine unlocked after Brief Fog was cleared."
+};
+```
+
+The next chamber should be unlocked, not forced-open. The player should be able to return to Cave Base and choose to enter Source Mine.
+
+## Export
+
+v0.1 exports:
+
 - `.md`
 - `.txt`
 - Word-openable `.doc`
 
 Proper `.docx` can wait.
 
-Exports should include:
+Brief Fog export must include:
+
 - quest title
+- export date
 - current chamber
+- chamber status
 - current route location
-- completed chambers
-- unlocked chambers
-- task map summary
-- chamber answers
-- highlights and annotations if available
+- last saved timestamp
+- raw task text
+- chunk cards
+- plain-meaning notes
+- action-created notes
+- annotations
+- highlights
+- dismissed wording
 - flags
 - missed loot
-- collected loot
+- command word cards
+- keyword cards
+- scope/limit cards
+- source requirement cards
+- task demand summary
+- Brief Fog completion state
 - progress log
 - next action
-- export timestamp
 
-## Repo implementation next
+For Word-openable `.doc`, v0.1 can save simple HTML content with a `.doc` extension.
 
-Main repo needs:
-- complete local save shell
-- test quest save object
-- Cave Base persistence
-- chamber completion persistence
-- missed loot creation
-- flag creation/resolution
-- reset Study Skills Trial only
-- updated exports for new Brief Fog flow
+## Reset rules
+
+Reset must only target:
+
+```ts
+questId === "study-skills-trial"
+```
+
+Reset Study Skills Trial should:
+
+- reset quest status to task-map-started
+- set current chamber to brief-fog
+- set current route location to cave-base
+- clear completedChambers
+- set unlockedChambers to `["brief-fog"]`
+- clear collectedLoot
+- clear missedLoot
+- clear flags
+- clear chamberSaves
+- reset briefFog to unlocked/blank state
+- add one reset progress log entry
+
+Reset must not affect:
+
+- wardrobe data
+- house data
+- edit room data
+- furniture data
+- unrelated quests
+- source library data
+- calendar data
+- global settings
+
+## What main repo should implement first
+
+Main repo should implement:
+
+1. Add `BriefFogSave` to the active StudyQuest save.
+2. Save raw task text.
+3. Split raw task text into chunk cards.
+4. Save chunk state changes.
+5. Save highlights against chunks.
+6. Save notes against chunks and highlights.
+7. Save dismissed wording as restorable data.
+8. Save flags with attachments.
+9. Save missed loot with attachments.
+10. Save Brief Fog output cards.
+11. Mark Brief Fog cleared when required chunks are resolved and task demand summary exists.
+12. Add `brief-fog` to completed chambers on clear.
+13. Add `source-mine` to unlocked chambers on clear.
+14. Keep Brief Fog complete even when flags or missed loot remain open.
+15. Export Brief Fog as `.md`, `.txt`, and Word-openable `.doc`.
+16. Reset only The Study Skills Trial when reset test quest is chosen.
+
+Dependencies:
+Main repo needs Area 9/10 only for the final names of future chamber IDs after Source Mine, but this Area 11 structure is ready for v0.1 implementation now.
+
+Repo note update:
+This file is now the Area 11 Brief Fog save/export structure note.
