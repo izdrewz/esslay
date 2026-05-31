@@ -1,0 +1,106 @@
+.stage-scene[hidden] {
+  display: none !important;
+}
+
+.stage-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 160;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: #fff7dd;
+  background: #080609;
+}
+
+.stage-room {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: inset 0 0 110px rgba(0, 0, 0, .5);
+}
+
+.cave-base-room {
+  background-image: url("assets/study-cave/cave-base-placeholder-v01.jpg"), radial-gradient(circle at 50% 55%, rgba(255,206,112,.22), transparent 18rem), linear-gradient(135deg, #17111d, #463721);
+}
+
+.brief-fog-room {
+  background-image: url("assets/study-cave/brief-fog-placeholder-v01.jpg"), radial-gradient(circle at 48% 45%, rgba(225,231,222,.35), transparent 16rem), linear-gradient(135deg, #151724, #4f5361);
+}
+
+.stage-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 30;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 3px solid #2b1d17;
+  border-radius: 999px;
+  color: #fff1cf;
+  background: #4b1710;
+  font-size: 1.45rem;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 4px 0 rgba(0,0,0,.24);
+}
+
+.stage-close:hover,
+.stage-close:focus-visible {
+  background: #6e2318;
+  outline: 3px solid rgba(255, 210, 112, .8);
+}
+
+.stage-card {
+  position: absolute;
+  left: 2%;
+  bottom: 2%;
+  width: min(540px, 43%);
+  max-height: 44%;
+  overflow: auto;
+  border: 3px solid rgba(54, 31, 18, .78);
+  border-radius: 18px;
+  padding: 14px;
+  color: #241914;
+  background: rgba(255, 241, 207, .92);
+  backdrop-filter: blur(2px);
+  box-shadow: 0 10px 0 rgba(0,0,0,.24);
+}
+
+.stage-card h2 {
+  margin-top: 0;
+}
+
+.stage-room .scene-label {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 20;
+}
+
+.stage-room .flow-hotspot {
+  z-index: 15;
+  background: rgba(8, 5, 4, .14);
+}
+
+.stage-room .flow-hotspot:hover,
+.stage-room .flow-hotspot:focus-visible {
+  background: rgba(255, 210, 112, .18);
+  outline: 3px solid rgba(255, 210, 112, .7);
+}
+
+@media (max-width: 900px) {
+  .stage-card {
+    width: calc(100% - 28px);
+    left: 14px;
+    right: 14px;
+    max-height: 42%;
+  }
+}
