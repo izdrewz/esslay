@@ -8,6 +8,28 @@ Area 11 owns save/export/progress logic only.
 
 Area 11 does not design room art or edit repo code directly.
 
+## Current priority for Area 11
+
+Area 11 is a support owner for Priority 1 and the lead owner for Priority 3.
+
+For Priority 1, Area 11 needs to support Brief Fog v0.1 by defining/confirming save behaviour for:
+- chunks
+- highlights
+- annotations
+- flags attached to chunks/highlights
+- missed loot attached to chunks/highlights
+- dismissed wording
+- chunk completion states
+- Brief Fog completion
+- output cards saved from Brief Fog
+
+For Priority 3, Area 11 owns the clean persistence/export layer:
+- localStorage StudyCaveSaveState
+- completed chambers persist
+- flags and missed loot persist
+- reset Study Skills Trial only
+- export updated route as `.md`, `.txt`, and Word-openable `.doc`
+
 ## Current flow supported
 
 Study Cave entrance → Quest Board → Task Map threshold → Cave Base → Brief Fog / Question-Unpacking Chamber
