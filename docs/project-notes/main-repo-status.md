@@ -52,6 +52,52 @@ Relevant files:
 - UI should avoid long scrolling forms. Use compact panels, hotspots, click-to-open cards, and hover/tap previews.
 - Final Area 1 cave character poses and magic-light assets are not in repo yet.
 
+## Priority ownership by area
+
+Priority 1 belongs mainly to Area 9, with support from Area 10, Area 11, and Area 12.
+
+Build Brief Fog / Question-Unpacking Chamber v0.1 as a usable scene-first workflow.
+
+Area ownership:
+- Area 9 owns the academic chunk/highlight workflow.
+- Area 10 owns the scene-first visual layout, clickable object placement, fog patches, and visual states.
+- Area 11 owns saving chunks, highlights, notes, flags, missed loot, completion, and export data.
+- Area 12 owns how Brief Fog opens from Cave Base, how progress returns to Task Map/Cave Base, and how Source Mine unlocks.
+- Area 1 owns character pose/effect assets later, but it is not blocking the placeholder build.
+
+Priority 2 belongs mainly to Area 12 and Area 11, with Area 10 support.
+
+Improve Cave Base interaction.
+
+Area ownership:
+- Area 12 owns Cave Base behaviour, buttons, return flow, and route state.
+- Area 11 owns Cave Base persistence, progress, flags, missed loot, and outfit override save fields.
+- Area 10 owns Cave Base visual hotspot placement and background/asset polish.
+- Area 1 owns final Cave Base character/outfit/chest poses later.
+
+Priority 3 belongs mainly to Area 11.
+
+Persist Study Cave state cleanly.
+
+Needed features:
+- localStorage StudyCaveSaveState
+- completed chambers persist
+- flags and missed loot persist
+- reset Study Skills Trial only
+- export updated route as `.md`, `.txt`, and Word-openable `.doc`
+
+Priority 4 belongs mainly to Area 10 and Area 1.
+
+Asset polish.
+
+Needed later:
+- sharpen Cave Base background
+- final Cave Base character pose
+- final Brief Fog character magic poses
+- light beam / sparkle overlays
+- Command Imp placeholder or final art
+- cave-specific avatar lighting asset
+
 ## Next priorities
 
 Priority 1:
