@@ -120,20 +120,19 @@
     document.querySelectorAll("details[open]").forEach((panel) => panel.open = false);
   }
 
+  function closeStageScene() {
+    const stage = document.getElementById("stage-scene");
+    if (!stage) return;
+    stage.hidden = true;
+    stage.innerHTML = "";
+  }
+
   function openPanel(selector) {
+    closeStageScene();
     const panel = document.querySelector(selector);
     if (!panel) return;
     panel.open = true;
     panel.scrollIntoView({ behavior: "smooth", block: "center" });
-  }
-
-  function ensurePanel(id, className, title, dataAttribute) {
-    let panel = document.getElementById(id);
-    if (panel) return panel;
-    const cave = document.querySelector(".game-cave");
-    if (!cave) return null;
-    cave.insertAdjacentHTML("beforeend", `<details class="${className}" id="${id}"><summary>${title}</summary><button type="button" class="panel-close" data-close-panel aria-label="Close popup">×</button><div class="flow-content" ${dataAttribute}></div></details>`);
-    return document.getElementById(id);
   }
 
   function routeNode(quest, id, label) {
@@ -150,21 +149,23 @@
     document.querySelectorAll("[data-task-map]").forEach((mount) => mount.innerHTML = html);
   }
 
-  function renderCaveBase(state = loadState()) {
-    ensurePanel("cave-base-panel", "cave-scene-panel", "Cave Base", "data-cave-base");
-    const quest = getQuest(state);
-    const mount = document.querySelector("[data-cave-base]");
-    if (!mount) return;
-    mount.innerHTML = `<section class="cave-base-scene"><span class="scene-label">Cave Base · safe hub</span><button type="button" class="flow-hotspot hotspot-chest" data-mini="Outfit chest|Cave outfit override will link to wardrobe later.">Outfit chest</button><button type="button" class="flow-hotspot hotspot-ledger" data-mini="Cave journal|Active quest: ${esc(quest.questTitle)}. Current chamber: Brief Fog / Question-Unpacking Chamber. Progress: ${esc(progressLabel(quest))}.">Cave journal / progress ledger</button><button type="button" class="flow-hotspot hotspot-shelf" data-mini="Completed progress shelf|Completed chambers: ${esc(quest.completedChambers.join(", ") || "none yet")}.">Completed chambers</button><button type="button" class="flow-hotspot hotspot-flags" data-open-flags>Flags / missed loot</button><button type="button" class="flow-hotspot hotspot-continue" data-continue-quest>Continue quest</button><button type="button" class="flow-hotspot hotspot-return" data-open-task-map>Return to Task Map</button></section><article class="flow-card"><h2>Cave Base</h2><p><strong>Active quest:</strong> ${esc(quest.questTitle)}</p><p><strong>Current chamber:</strong> Brief Fog / Question-Unpacking Chamber</p><p><strong>Progress:</strong> ${esc(progressLabel(quest))}</p><p><strong>Completed chambers:</strong> ${esc(quest.completedChambers.join(", ") || "none yet")}</p><p><strong>Open flags:</strong> ${quest.flags.length}</p><p><strong>Missed loot:</strong> ${quest.missedLoot.length}</p><div class="flow-actions"><button type="button" data-continue-quest>Continue Quest</button><button type="button" class="secondary-button" data-open-task-map>Return to Task Map</button></div></article>`;
+  function openStageScene(markup) {
+    closeAllPanels();
+    const stage = document.getElementById("stage-scene");
+    if (!stage) return;
+    stage.innerHTML = markup;
+    stage.hidden = false;
   }
 
-  function renderBriefFog(state = loadState()) {
-    ensurePanel("brief-fog-panel", "cave-scene-panel", "Brief Fog / Question-Unpacking Chamber", "data-brief-fog");
+  function caveBaseMarkup(state) {
+    const quest = getQuest(state);
+    return `<section class="stage-room cave-base-room"><button type="button" class="stage-close" data-close-stage aria-label="Close scene">×</button><span class="scene-label">Cave Base · safe hub</span><button type="button" class="flow-hotspot hotspot-chest" data-mini="Outfit chest|Cave outfit override will link to wardrobe later.">Outfit chest</button><button type="button" class="flow-hotspot hotspot-ledger" data-mini="Cave journal|Active quest: ${esc(quest.questTitle)}. Current chamber: Brief Fog / Question-Unpacking Chamber. Progress: ${esc(progressLabel(quest))}.">Cave journal / progress ledger</button><button type="button" class="flow-hotspot hotspot-shelf" data-mini="Completed progress shelf|Completed chambers: ${esc(quest.completedChambers.join(", ") || "none yet")}.">Completed chambers</button><button type="button" class="flow-hotspot hotspot-flags" data-open-flags>Flags / missed loot</button><button type="button" class="flow-hotspot hotspot-continue" data-continue-quest>Continue quest</button><button type="button" class="flow-hotspot hotspot-return" data-open-task-map>Return to Task Map</button><article class="stage-card"><h2>Cave Base</h2><p><strong>Active quest:</strong> ${esc(quest.questTitle)}</p><p><strong>Current chamber:</strong> Brief Fog / Question-Unpacking Chamber</p><p><strong>Progress:</strong> ${esc(progressLabel(quest))}</p><p><strong>Completed chambers:</strong> ${esc(quest.completedChambers.join(", ") || "none yet")}</p><p><strong>Open flags:</strong> ${quest.flags.length}</p><p><strong>Missed loot:</strong> ${quest.missedLoot.length}</p><div class="flow-actions"><button type="button" data-continue-quest>Continue Quest</button><button type="button" class="secondary-button" data-open-task-map>Return to Task Map</button></div></article></section>`;
+  }
+
+  function briefFogMarkup(state) {
     const quest = getQuest(state);
     const fog = quest.chamberSaves.briefFog;
-    const mount = document.querySelector("[data-brief-fog]");
-    if (!mount) return;
-    mount.innerHTML = `<section class="brief-fog-scene"><span class="scene-label">Brief Fog · first working chamber</span><button type="button" class="flow-hotspot hotspot-parchment">Task parchment</button><button type="button" class="flow-hotspot hotspot-fog">Fog patches</button><button type="button" class="flow-hotspot hotspot-forward">Route forward</button></section><article class="flow-card"><h2>Brief Fog / Question-Unpacking Chamber</h2><p><strong>Active quest:</strong> ${esc(quest.questTitle)}</p><p><strong>Task:</strong> ${esc(fog.rawTaskText)}</p><p>Next: split the task into chunks and mark command words, keywords, scope, source requirements, flags, and missed loot.</p></article>`;
+    return `<section class="stage-room brief-fog-room"><button type="button" class="stage-close" data-close-stage aria-label="Close scene">×</button><span class="scene-label">Brief Fog · first working chamber</span><button type="button" class="flow-hotspot hotspot-parchment">Task parchment</button><button type="button" class="flow-hotspot hotspot-fog">Fog patches</button><button type="button" class="flow-hotspot hotspot-forward">Route forward</button><article class="stage-card"><h2>Brief Fog / Question-Unpacking Chamber</h2><p><strong>Active quest:</strong> ${esc(quest.questTitle)}</p><p><strong>Task:</strong> ${esc(fog.rawTaskText)}</p><p>Next: split the task into chunks and mark command words, keywords, scope, source requirements, flags, and missed loot.</p><div class="flow-actions"><button type="button" data-open-task-map>Return to Task Map</button></div></article></section>`;
   }
 
   function openTaskMap(event) {
@@ -184,6 +185,7 @@
     quest.taskMapSummary.nextAction = "Enter Cave Base";
     saveState(state);
     renderTaskMap(state);
+    closeStageScene();
     closeAllPanels();
     openPanel("#map-board-panel");
   }
@@ -206,9 +208,7 @@
     quest.progressLog.unshift({ id: `log-${Date.now()}`, timestamp: now(), action: "enter-cave-base", summary: "Entered Cave Base from Task Map threshold." });
     saveState(state);
     renderTaskMap(state);
-    renderCaveBase(state);
-    closeAllPanels();
-    openPanel("#cave-base-panel");
+    openStageScene(caveBaseMarkup(state));
   }
 
   function continueQuest(event) {
@@ -224,9 +224,7 @@
     quest.taskMapSummary.nextAction = "Work through Brief Fog chunks";
     quest.progressLog.unshift({ id: `log-${Date.now()}`, timestamp: now(), action: "continue-brief-fog", summary: "Opened Brief Fog from Cave Base." });
     saveState(state);
-    renderBriefFog(state);
-    closeAllPanels();
-    openPanel("#brief-fog-panel");
+    openStageScene(briefFogMarkup(state));
   }
 
   function resetOldStudyTrialBoardIfNeeded() {
@@ -238,11 +236,34 @@
     const state = loadState();
     saveState(state);
     renderTaskMap(state);
-    renderCaveBase(state);
-    renderBriefFog(state);
     resetOldStudyTrialBoardIfNeeded();
 
     document.addEventListener("click", (event) => {
+      const close = event.target.closest("[data-close-panel]");
+      if (close) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const panel = close.closest("details");
+        if (panel) panel.open = false;
+        return;
+      }
+
+      const closeStage = event.target.closest("[data-close-stage]");
+      if (closeStage) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        closeStageScene();
+        return;
+      }
+
+      const mini = event.target.closest("[data-mini]");
+      if (mini) {
+        event.preventDefault();
+        const [title, body] = mini.dataset.mini.split("|");
+        alert(`${title}\n\n${body}`);
+        return;
+      }
+
       const target = event.target.closest("[data-open-task-map], [data-enter-cave-base], [data-continue-quest]");
       if (!target) return;
       if (target.matches("[data-open-task-map]")) return openTaskMap(event);
