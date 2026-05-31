@@ -177,17 +177,6 @@
   transform-origin: center bottom;
 }
 
-.stage-character::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 70% 58%, rgba(255, 181, 82, .24), transparent 42%),
-    linear-gradient(90deg, rgba(20, 17, 34, .22), transparent 38%, rgba(255, 176, 81, .12));
-  mix-blend-mode: soft-light;
-}
-
 .stage-character-base {
   left: 49%;
   bottom: 2%;
