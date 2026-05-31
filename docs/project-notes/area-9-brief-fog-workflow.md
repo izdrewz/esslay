@@ -8,6 +8,25 @@ Area 9 owns the academic workflow and task interpretation logic.
 
 Area 9 does not edit the repo, design cave visuals, or write the assignment.
 
+## Current priority for Area 9
+
+Area 9 is a current Priority 1 owner.
+
+Main repo is about to build Brief Fog v0.1. Area 9 owns the academic logic for:
+- raw task text becoming sentence/chunk cards
+- highlight categories
+- what counts as fully unpacked
+- plain-meaning notes
+- action-created notes
+- command-word cards
+- keyword cards
+- scope/limit cards
+- source requirement cards
+- rules for flags and missed loot from an academic workflow point of view
+- ensuring the chamber does not auto-write the assignment
+
+If Area 9 is asked for more input, it should focus on exact field labels, chunk card wording, completion checks, and user prompts.
+
 ## Locked chamber
 
 First working chamber:
