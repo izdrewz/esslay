@@ -6,7 +6,7 @@
     <title>Esslay Study Cave</title>
     <link rel="stylesheet" href="study-cave-opening.css?v=5">
     <link rel="stylesheet" href="quest-board.css?v=2">
-    <link rel="stylesheet" href="study-cave-flow.css?v=3">
+    <link rel="stylesheet" href="study-cave-flow.css?v=4">
   </head>
   <body>
     <main class="studyquest-shell scene-first cave-opening-screen">
@@ -35,6 +35,8 @@
           <button type="button" class="scene-hotspot warning-hotspot" data-open-flags aria-label="Open warning sign"><span>Flags</span></button>
           <button type="button" class="scene-hotspot loot-hotspot" data-open-loot aria-label="Open missed loot"><span>Loot</span></button>
         </div>
+
+        <div class="stage-scene" id="stage-scene" hidden aria-live="polite"></div>
 
         <details class="quest-board-panel" id="quest-board-panel">
           <summary>Quest board</summary>
@@ -104,6 +106,6 @@
     </main>
 
     <script src="quest-board.js?v=2"></script>
-    <script src="study-cave-task-map-fallback.js?v=2"></script>
+    <script src="study-cave-task-map-fallback.js?v=3"></script>
   </body>
 </html>
