@@ -19,18 +19,41 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: #080609;
+  box-shadow: inset 0 0 58px rgba(0, 0, 0, .26);
+}
+
+.stage-room::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  box-shadow: inset 0 0 110px rgba(0, 0, 0, .5);
+  filter: brightness(1.06) contrast(1.12) saturate(1.08);
+  transform: scale(1.002);
+  transform-origin: center;
 }
 
-.cave-base-room {
-  background-image: url("assets/study-cave/cave-base-placeholder-v01.jpg"), radial-gradient(circle at 50% 55%, rgba(255,206,112,.22), transparent 18rem), linear-gradient(135deg, #17111d, #463721);
+.stage-room::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 75% 60%, rgba(255, 178, 79, .18), transparent 21rem),
+    radial-gradient(circle at 30% 44%, rgba(105, 82, 170, .14), transparent 18rem),
+    linear-gradient(180deg, rgba(3, 2, 4, .08), transparent 26%, rgba(4, 2, 3, .18));
 }
 
-.brief-fog-room {
-  background-image: url("assets/study-cave/brief-fog-placeholder-v01.jpg"), radial-gradient(circle at 48% 45%, rgba(225,231,222,.35), transparent 16rem), linear-gradient(135deg, #151724, #4f5361);
+.cave-base-room::before {
+  background-image: url("assets/study-cave/cave-base-placeholder-v01.jpg"), linear-gradient(135deg, #17111d, #463721);
+}
+
+.brief-fog-room::before {
+  background-image: url("assets/study-cave/brief-fog-placeholder-v01.jpg"), linear-gradient(135deg, #151724, #4f5361);
 }
 
 .stage-close {
@@ -149,9 +172,20 @@
   background-size: contain;
   background-position: center bottom;
   background-repeat: no-repeat;
-  filter: drop-shadow(0 22px 20px rgba(0,0,0,.58));
+  filter: brightness(.86) contrast(.95) saturate(.9) sepia(.08) drop-shadow(0 24px 21px rgba(0,0,0,.68));
   pointer-events: none;
   transform-origin: center bottom;
+}
+
+.stage-character::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 70% 58%, rgba(255, 181, 82, .24), transparent 42%),
+    linear-gradient(90deg, rgba(20, 17, 34, .22), transparent 38%, rgba(255, 176, 81, .12));
+  mix-blend-mode: soft-light;
 }
 
 .stage-character-base {
