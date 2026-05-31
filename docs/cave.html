@@ -6,7 +6,7 @@
     <title>Esslay Study Cave</title>
     <link rel="stylesheet" href="study-cave-opening.css?v=5">
     <link rel="stylesheet" href="quest-board.css?v=2">
-    <link rel="stylesheet" href="study-cave-flow.css?v=1">
+    <link rel="stylesheet" href="study-cave-flow.css?v=2">
   </head>
   <body>
     <main class="studyquest-shell scene-first cave-opening-screen">
@@ -64,7 +64,35 @@
         <details class="map-board-panel" id="map-board-panel">
           <summary>Task Map threshold</summary>
           <button type="button" class="panel-close" data-close-panel aria-label="Close popup">×</button>
-          <div data-task-map></div>
+          <div data-task-map>
+            <section class="task-map-grid">
+              <article class="flow-card">
+                <p class="eyebrow">Selected task becomes the map</p>
+                <h2>Study Skills Trial</h2>
+                <p><strong>Active quest:</strong> Study Skills Trial</p>
+                <p><strong>Current chamber:</strong> Brief Fog / Question-Unpacking Chamber</p>
+                <p><strong>Progress:</strong> 0 / 7 chambers complete</p>
+                <p><strong>Completed chambers:</strong> none yet</p>
+                <p><strong>Flags:</strong> 0 · <strong>Missed loot:</strong> 0</p>
+                <div class="flow-actions">
+                  <button type="button" data-enter-cave-base>Enter Cave Base</button>
+                  <button type="button" class="secondary-button" data-back-quest-board>Back to Quest Board</button>
+                </div>
+              </article>
+              <article class="flow-card">
+                <h3>Route nodes</h3>
+                <div class="route-node-grid">
+                  <article class="route-node-card unlocked"><strong>Cave Base</strong><p>Unlocked</p></article>
+                  <article class="route-node-card current"><strong>Brief Fog</strong><p>Current</p></article>
+                  <article class="route-node-card locked"><strong>Source Mine</strong><p>Locked</p></article>
+                  <article class="route-node-card locked"><strong>Quote Bank</strong><p>Locked</p></article>
+                  <article class="route-node-card locked"><strong>Draft Route</strong><p>Locked</p></article>
+                  <article class="route-node-card locked"><strong>Dirty Draft</strong><p>Locked</p></article>
+                  <article class="route-node-card locked"><strong>Coherence Boss</strong><p>Locked</p></article>
+                </div>
+              </article>
+            </section>
+          </div>
         </details>
 
         <details class="quest-bag" id="quest-bag">
@@ -77,6 +105,6 @@
 
     <script src="quest-board.js?v=2"></script>
     <script src="study-cave-inside.js?v=4"></script>
-    <script src="study-cave-transition-fix.js?v=1"></script>
+    <script src="study-cave-transition-fix.js?v=2"></script>
   </body>
 </html>
