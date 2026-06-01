@@ -68,6 +68,7 @@ Relevant files:
 - Brief Fog character facing/casting is currently a CSS flip and hand-spark placeholder. Future fix: Area 1 should provide final focused hand-spark and casting light-beam poses facing the fog/imp direction.
 - Area 1 now needs a proper Brief Fog cutscene pose set: attack/casting pose, confident/smug follow-up pose, threat-with-sparkle pose, and scared/defensive reaction poses for later scenes.
 - Final attack pose should be designed with the character on the left shooting twinkle magic toward smoke/imp on the right.
+- Latest Area 1 generated outfit/pose previews were rejected because the art style was incorrect and drifted into a glossy/semi-realistic fantasy look. Do not treat them as approved assets.
 
 ## Received area responses
 
@@ -77,6 +78,7 @@ Received and recorded:
 - Area 10 — Brief Fog and Cave Base scene-first layout support. Status: completed needs further edits. Saved in `docs/project-notes/area-10-visual-scenes.md`.
 - Area 11 — Brief Fog save/export structure. Status: completed. Saved in `docs/project-notes/area-11-save-export.md`.
 - Area 12 — Cave Base panels and route update after Brief Fog clears. Status: completed. Saved in `docs/project-notes/area-12-route-behaviour.md`.
+- Area 1 — Brief Fog character pose/effect asset plan and rejected-art-style reset. Status: needs approval / no approved preview yet. Saved in `docs/project-notes/area-1-character-assets.md`.
 
 Still useful later:
 
@@ -202,7 +204,7 @@ Required first cutscene direction:
 - first useful direction is left-to-right attack pose
 - later direction variants can wait unless needed
 
-Area 1 should return either preview images or a precise asset plan if it cannot generate the pose directly.
+Area 1 returned a precise asset plan but no approved preview yet. Latest generated previews are rejected because the art style was incorrect. Next Area 1 pass must match the approved soft illustrated academic-adventurer base style before image approval can happen.
 
 ## Coordination rule
 
