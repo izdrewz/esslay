@@ -66,6 +66,55 @@ Direction variants:
 Important asset rule:
 Do not replace the approved character with a different design. Use the references for pose/outfit direction, but preserve the approved girl’s identity and locked character rules.
 
+## Area 1 communication/update rule — master correction
+
+Status: active rule / applies immediately
+
+The previous instruction was not explicit enough about telling Izzy directly when Area 1 updates its work. This is now corrected.
+
+When Area 1 works on this active task, Area 1 must:
+
+- update `docs/project-notes/area-1-character-assets.md` under the active task section, not somewhere vague or hidden
+- mark the task status clearly using the project status labels
+- tell Izzy directly whether the repo note was updated
+- send Izzy previews/output directly if there are images to approve
+- say clearly if no preview exists yet
+- say clearly if the work is only a plan, not an asset output
+- never leave Izzy or the master repo guessing whether Area 1 updated somewhere else
+
+If Area 1 cannot update the repo note directly, it must send Izzy the exact text to paste into this file.
+
+For any visual/image output, the response must say whether the output is:
+
+- placeholder
+- approved placeholder
+- final candidate
+- approved final
+- locked final
+
+No image or pose asset should be treated as approved unless Izzy explicitly approves it.
+
+## Local handoff check not yet reflected as approved repo asset
+
+Status: needs confirmation / not imported as approved repo asset
+
+A local handoff said Area 1 produced:
+
+`area1_avatar_front_default_locked_base.png`
+
+Reported details from that handoff:
+- locked base used: front/default sprite Izzy sent
+- base/default only in that pass
+- canvas size: 1024 × 1536
+- tattoo rule applied: right-arm tattoo kept; no tattoo added to the other arm
+- rejected packs excluded
+- transparency checked on dark, patterned, and room-style backgrounds
+- border alpha check reported clean
+
+Master repo search did not find `area1_avatar_front_default_locked_base` in `izdrewz/esslay` at the time this note was updated. Do not treat this as an imported or approved repo asset unless the file is actually added to the repo and Izzy confirms its approval status.
+
+If Area 1 has this output, Area 1 must tell Izzy directly, provide the preview/output, and update this note with the actual status.
+
 ## Rejected visual output — do not use
 
 Status: rejected / active reset
@@ -208,3 +257,4 @@ Suggested Brief Fog files:
 - The current CSS cutscene can only approximate facing/casting. Final pose art is needed for the proper left-to-right Brief Fog duel sequence.
 - The next image generation pass must fix art style before approval can happen.
 - Izzy needs to approve the corrected pose/art-style direction before final PNG production.
+- Area 1 must now explicitly tell Izzy when it updates this note and must send previews/output directly if there is anything visual to approve.
