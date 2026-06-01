@@ -218,323 +218,326 @@
 .cave-base-room .hotspot-chest {
   left: 0;
   top: 42%;
-  width: 13%;
-  height: 28%;
+  width: 18%;
+  height: 29%;
 }
 
 .cave-base-room .hotspot-ledger {
-  left: 13%;
-  top: 37%;
-  width: 18%;
-  height: 18%;
+  left: 29%;
+  top: 33%;
+  width: 15%;
+  height: 23%;
 }
 
 .cave-base-room .hotspot-shelf {
-  left: 62%;
-  top: 20%;
-  width: 18%;
-  height: 30%;
+  left: 51%;
+  top: 23%;
+  width: 22%;
+  height: 31%;
 }
 
 .cave-base-room .hotspot-flags {
-  left: 48%;
-  top: 24%;
-  width: 12%;
-  height: 28%;
-}
-
-.cave-base-room .hotspot-return {
-  left: 30%;
-  top: 36%;
-  width: 13%;
-  height: 22%;
-}
-
-.cave-base-room .hotspot-continue {
-  right: 0;
-  top: 18%;
+  left: 78%;
+  top: 58%;
   width: 14%;
-  height: 44%;
-}
-
-.cave-base-room .stage-card {
-  top: 58px;
-  left: 16px;
-  bottom: auto;
-  width: min(300px, 28%);
-  max-height: 190px;
-}
-
-.brief-fog-room .hotspot-parchment {
-  left: 11%;
-  top: 47%;
-  width: 18%;
-  height: 13%;
-}
-
-.brief-fog-room .hotspot-parchment::after {
-  content: "Task Brief";
-}
-
-.brief-fog-room .fog-patch-1 {
-  left: 34%;
-  top: 15%;
-  width: 16%;
-  height: 20%;
-}
-
-.brief-fog-room .fog-patch-2 {
-  left: 50%;
-  top: 35%;
-  width: 16%;
   height: 24%;
 }
 
-.brief-fog-room .fog-patch-3 {
-  right: 20%;
-  top: 14%;
+.cave-base-room .hotspot-continue {
+  right: 5%;
+  top: 28%;
   width: 16%;
-  height: 22%;
+  height: 26%;
 }
 
-.brief-fog-room .fog-patch-4 {
-  right: 11%;
-  bottom: 24%;
-  width: 17%;
-  height: 20%;
-}
-
-.brief-fog-room .fog-patch.empty {
-  opacity: .48;
-}
-
-.brief-fog-room .fog-patch.unprocessed,
-.brief-fog-room .fog-patch.processing {
-  border-color: rgba(190, 210, 255, .5);
-  background: radial-gradient(circle, rgba(168, 187, 255, .18), rgba(18, 16, 24, .18) 62%, transparent 70%);
-}
-
-.brief-fog-room .fog-patch.cleared {
-  border-color: rgba(255, 223, 141, .74);
-  background: radial-gradient(circle, rgba(255, 222, 143, .24), rgba(20, 14, 10, .08) 62%, transparent 72%);
-  box-shadow: 0 0 34px rgba(255, 211, 109, .24);
-}
-
-.brief-fog-room .fog-patch.flagged {
-  border-color: rgba(238, 91, 67, .72);
-  background: radial-gradient(circle, rgba(238, 91, 67, .22), rgba(18, 16, 24, .16) 62%, transparent 72%);
-}
-
-.brief-fog-room .fog-patch.missed {
-  border-color: rgba(160, 125, 255, .76);
-  background: radial-gradient(circle, rgba(160, 125, 255, .22), rgba(18, 16, 24, .16) 62%, transparent 72%);
-}
-
-.brief-fog-room .fog-patch.dismissed {
-  border-color: rgba(180, 180, 180, .46);
-  background: rgba(20, 20, 22, .18);
-}
-
-.brief-fog-room .hotspot-brief-flag {
-  left: 5%;
-  top: 67%;
+.cave-base-room .hotspot-return {
+  left: 18%;
+  top: 21%;
   width: 10%;
   height: 15%;
 }
 
-.brief-fog-room .hotspot-brief-loot {
-  right: 7%;
-  bottom: 13%;
+.brief-fog-room .hotspot-parchment {
+  left: 13%;
+  top: 44%;
+  width: 23%;
+  height: 16%;
+}
+
+.brief-fog-room .fog-patch {
+  position: absolute;
+  z-index: 12;
+  border: 2px solid rgba(155, 180, 255, .38);
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(130, 145, 185, .18), rgba(18, 18, 25, .12) 60%, transparent 70%);
+  box-shadow: 0 0 26px rgba(107, 129, 255, .22), inset 0 0 26px rgba(255,255,255,.04);
+}
+
+.brief-fog-room .fog-patch::after {
+  content: "••";
+  position: absolute;
+  left: 42%;
+  top: 42%;
+  color: rgba(255,255,255,.72);
+  letter-spacing: .32rem;
+  text-shadow: 0 0 8px rgba(180, 190, 255, .72);
+}
+
+.brief-fog-room .fog-patch-1 {
+  left: 35%;
+  top: 28%;
+  width: 12%;
+  height: 16%;
+}
+
+.brief-fog-room .fog-patch-2 {
+  left: 48%;
+  top: 52%;
   width: 14%;
+  height: 16%;
+}
+
+.brief-fog-room .fog-patch-3 {
+  left: 67%;
+  top: 26%;
+  width: 13%;
   height: 17%;
 }
 
+.brief-fog-room .fog-patch-4 {
+  right: 17%;
+  bottom: 19%;
+  width: 12%;
+  height: 16%;
+}
+
+.brief-fog-room .hotspot-brief-flag {
+  left: 5%;
+  bottom: 16%;
+  width: 10%;
+  height: 16%;
+}
+
+.brief-fog-room .hotspot-brief-loot {
+  left: 21%;
+  bottom: 10%;
+  width: 13%;
+  height: 16%;
+}
+
 .brief-fog-room .hotspot-forward {
-  left: 52%;
-  top: 61%;
+  right: 21%;
+  bottom: 13%;
   width: 17%;
-  height: 18%;
-}
-
-.brief-fog-room .hotspot-forward.locked {
-  opacity: .58;
-}
-
-.brief-fog-room .hotspot-forward.ready {
-  border-color: rgba(255, 226, 130, .85);
-  box-shadow: 0 0 36px rgba(255, 213, 105, .34);
-}
-
-.brief-fog-room .stage-card {
-  top: 58px;
-  right: 16px;
-  left: auto;
-  bottom: auto;
-  width: min(320px, 30%);
-  max-height: 220px;
-}
-
-.scene-drawer {
-  position: absolute;
-  right: 18px;
-  bottom: 18px;
-  z-index: 55;
-  width: min(380px, 34vw);
-  max-height: min(72%, 660px);
-  overflow: auto;
-  border: 2px solid rgba(255, 221, 147, .5);
-  border-radius: 18px;
-  padding: 14px 16px;
-  color: #2b2118;
-  background: rgba(252, 241, 213, .95);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, .42);
-  font-size: .88rem;
-}
-
-.scene-drawer.wide-drawer {
-  width: min(620px, 52vw);
-}
-
-.scene-drawer h2,
-.scene-drawer h3,
-.scene-drawer p {
-  margin-top: 0;
-}
-
-.scene-drawer label {
-  display: grid;
-  gap: 4px;
-  margin: 8px 0;
-  font-weight: 800;
-}
-
-.scene-drawer input,
-.scene-drawer select,
-.scene-drawer textarea {
-  width: 100%;
-  border: 2px solid rgba(77, 54, 38, .28);
-  border-radius: 10px;
-  padding: 8px;
-  color: #2a2119;
-  background: #fff9e9;
-  font: inherit;
-}
-
-.scene-drawer button,
-.scene-drawer .download-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin: 4px 4px 4px 0;
-  border: 2px solid rgba(77, 54, 38, .5);
-  border-radius: 999px;
-  padding: 7px 10px;
-  color: #2a2119;
-  background: #fff0c7;
-  font-weight: 900;
-  text-decoration: none;
-}
-
-.scene-drawer button:hover,
-.scene-drawer button:focus-visible,
-.scene-drawer .download-link:hover,
-.scene-drawer .download-link:focus-visible {
-  background: #ffe1a1;
-}
-
-.drawer-close {
-  position: sticky;
-  top: 0;
-  float: right;
-  width: 34px;
-  height: 34px;
-  border-radius: 999px !important;
-  padding: 0 !important;
-  background: #5d2117 !important;
-  color: #fff7dd !important;
-}
-
-.drawer-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.drawer-actions,
-.sticky-actions {
-  position: sticky;
-  bottom: 0;
-  padding-top: 8px;
-  background: linear-gradient(180deg, rgba(252, 241, 213, .78), rgba(252, 241, 213, .98));
-}
-
-.summary-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.summary-grid div,
-.warning-list,
-.success-note,
-.mini-list,
-.drawer-subsection {
-  border: 1px solid rgba(77, 54, 38, .18);
-  border-radius: 12px;
-  padding: 8px;
-  background: rgba(255, 249, 233, .65);
+  height: 22%;
 }
 
 .light-beam {
   position: absolute;
-  left: 24%;
-  top: 40%;
-  width: 38%;
-  height: 12px;
+  left: 25%;
+  top: 43%;
   z-index: 15;
+  width: 40%;
+  height: 6px;
   opacity: 0;
   pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 245, 183, .75), rgba(170, 217, 255, .62), transparent);
+  box-shadow: 0 0 22px rgba(255, 241, 169, .68), 0 0 44px rgba(133, 175, 255, .34);
   transform: rotate(-8deg);
   transform-origin: left center;
-  background: linear-gradient(90deg, rgba(255, 246, 188, .86), rgba(154, 180, 255, .38), transparent);
-  filter: blur(3px);
-  box-shadow: 0 0 28px rgba(190, 210, 255, .34);
 }
 
 .light-beam.active {
-  opacity: .9;
+  animation: beamFlash 1.2s ease-in-out both;
+}
+
+@keyframes beamFlash {
+  0% { opacity: 0; transform: scaleX(.12) rotate(-8deg); }
+  30% { opacity: .95; transform: scaleX(1) rotate(-8deg); }
+  70% { opacity: .85; transform: scaleX(.98) rotate(-8deg); }
+  100% { opacity: 0; transform: scaleX(.1) rotate(-8deg); }
+}
+
+.stage-scene .brief-fog-room.cutscene-active .stage-card,
+.stage-scene .brief-fog-room.cutscene-active .flow-hotspot,
+.stage-scene .brief-fog-room.cutscene-active .scene-label,
+.stage-scene .brief-fog-room.cutscene-active .stage-close {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.stage-scene .brief-fog-room.cutscene-active::before {
+  filter: brightness(.34) contrast(1.18) saturate(.76) blur(1px) !important;
+  transform: scale(1.012) !important;
+}
+
+.stage-scene .brief-fog-room.cutscene-active::after {
+  background:
+    radial-gradient(circle at 28% 48%, rgba(255, 230, 150, .16), transparent 18rem),
+    radial-gradient(circle at 74% 48%, rgba(125, 140, 210, .20), transparent 20rem),
+    linear-gradient(90deg, rgba(0,0,0,.16), rgba(3,6,16,.52) 48%, rgba(0,0,0,.36)) !important;
+}
+
+.stage-scene .brief-fog-room.cutscene-active .stage-character.stage-character-brief {
+  left: 3% !important;
+  right: auto !important;
+  bottom: 1% !important;
+  width: clamp(390px, 31vw, 510px) !important;
+  height: 79% !important;
+  opacity: .86 !important;
+  transform: none !important;
+  z-index: 20 !important;
+  filter: brightness(.50) contrast(.88) saturate(.58) sepia(.04) hue-rotate(8deg) drop-shadow(0 32px 26px rgba(0,0,0,.9)) !important;
+}
+
+.stage-scene .brief-fog-room.cutscene-active .stage-character.stage-character-brief::before {
+  left: 74% !important;
+  top: 45% !important;
+  width: 70px !important;
+  height: 70px !important;
+  background:
+    radial-gradient(circle, rgba(255, 255, 248, .98) 0 8%, rgba(255, 228, 150, .82) 13%, rgba(182, 220, 255, .58) 26%, transparent 58%),
+    conic-gradient(from 0deg, transparent, rgba(255,255,240,.92), transparent 12%, rgba(170,215,255,.82), transparent 28%, rgba(255,221,150,.8), transparent 44%, rgba(255,255,255,.82), transparent 62%, rgba(150,200,255,.72), transparent 78%, rgba(255,230,160,.75), transparent);
+  box-shadow: 0 0 22px rgba(255,235,170,.74), 0 0 42px rgba(145,190,255,.52) !important;
+  animation: handSpark 1.2s ease-in-out both !important;
+}
+
+.stage-scene .brief-fog-room.cutscene-active .stage-character.stage-character-brief::after {
+  background: radial-gradient(circle at 76% 47%, rgba(255, 226, 153, .24), transparent 18%), linear-gradient(90deg, rgba(255, 220, 150, .10), transparent 44%) !important;
+}
+
+.stage-scene .brief-fog-room.cutscene-active .visual-fog-patch {
+  opacity: 0 !important;
+}
+
+.stage-scene .brief-fog-room.cutscene-active .visual-fog-patch.cutscene-target {
+  left: 67% !important;
+  top: 31% !important;
+  width: 23% !important;
+  height: 36% !important;
+  opacity: 1 !important;
+  z-index: 18 !important;
+  background:
+    radial-gradient(ellipse at 38% 42%, rgba(155, 165, 205, .34), transparent 38%),
+    radial-gradient(ellipse at 65% 57%, rgba(77, 80, 107, .32), transparent 48%),
+    radial-gradient(ellipse at 45% 70%, rgba(10, 10, 20, .36), transparent 56%) !important;
+  filter: blur(.5px) !important;
+  animation: fogCutscene 1.2s ease-in-out both !important;
+}
+
+.stage-scene .brief-fog-room.cutscene-active .visual-fog-patch.cutscene-target::before {
+  content: "••" !important;
+  left: 41% !important;
+  top: 38% !important;
+  color: rgba(255,255,250,.88) !important;
+  animation: fogEyesShock 1.2s ease-in-out both !important;
+}
+
+.stage-scene .brief-fog-room.cutscene-active .visual-fog-patch.cutscene-target::after {
+  content: "" !important;
+  left: 46% !important;
+  top: 48% !important;
+  width: 38px !important;
+  height: 46px !important;
+  opacity: 0;
+  animation: commandImpReveal 1.2s ease-in-out both !important;
+}
+
+.stage-scene .brief-fog-room.cutscene-active .light-beam.active {
+  display: block !important;
+  left: 29% !important;
+  right: auto !important;
+  top: 44% !important;
+  width: 43% !important;
+  height: 12px !important;
+  z-index: 19 !important;
+  transform-origin: left center !important;
+  transform: rotate(-7deg) !important;
+  border-radius: 999px !important;
+  background:
+    radial-gradient(circle at 7% 50%, rgba(255,255,250,.96) 0 5%, transparent 8%),
+    radial-gradient(circle at 22% 40%, rgba(255,235,160,.92) 0 2%, transparent 4%),
+    radial-gradient(circle at 38% 60%, rgba(170,215,255,.88) 0 2%, transparent 4%),
+    radial-gradient(circle at 56% 38%, rgba(255,255,245,.9) 0 1.8%, transparent 4%),
+    radial-gradient(circle at 74% 58%, rgba(255,225,145,.88) 0 2%, transparent 4%),
+    linear-gradient(90deg, rgba(255,235,165,.12), rgba(255,250,225,.88) 34%, rgba(170,215,255,.72) 62%, rgba(255,234,170,.16) 100%) !important;
+  box-shadow: 0 0 20px rgba(255,235,170,.82), 0 0 42px rgba(135,180,255,.42) !important;
+  animation: twinkleShoot 1.2s ease-in-out both !important;
+}
+
+.stage-scene .brief-fog-room.cutscene-active .light-beam.active::before,
+.stage-scene .brief-fog-room.cutscene-active .light-beam.active::after {
+  content: "✦ ✧ ✦" !important;
+  position: absolute !important;
+  width: auto !important;
+  height: auto !important;
+  color: rgba(255, 247, 210, .95) !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  text-shadow: 0 0 12px rgba(255,235,160,.95), 0 0 24px rgba(150,200,255,.62) !important;
+  letter-spacing: .45rem;
+}
+
+.stage-scene .brief-fog-room.cutscene-active .light-beam.active::before {
+  left: -18px !important;
+  top: -22px !important;
+  animation: sparkleScatter 1.2s ease-in-out both !important;
+}
+
+.stage-scene .brief-fog-room.cutscene-active .light-beam.active::after {
+  right: -36px !important;
+  top: -28px !important;
+  animation: sparkleImpact 1.2s ease-in-out both !important;
+}
+
+@keyframes twinkleShoot {
+  0% { opacity: 0; clip-path: inset(0 100% 0 0); filter: brightness(.8); }
+  18% { opacity: 1; clip-path: inset(0 58% 0 0); filter: brightness(1.35); }
+  42% { opacity: .96; clip-path: inset(0 0 0 0); filter: brightness(1.65); }
+  72% { opacity: .72; clip-path: inset(0 0 0 0); }
+  100% { opacity: 0; clip-path: inset(0 0 0 88%); filter: brightness(.8); }
+}
+
+@keyframes sparkleScatter {
+  0% { opacity: 0; transform: translate(0, 0) scale(.6); }
+  22% { opacity: 1; transform: translate(2px, -6px) scale(1.15); }
+  62% { opacity: .85; transform: translate(18px, -14px) scale(.9); }
+  100% { opacity: 0; transform: translate(28px, -22px) scale(.45); }
+}
+
+@keyframes sparkleImpact {
+  0%, 35% { opacity: 0; transform: scale(.55) rotate(0deg); }
+  48% { opacity: 1; transform: scale(1.25) rotate(12deg); }
+  82% { opacity: .88; transform: translate(12px, -10px) scale(.95) rotate(-8deg); }
+  100% { opacity: 0; transform: translate(22px, -18px) scale(.4) rotate(18deg); }
 }
 
 @media (max-width: 900px) {
-  .stage-card,
-  .cave-base-room .stage-card,
-  .brief-fog-room .stage-card {
-    top: auto;
-    bottom: 12px;
-    width: calc(100% - 28px);
-    left: 14px;
-    right: 14px;
-    max-height: 34%;
+  .stage-card {
+    width: min(330px, 44%);
+    max-height: 180px;
+    font-size: .76rem;
   }
 
   .stage-character-base,
   .stage-character-brief {
-    width: clamp(300px, 58vw, 470px);
-    height: 70%;
+    width: clamp(260px, 44vw, 420px);
   }
 
-  .stage-character-brief {
-    left: -8%;
-    width: clamp(280px, 50vw, 390px);
-    height: 68%;
+  .stage-scene .brief-fog-room.cutscene-active .stage-character.stage-character-brief {
+    left: -3% !important;
+    width: clamp(300px, 48vw, 430px) !important;
   }
 
-  .scene-drawer,
-  .scene-drawer.wide-drawer {
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    width: auto;
-    max-height: 72%;
+  .stage-scene .brief-fog-room.cutscene-active .light-beam.active {
+    left: 28% !important;
+    top: 43% !important;
+    width: 46% !important;
+  }
+
+  .stage-scene .brief-fog-room.cutscene-active .visual-fog-patch.cutscene-target {
+    left: 64% !important;
+    width: 29% !important;
   }
 }
