@@ -17,6 +17,7 @@ Current active repo focus:
 
 Files in this folder:
 - `main-repo-status.md`
+- `master-recovery-status.md`
 - `area-1-character-assets.md`
 - `area-6-main-room.md`
 - `area-9-brief-fog-workflow.md`
