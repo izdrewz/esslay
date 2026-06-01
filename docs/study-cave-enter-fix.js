@@ -137,8 +137,8 @@
     node.innerHTML = "";
     node.hidden = true;
   }
-  function drawer(title, body, wide = false) {
-    return `<aside class="scene-drawer ${wide ? "wide-drawer" : "compact-drawer"}"><button type="button" class="drawer-close" data-close-drawer>×</button><h2>${esc(title)}</h2>${body}</aside>`;
+  function drawer(title, body, wide = false, extraClass = "") {
+    return `<aside class="scene-drawer ${wide ? "wide-drawer" : "compact-drawer"} ${extraClass}"><button type="button" class="drawer-close" data-close-drawer>×</button><h2>${esc(title)}</h2>${body}</aside>`;
   }
   function list(items, key) {
     return items.length ? `<ul>${items.map((item) => `<li>${esc(item[key] || "item")}</li>`).join("")}</ul>` : `<p>None yet.</p>`;
@@ -198,7 +198,7 @@
     const flags = fog.flags.filter((flag) => flag.chunkId === chunk.id);
     const missed = fog.missedLoot.filter((loot) => loot.chunkId === chunk.id);
     const dismissed = fog.dismissed.filter((entry) => entry.chunkId === chunk.id);
-    return drawer(`Chunk ${index + 1}`, `<form data-chunk-form data-index="${index}" class="chunk-drawer"><p class="drawer-kicker">Cut-scene target: fog patch ${index + 1}</p><label>Original wording<textarea name="originalText" rows="4">${esc(chunk.originalText)}</textarea></label><div class="drawer-grid"><label>Chunk type<select name="type">${options(typeLabels, chunk.type)}</select></label><label>Chunk state<select name="state">${options(states, chunk.state)}</select></label></div><label>Plain-meaning note<textarea name="plain" rows="3">${esc(note(fog, chunk.id, "plain"))}</textarea></label><label>Action-created note<textarea name="action" rows="3">${esc(note(fog, chunk.id, "action"))}</textarea></label><details open><summary>Add highlight</summary><label>Selected wording<input name="highlightedText"></label><label>Highlight category<select name="category">${options(cats, cats[0])}</select></label><label>Confidence<select name="confidence"><option>Sure</option><option>Unsure</option><option>Needs checking</option></select></label><label>Highlight note<input name="highlightNote"></label><button data-add-highlight type="button">Add highlight</button></details><h3>Selected highlights</h3>${list(highlights.map((highlight) => ({ text: `${highlight.text} — ${highlight.category}` })), "text")}<details><summary>Flags, missed loot, dismissed wording</summary><label>Flag note<input name="flagNote"></label><button data-add-flag type="button">Add flag</button><label>Missed loot note<input name="missedNote"></label><button data-add-missed type="button">Add missed loot</button><label>Dismissed wording<input name="dismissedText"></label><button data-dismiss-wording type="button">Dismiss wording</button></details><h3>Flags</h3>${list(flags, "note")}<h3>Missed loot</h3>${list(missed, "itemMissed")}<h3>Dismissed wording</h3>${list(dismissed, "text")}<div class="drawer-actions sticky-actions"><button data-save-chunk type="button">Save chunk</button><button data-mark-full type="button">Mark fully unpacked</button><button data-park type="button">Park for later</button><button data-open-chunk="${Math.max(0, index - 1)}" type="button">Previous chunk</button><button data-open-chunk="${Math.min(fog.chunks.length - 1, index + 1)}" type="button">Next chunk</button></div></form>`, true);
+    return drawer(`Chunk ${index + 1}`, `<form data-chunk-form data-index="${index}" class="chunk-drawer"><p class="drawer-kicker">Cut-scene target: fog patch ${index + 1}</p><label>Original wording<textarea name="originalText" rows="4">${esc(chunk.originalText)}</textarea></label><div class="drawer-grid"><label>Chunk type<select name="type">${options(typeLabels, chunk.type)}</select></label><label>Chunk state<select name="state">${options(states, chunk.state)}</select></label></div><label>Plain-meaning note<textarea name="plain" rows="3">${esc(note(fog, chunk.id, "plain"))}</textarea></label><label>Action-created note<textarea name="action" rows="3">${esc(note(fog, chunk.id, "action"))}</textarea></label><details open><summary>Add highlight</summary><label>Selected wording<input name="highlightedText"></label><label>Highlight category<select name="category">${options(cats, cats[0])}</select></label><label>Confidence<select name="confidence"><option>Sure</option><option>Unsure</option><option>Needs checking</option></select></label><label>Highlight note<input name="highlightNote"></label><button data-add-highlight type="button">Add highlight</button></details><h3>Selected highlights</h3>${list(highlights.map((highlight) => ({ text: `${highlight.text} — ${highlight.category}` })), "text")}<details><summary>Flags, missed loot, dismissed wording</summary><label>Flag note<input name="flagNote"></label><button data-add-flag type="button">Add flag</button><label>Missed loot note<input name="missedNote"></label><button data-add-missed type="button">Add missed loot</button><label>Dismissed wording<input name="dismissedText"></label><button data-dismiss-wording type="button">Dismiss wording</button></details><h3>Flags</h3>${list(flags, "note")}<h3>Missed loot</h3>${list(missed, "itemMissed")}<h3>Dismissed wording</h3>${list(dismissed, "text")}<div class="drawer-actions sticky-actions"><button data-save-chunk type="button">Save chunk</button><button data-mark-full type="button">Mark fully unpacked</button><button data-park type="button">Park for later</button><button data-open-chunk="${Math.max(0, index - 1)}" type="button">Previous chunk</button><button data-open-chunk="${Math.min(fog.chunks.length - 1, index + 1)}" type="button">Next chunk</button></div></form>`, true, "chunk-action-drawer");
   }
 
   function chunkResultPanel(save, index, actionName) {
@@ -206,7 +206,7 @@
     const chunk = fog.chunks[index];
     const resolved = resolvedStates.includes(chunk?.state);
     const nextLabel = canClear(fog) ? "Open summary / finish" : "Work next chunk";
-    return drawer("Chunk saved", `<p><strong>Chunk ${index + 1}</strong> saved as <strong>${esc(chunk?.state || "saved")}</strong>.</p><p>${resolved ? "The matching fog patch has changed state in the scene." : "The matching fog patch is now marked as in progress."}</p><p class="drawer-kicker">Last action: ${esc(actionName)}</p><div class="drawer-actions"><button type="button" data-open-chunk="${index}">Reopen this chunk</button><button type="button" ${canClear(fog) ? "data-brief-panel=\"summary\"" : "data-next-chunk"}>${nextLabel}</button><button type="button" data-brief-panel="summary">Summary</button><button type="button" data-return-cave-base>Back to Cave Base</button></div>`, true);
+    return drawer("Chunk saved", `<p><strong>Chunk ${index + 1}</strong> saved as <strong>${esc(chunk?.state || "saved")}</strong>.</p><p>${resolved ? "The matching fog patch changed state in the scene." : "The matching fog patch is now marked as in progress."}</p><p class="drawer-kicker">Last action: ${esc(actionName)}</p><div class="drawer-actions"><button type="button" data-open-chunk="${index}">Reopen this chunk</button><button type="button" ${canClear(fog) ? "data-brief-panel=\"summary\"" : "data-next-chunk"}>${nextLabel}</button><button type="button" data-brief-panel="summary">Summary</button><button type="button" data-return-cave-base>Back to Cave Base</button></div>`, true, "chunk-result-drawer");
   }
 
   function flagsPanel(save) {
@@ -333,7 +333,11 @@
     chunk.updatedAt = now();
     quest.progressLog.unshift({ id: id("log"), summary: `Brief Fog chunk ${index + 1}: ${actionLabels[action] || "saved"}.`, createdAt: now() });
     saveState(save);
-    openStage(briefFog(save, chunkResultPanel(save, index, actionLabels[action] || "saved"), index));
+    openStage(briefFog(save, "", index));
+    window.setTimeout(() => {
+      const latest = load();
+      openStage(briefFog(latest, chunkResultPanel(latest, index, actionLabels[action] || "saved"), index));
+    }, 950);
   }
 
   function clearFog() {
