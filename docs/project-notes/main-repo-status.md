@@ -33,7 +33,11 @@ Implemented in repo:
 - Character appears in Cave Base at a workable size.
 - Character has CSS filter/drop-shadow blending.
 - The rectangle lighting box bug was removed by removing the rectangular pseudo-element overlay and bumping the CSS cache to `study-cave-stage-scene.css?v=4`.
-- Continue Quest opens Brief Fog scene placeholder.
+- Continue Quest opens Brief Fog scene.
+- Brief Fog v0.1 now has a scene-first task workflow: task brief drawer, chunk generation, fog-patch chunk drawers, highlight categories, plain-meaning notes, action-created notes, flags, missed loot, dismissed wording, chunk state decisions, summary, and clear behaviour.
+- Brief Fog completion now returns to Cave Base, keeps Brief Fog completed, unlocks Source Mine placeholder, and updates progress to 1 / 7.
+- Cave Base has compact placeholder panels for Outfit Chest, Cave Journal / Route Ledger, Completed Chamber Summary, and Flags / Missed Loot.
+- Brief Fog export is available from the summary drawer as `.md`, `.txt`, and Word-openable `.doc` copy/download panels.
 
 Relevant files:
 
@@ -48,8 +52,9 @@ Relevant files:
 
 - Cave Base background needs sharpening. This is flagged for later asset/image work, not urgent route logic.
 - Character blending is improved but still CSS-based. A better future fix is a cave-specific avatar PNG with lighting baked in.
-- Brief Fog is currently placeholder-level and needs the real scene-first chunk/highlight workflow.
-- UI should avoid long scrolling forms. Use compact panels, hotspots, click-to-open cards, and hover/tap previews.
+- Brief Fog v0.1 is implemented as a functional placeholder and needs Izzy testing before it can be marked completed locked.
+- Brief Fog v0.1 currently uses compact drawers and placeholder CSS scene effects, not final monster animation/art.
+- UI should continue avoiding long scrolling forms. Current version uses compact drawers, but this needs visual review on Izzy's screen.
 - Final Area 1 cave character poses and magic-light assets are not in repo yet.
 
 ## Received area responses
@@ -57,13 +62,24 @@ Relevant files:
 Received and recorded:
 
 - Area 9 — Brief Fog v0.1 field/UI workflow. Status: completed. Saved in `docs/project-notes/area-9-brief-fog-workflow.md`.
+- Area 10 — Brief Fog and Cave Base scene-first layout support. Status: completed needs further edits. Saved in `docs/project-notes/area-10-visual-scenes.md`.
 - Area 11 — Brief Fog save/export structure. Status: completed. Saved in `docs/project-notes/area-11-save-export.md`.
+- Area 12 — Cave Base panels and route update after Brief Fog clears. Status: completed. Saved in `docs/project-notes/area-12-route-behaviour.md`.
 
-Still useful before or during implementation:
+Still useful later:
 
-- Area 10 — scene-first layout for Brief Fog panels, fog patches, flag marker, missed-loot stash, route-forward placement, placeholder effects, and Cave Base sharpening guidance.
-- Area 12 — exact Cave Base panel behaviour and route updates after Brief Fog clears.
 - Area 1 — final cave character poses, cave outfits, sparkle/light overlays, and cave-specific avatar polish. Not blocking placeholder build.
+
+## Current review status
+
+Brief Fog v0.1 implementation status:
+
+active / needs Izzy review
+
+Review question for Izzy:
+- If Brief Fog v0.1 works and feels acceptable for now, mark it `completed needs further edits` because final art, monster effects, and visual polish are still future work.
+- If Izzy is happy to lock this placeholder behaviour, mark route/workflow behaviour `completed locked` while keeping visual polish as future work.
+- If Izzy is not happy, keep it `active` and list exact fixes needed.
 
 ## Priority ownership by area
 
@@ -113,43 +129,40 @@ Needed later:
 
 ## Next priorities
 
-Priority 1:
-Build Brief Fog / Question-Unpacking Chamber v0.1 as a usable scene-first workflow.
+Priority 1 review:
+Test Brief Fog v0.1 in browser and decide whether it is acceptable for now.
 
-Needed features:
-- raw task text input
-- split into chunks
-- chunk cards
-- highlight category selection
-- plain-meaning note
-- action-created note
-- flag button
-- missed loot button
-- dismissal reason
-- chunk state
-- completion check that every chunk has a decision
-- output cards for command words, keywords, scope/limits, source requirements, task demand summary
-- save/export support from Area 11
+Test path:
+- Open `docs/cave.html`
+- Open Quest Board
+- Select Study Skills Trial
+- Enter Cave Base
+- Continue Quest
+- Save task brief
+- Suggest chunks
+- Open fog patches
+- Add highlight / note / flag / missed loot / dismissal
+- Mark chunks fully unpacked or parked
+- Open summary
+- Finish Brief Fog
+- Confirm Source Mine unlocks and Cave Base shows progress 1 / 7
+- Test exports from Brief Fog summary drawer
 
 Priority 2:
-Improve Cave Base interaction.
+Improve Cave Base interaction after Izzy review if needed.
 
-Needed features:
-- outfit chest placeholder panel
-- cave journal / route ledger panel
-- completed chamber summary panel
-- flags/missed loot panel
-- clearer continue route hotspot
+Potential future improvements:
+- better hotspot placement
+- clearer labels on hover
+- nicer compact panel styling
+- stronger visual state feedback
 
 Priority 3:
 Persist Study Cave state cleanly.
 
-Needed features:
-- localStorage StudyCaveSaveState
-- completed chambers persist
-- flags and missed loot persist
-- reset Study Skills Trial only
-- export updated route as `.md`, `.txt`, and Word-openable `.doc`
+Current v0.1 uses localStorage key `esslay-study-cave-save-v01`.
+
+Future improvement may be needed if the final data shape is moved into separate files or shared with other systems.
 
 Priority 4:
 Asset polish.
