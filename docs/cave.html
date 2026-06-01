@@ -8,6 +8,65 @@
     <link rel="stylesheet" href="quest-board.css?v=2">
     <link rel="stylesheet" href="study-cave-flow.css?v=4">
     <link rel="stylesheet" href="study-cave-stage-scene.css?v=5">
+    <style>
+      .brief-fog-room .stage-character-brief {
+        left: auto !important;
+        right: 0.5% !important;
+        bottom: 2% !important;
+        width: clamp(330px, 28vw, 445px) !important;
+        height: 74% !important;
+        z-index: 14 !important;
+        opacity: 0.92 !important;
+        filter: brightness(.68) contrast(.9) saturate(.68) sepia(.04) hue-rotate(18deg) drop-shadow(0 28px 24px rgba(0,0,0,.82)) drop-shadow(0 0 20px rgba(105,150,255,.20)) !important;
+      }
+
+      .brief-fog-room .stage-character-brief::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(circle at 45% 28%, rgba(128, 170, 255, .18), transparent 28%), linear-gradient(110deg, rgba(90, 120, 255, .12), transparent 55%);
+        mix-blend-mode: screen;
+      }
+
+      .brief-fog-room .hotspot-parchment {
+        left: 11% !important;
+        top: 49% !important;
+        width: 17% !important;
+        height: 12% !important;
+      }
+
+      .brief-fog-room .fog-patch-1 { left: 25% !important; top: 13% !important; width: 16% !important; height: 20% !important; }
+      .brief-fog-room .fog-patch-2 { left: 42% !important; top: 34% !important; width: 17% !important; height: 24% !important; }
+      .brief-fog-room .fog-patch-3 { left: 60% !important; top: 12% !important; width: 16% !important; height: 21% !important; }
+      .brief-fog-room .fog-patch-4 { left: 62% !important; bottom: 20% !important; width: 14% !important; height: 18% !important; }
+
+      .brief-fog-room .hotspot-brief-flag { left: 5% !important; top: 67% !important; width: 10% !important; height: 15% !important; }
+      .brief-fog-room .hotspot-brief-loot { left: 20% !important; bottom: 13% !important; width: 13% !important; height: 16% !important; }
+      .brief-fog-room .hotspot-forward { left: 47% !important; top: 64% !important; width: 15% !important; height: 18% !important; }
+
+      .brief-fog-room .flow-hotspot {
+        z-index: 38 !important;
+        border-color: rgba(190, 216, 255, .48) !important;
+        background: rgba(13, 18, 32, .22) !important;
+        box-shadow: 0 0 26px rgba(112, 153, 255, .22), inset 0 0 30px rgba(255,255,255,.05) !important;
+      }
+
+      .brief-fog-room .flow-hotspot::after {
+        opacity: .96 !important;
+        background: rgba(6, 10, 22, .84) !important;
+        border-color: rgba(175, 205, 255, .48) !important;
+        color: #edf3ff !important;
+      }
+
+      .brief-fog-room .stage-card {
+        right: 16px !important;
+        left: auto !important;
+        width: min(320px, 28%) !important;
+        background: rgba(6, 8, 18, .62) !important;
+        border-color: rgba(175,205,255,.42) !important;
+      }
+    </style>
   </head>
   <body>
     <main class="studyquest-shell scene-first cave-opening-screen">
@@ -108,6 +167,6 @@
 
     <script src="quest-board.js?v=2"></script>
     <script src="study-cave-task-map-fallback.js?v=3"></script>
-    <script src="study-cave-enter-fix.js?v=2"></script>
+    <script src="study-cave-enter-fix.js?v=3"></script>
   </body>
 </html>
