@@ -34,7 +34,7 @@ Area 1 does not edit the repo, design cave backgrounds, or decide save/route log
 
 ## Current active Area 1 request: Brief Fog duel cutscene pose set
 
-Status: needs approval / precise asset plan returned, no approved preview yet
+Status: active / needs corrected preview
 
 Izzy sent jester reference images for the Brief Fog cutscene direction.
 
@@ -125,6 +125,29 @@ Do not use the latest generated wizard, sorcerer, jester, bard, princess, knight
 
 The rejected images must not be imported, cleaned, zipped as final files, or treated as approved references.
 
+## Rejected base-pose issue — character looks too childlike
+
+Status: active correction needed
+
+Izzy rejected the most recent base-pose references because the character reads too childlike. This is not acceptable for the locked player character.
+
+Reasons identified from the rejected previews:
+- head/eyes read too large compared with the body
+- body proportions were simplified into a doll/chibi-like shape
+- shoulders/torso were too soft and narrow
+- posture looked timid/passive instead of adult academic adventurer
+- plain tank/shorts plus soft expression made the figure read younger
+- some poses made the arms/hands look small or juvenile
+
+Correction rule for all next Area 1 previews:
+- keep the approved base girl's identity, but make her read as an adult young woman, not a child
+- do not enlarge head or eyes
+- keep adult proportions, longer body line, and confident posture
+- avoid timid doll poses
+- keep the face soft but not babyish
+- outfit and pose should support academic-adventurer maturity
+- do not use over-sexualised fixes; the correction is proportion, posture, styling, and expression
+
 ## Correct art-style direction for next Area 1 work
 
 The next Area 1 output must match the approved base sprite style:
@@ -144,6 +167,8 @@ Avoid:
 - adding tattoos to both arms
 - making outfits bland default clothing
 - hard laser-beam magic
+- childlike/chibi/doll proportions
+- timid poses that make the character look younger than intended
 
 ## Precise Brief Fog asset plan returned
 
@@ -258,3 +283,4 @@ Suggested Brief Fog files:
 - The next image generation pass must fix art style before approval can happen.
 - Izzy needs to approve the corrected pose/art-style direction before final PNG production.
 - Area 1 must now explicitly tell Izzy when it updates this note and must send previews/output directly if there is anything visual to approve.
+- The next preview must fix the childlike read by correcting proportions, posture, styling, and expression while preserving the approved base girl.
