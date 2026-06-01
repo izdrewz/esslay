@@ -128,6 +128,48 @@
         border-color: rgba(175, 205, 255, .48) !important;
         color: #edf3ff !important;
       }
+
+      .brief-fog-room .chunk-action-drawer {
+        left: 50% !important;
+        right: auto !important;
+        top: 50% !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+        width: min(760px, 72vw) !important;
+        max-height: min(82vh, 760px) !important;
+        z-index: 70 !important;
+        border-color: rgba(180, 208, 255, .72) !important;
+        background: rgba(247, 240, 226, .98) !important;
+        box-shadow: 0 26px 70px rgba(0,0,0,.58), 0 0 40px rgba(120,160,255,.22) !important;
+      }
+
+      .brief-fog-room .chunk-result-drawer {
+        left: 50% !important;
+        right: auto !important;
+        bottom: 22px !important;
+        transform: translateX(-50%) !important;
+        width: min(560px, 62vw) !important;
+        z-index: 70 !important;
+        animation: resultRise .25s ease-out;
+      }
+
+      @keyframes resultRise {
+        from { opacity: 0; transform: translate(-50%, 16px); }
+        to { opacity: 1; transform: translate(-50%, 0); }
+      }
+
+      @media (max-width: 900px) {
+        .brief-fog-room .chunk-action-drawer,
+        .brief-fog-room .chunk-result-drawer {
+          left: 12px !important;
+          right: 12px !important;
+          top: auto !important;
+          bottom: 12px !important;
+          width: auto !important;
+          transform: none !important;
+          max-height: 76vh !important;
+        }
+      }
     </style>
   </head>
   <body>
@@ -229,6 +271,6 @@
 
     <script src="quest-board.js?v=2"></script>
     <script src="study-cave-task-map-fallback.js?v=3"></script>
-    <script src="study-cave-enter-fix.js?v=4"></script>
+    <script src="study-cave-enter-fix.js?v=5"></script>
   </body>
 </html>
