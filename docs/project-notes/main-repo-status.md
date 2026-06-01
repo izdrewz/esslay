@@ -1,6 +1,6 @@
 # Main repo status
 
-Last updated: 2026-05-31
+Last updated: 2026-06-01
 
 ## Current locked Study Cave flow
 
@@ -43,6 +43,9 @@ Implemented in repo:
 - Brief Fog quest box is more translucent and fog patch oval outlines were removed.
 - Brief Fog placeholder light beam now shoots from the character hand area toward the active fog/imp target during the CSS cutscene.
 - Brief Fog placeholder character is flipped during the active cutscene so she faces toward the fog/imp target better until final pose art exists.
+- Brief Fog cutscene direction is now: character on the left, smoke cloud / Command Imp on the right.
+- Brief Fog cutscene should feel more like a short Mortal Kombat/comic-frame duel overlay than a normal room interaction.
+- Brief Fog magic should read as twinkle/sparkle magic, not a hard laser beam.
 
 Relevant files:
 
@@ -63,6 +66,8 @@ Relevant files:
 - Final Area 1 cave character poses and magic-light assets are not in repo yet.
 - Command Imp CSS placeholder reveal works as a temporary effect, but the imp fall/flee sequence is not good enough yet. Future fix: proper Command Imp art/animation or stronger CSS fall/flee keyframes.
 - Brief Fog character facing/casting is currently a CSS flip and hand-spark placeholder. Future fix: Area 1 should provide final focused hand-spark and casting light-beam poses facing the fog/imp direction.
+- Area 1 now needs a proper Brief Fog cutscene pose set: attack/casting pose, confident/smug follow-up pose, threat-with-sparkle pose, and scared/defensive reaction poses for later scenes.
+- Final attack pose should be designed with the character on the left shooting twinkle magic toward smoke/imp on the right.
 
 ## Received area responses
 
@@ -179,10 +184,25 @@ Needed later:
 - final Cave Base character pose
 - final Brief Fog character magic poses
 - final casting pose facing fog/imp target
+- final attack pose with character on left and smoke/imp on right
 - light beam / sparkle overlays
 - Command Imp placeholder or final art
 - Command Imp fall/flee sequence polish
 - cave-specific avatar lighting asset
+
+## Current Area 1 request needed
+
+Area 1 should make or plan the final Brief Fog cutscene character pose set using Izzy's jester references.
+
+Required first cutscene direction:
+- character on left
+- smoke cloud / Command Imp on right
+- character faces and shoots toward the imp
+- magic should look twinkly/sparkly, not like a hard laser beam
+- first useful direction is left-to-right attack pose
+- later direction variants can wait unless needed
+
+Area 1 should return either preview images or a precise asset plan if it cannot generate the pose directly.
 
 ## Coordination rule
 
