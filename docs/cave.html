@@ -16,8 +16,8 @@
         width: clamp(330px, 28vw, 445px) !important;
         height: 74% !important;
         z-index: 14 !important;
-        opacity: 0.92 !important;
-        filter: brightness(.68) contrast(.9) saturate(.68) sepia(.04) hue-rotate(18deg) drop-shadow(0 28px 24px rgba(0,0,0,.82)) drop-shadow(0 0 20px rgba(105,150,255,.20)) !important;
+        opacity: 0.78 !important;
+        filter: brightness(.42) contrast(.82) saturate(.48) sepia(.03) hue-rotate(24deg) drop-shadow(0 30px 26px rgba(0,0,0,.92)) drop-shadow(0 0 16px rgba(80,120,210,.16)) !important;
       }
 
       .brief-fog-room .stage-character-brief::after {
@@ -25,8 +25,32 @@
         position: absolute;
         inset: 0;
         pointer-events: none;
-        background: radial-gradient(circle at 45% 28%, rgba(128, 170, 255, .18), transparent 28%), linear-gradient(110deg, rgba(90, 120, 255, .12), transparent 55%);
+        background: radial-gradient(circle at 45% 28%, rgba(90, 130, 230, .10), transparent 30%), linear-gradient(110deg, rgba(50, 82, 170, .12), transparent 55%);
         mix-blend-mode: screen;
+      }
+
+      .brief-fog-room .stage-card {
+        left: 16px !important;
+        right: auto !important;
+        width: min(340px, 30%) !important;
+        background: rgba(6, 8, 18, .68) !important;
+        border-color: rgba(175,205,255,.42) !important;
+      }
+
+      .brief-fog-room .stage-card-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .brief-fog-room .stage-card-actions button {
+        border: 1px solid rgba(175,205,255,.48);
+        border-radius: 999px;
+        padding: 6px 9px;
+        color: #edf3ff;
+        background: rgba(6, 10, 22, .82);
+        font-weight: 900;
       }
 
       .brief-fog-room .hotspot-parchment {
@@ -34,6 +58,52 @@
         top: 49% !important;
         width: 17% !important;
         height: 12% !important;
+      }
+
+      .brief-fog-room .visual-fog-patch {
+        position: absolute;
+        z-index: 10;
+        display: block;
+        border: 2px solid rgba(190, 216, 255, .22);
+        border-radius: 999px;
+        pointer-events: none !important;
+        background: radial-gradient(circle, rgba(168, 187, 255, .14), rgba(18, 16, 24, .20) 62%, transparent 72%);
+        box-shadow: 0 0 30px rgba(112, 153, 255, .15), inset 0 0 32px rgba(255,255,255,.04);
+      }
+
+      .brief-fog-room .visual-fog-patch::before,
+      .brief-fog-room .visual-fog-patch::after {
+        content: "••";
+        position: absolute;
+        color: rgba(246, 247, 255, .85);
+        font-size: 1.05rem;
+        letter-spacing: .45rem;
+        text-shadow: 0 0 10px rgba(190, 210, 255, .8);
+      }
+
+      .brief-fog-room .visual-fog-patch::before { left: 24%; top: 32%; }
+      .brief-fog-room .visual-fog-patch::after { right: 22%; bottom: 28%; }
+
+      .brief-fog-room .visual-fog-patch.cleared {
+        border-color: rgba(255, 223, 141, .46);
+        background: radial-gradient(circle, rgba(255, 222, 143, .16), rgba(20, 14, 10, .05) 62%, transparent 72%);
+        box-shadow: 0 0 34px rgba(255, 211, 109, .14);
+      }
+
+      .brief-fog-room .visual-fog-patch.cleared::before,
+      .brief-fog-room .visual-fog-patch.cleared::after {
+        content: "";
+      }
+
+      .brief-fog-room .visual-fog-patch.cutscene-target {
+        border-color: rgba(220, 236, 255, .66);
+        box-shadow: 0 0 44px rgba(135, 175, 255, .34), inset 0 0 40px rgba(255,255,255,.08);
+        animation: fogPulse 1.4s ease-in-out infinite alternate;
+      }
+
+      @keyframes fogPulse {
+        from { transform: scale(1); opacity: .82; }
+        to { transform: scale(1.04); opacity: 1; }
       }
 
       .brief-fog-room .fog-patch-1 { left: 25% !important; top: 13% !important; width: 16% !important; height: 20% !important; }
@@ -57,14 +127,6 @@
         background: rgba(6, 10, 22, .84) !important;
         border-color: rgba(175, 205, 255, .48) !important;
         color: #edf3ff !important;
-      }
-
-      .brief-fog-room .stage-card {
-        right: 16px !important;
-        left: auto !important;
-        width: min(320px, 28%) !important;
-        background: rgba(6, 8, 18, .62) !important;
-        border-color: rgba(175,205,255,.42) !important;
       }
     </style>
   </head>
@@ -167,6 +229,6 @@
 
     <script src="quest-board.js?v=2"></script>
     <script src="study-cave-task-map-fallback.js?v=3"></script>
-    <script src="study-cave-enter-fix.js?v=3"></script>
+    <script src="study-cave-enter-fix.js?v=4"></script>
   </body>
 </html>
