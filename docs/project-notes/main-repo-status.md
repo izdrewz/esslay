@@ -38,6 +38,11 @@ Implemented in repo:
 - Brief Fog completion now returns to Cave Base, keeps Brief Fog completed, unlocks Source Mine placeholder, and updates progress to 1 / 7.
 - Cave Base has compact placeholder panels for Outfit Chest, Cave Journal / Route Ledger, Completed Chamber Summary, and Flags / Missed Loot.
 - Brief Fog export is available from the summary drawer as `.md`, `.txt`, and Word-openable `.doc` copy/download panels.
+- Brief Fog fog patches are visual-only CSS cutscene/state patches, not clickable buttons.
+- Brief Fog chunk actions save correctly and show a temporary cutscene before the chunk-saved result drawer.
+- Brief Fog quest box is more translucent and fog patch oval outlines were removed.
+- Brief Fog placeholder light beam now shoots from the character hand area toward the active fog/imp target during the CSS cutscene.
+- Brief Fog placeholder character is flipped during the active cutscene so she faces toward the fog/imp target better until final pose art exists.
 
 Relevant files:
 
@@ -56,6 +61,8 @@ Relevant files:
 - Brief Fog v0.1 currently uses compact drawers and placeholder CSS scene effects, not final monster animation/art.
 - UI should continue avoiding long scrolling forms. Current version uses compact drawers, but this needs visual review on Izzy's screen.
 - Final Area 1 cave character poses and magic-light assets are not in repo yet.
+- Command Imp CSS placeholder reveal works as a temporary effect, but the imp fall/flee sequence is not good enough yet. Future fix: proper Command Imp art/animation or stronger CSS fall/flee keyframes.
+- Brief Fog character facing/casting is currently a CSS flip and hand-spark placeholder. Future fix: Area 1 should provide final focused hand-spark and casting light-beam poses facing the fog/imp direction.
 
 ## Received area responses
 
@@ -171,8 +178,10 @@ Needed later:
 - sharpen Cave Base background
 - final Cave Base character pose
 - final Brief Fog character magic poses
+- final casting pose facing fog/imp target
 - light beam / sparkle overlays
 - Command Imp placeholder or final art
+- Command Imp fall/flee sequence polish
 - cave-specific avatar lighting asset
 
 ## Coordination rule
