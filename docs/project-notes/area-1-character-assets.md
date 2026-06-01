@@ -36,7 +36,7 @@ Area 1 does not edit the repo, design cave backgrounds, or decide save/route log
 
 Status: active / needs corrected preview
 
-Izzy sent jester reference images for the Brief Fog cutscene direction.
+Izzy sent jester reference images for the Brief Fog cutscene direction. The jester references are for pose, expression, movement, energy, and duel staging. The jester outfit is not locked as the required Brief Fog clothing.
 
 Required first cutscene layout:
 - character on left
@@ -46,7 +46,7 @@ Required first cutscene layout:
 - cutscene should feel like a short comic/Mortal-Kombat-style frame, separate from the normal room interaction if needed
 
 Required first pose priority:
-- left-to-right attack/casting pose using the jester reference style
+- left-to-right attack/casting pose using the jester reference pose/expression direction where useful
 - hand extended toward the right
 - body and face aimed toward the smoke/imp
 - sparkle/twinkle magic originating from the hand
@@ -65,6 +65,33 @@ Direction variants:
 
 Important asset rule:
 Do not replace the approved character with a different design. Use the references for pose/outfit direction, but preserve the approved girl’s identity and locked character rules.
+
+## Brief Fog outfit modularity rule
+
+Status: active rule / applies immediately
+
+Clothing is not the main approval point for the Brief Fog duel preview because the worn outfit may change in-game depending on what outfit the player has selected.
+
+Area 1 should focus approval on:
+- approved base girl identity
+- adult proportions and non-childlike read
+- pose clarity
+- left-to-right staging
+- expression
+- hand position
+- twinkle/sparkle magic direction
+- whether the character pose can work as a reusable base for multiple outfits
+- whether character, monster/smoke, and magic/effects can be separated cleanly later
+
+The jester outfit can be used as a reference or one outfit variant, but it is not the locked required clothing for every Brief Fog pose.
+
+Do not reject a Brief Fog preview only because the character is not wearing the jester outfit. Do reject it if the pose, character identity, proportions, art style, scene direction, or asset separation is wrong.
+
+Preferred production direction:
+- create the pose as a reusable character pose base first
+- then apply outfit variants later where needed
+- keep magic/effect overlays separate where practical
+- keep monster/smoke assets separate from the character where practical
 
 ## Area 1 communication/update rule — master correction
 
@@ -213,6 +240,7 @@ Character-only PNG needs:
 - same canvas/alignment across all five
 - black-background previews first for approval
 - final transparent PNGs after Izzy approves previews
+- pose should be usable as a reusable base for multiple possible worn outfits
 
 Separate effect overlays needed:
 - `brief_fog_hand_sparkle_overlay_v01.png`
@@ -284,3 +312,4 @@ Suggested Brief Fog files:
 - Izzy needs to approve the corrected pose/art-style direction before final PNG production.
 - Area 1 must now explicitly tell Izzy when it updates this note and must send previews/output directly if there is anything visual to approve.
 - The next preview must fix the childlike read by correcting proportions, posture, styling, and expression while preserving the approved base girl.
+- Clothing is not the main approval point for the Brief Fog duel preview because the worn outfit can change in-game; pose, identity, adult proportions, staging, and separated effects matter more.
