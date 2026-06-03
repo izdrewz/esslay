@@ -20,6 +20,31 @@ The old first-chamber flow is outdated:
 
 Those are now absorbed into Brief Fog / Question-Unpacking Chamber.
 
+## Current visual direction decision
+
+The project is no longer pursuing an animation-heavy pipeline for the current Study Cave / Brief Fog work.
+
+Use an interactive visual-novel / game-CG style instead:
+
+- static scene backgrounds
+- character pose swaps
+- expression/pose state changes
+- separate sparkle/light overlays
+- smoke/Command Imp as separate scene-state art
+- click-to-advance or click-hotspot interactions
+- compact drawers/panels over the scene
+- optional subtle CSS glow/fade only where it supports the static scene
+
+Do not require full frame-by-frame animation, video, or complex animated sequences for v0.1.
+
+For Brief Fog, the earlier five-part idea should be treated as five interactive visual-novel scene states, not an animation requirement:
+
+1. light ready / wary
+2. twinkle cast
+3. afterglow / imp reveal
+4. confident after reveal
+5. warning sparkle / imp retreats
+
 ## Current implemented state
 
 Implemented in repo:
@@ -38,17 +63,15 @@ Implemented in repo:
 - Continue Quest opens Brief Fog scene.
 - Brief Fog v0.1 now has a scene-first task workflow: task brief drawer, chunk generation, fog-patch chunk drawers, highlight categories, plain-meaning notes, action-created notes, flags, missed loot, dismissed wording, chunk state decisions, summary, and clear behaviour.
 - The rendered Brief Fog task drawer now uses the button label `Suggest chunks` for the chunk-generation action.
-- A safe Task Brief guard has been added in `docs/quest-board.js` to intercept Task Brief clicks inside Brief Fog, avoid rendering oversized or malformed saved data, and provide a safe reset/save drawer instead of freezing the browser.
 - Brief Fog completion now returns to Cave Base, keeps Brief Fog completed, unlocks Source Mine placeholder, and updates progress to 1 / 7.
 - Cave Base has compact placeholder panels for Outfit Chest, Cave Journal / Route Ledger, Completed Chamber Summary, and Flags / Missed Loot.
 - Brief Fog export is available from the summary drawer as `.md`, `.txt`, and Word-openable `.doc` copy/download panels.
-- Brief Fog fog patches are visual-only CSS cutscene/state patches, not clickable buttons.
-- Brief Fog chunk actions save correctly and show a temporary cutscene before the chunk-saved result drawer.
+- Brief Fog fog patches are visual-only CSS scene-state patches, not clickable buttons.
+- Brief Fog chunk actions save correctly and show a temporary visual response before the chunk-saved result drawer.
 - Brief Fog quest box is more translucent and fog patch oval outlines were removed.
-- Brief Fog placeholder light beam now shoots from the character hand area toward the active fog/imp target during the CSS cutscene.
-- Brief Fog placeholder character is flipped during the active cutscene so she faces toward the fog/imp target better until final pose art exists.
-- Brief Fog cutscene direction is now: character on the left, smoke cloud / Command Imp on the right.
-- Brief Fog cutscene should feel more like a short Mortal Kombat/comic-frame duel overlay than a normal room interaction.
+- Brief Fog placeholder light effect currently points from the character hand area toward the active fog/imp target during the temporary CSS visual response.
+- Brief Fog placeholder character is flipped during the active visual response so she faces toward the fog/imp target better until final pose art exists.
+- Brief Fog visual direction is now: interactive visual-novel scene states with character on one side and smoke/Command Imp target on the other, not full animation.
 - Brief Fog magic should read as twinkle/sparkle magic, not a hard laser beam.
 - Area 3 pose-swapping is now registered in the active project-notes handover as `docs/project-notes/area-3-pose-swapping.md`.
 - `docs/character-display.js` now has a safe fallback to the current default teal explorer avatar when a requested pose image is missing or fails to load.
@@ -68,18 +91,17 @@ Relevant files:
 
 ## Current known issues
 
-- Brief Fog v0.1 needs browser retesting after the Task Brief crash guard.
-- Task Brief had been reported to crash/freeze the browser when clicked. A safe guard has been added, but it needs confirmation on Izzy's browser.
+- Brief Fog v0.1 needs browser retesting after the Task Brief fallback intercept was reverted.
+- Task Brief had been reported to crash/freeze the browser when clicked. The latest crash-guard patches were reverted; next fix should be smaller and should target the actual active Brief Fog handler only.
 - Cave Base background needs sharpening. This is flagged for later asset/image work, not urgent route logic.
 - Character blending is improved but still CSS-based. A better future fix is a cave-specific avatar PNG with lighting baked in.
-- Brief Fog v0.1 currently uses compact drawers and placeholder CSS scene effects, not final monster animation/art.
+- Brief Fog v0.1 currently uses compact drawers and placeholder CSS scene effects, not final visual-novel CG/state art.
 - UI should continue avoiding long scrolling forms. Current version uses compact drawers, but this needs visual review on Izzy's screen.
 - Final Area 1 cave character poses and magic-light assets are not in repo yet.
 - Area 3 approved pose PNGs are not present in the repo at their mapped paths yet, so live screens should not be switched fully to pose IDs until assets or deliberate fallback behaviour are confirmed.
-- Command Imp CSS placeholder reveal works as a temporary effect, but the imp fall/flee sequence is not good enough yet. Future fix: proper Command Imp art/animation or stronger CSS fall/flee keyframes.
-- Brief Fog character facing/casting is currently a CSS flip and hand-spark placeholder. Future fix: Area 1 should provide final focused hand-spark and casting light-beam poses facing the fog/imp direction.
-- Area 1 now needs a proper Brief Fog cutscene pose set: attack/casting pose, confident/smug follow-up pose, threat-with-sparkle pose, and scared/defensive reaction poses for later scenes.
-- Final attack pose should be designed with the character on the left shooting twinkle magic toward smoke/imp on the right.
+- Command Imp CSS placeholder reveal works as a temporary effect, but final direction is now static/interactive visual-novel scene-state art rather than a fall/flee animation requirement.
+- Brief Fog character facing/casting is currently a CSS flip and hand-spark placeholder. Future fix: Area 1 should provide final focused hand-spark and casting pose states facing the fog/imp direction.
+- Area 1 now needs Brief Fog visual-novel pose states: light-ready pose, casting pose, afterglow pose, confident follow-up pose, and warning-spark pose.
 - Latest Area 1 generated outfit/pose previews were rejected because the art style was incorrect and drifted into a glossy/semi-realistic fantasy look. Do not treat them as approved assets.
 
 ## Received area responses
@@ -102,12 +124,12 @@ Still useful later:
 
 Brief Fog v0.1 implementation status:
 
-active / needs browser retest after Task Brief crash guard
+active / needs browser retest after reverting the Task Brief crash-guard attempts
 
 Review question for Izzy:
 
 - If Task Brief now opens without crashing, continue retesting Brief Fog v0.1.
-- If Brief Fog v0.1 works and feels acceptable for now, mark it `completed needs further edits` because final art, monster effects, and visual polish are still future work.
+- If Brief Fog v0.1 works and feels acceptable for now, mark it `completed needs further edits` because final visual-novel art, monster effects, and visual polish are still future work.
 - If Izzy is happy to lock this placeholder behaviour, mark route/workflow behaviour `completed locked` while keeping visual polish as future work.
 - If Izzy is not happy, keep it `active` and list exact fixes needed.
 
@@ -153,8 +175,8 @@ Asset and pose polish.
 Needed later:
 - sharpen Cave Base background
 - final Cave Base character pose
-- final Brief Fog character magic poses
-- light beam / sparkle overlays
+- final Brief Fog visual-novel character pose states
+- sparkle/afterglow overlays
 - Command Imp placeholder or final art
 - cave-specific avatar lighting asset
 - approved pose PNGs imported into `docs/assets/characters/academic-adventurer/poses/`
@@ -163,7 +185,7 @@ Needed later:
 ## Next priorities
 
 Priority 1 review:
-Test Brief Fog v0.1 in browser after the Task Brief crash guard and decide whether it is acceptable for now.
+Test Brief Fog v0.1 in browser after reverting the Task Brief crash-guard attempts and decide whether it is acceptable for now.
 
 Test path:
 - Open `docs/cave.html`
@@ -172,9 +194,9 @@ Test path:
 - Confirm Task Map threshold opens
 - Enter Cave Base
 - Continue Quest
-- Click Task Brief and confirm it opens without freezing the browser
-- Save task brief
-- Suggest chunks
+- Click Task Brief and confirm whether it opens or freezes
+- Save task brief if it opens
+- Suggest chunks if available
 - Open fog patches
 - Add highlight / note / flag / missed loot / dismissal
 - Mark chunks fully unpacked or parked
@@ -206,22 +228,23 @@ Asset and pose polish.
 Needed later:
 - sharpen Cave Base background
 - final Cave Base character pose
-- final Brief Fog character magic poses
+- final Brief Fog character visual-novel pose states
 - final casting pose facing fog/imp target
-- final attack pose with character on left and smoke/imp on right
-- light beam / sparkle overlays
+- final attack/casting pose with character on one side and smoke/imp target on the other
+- sparkle/afterglow overlays
 - Command Imp placeholder or final art
-- Command Imp fall/flee sequence polish
+- Command Imp retreat/fallen state as static visual-novel state art, not animation
 - cave-specific avatar lighting asset
 - approved pose PNGs imported into the pose folder
 - Area 3 live screen wiring after approved pose assets exist
 
 ## Current Area 1 request needed
 
-Area 1 should make or plan the final Brief Fog cutscene character pose set using Izzy's jester references.
+Area 1 should make or plan the final Brief Fog visual-novel character pose states using Izzy's references as pose/expression direction, while preserving the approved base character identity.
 
-Required first cutscene direction:
-- character on left
-- smoke cloud / Command Imp on right
-- character faces and shoots toward the imp
+Required first scene-state direction:
+- character on one side
+- smoke cloud / Command Imp target on the other side
+- character faces and casts toward the imp
 - magic should look twinkly/sparkly, not like a hard laser beam
+- output should support interactive visual-novel scene states, not full animation
