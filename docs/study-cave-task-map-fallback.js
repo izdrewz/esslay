@@ -14,20 +14,31 @@
   ];
 
   function now() { return new Date().toISOString(); }
+
   function esc(value) {
     return String(value ?? "").replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
+  }
+
+  function chamberLabel(id) {
+    if (id === "source-mine") return "Source Mine";
+    if (id === "brief-fog") return "Brief Fog / Question-Unpacking Chamber";
+    return "Cave Base";
   }
 
   function fallbackState() {
     return {
       version: "0.1",
       activeQuestId: QUEST_ID,
+      selectedQuestId: QUEST_ID,
       quests: {
         [QUEST_ID]: {
           questId: QUEST_ID,
           questTitle: "Study Skills Trial",
+          status: "not_started",
+          questStatus: "task-map-started",
           currentRouteLocation: "task_map_threshold",
           currentChamberId: "brief-fog",
+          currentChamberLabel: "Brief Fog / Question-Unpacking Chamber",
           completedChambers: [],
           unlockedChambers: ["cave-base", "brief-fog"],
           flags: [],
@@ -51,6 +62,7 @@
         }
       },
       caveBase: { lastVisitedAt: null },
+      globalProgressLog: [],
       lastSavedAt: now()
     };
   }
@@ -68,12 +80,13 @@
     quest.flags = Array.isArray(quest.flags) ? quest.flags : [];
     quest.missedLoot = Array.isArray(quest.missedLoot) ? quest.missedLoot : [];
     quest.collectedLoot = Array.isArray(quest.collectedLoot) ? quest.collectedLoot : [];
+    quest.progressLog = Array.isArray(quest.progressLog) ? quest.progressLog : [];
     quest.taskMapSummary = { ...baseQuest.taskMapSummary, ...(quest.taskMapSummary || {}) };
     quest.chamberSaves = { ...baseQuest.chamberSaves, ...(quest.chamberSaves || {}) };
     quest.chamberSaves.briefFog = { ...baseQuest.chamberSaves.briefFog, ...(quest.chamberSaves.briefFog || {}) };
-    quest.progressLog = Array.isArray(quest.progressLog) ? quest.progressLog : [];
     state.quests[QUEST_ID] = quest;
     state.activeQuestId = QUEST_ID;
+    state.selectedQuestId = QUEST_ID;
     return state;
   }
 
@@ -81,8 +94,11 @@
   function progressLabel(quest) { return `${quest.completedChambers.length} / 7 chambers complete`; }
 
   function saveState(state) {
+    const quest = getQuest(state);
     state.activeQuestId = QUEST_ID;
+    state.selectedQuestId = QUEST_ID;
     state.lastSavedAt = now();
+    quest.updatedAt = state.lastSavedAt;
     localStorage.setItem(SAVE_KEY, JSON.stringify(state));
     updateHud(state);
     migrateQuestBoard(state);
@@ -90,8 +106,8 @@
 
   function updateHud(state) {
     const quest = getQuest(state);
-    document.querySelectorAll("[data-flow-quest-title], [data-quest-title]").forEach((node) => node.textContent = quest.questTitle);
-    document.querySelectorAll("[data-flow-progress], [data-quest-progress]").forEach((node) => node.textContent = `${quest.completedChambers.length} / 7`);
+    document.querySelectorAll("[data-flow-quest-title], [data-quest-title]").forEach((node) => { node.textContent = quest.questTitle; });
+    document.querySelectorAll("[data-flow-progress], [data-quest-progress]").forEach((node) => { node.textContent = `${quest.completedChambers.length} / 7`; });
   }
 
   function migrateQuestBoard(state) {
@@ -106,18 +122,14 @@
       title: "Study Skills Trial",
       boardCategory: "archive_test",
       questType: "test",
-      taskSummary: "Neutral 800-word practice task for testing the StudyQuest route.",
+      taskSummary: `Neutral 800-word practice task. Current chamber: ${chamberLabel(quest.currentChamberId)}. Progress: ${progressLabel(quest)}.`,
       status: quest.completedChambers.length ? "In progress" : "Archived test quest",
-      currentStageLabel: "Brief Fog / Question-Unpacking Chamber",
+      currentStageLabel: chamberLabel(quest.currentChamberId),
       progressLabel: progressLabel(quest),
       openFlagsCount: quest.flags.length,
       missedLootCount: quest.missedLoot.length
     };
     localStorage.setItem(BOARD_KEY, JSON.stringify(board));
-  }
-
-  function closeAllPanels() {
-    document.querySelectorAll("details[open]").forEach((panel) => panel.open = false);
   }
 
   function closeStageScene() {
@@ -127,8 +139,13 @@
     stage.innerHTML = "";
   }
 
+  function closeAllPanels() {
+    document.querySelectorAll("details[open]").forEach((panel) => { panel.open = false; });
+  }
+
   function openPanel(selector) {
     closeStageScene();
+    closeAllPanels();
     const panel = document.querySelector(selector);
     if (!panel) return;
     panel.open = true;
@@ -145,27 +162,8 @@
 
   function renderTaskMap(state = loadState()) {
     const quest = getQuest(state);
-    const html = `<section class="task-map-grid"><article class="flow-card"><p class="eyebrow">Selected task becomes the map</p><h2>${esc(quest.questTitle)}</h2><p><strong>Active quest:</strong> ${esc(quest.questTitle)}</p><p><strong>Current chamber:</strong> Brief Fog / Question-Unpacking Chamber</p><p><strong>Route location:</strong> ${esc(quest.currentRouteLocation)}</p><p><strong>Progress:</strong> ${esc(progressLabel(quest))}</p><p><strong>Completed chambers:</strong> ${esc(quest.completedChambers.join(", ") || "none yet")}</p><p><strong>Open flags:</strong> ${quest.flags.length}</p><p><strong>Missed loot:</strong> ${quest.missedLoot.length}</p><div class="flow-actions"><button type="button" data-enter-cave-base>Enter Cave Base</button><button type="button" class="secondary-button" data-back-quest-board>Back to Quest Board</button></div></article><article class="flow-card"><h3>Route nodes</h3><div class="route-node-grid">${route.map(([id, label]) => routeNode(quest, id, label)).join("")}</div></article></section>`;
-    document.querySelectorAll("[data-task-map]").forEach((mount) => mount.innerHTML = html);
-  }
-
-  function openStageScene(markup) {
-    closeAllPanels();
-    const stage = document.getElementById("stage-scene");
-    if (!stage) return;
-    stage.innerHTML = markup;
-    stage.hidden = false;
-  }
-
-  function caveBaseMarkup(state) {
-    const quest = getQuest(state);
-    return `<section class="stage-room cave-base-room"><button type="button" class="stage-close" data-close-stage aria-label="Close scene">×</button><span class="scene-label">Cave Base · safe hub</span><div class="stage-character stage-character-base" aria-label="Player character" role="img"></div><button type="button" class="flow-hotspot hotspot-chest" aria-label="Outfit chest" data-hotspot-label="Outfit chest" data-mini="Outfit chest|Cave outfit override will link to wardrobe later.">Outfit chest</button><button type="button" class="flow-hotspot hotspot-ledger" aria-label="Cave journal and progress ledger" data-hotspot-label="Journal" data-mini="Cave journal|Active quest: ${esc(quest.questTitle)}. Current chamber: Brief Fog / Question-Unpacking Chamber. Progress: ${esc(progressLabel(quest))}.">Cave journal / progress ledger</button><button type="button" class="flow-hotspot hotspot-shelf" aria-label="Completed chambers shelf" data-hotspot-label="Completed" data-mini="Completed progress shelf|Completed chambers: ${esc(quest.completedChambers.join(", ") || "none yet")}.">Completed chambers</button><button type="button" class="flow-hotspot hotspot-flags" aria-label="Flags and missed loot" data-hotspot-label="Flags" data-open-flags>Flags / missed loot</button><button type="button" class="flow-hotspot hotspot-continue" aria-label="Continue quest" data-hotspot-label="Continue" data-continue-quest>Continue quest</button><button type="button" class="flow-hotspot hotspot-return" aria-label="Return to Task Map" data-hotspot-label="Map" data-open-task-map>Return to Task Map</button><article class="stage-card"><h2>Cave Base</h2><p><strong>Active quest:</strong> ${esc(quest.questTitle)}</p><p><strong>Current chamber:</strong> Brief Fog / Question-Unpacking Chamber</p><p><strong>Progress:</strong> ${esc(progressLabel(quest))}</p><p><strong>Completed chambers:</strong> ${esc(quest.completedChambers.join(", ") || "none yet")}</p><p><strong>Open flags:</strong> ${quest.flags.length}</p><p><strong>Missed loot:</strong> ${quest.missedLoot.length}</p><div class="flow-actions"><button type="button" data-continue-quest>Continue Quest</button><button type="button" class="secondary-button" data-open-task-map>Return to Task Map</button></div></article></section>`;
-  }
-
-  function briefFogMarkup(state) {
-    const quest = getQuest(state);
-    const fog = quest.chamberSaves.briefFog;
-    return `<section class="stage-room brief-fog-room"><button type="button" class="stage-close" data-close-stage aria-label="Close scene">×</button><span class="scene-label">Brief Fog · first working chamber</span><div class="stage-character stage-character-brief" aria-label="Player character" role="img"></div><button type="button" class="flow-hotspot hotspot-parchment" aria-label="Task parchment" data-hotspot-label="Parchment">Task parchment</button><button type="button" class="flow-hotspot hotspot-fog" aria-label="Fog patches" data-hotspot-label="Fog">Fog patches</button><button type="button" class="flow-hotspot hotspot-eyes" aria-label="Hidden wording" data-hotspot-label="Hidden wording">Hidden wording</button><button type="button" class="flow-hotspot hotspot-brief-flag" aria-label="Flags" data-hotspot-label="Flags" data-open-flags>Flags</button><button type="button" class="flow-hotspot hotspot-brief-loot" aria-label="Missed loot" data-hotspot-label="Missed loot" data-open-flags>Missed loot</button><button type="button" class="flow-hotspot hotspot-forward" aria-label="Route forward" data-hotspot-label="Forward">Route forward</button><article class="stage-card"><h2>Brief Fog / Question-Unpacking Chamber</h2><p><strong>Active quest:</strong> ${esc(quest.questTitle)}</p><p><strong>Task:</strong> ${esc(fog.rawTaskText)}</p><p>Next: split the task into chunks and mark command words, keywords, scope, source requirements, flags, and missed loot.</p><div class="flow-actions"><button type="button" data-open-task-map>Return to Task Map</button></div></article></section>`;
+    const html = `<section class="task-map-grid"><article class="flow-card"><p class="eyebrow">Selected task becomes the map</p><h2>${esc(quest.questTitle)}</h2><p><strong>Active quest:</strong> ${esc(quest.questTitle)}</p><p><strong>Current chamber:</strong> ${esc(chamberLabel(quest.currentChamberId))}</p><p><strong>Route location:</strong> ${esc(quest.currentRouteLocation)}</p><p><strong>Progress:</strong> ${esc(progressLabel(quest))}</p><p><strong>Completed chambers:</strong> ${esc(quest.completedChambers.join(", ") || "none yet")}</p><p><strong>Open flags:</strong> ${quest.flags.length}</p><p><strong>Missed loot:</strong> ${quest.missedLoot.length}</p><div class="flow-actions"><button type="button" data-enter-cave-base>Enter Cave Base</button><button type="button" class="secondary-button" data-back-quest-board>Back to Quest Board</button></div></article><article class="flow-card"><h3>Route nodes</h3><div class="route-node-grid">${route.map(([id, label]) => routeNode(quest, id, label)).join("")}</div></article></section>`;
+    document.querySelectorAll("[data-task-map]").forEach((mount) => { mount.innerHTML = html; });
   }
 
   function openTaskMap(event) {
@@ -175,68 +173,52 @@
     }
     const state = loadState();
     const quest = getQuest(state);
-    state.activeQuestId = QUEST_ID;
+    const nextChamber = quest.completedChambers.includes("brief-fog") || quest.currentChamberId === "source-mine" ? "source-mine" : "brief-fog";
     quest.currentRouteLocation = "task_map_threshold";
+    quest.currentChamberId = nextChamber;
+    quest.currentChamberLabel = chamberLabel(nextChamber);
     quest.taskMapOpen = true;
     quest.questBoardOpen = false;
     quest.caveBaseOpen = false;
-    quest.currentChamberId = "brief-fog";
-    quest.taskMapSummary.currentChamber = "Brief Fog / Question-Unpacking Chamber";
+    quest.taskMapSummary.currentChamber = chamberLabel(nextChamber);
+    quest.taskMapSummary.progress = progressLabel(quest);
     quest.taskMapSummary.nextAction = "Enter Cave Base";
     saveState(state);
     renderTaskMap(state);
-    closeStageScene();
-    closeAllPanels();
     openPanel("#map-board-panel");
   }
 
-  function enterCaveBase(event) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
+  function backToQuestBoard(event) {
+    if (event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
     const state = loadState();
     const quest = getQuest(state);
-    state.activeQuestId = QUEST_ID;
-    state.caveBase = { ...(state.caveBase || {}), lastVisitedAt: now() };
-    quest.currentRouteLocation = "cave_base";
+    quest.currentRouteLocation = "quest_board";
     quest.taskMapOpen = false;
-    quest.questBoardOpen = false;
-    quest.caveBaseOpen = true;
-    quest.currentChamberId = "brief-fog";
-    quest.taskMapSummary.currentChamber = "Brief Fog / Question-Unpacking Chamber";
-    quest.taskMapSummary.progress = progressLabel(quest);
-    quest.taskMapSummary.nextAction = "Continue to Brief Fog / Question-Unpacking Chamber";
-    quest.progressLog.unshift({ id: `log-${Date.now()}`, timestamp: now(), action: "enter-cave-base", summary: "Entered Cave Base from Task Map threshold." });
-    saveState(state);
-    renderTaskMap(state);
-    openStageScene(caveBaseMarkup(state));
-  }
-
-  function continueQuest(event) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    const state = loadState();
-    const quest = getQuest(state);
-    state.activeQuestId = QUEST_ID;
-    quest.currentRouteLocation = "working_chamber";
+    quest.questBoardOpen = true;
     quest.caveBaseOpen = false;
-    quest.currentChamberId = "brief-fog";
-    quest.taskMapSummary.currentChamber = "Brief Fog / Question-Unpacking Chamber";
-    quest.taskMapSummary.nextAction = "Work through Brief Fog chunks";
-    quest.progressLog.unshift({ id: `log-${Date.now()}`, timestamp: now(), action: "continue-brief-fog", summary: "Opened Brief Fog from Cave Base." });
     saveState(state);
-    openStageScene(briefFogMarkup(state));
+    openPanel("#quest-board-panel");
   }
 
-  function resetOldStudyTrialBoardIfNeeded() {
-    const state = loadState();
-    migrateQuestBoard(state);
+  function patchBriefFogLabels(root = document) {
+    root.querySelectorAll("[data-suggest-chunks]").forEach((button) => {
+      button.textContent = "Suggest chunks";
+    });
   }
 
   function init() {
     const state = loadState();
     saveState(state);
     renderTaskMap(state);
-    resetOldStudyTrialBoardIfNeeded();
+    patchBriefFogLabels();
+
+    const stage = document.getElementById("stage-scene");
+    if (stage && "MutationObserver" in window) {
+      new MutationObserver(() => patchBriefFogLabels(stage)).observe(stage, { childList: true, subtree: true });
+    }
 
     document.addEventListener("click", (event) => {
       const close = event.target.closest("[data-close-panel]");
@@ -248,31 +230,21 @@
         return;
       }
 
-      const closeStage = event.target.closest("[data-close-stage]");
-      if (closeStage) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        closeStageScene();
-        return;
-      }
+      const studyTrialButton = event.target.closest('[data-open-quest="study-skills-trial"]');
+      if (studyTrialButton) return openTaskMap(event);
 
-      const mini = event.target.closest("[data-mini]");
-      if (mini) {
-        event.preventDefault();
-        const [title, body] = mini.dataset.mini.split("|");
-        alert(`${title}\n\n${body}`);
-        return;
-      }
+      const openMapButton = event.target.closest("[data-open-task-map]");
+      if (openMapButton) return openTaskMap(event);
 
-      const target = event.target.closest("[data-open-task-map], [data-enter-cave-base], [data-continue-quest]");
-      if (!target) return;
-      if (target.matches("[data-open-task-map]")) return openTaskMap(event);
-      if (target.matches("[data-enter-cave-base]")) return enterCaveBase(event);
-      if (target.matches("[data-continue-quest]")) return continueQuest(event);
+      const backButton = event.target.closest("[data-back-quest-board]");
+      if (backButton) return backToQuestBoard(event);
     }, true);
 
-    setTimeout(() => renderTaskMap(loadState()), 150);
-    setTimeout(() => renderTaskMap(loadState()), 700);
+    window.setTimeout(() => renderTaskMap(loadState()), 150);
+    window.setTimeout(() => {
+      renderTaskMap(loadState());
+      patchBriefFogLabels();
+    }, 700);
   }
 
   document.addEventListener("DOMContentLoaded", init);
