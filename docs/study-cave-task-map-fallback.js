@@ -209,7 +209,30 @@
     });
   }
 
+  function injectBriefFogClickSafety() {
+    if (document.getElementById("brief-fog-click-safety")) return;
+    const style = document.createElement("style");
+    style.id = "brief-fog-click-safety";
+    style.textContent = `
+      .stage-scene .brief-fog-room.cutscene-active .stage-close,
+      .stage-scene .brief-fog-room.cutscene-active .flow-hotspot {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+      .stage-scene .brief-fog-room .stage-close {
+        z-index: 120 !important;
+        pointer-events: auto !important;
+      }
+      .stage-scene .brief-fog-room .flow-hotspot {
+        z-index: 110 !important;
+        pointer-events: auto !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   function init() {
+    injectBriefFogClickSafety();
     const state = loadState();
     saveState(state);
     renderTaskMap(state);
@@ -217,7 +240,10 @@
 
     const stage = document.getElementById("stage-scene");
     if (stage && "MutationObserver" in window) {
-      new MutationObserver(() => patchBriefFogLabels(stage)).observe(stage, { childList: true, subtree: true });
+      new MutationObserver(() => {
+        patchBriefFogLabels(stage);
+        injectBriefFogClickSafety();
+      }).observe(stage, { childList: true, subtree: true });
     }
 
     document.addEventListener("click", (event) => {
@@ -247,6 +273,7 @@
     window.setTimeout(() => {
       renderTaskMap(loadState());
       patchBriefFogLabels();
+      injectBriefFogClickSafety();
     }, 700);
   }
 
