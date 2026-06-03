@@ -2,8 +2,13 @@
   const KEY = "esslay-study-cave-save-v01";
   const QUEST_ID = "study-skills-trial";
   const TOTAL = 7;
-  const MAX_RENDERED_CHUNKS = 40;
+  const MAX_SAVE_CHARS = 220000;
+  const MAX_RENDERED_CHUNKS = 24;
+  const MAX_SAVED_CHUNKS = 60;
   const MAX_AUTO_CHUNKS = 12;
+  const MAX_TASK_TEXT = 12000;
+  const MAX_CHUNK_TEXT = 2200;
+  const MAX_NOTE_TEXT = 1800;
   const SAMPLE = "Write an 800-word practice response explaining how a student can use planning, source notes, drafting, proofreading, and referencing habits to improve the quality of an academic assignment.";
 
   const cats = ["Command word / action word", "Topic keyword", "Scope / limit", "Evidence / source requirement", "Format / output rule", "Word count / deadline rule", "Marking / quality clue", "Optional / context wording", "Dismissed wording", "Unsure"];
@@ -17,7 +22,11 @@
   const options = (items, selected) => items.map((item) => `<option${item === selected ? " selected" : ""}>${esc(item)}</option>`).join("");
   const unique = (items, item) => Array.from(new Set([...(Array.isArray(items) ? items : []), item]));
   const toArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
-  const firstValid = (value, fallback) => String(value ?? "").trim() || fallback;
+  const capText = (value, max) => String(value ?? "").slice(0, max);
+  const firstValid = (value, fallback, max = null) => {
+    const text = String(value ?? "").trim() || fallback;
+    return max ? capText(text, max) : text;
+  };
   const preview = (value, max = 70) => {
     const text = String(value ?? "Recovered blank chunk").replace(/\s+/g, " ").trim();
     return text.length > max ? `${text.slice(0, max)}…` : text;
@@ -40,7 +49,8 @@
       missedLoot: [],
       outputCards: blankOutputCards(),
       status: "unlocked",
-      clearedAt: null
+      clearedAt: null,
+      safetyWarnings: []
     };
   }
 
@@ -83,10 +93,10 @@
     const base = blankOutputCards();
     const safe = cards && typeof cards === "object" ? cards : {};
     return {
-      commandWordCards: toArray(safe.commandWordCards),
-      keywordCards: toArray(safe.keywordCards),
-      scopeLimitCards: toArray(safe.scopeLimitCards),
-      sourceRequirementCards: toArray(safe.sourceRequirementCards),
+      commandWordCards: toArray(safe.commandWordCards).slice(0, 80),
+      keywordCards: toArray(safe.keywordCards).slice(0, 80),
+      scopeLimitCards: toArray(safe.scopeLimitCards).slice(0, 80),
+      sourceRequirementCards: toArray(safe.sourceRequirementCards).slice(0, 80),
       taskDemandSummary: safe.taskDemandSummary && typeof safe.taskDemandSummary === "object" ? safe.taskDemandSummary : base.taskDemandSummary
     };
   }
@@ -96,9 +106,9 @@
     const state = states.includes(raw.state) ? raw.state : "Not started";
     const type = typeLabels.includes(raw.type) ? raw.type : "Unknown";
     return {
-      id: firstValid(raw.id, id("chunk")),
+      id: firstValid(raw.id, id("chunk"), 120),
       order: Number.isFinite(Number(raw.order)) ? Number(raw.order) : index,
-      originalText: firstValid(raw.originalText ?? raw.text, `Recovered chunk ${index + 1}`),
+      originalText: firstValid(raw.originalText ?? raw.text, `Recovered chunk ${index + 1}`, MAX_CHUNK_TEXT),
       type,
       state,
       createdAt: raw.createdAt || now(),
@@ -106,40 +116,62 @@
     };
   }
 
+  function safeNote(item) {
+    const source = item && typeof item === "object" ? item : {};
+    return { ...source, text: capText(source.text || source.note || source.itemMissed || "", MAX_NOTE_TEXT), note: capText(source.note || source.text || "", MAX_NOTE_TEXT), itemMissed: capText(source.itemMissed || source.text || "", MAX_NOTE_TEXT) };
+  }
+
   function normaliseFog(fog) {
     const base = blankFog();
     const safe = fog && typeof fog === "object" ? fog : {};
+    const warnings = toArray(safe.safetyWarnings);
+    const rawTaskText = firstValid(safe.rawTaskText, base.rawTaskText, MAX_TASK_TEXT);
+    if (String(safe.rawTaskText || "").length > MAX_TASK_TEXT) warnings.push(`Task text was capped to ${MAX_TASK_TEXT} characters for browser stability.`);
+    const sourceChunks = toArray(safe.chunks);
+    if (sourceChunks.length > MAX_SAVED_CHUNKS) warnings.push(`Chunk list was capped from ${sourceChunks.length} to ${MAX_SAVED_CHUNKS} for browser stability.`);
     return {
       ...base,
       ...safe,
-      taskTitle: firstValid(safe.taskTitle, base.taskTitle),
-      assessmentType: firstValid(safe.assessmentType, base.assessmentType),
-      rawTaskText: firstValid(safe.rawTaskText, base.rawTaskText),
-      chunks: toArray(safe.chunks).map(normaliseChunk),
-      highlights: toArray(safe.highlights),
-      notes: toArray(safe.notes),
-      dismissed: toArray(safe.dismissed),
-      flags: toArray(safe.flags),
-      missedLoot: toArray(safe.missedLoot),
+      taskTitle: firstValid(safe.taskTitle, base.taskTitle, 180),
+      assessmentType: firstValid(safe.assessmentType, base.assessmentType, 180),
+      rawTaskText,
+      chunks: sourceChunks.slice(0, MAX_SAVED_CHUNKS).map(normaliseChunk),
+      highlights: toArray(safe.highlights).slice(0, 120).map(safeNote),
+      notes: toArray(safe.notes).slice(0, 120).map(safeNote),
+      dismissed: toArray(safe.dismissed).slice(0, 120).map(safeNote),
+      flags: toArray(safe.flags).slice(0, 80).map(safeNote),
+      missedLoot: toArray(safe.missedLoot).slice(0, 80).map(safeNote),
       outputCards: normaliseOutputCards(safe.outputCards),
-      status: firstValid(safe.status, base.status),
-      clearedAt: safe.clearedAt || null
+      status: firstValid(safe.status, base.status, 80),
+      clearedAt: safe.clearedAt || null,
+      safetyWarnings: Array.from(new Set(warnings)).slice(0, 8)
     };
   }
 
   function load() {
-    let stored;
-    try { stored = JSON.parse(localStorage.getItem(KEY)); } catch { stored = null; }
+    let stored = null;
+    try {
+      const raw = localStorage.getItem(KEY) || "";
+      if (raw.length > MAX_SAVE_CHARS) {
+        window.__esslayStorageWarning = "Old Study Cave saved data was too large to open safely, so this session opened a clean safe copy. Use Reset Brief Fog save to clear the old browser save.";
+        stored = null;
+      } else {
+        stored = raw ? JSON.parse(raw) : null;
+      }
+    } catch {
+      window.__esslayStorageWarning = "Old Study Cave saved data could not be read, so this session opened a clean safe copy. Use Reset Brief Fog save to clear the old browser save.";
+      stored = null;
+    }
     const base = baseState();
     const save = { ...base, ...(stored && typeof stored === "object" ? stored : {}) };
     save.quests = { ...base.quests, ...(save.quests && typeof save.quests === "object" ? save.quests : {}) };
     const quest = { ...base.quests[QUEST_ID], ...(save.quests[QUEST_ID] && typeof save.quests[QUEST_ID] === "object" ? save.quests[QUEST_ID] : {}) };
     quest.completedChambers = toArray(quest.completedChambers);
     quest.unlockedChambers = toArray(quest.unlockedChambers).length ? toArray(quest.unlockedChambers) : ["cave-base", "brief-fog"];
-    quest.flags = toArray(quest.flags);
-    quest.missedLoot = toArray(quest.missedLoot);
-    quest.collectedLoot = toArray(quest.collectedLoot);
-    quest.progressLog = toArray(quest.progressLog);
+    quest.flags = toArray(quest.flags).slice(0, 80).map(safeNote);
+    quest.missedLoot = toArray(quest.missedLoot).slice(0, 80).map(safeNote);
+    quest.collectedLoot = toArray(quest.collectedLoot).slice(0, 80);
+    quest.progressLog = toArray(quest.progressLog).slice(0, 80);
     quest.briefFog = normaliseFog(quest.briefFog);
     save.quests[QUEST_ID] = quest;
     return save;
@@ -166,6 +198,7 @@
     const quest = getQuest(save);
     save.lastSavedAt = now();
     quest.updatedAt = save.lastSavedAt;
+    quest.briefFog = normaliseFog(quest.briefFog);
     save.caveBase = {
       activeQuestId: QUEST_ID,
       currentChamberId: quest.currentChamberId,
@@ -209,11 +242,15 @@
     return `<aside class="scene-drawer ${wide ? "wide-drawer" : "compact-drawer"} ${extraClass}"><button type="button" class="drawer-close" data-close-drawer>×</button><h2>${esc(title)}</h2>${body}</aside>`;
   }
   function list(items, key) {
-    const safeItems = toArray(items);
+    const safeItems = toArray(items).slice(0, 30);
     return safeItems.length ? `<ul>${safeItems.map((item) => `<li>${esc(item?.[key] || item?.text || "item")}</li>`).join("")}</ul>` : `<p>None yet.</p>`;
   }
   function storageWarning() {
     return window.__esslayStorageWarning ? `<p class="warning-list"><strong>Save warning:</strong> ${esc(window.__esslayStorageWarning)}</p>` : "";
+  }
+  function fogSafetyWarning(fog) {
+    const warnings = toArray(fog.safetyWarnings);
+    return warnings.length ? `<section class="warning-list"><h3>Browser safety changes</h3><ul>${warnings.map((warning) => `<li>${esc(warning)}</li>`).join("")}</ul></section>` : "";
   }
 
   function caveBase(save, activeDrawer = "") {
@@ -257,8 +294,8 @@
     const fog = getFog(save);
     const visibleChunks = fog.chunks.slice(0, MAX_RENDERED_CHUNKS);
     const hiddenCount = Math.max(0, fog.chunks.length - visibleChunks.length);
-    const chunkList = visibleChunks.length ? `<ol class="chunk-list">${visibleChunks.map((chunk, index) => `<li><button type="button" data-open-chunk="${index}">${esc(preview(chunk.originalText))}</button> <small>${esc(chunk.state)}</small></li>`).join("")}</ol>${hiddenCount ? `<p class="drawer-kicker">${hiddenCount} more chunks hidden for browser stability. Work through the visible chunks or refresh/split the task again.</p>` : ""}` : `<p>No chunks yet.</p>`;
-    return drawer("Task Brief", `${storageWarning()}<p>Paste or adjust the task, question, brief, guidance, or marking notes. Fog patches are created from this text when the quest starts.</p><form data-task-form><label>Task title<input name="taskTitle" value="${esc(fog.taskTitle)}"></label><label>Assessment type<input name="assessmentType" value="${esc(fog.assessmentType)}"></label><label>Paste task / question / guidance<textarea name="rawTaskText" rows="7">${esc(fog.rawTaskText)}</textarea></label><div class="drawer-actions"><button data-save-task type="button">Save task brief</button><button data-suggest-chunks type="button">Refresh fog chunks</button><button data-add-chunk type="button">Add chunk manually</button><button data-reset-brief-fog type="button">Reset Brief Fog save</button></div></form><h3>Chunk list</h3>${chunkList}`, true);
+    const chunkList = visibleChunks.length ? `<ol class="chunk-list">${visibleChunks.map((chunk, index) => `<li><button type="button" data-open-chunk="${index}">${esc(preview(chunk.originalText))}</button> <small>${esc(chunk.state)}</small></li>`).join("")}</ol>${hiddenCount ? `<p class="drawer-kicker">${hiddenCount} more chunks are hidden for browser stability. Use Refresh fog chunks to rebuild a shorter list from the task text.</p>` : ""}` : `<p>No chunks yet.</p>`;
+    return drawer("Task Brief", `${storageWarning()}${fogSafetyWarning(fog)}<p>Paste or adjust the task, question, brief, guidance, or marking notes. This drawer now caps old saved data so it cannot freeze the browser.</p><form data-task-form><label>Task title<input name="taskTitle" value="${esc(fog.taskTitle)}"></label><label>Assessment type<input name="assessmentType" value="${esc(fog.assessmentType)}"></label><label>Paste task / question / guidance<textarea name="rawTaskText" rows="7">${esc(fog.rawTaskText)}</textarea></label><div class="drawer-actions"><button data-save-task type="button">Save task brief</button><button data-suggest-chunks type="button">Refresh fog chunks</button><button data-add-chunk type="button">Add chunk manually</button><button data-reset-brief-fog type="button">Reset Brief Fog save</button></div></form><h3>Chunk list</h3>${chunkList}`, true);
   }
 
   function note(fog, chunkId, type) {
@@ -273,7 +310,7 @@
     const flags = fog.flags.filter((flag) => flag.chunkId === chunk.id);
     const missed = fog.missedLoot.filter((loot) => loot.chunkId === chunk.id);
     const dismissed = fog.dismissed.filter((entry) => entry.chunkId === chunk.id);
-    return drawer(`Chunk ${index + 1}`, `<form data-chunk-form data-index="${index}" class="chunk-drawer"><p class="drawer-kicker">Cut-scene target: fog patch ${index + 1}</p><label>Original wording<textarea name="originalText" rows="4">${esc(chunk.originalText)}</textarea></label><div class="drawer-grid"><label>Chunk type<select name="type">${options(typeLabels, chunk.type)}</select></label><label>Chunk state<select name="state">${options(states, chunk.state)}</select></label></div><label>Plain-meaning note<textarea name="plain" rows="3">${esc(note(fog, chunk.id, "plain"))}</textarea></label><label>Action-created note<textarea name="action" rows="3">${esc(note(fog, chunk.id, "action"))}</textarea></label><details open><summary>Add highlight</summary><label>Selected wording<input name="highlightedText"></label><label>Highlight category<select name="category">${options(cats, cats[0])}</select></label><label>Confidence<select name="confidence"><option>Sure</option><option>Unsure</option><option>Needs checking</option></select></label><label>Highlight note<input name="highlightNote"></label><button data-add-highlight type="button">Add highlight</button></details><h3>Selected highlights</h3>${list(highlights.map((highlight) => ({ text: `${highlight.text} — ${highlight.category}` })), "text")}<details><summary>Flags, missed loot, dismissed wording</summary><label>Flag note<input name="flagNote"></label><button data-add-flag type="button">Add flag</button><label>Missed loot note<input name="missedNote"></label><button data-add-missed type="button">Add missed loot</button><label>Dismissed wording<input name="dismissedText"></label><button data-dismiss-wording type="button">Dismiss wording</button></details><h3>Flags</h3>${list(flags, "note")}<h3>Missed loot</h3>${list(missed, "itemMissed")}<h3>Dismissed wording</h3>${list(dismissed, "text")}<div class="drawer-actions sticky-actions"><button data-save-chunk type="button">Save chunk</button><button data-mark-full type="button">Mark fully unpacked</button><button data-park type="button">Park for later</button><button data-open-chunk="${Math.max(0, index - 1)}" type="button">Previous chunk</button><button data-open-chunk="${Math.min(fog.chunks.length - 1, index + 1)}" type="button">Next chunk</button></div></form>`, true, "chunk-action-drawer");
+    return drawer(`Chunk ${index + 1}`, `<form data-chunk-form data-index="${index}" class="chunk-drawer"><p class="drawer-kicker">Scene-state target: fog patch ${index + 1}</p><label>Original wording<textarea name="originalText" rows="4">${esc(chunk.originalText)}</textarea></label><div class="drawer-grid"><label>Chunk type<select name="type">${options(typeLabels, chunk.type)}</select></label><label>Chunk state<select name="state">${options(states, chunk.state)}</select></label></div><label>Plain-meaning note<textarea name="plain" rows="3">${esc(note(fog, chunk.id, "plain"))}</textarea></label><label>Action-created note<textarea name="action" rows="3">${esc(note(fog, chunk.id, "action"))}</textarea></label><details open><summary>Add highlight</summary><label>Selected wording<input name="highlightedText"></label><label>Highlight category<select name="category">${options(cats, cats[0])}</select></label><label>Confidence<select name="confidence"><option>Sure</option><option>Unsure</option><option>Needs checking</option></select></label><label>Highlight note<input name="highlightNote"></label><button data-add-highlight type="button">Add highlight</button></details><h3>Selected highlights</h3>${list(highlights.map((highlight) => ({ text: `${highlight.text} — ${highlight.category}` })), "text")}<details><summary>Flags, missed loot, dismissed wording</summary><label>Flag note<input name="flagNote"></label><button data-add-flag type="button">Add flag</button><label>Missed loot note<input name="missedNote"></label><button data-add-missed type="button">Add missed loot</button><label>Dismissed wording<input name="dismissedText"></label><button data-dismiss-wording type="button">Dismiss wording</button></details><h3>Flags</h3>${list(flags, "note")}<h3>Missed loot</h3>${list(missed, "itemMissed")}<h3>Dismissed wording</h3>${list(dismissed, "text")}<div class="drawer-actions sticky-actions"><button data-save-chunk type="button">Save chunk</button><button data-mark-full type="button">Mark fully unpacked</button><button data-park type="button">Park for later</button><button data-open-chunk="${Math.max(0, index - 1)}" type="button">Previous chunk</button><button data-open-chunk="${Math.min(fog.chunks.length - 1, index + 1)}" type="button">Next chunk</button></div></form>`, true, "chunk-action-drawer");
   }
 
   function chunkResultPanel(save, index, actionName) {
@@ -318,14 +355,14 @@
   }
 
   function splitText(text) {
-    const clean = String(text || SAMPLE).trim();
+    const clean = capText(text || SAMPLE, MAX_TASK_TEXT).trim();
     const lineUnits = clean.split(/\n+/).map((unit) => unit.trim()).filter(Boolean);
     const sentenceUnits = clean.split(/(?<=[.!?])\s+(?=[A-Z0-9])/).map((unit) => unit.trim()).filter(Boolean);
     const units = (lineUnits.length > 1 ? lineUnits : sentenceUnits).slice(0, MAX_AUTO_CHUNKS);
     return units.map((unit, index) => normaliseChunk({
       id: id("chunk"),
       order: index,
-      originalText: unit.replace(/^[-*•\d.)\s]+/, "").trim(),
+      originalText: capText(unit.replace(/^[-*•\d.)\s]+/, "").trim(), MAX_CHUNK_TEXT),
       type: /source|reference|reading/i.test(unit) ? "Source requirement" : /word|deadline|due/i.test(unit) ? "Word count / deadline instruction" : /write|explain|discuss|evaluate|compare|describe|analyse|identify/i.test(unit) ? "Task instruction" : "Guidance note",
       state: "Not started",
       createdAt: now(),
@@ -356,7 +393,7 @@
   }
 
   function addOutputCard(fog, highlight) {
-    const card = { text: highlight.text, summaryText: highlight.note || highlight.text, createdAt: now() };
+    const card = { text: capText(highlight.text, MAX_NOTE_TEXT), summaryText: capText(highlight.note || highlight.text, MAX_NOTE_TEXT), createdAt: now() };
     if (highlight.category === cats[0]) fog.outputCards.commandWordCards.push({ ...card, commandWord: highlight.text });
     else if (highlight.category === cats[1]) fog.outputCards.keywordCards.push({ ...card, keyword: highlight.text });
     else if ([cats[2], cats[4], cats[5], cats[6]].includes(highlight.category)) fog.outputCards.scopeLimitCards.push({ ...card, scopeText: highlight.text });
@@ -373,35 +410,35 @@
     const data = new FormData(form);
     const actionLabels = { save: "saved chunk", highlight: "added highlight", flag: "added flag", missed: "added missed loot", dismiss: "dismissed wording", full: "marked fully unpacked", park: "parked for later" };
 
-    chunk.originalText = firstValid(data.get("originalText"), chunk.originalText);
+    chunk.originalText = firstValid(data.get("originalText"), chunk.originalText, MAX_CHUNK_TEXT);
     chunk.type = typeLabels.includes(String(data.get("type"))) ? String(data.get("type")) : chunk.type;
     chunk.state = states.includes(String(data.get("state"))) ? String(data.get("state")) : chunk.state;
 
-    const plain = String(data.get("plain") || "").trim();
-    const actionNote = String(data.get("action") || "").trim();
+    const plain = capText(data.get("plain") || "", MAX_NOTE_TEXT).trim();
+    const actionNote = capText(data.get("action") || "", MAX_NOTE_TEXT).trim();
     fog.notes = fog.notes.filter((noteItem) => !(noteItem.chunkId === chunk.id && ["plain", "action"].includes(noteItem.type)));
     if (plain) fog.notes.push({ id: id("note"), chunkId: chunk.id, type: "plain", text: plain, createdAt: now() });
     if (actionNote) fog.notes.push({ id: id("note"), chunkId: chunk.id, type: "action", text: actionNote, createdAt: now() });
 
     if (action === "highlight" && String(data.get("highlightedText") || "").trim()) {
-      const highlight = { id: id("highlight"), chunkId: chunk.id, text: String(data.get("highlightedText")).trim(), category: String(data.get("category")), confidence: String(data.get("confidence")), note: String(data.get("highlightNote") || ""), createdAt: now() };
+      const highlight = { id: id("highlight"), chunkId: chunk.id, text: capText(data.get("highlightedText"), MAX_NOTE_TEXT).trim(), category: String(data.get("category")), confidence: String(data.get("confidence")), note: capText(data.get("highlightNote") || "", MAX_NOTE_TEXT), createdAt: now() };
       fog.highlights.push(highlight);
       addOutputCard(fog, highlight);
     }
     if (action === "flag") {
-      const flag = { id: id("flag"), chunkId: chunk.id, note: String(data.get("flagNote") || "This chunk needs checking later."), status: "open", createdAt: now() };
+      const flag = { id: id("flag"), chunkId: chunk.id, note: capText(data.get("flagNote") || "This chunk needs checking later.", MAX_NOTE_TEXT), status: "open", createdAt: now() };
       fog.flags.push(flag);
       quest.flags.push(flag);
       chunk.state = "Flagged for later";
     }
     if (action === "missed" || action === "park") {
-      const missed = { id: id("missed"), chunkId: chunk.id, itemMissed: String(data.get("missedNote") || "Useful task work left for later."), status: "missed", createdAt: now() };
+      const missed = { id: id("missed"), chunkId: chunk.id, itemMissed: capText(data.get("missedNote") || "Useful task work left for later.", MAX_NOTE_TEXT), status: "missed", createdAt: now() };
       fog.missedLoot.push(missed);
       quest.missedLoot.push(missed);
       chunk.state = "Parked as missed loot";
     }
     if (action === "dismiss") {
-      fog.dismissed.push({ id: id("dismissed"), chunkId: chunk.id, text: String(data.get("dismissedText") || chunk.originalText), createdAt: now() });
+      fog.dismissed.push({ id: id("dismissed"), chunkId: chunk.id, text: capText(data.get("dismissedText") || chunk.originalText, MAX_NOTE_TEXT), createdAt: now() });
       chunk.state = "Dismissed with reason";
     }
     if (action === "full") chunk.state = actionNote ? "Partially unpacked - warning accepted" : "Fully unpacked";
@@ -415,7 +452,7 @@
     window.setTimeout(() => {
       const latest = load();
       openStage(briefFog(latest, chunkResultPanel(latest, index, actionLabels[action] || "saved"), index));
-    }, 950);
+    }, 500);
   }
 
   function clearFog() {
@@ -522,9 +559,9 @@
       const data = new FormData(form);
       const save = load();
       const fog = getFog(save);
-      fog.taskTitle = firstValid(data.get("taskTitle"), fog.taskTitle);
-      fog.assessmentType = firstValid(data.get("assessmentType"), fog.assessmentType);
-      fog.rawTaskText = firstValid(data.get("rawTaskText"), fog.rawTaskText);
+      fog.taskTitle = firstValid(data.get("taskTitle"), fog.taskTitle, 180);
+      fog.assessmentType = firstValid(data.get("assessmentType"), fog.assessmentType, 180);
+      fog.rawTaskText = firstValid(data.get("rawTaskText"), fog.rawTaskText, MAX_TASK_TEXT);
       if (event.target.closest("[data-suggest-chunks]")) {
         fog.chunks = splitText(fog.rawTaskText);
         fog.highlights = [];
