@@ -166,6 +166,21 @@
     document.querySelectorAll("[data-task-map]").forEach((mount) => { mount.innerHTML = html; });
   }
 
+  function openQuestBoard(event) {
+    if (event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+    const state = loadState();
+    const quest = getQuest(state);
+    quest.currentRouteLocation = "quest_board";
+    quest.questBoardOpen = true;
+    quest.taskMapOpen = false;
+    quest.caveBaseOpen = false;
+    saveState(state);
+    openPanel("#quest-board-panel");
+  }
+
   function openTaskMap(event) {
     if (event) {
       event.preventDefault();
@@ -186,21 +201,6 @@
     saveState(state);
     renderTaskMap(state);
     openPanel("#map-board-panel");
-  }
-
-  function backToQuestBoard(event) {
-    if (event) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    }
-    const state = loadState();
-    const quest = getQuest(state);
-    quest.currentRouteLocation = "quest_board";
-    quest.taskMapOpen = false;
-    quest.questBoardOpen = true;
-    quest.caveBaseOpen = false;
-    saveState(state);
-    openPanel("#quest-board-panel");
   }
 
   function patchBriefFogLabels(root = document) {
@@ -230,6 +230,9 @@
         return;
       }
 
+      const questBoardButton = event.target.closest("[data-open-quest-board]");
+      if (questBoardButton) return openQuestBoard(event);
+
       const studyTrialButton = event.target.closest('[data-open-quest="study-skills-trial"]');
       if (studyTrialButton) return openTaskMap(event);
 
@@ -237,7 +240,7 @@
       if (openMapButton) return openTaskMap(event);
 
       const backButton = event.target.closest("[data-back-quest-board]");
-      if (backButton) return backToQuestBoard(event);
+      if (backButton) return openQuestBoard(event);
     }, true);
 
     window.setTimeout(() => renderTaskMap(loadState()), 150);
