@@ -2,7 +2,7 @@
 
 Last updated: 2026-06-03
 
-Status: active / needs asset import before live screen wiring
+Status: active / safe helper added / needs asset import before live screen wiring
 
 ## Ownership
 
@@ -51,13 +51,14 @@ Implemented files:
 
 - `docs/character-poses.js` contains the approved pose ID map.
 - `docs/character-display.js` renders images with `data-character-pose`.
+- `docs/character-display.js` now falls back to the current default teal explorer avatar if a requested pose image is missing or fails to load.
 - `docs/assets/characters/academic-adventurer/poses/README.md` lists the intended approved PNG filenames and pose IDs.
 
 Current limitation:
 
 The approved pose PNG files are not present in the repo at the mapped paths. For example, `docs/assets/characters/academic-adventurer/poses/01_wardrobe_neutral_base.png` was checked and is not currently in the repo.
 
-Because the pose PNGs are absent, live screens should not yet be switched fully to `data-character-pose` unless there is a safe fallback. Otherwise, the browser would show broken image icons instead of the character.
+Because the pose PNGs are absent, live screens should not yet be switched fully to `data-character-pose` unless the intended fallback behaviour is acceptable for that screen. The helper can now prevent broken images, but it does not create the missing pose art.
 
 ## Current screen wiring audit
 
@@ -82,8 +83,8 @@ Study Cave:
 ## Current Area 3 task
 
 1. Keep Area 3 visible in the project-notes handover system.
-2. Harden `docs/character-display.js` so missing pose PNGs can fall back safely when a screen uses `data-character-pose`.
-3. Do not wire live screens to missing pose assets yet.
+2. Keep `docs/character-display.js` safe for missing pose PNGs.
+3. Do not wire live screens to missing pose assets yet unless the fallback is deliberately acceptable.
 4. After approved pose PNGs are committed, wire screens to request pose IDs where appropriate.
 5. Keep outfit swapping and pose swapping separate until the data relationship is deliberately designed.
 
