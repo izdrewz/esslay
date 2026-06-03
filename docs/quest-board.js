@@ -345,3 +345,125 @@ const EsslayQuestBoard = (() => {
 })();
 
 document.addEventListener("DOMContentLoaded", EsslayQuestBoard.init);
+
+(() => {
+  const SAVE_KEY = "esslay-study-cave-save-v01";
+  const QUEST_ID = "study-skills-trial";
+  const MAX_SAFE_SAVE_CHARS = 350000;
+  const MAX_TASK_TEXT = 12000;
+  const MAX_RENDERED_CHUNKS = 30;
+  const SAMPLE = "Write an 800-word practice response explaining how a student can use planning, source notes, drafting, proofreading, and referencing habits to improve the quality of an academic assignment.";
+
+  const esc = (value) => String(value ?? "").replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
+  const trimText = (value, max = MAX_TASK_TEXT) => String(value ?? "").slice(0, max);
+  const chunkPreview = (value) => {
+    const text = String(value ?? "Recovered chunk").replace(/\s+/g, " ").trim();
+    return text.length > 70 ? `${text.slice(0, 70)}…` : text;
+  };
+
+  function blankSafeState(reason = "") {
+    return {
+      safeMode: true,
+      warning: reason,
+      taskTitle: "Study Skills Trial",
+      assessmentType: "practice task",
+      rawTaskText: SAMPLE,
+      chunks: []
+    };
+  }
+
+  function safeBriefState() {
+    let raw = "";
+    try { raw = localStorage.getItem(SAVE_KEY) || ""; } catch { return blankSafeState("The saved Study Cave data could not be read, so Task Brief opened in safe mode."); }
+    if (raw.length > MAX_SAFE_SAVE_CHARS) return blankSafeState("The saved Study Cave data is too large to open safely. Use Reset Brief Fog save below, then reopen the chamber.");
+    let saved;
+    try { saved = raw ? JSON.parse(raw) : null; } catch { return blankSafeState("The saved Study Cave data is malformed. Use Reset Brief Fog save below, then reopen the chamber."); }
+    const fog = saved?.quests?.[QUEST_ID]?.briefFog || {};
+    const chunks = Array.isArray(fog.chunks) ? fog.chunks.slice(0, MAX_RENDERED_CHUNKS) : [];
+    return {
+      safeMode: false,
+      warning: "",
+      taskTitle: trimText(fog.taskTitle || "Study Skills Trial", 180),
+      assessmentType: trimText(fog.assessmentType || "practice task", 180),
+      rawTaskText: trimText(fog.rawTaskText || SAMPLE),
+      chunks
+    };
+  }
+
+  function renderTaskBriefDrawer(state) {
+    const chunks = state.chunks.length ? `<ol class="chunk-list">${state.chunks.map((chunk, index) => `<li><button type="button" data-open-chunk="${index}">${esc(chunkPreview(chunk.originalText || chunk.text))}</button> <small>${esc(chunk.state || "Not started")}</small></li>`).join("")}</ol>` : `<p>No chunks yet.</p>`;
+    const warning = state.warning ? `<section class="warning-list"><h3>Task Brief safe mode</h3><p>${esc(state.warning)}</p></section>` : "";
+    return `<aside class="scene-drawer wide-drawer emergency-task-drawer"><button type="button" class="drawer-close" data-guard-close-task>×</button><h2>Task Brief</h2>${warning}<p>Paste or adjust the task, question, brief, guidance, or marking notes. This safe drawer avoids rendering oversized saved data.</p><form data-guard-task-form><label>Task title<input name="taskTitle" value="${esc(state.taskTitle)}"></label><label>Assessment type<input name="assessmentType" value="${esc(state.assessmentType)}"></label><label>Paste task / question / guidance<textarea name="rawTaskText" rows="7">${esc(state.rawTaskText)}</textarea></label><div class="drawer-actions"><button type="button" data-guard-save-task>Save task brief</button><button type="button" data-guard-reset-brief>Reset Brief Fog save</button></div></form><h3>Chunk list</h3>${chunks}</aside>`;
+  }
+
+  function openGuardTaskBrief(event) {
+    const taskButton = event.target.closest('[data-brief-panel="task"]');
+    if (!taskButton) return;
+    const room = document.querySelector("#stage-scene .brief-fog-room");
+    if (!room) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    room.querySelectorAll(".emergency-task-drawer").forEach((drawer) => drawer.remove());
+    room.insertAdjacentHTML("beforeend", renderTaskBriefDrawer(safeBriefState()));
+  }
+
+  function saveGuardTask(event) {
+    const saveButton = event.target.closest("[data-guard-save-task]");
+    if (!saveButton) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const form = saveButton.closest("form");
+    const data = new FormData(form);
+    let raw = "";
+    let saved = null;
+    try { raw = localStorage.getItem(SAVE_KEY) || ""; } catch {}
+    if (raw.length <= MAX_SAFE_SAVE_CHARS) {
+      try { saved = raw ? JSON.parse(raw) : null; } catch { saved = null; }
+    }
+    if (!saved || !saved.quests || !saved.quests[QUEST_ID]) {
+      saved = { activeQuestId: QUEST_ID, selectedQuestId: QUEST_ID, quests: { [QUEST_ID]: { questTitle: "Study Skills Trial", currentRouteLocation: "working_chamber", currentChamberId: "brief-fog", completedChambers: [], unlockedChambers: ["cave-base", "brief-fog"], flags: [], missedLoot: [], briefFog: {} } } };
+    }
+    const quest = saved.quests[QUEST_ID];
+    quest.briefFog = quest.briefFog || {};
+    quest.briefFog.taskTitle = trimText(data.get("taskTitle") || "Study Skills Trial", 180);
+    quest.briefFog.assessmentType = trimText(data.get("assessmentType") || "practice task", 180);
+    quest.briefFog.rawTaskText = trimText(data.get("rawTaskText") || SAMPLE);
+    quest.briefFog.chunks = [];
+    quest.briefFog.highlights = [];
+    quest.briefFog.notes = [];
+    quest.briefFog.dismissed = [];
+    quest.briefFog.outputCards = { commandWordCards: [], keywordCards: [], scopeLimitCards: [], sourceRequirementCards: [], taskDemandSummary: null };
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(saved)); } catch {}
+    const room = document.querySelector("#stage-scene .brief-fog-room");
+    if (room) {
+      room.querySelectorAll(".emergency-task-drawer").forEach((drawer) => drawer.remove());
+      room.insertAdjacentHTML("beforeend", renderTaskBriefDrawer(safeBriefState()));
+    }
+  }
+
+  function resetBriefFog(event) {
+    const resetButton = event.target.closest("[data-guard-reset-brief]");
+    if (!resetButton) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    try { localStorage.removeItem(SAVE_KEY); } catch {}
+    const room = document.querySelector("#stage-scene .brief-fog-room");
+    if (room) {
+      room.querySelectorAll(".emergency-task-drawer").forEach((drawer) => drawer.remove());
+      room.insertAdjacentHTML("beforeend", renderTaskBriefDrawer(blankSafeState("Brief Fog save was reset. Close and re-enter Brief Fog if the route panel needs refreshing.")));
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    window.addEventListener("click", openGuardTaskBrief, true);
+    window.addEventListener("click", saveGuardTask, true);
+    window.addEventListener("click", resetBriefFog, true);
+    window.addEventListener("click", (event) => {
+      const closeButton = event.target.closest("[data-guard-close-task]");
+      if (!closeButton) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      closeButton.closest(".emergency-task-drawer")?.remove();
+    }, true);
+  });
+})();
