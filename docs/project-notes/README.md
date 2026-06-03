@@ -13,12 +13,14 @@ Current active repo focus:
 - Study Cave route has moved to: Quest Board → Task Map threshold → Cave Base → Brief Fog / Question-Unpacking Chamber.
 - Cave Base opens and the character now appears at a workable size.
 - The avatar blends better than before, but the cave background still needs sharpening later.
+- Area 3 pose-swapping has now been added to the active project-notes handover because it was previously only recorded in `PROJECT_PLAN.md`.
 - The next build priority is retesting Brief Fog after the Quest Board → Task Map route handoff fix.
 
 Files in this folder:
 - `main-repo-status.md`
 - `master-recovery-status.md`
 - `area-1-character-assets.md`
+- `area-3-pose-swapping.md`
 - `area-6-main-room.md`
 - `area-9-brief-fog-workflow.md`
 - `area-10-visual-scenes.md`
