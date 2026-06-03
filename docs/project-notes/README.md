@@ -13,7 +13,7 @@ Current active repo focus:
 - Study Cave route has moved to: Quest Board → Task Map threshold → Cave Base → Brief Fog / Question-Unpacking Chamber.
 - Cave Base opens and the character now appears at a workable size.
 - The avatar blends better than before, but the cave background still needs sharpening later.
-- The next build priority is making Brief Fog work as a real scene-first task-unpacking chamber rather than a long form.
+- The next build priority is retesting Brief Fog after the Quest Board → Task Map route handoff fix.
 
 Files in this folder:
 - `main-repo-status.md`
@@ -24,4 +24,5 @@ Files in this folder:
 - `area-10-visual-scenes.md`
 - `area-11-save-export.md`
 - `area-12-route-behaviour.md`
+- `area-12-route-handoff-fix-2026-06-03.md`
 - `area-13-draft-support.md`
