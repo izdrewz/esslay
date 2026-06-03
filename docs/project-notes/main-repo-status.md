@@ -38,6 +38,7 @@ Implemented in repo:
 - Continue Quest opens Brief Fog scene.
 - Brief Fog v0.1 now has a scene-first task workflow: task brief drawer, chunk generation, fog-patch chunk drawers, highlight categories, plain-meaning notes, action-created notes, flags, missed loot, dismissed wording, chunk state decisions, summary, and clear behaviour.
 - The rendered Brief Fog task drawer now uses the button label `Suggest chunks` for the chunk-generation action.
+- A safe Task Brief guard has been added in `docs/quest-board.js` to intercept Task Brief clicks inside Brief Fog, avoid rendering oversized or malformed saved data, and provide a safe reset/save drawer instead of freezing the browser.
 - Brief Fog completion now returns to Cave Base, keeps Brief Fog completed, unlocks Source Mine placeholder, and updates progress to 1 / 7.
 - Cave Base has compact placeholder panels for Outfit Chest, Cave Journal / Route Ledger, Completed Chamber Summary, and Flags / Missed Loot.
 - Brief Fog export is available from the summary drawer as `.md`, `.txt`, and Word-openable `.doc` copy/download panels.
@@ -58,6 +59,7 @@ Relevant files:
 - `docs/study-cave-enter-fix.js`
 - `docs/study-cave-stage-scene.css`
 - `docs/study-cave-task-map-fallback.js`
+- `docs/quest-board.js`
 - `docs/assets/study-cave/cave-base-placeholder-v01.jpg`
 - `docs/assets/study-cave/brief-fog-placeholder-v01.jpg`
 - `docs/character-poses.js`
@@ -66,7 +68,8 @@ Relevant files:
 
 ## Current known issues
 
-- Brief Fog v0.1 needs browser retesting after the Quest Board → Task Map handoff fix.
+- Brief Fog v0.1 needs browser retesting after the Task Brief crash guard.
+- Task Brief had been reported to crash/freeze the browser when clicked. A safe guard has been added, but it needs confirmation on Izzy's browser.
 - Cave Base background needs sharpening. This is flagged for later asset/image work, not urgent route logic.
 - Character blending is improved but still CSS-based. A better future fix is a cave-specific avatar PNG with lighting baked in.
 - Brief Fog v0.1 currently uses compact drawers and placeholder CSS scene effects, not final monster animation/art.
@@ -99,10 +102,11 @@ Still useful later:
 
 Brief Fog v0.1 implementation status:
 
-active / needs browser retest after route handoff fix
+active / needs browser retest after Task Brief crash guard
 
 Review question for Izzy:
 
+- If Task Brief now opens without crashing, continue retesting Brief Fog v0.1.
 - If Brief Fog v0.1 works and feels acceptable for now, mark it `completed needs further edits` because final art, monster effects, and visual polish are still future work.
 - If Izzy is happy to lock this placeholder behaviour, mark route/workflow behaviour `completed locked` while keeping visual polish as future work.
 - If Izzy is not happy, keep it `active` and list exact fixes needed.
@@ -159,7 +163,7 @@ Needed later:
 ## Next priorities
 
 Priority 1 review:
-Test Brief Fog v0.1 in browser after the route handoff fix and decide whether it is acceptable for now.
+Test Brief Fog v0.1 in browser after the Task Brief crash guard and decide whether it is acceptable for now.
 
 Test path:
 - Open `docs/cave.html`
@@ -168,6 +172,7 @@ Test path:
 - Confirm Task Map threshold opens
 - Enter Cave Base
 - Continue Quest
+- Click Task Brief and confirm it opens without freezing the browser
 - Save task brief
 - Suggest chunks
 - Open fog patches
@@ -220,20 +225,3 @@ Required first cutscene direction:
 - smoke cloud / Command Imp on right
 - character faces and shoots toward the imp
 - magic should look twinkly/sparkly, not like a hard laser beam
-- first useful direction is left-to-right attack pose
-- later direction variants can wait unless needed
-
-Area 1 returned a precise asset plan but no approved preview yet. Latest generated previews are rejected because the art style was incorrect. Next Area 1 pass must match the approved soft illustrated academic-adventurer base style before image approval can happen.
-
-## Current Area 3 request needed
-
-Area 3 should not generate new art or switch live screens to missing pose PNGs yet.
-
-Next Area 3 step:
-- import approved pose PNGs into `docs/assets/characters/academic-adventurer/poses/` if Izzy has them
-- then wire chosen screens to request pose IDs through `docs/character-display.js`
-- keep outfit swapping and pose swapping separate until the data relationship is deliberately designed
-
-## Coordination rule
-
-After every repo change, update this file and any affected area note file in the same commit if the change affects design, behaviour, save logic, character assets, exports, or next steps.
