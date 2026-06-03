@@ -1,6 +1,6 @@
 # Area 1 — Character assets
 
-Last updated: 2026-06-01
+Last updated: 2026-06-03
 
 ## Area role
 
@@ -29,42 +29,58 @@ Area 1 does not edit the repo, design cave backgrounds, or decide save/route log
 - Character blending is CSS-based and acceptable for placeholder, but a future cave-specific lit avatar would look better.
 - The Cave Base currently uses a placeholder background.
 - Brief Fog currently has placeholder scene support only.
-- Brief Fog placeholder cutscene direction is now character on the left and smoke cloud / Command Imp on the right.
+- Brief Fog visual direction is now interactive visual-novel / game-CG style scene states, not full animation.
+- Brief Fog scene-state direction is character on one side and smoke cloud / Command Imp target on the other.
 - The magic should look twinkly/sparkly, not like a hard laser beam.
 
-## Current active Area 1 request: Brief Fog duel cutscene pose set
+## Current active Area 1 request: Brief Fog visual-novel pose states
 
 Status: active / needs corrected preview
 
-Izzy sent jester reference images for the Brief Fog cutscene direction. The jester references are for pose, expression, movement, energy, and duel staging. The jester outfit is not locked as the required Brief Fog clothing.
+Izzy has decided the project is no longer pursuing an animation-heavy pipeline for this work. Brief Fog should now be treated as interactive visual-novel / game-CG style scene states.
 
-Required first cutscene layout:
-- character on left
-- smoke cloud / Command Imp on right
-- character faces the smoke/imp
-- character shoots twinkle/sparkle magic from her hand toward the imp
-- cutscene should feel like a short comic/Mortal-Kombat-style frame, separate from the normal room interaction if needed
+This means Area 1 should not try to create a smooth animation or full frame-by-frame sequence. It should make clean static character pose states that can be swapped by the game.
 
-Required first pose priority:
-- left-to-right attack/casting pose using the jester reference pose/expression direction where useful
-- hand extended toward the right
-- body and face aimed toward the smoke/imp
-- sparkle/twinkle magic originating from the hand
-- transparent PNG if possible
-- black background preview acceptable for approval, but final game asset should be clean transparent PNG
+Required scene-state direction:
+- static character pose PNGs
+- consistent character identity
+- consistent canvas/alignment
+- black-background previews first for approval
+- final transparent PNGs after approval
+- magic/effects separated as overlays where practical
+- no requirement for video, GIF, or frame-by-frame animation
 
-Follow-up pose needs after attack pose:
-- confident/smug follow-up pose after imp reveal
-- hand-on-hip or tucking-hair pose
-- sparkle threat pose while imp runs away
-- startled/scared/defensive pose for future imp reactions if needed
+Required Brief Fog scene states:
 
-Direction variants:
-- left-to-right attack pose is the first priority.
-- right-to-left or other direction variants can wait unless the main repo needs them later.
+1. `brief_fog_01_light_ready_left.png`
+- Character on one side, facing the smoke/imp target.
+- One hand holds small twinkle/sparkle light.
+- Expression: focused, wary, investigating.
+- Use: before casting magic into the fog.
 
-Important asset rule:
-Do not replace the approved character with a different design. Use the references for pose/outfit direction, but preserve the approved girl’s identity and locked character rules.
+2. `brief_fog_02_twinkle_cast_left_to_right.png`
+- Character arm extended toward the target.
+- Twinkle/sparkle magic fires from hand toward smoke/imp target.
+- Expression: determined and confident.
+- Magic should be starry, sparkling, and magical, not a laser.
+
+3. `brief_fog_03_afterglow_imp_reveal.png`
+- Character remains in the same casting direction with extended hand or lowered after-cast hand.
+- Beam has stopped; afterglow remains near hand.
+- Fog patch cleared enough to reveal Command Imp nearby.
+- Expression: assessing / focused.
+
+4. `brief_fog_04_confident_after_reveal.png`
+- Character confident after revealing or knocking back the imp.
+- Preferred pose: hand on hip or smug/tucking-hair pose.
+- Expression: confident, slightly smug, controlled.
+- Imp fallen on backside is monster/Area 10 side, but character staging should support it.
+
+5. `brief_fog_05_warning_spark_imp_retreat.png`
+- Character with sparkle/light in hand again.
+- Pose: controlled threat, confident, ready to continue.
+- Expression: confident, not rageful.
+- Imp retreat/flee is now a static visual-novel scene-state requirement, not animation.
 
 ## Brief Fog outfit modularity rule
 
@@ -76,7 +92,7 @@ Area 1 should focus approval on:
 - approved base girl identity
 - adult proportions and non-childlike read
 - pose clarity
-- left-to-right staging
+- scene-state staging
 - expression
 - hand position
 - twinkle/sparkle magic direction
@@ -197,52 +213,16 @@ Avoid:
 - childlike/chibi/doll proportions
 - timid poses that make the character look younger than intended
 
-## Precise Brief Fog asset plan returned
+## Character-only PNG needs
 
-Status: needs approval
-
-Area 1 should produce the Brief Fog duel as a consistent left-to-right mini sequence. The character must stay on the left side of the frame and the smoke/Command Imp target stays on the right. The sequence should feel cinematic without teleporting the character: camera distance/angle can change, but character placement and direction should remain coherent.
-
-Required preview sequence:
-
-1. `brief_fog_01_light_ready_left.png`
-- Character on left, facing right.
-- One hand holds small twinkle/sparkle light.
-- Expression: focused, wary, investigating.
-- Use: before firing magic into the fog.
-
-2. `brief_fog_02_twinkle_cast_left_to_right.png`
-- Character on left, arm extended right.
-- Twinkle/sparkle magic fires from hand toward smoke/imp on right.
-- Expression: determined and confident.
-- Magic should be starry, sparkling, and magical, not a laser.
-
-3. `brief_fog_03_afterglow_imp_reveal.png`
-- Character remains in the same casting direction with extended hand or lowered after-cast hand.
-- Beam has stopped; afterglow remains near hand.
-- Fog patch cleared enough to reveal Command Imp nearby on the right.
-- Expression: assessing / focused.
-
-4. `brief_fog_04_confident_after_reveal.png`
-- Character on left, confident after revealing or knocking back the imp.
-- Preferred pose: hand on hip or smug/tucking-hair pose.
-- Expression: confident, slightly smug, controlled.
-- Imp fallen on backside is monster/Area 10 side, but character staging should support it.
-
-5. `brief_fog_05_warning_spark_imp_flee.png`
-- Character on left with sparkle/light in hand again.
-- Pose: controlled threat, confident, ready to continue.
-- Expression: confident, not rageful.
-- Imp flee/runaway remains Area 10/monster work, but the character pose should point the eye toward the right.
-
-Character-only PNG needs:
-- full-body character pose PNGs for each of the five poses above
+- full-body character pose PNGs for each of the five visual-novel states above
 - same canvas/alignment across all five
 - black-background previews first for approval
 - final transparent PNGs after Izzy approves previews
 - pose should be usable as a reusable base for multiple possible worn outfits
 
-Separate effect overlays needed:
+## Separate effect overlays needed
+
 - `brief_fog_hand_sparkle_overlay_v01.png`
 - `brief_fog_twinkle_shot_overlay_v01.png`
 - `brief_fog_afterglow_overlay_v01.png`
@@ -264,8 +244,8 @@ Brief Fog assets:
 - focused hand sparkle pose
 - casting twinkle attack pose
 - casting afterglow / extended hand pose
-- confident pose after imp reveal: arms crossed, hand on hip, or tucking hair behind ear
-- sparkle threat pose while imp runs away
+- confident pose after imp reveal
+- sparkle threat pose while imp retreats
 
 Effects:
 - hand sparkle transparent overlay
@@ -298,7 +278,7 @@ Suggested Brief Fog files:
 - `brief_fog_02_twinkle_cast_left_to_right.png`
 - `brief_fog_03_afterglow_imp_reveal.png`
 - `brief_fog_04_confident_after_reveal.png`
-- `brief_fog_05_warning_spark_imp_flee.png`
+- `brief_fog_05_warning_spark_imp_retreat.png`
 - `brief_fog_hand_sparkle_overlay_v01.png`
 - `brief_fog_twinkle_shot_overlay_v01.png`
 - `brief_fog_afterglow_overlay_v01.png`
@@ -307,9 +287,9 @@ Suggested Brief Fog files:
 
 - The current avatar still depends on CSS filter blending. A cave-lit PNG would reduce pasted-on feeling.
 - Final pose assets must not introduce white halos.
-- The current CSS cutscene can only approximate facing/casting. Final pose art is needed for the proper left-to-right Brief Fog duel sequence.
+- The current CSS visual response can only approximate facing/casting. Final pose art is needed for proper visual-novel scene states.
 - The next image generation pass must fix art style before approval can happen.
 - Izzy needs to approve the corrected pose/art-style direction before final PNG production.
 - Area 1 must now explicitly tell Izzy when it updates this note and must send previews/output directly if there is anything visual to approve.
 - The next preview must fix the childlike read by correcting proportions, posture, styling, and expression while preserving the approved base girl.
-- Clothing is not the main approval point for the Brief Fog duel preview because the worn outfit can change in-game; pose, identity, adult proportions, staging, and separated effects matter more.
+- Clothing is not the main approval point for the Brief Fog visual-novel states because the worn outfit can change in-game; pose, identity, adult proportions, staging, and separated effects matter more.
