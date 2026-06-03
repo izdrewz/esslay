@@ -1,6 +1,6 @@
 # Master recovery status
 
-Last updated: 2026-06-01
+Last updated: 2026-06-03
 
 Status: active / recovered handover
 
@@ -30,8 +30,17 @@ Clarification added for Area 1:
 - Area 1 must send Izzy previews/output directly if there are images to approve.
 - Area 1 must say clearly if the work is only a plan and no preview exists yet.
 
+Task Brief stability patch:
+- `docs/study-cave-enter-fix.js` was patched after Task Brief started crashing/freezing the browser.
+- Likely cause: old or malformed saved Brief Fog data in browser `localStorage`, or a task/chunk list too large for the drawer to render safely.
+- Patch added saved-chunk normalisation, safer output-card normalisation, safer storage writes, capped automatic chunk creation, capped visible chunk-list rendering, a Task Brief reset button, and a safe fallback if the Task Brief drawer cannot open.
+- Commit: `92ec52ab0094163764c7cb8541e6689706f28554`.
+- Test next: hard refresh `docs/cave.html`, enter Cave Base, continue to Brief Fog, open Task Brief, save task brief, refresh fog chunks, open a chunk, save chunk, and confirm browser does not crash.
+- If the old page still appears, hard refresh because `cave.html` still points at `study-cave-enter-fix.js?v=5` and the browser may cache it.
+
 Current master priority:
 - Keep Brief Fog v0.1 as active / needs Izzy review.
+- Test the Task Brief stability patch before locking Brief Fog.
 - Do not use rejected Area 1 generated previews.
 - Do not replace the approved base girl or drift art style.
 - Keep repo notes updated after meaningful changes.
