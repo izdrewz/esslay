@@ -1,6 +1,6 @@
 # Main repo status
 
-Last updated: 2026-06-01
+Last updated: 2026-06-03
 
 ## Current locked Study Cave flow
 
@@ -27,14 +27,17 @@ Implemented in repo:
 - `docs/cave.html` uses the new Study Cave scene shell.
 - Quest Board can open.
 - Study Skills Trial can be selected.
+- Study Skills Trial selection is now intercepted by `docs/study-cave-task-map-fallback.js` and sent to the Task Map threshold instead of the old quest placeholder panel.
 - Task Map threshold can open.
 - Enter Cave Base now works.
+- `docs/study-cave-task-map-fallback.js` no longer owns the Cave Base or Continue Quest buttons. The newer Brief Fog route script, `docs/study-cave-enter-fix.js`, owns Cave Base, Continue Quest, Brief Fog, completion, and Source Mine placeholder behaviour.
 - Cave Base scene opens using `docs/assets/study-cave/cave-base-placeholder-v01.jpg`.
 - Character appears in Cave Base at a workable size.
 - Character has CSS filter/drop-shadow blending.
 - The rectangle lighting box bug was removed by removing the rectangular pseudo-element overlay and bumping the CSS cache to `study-cave-stage-scene.css?v=4`.
 - Continue Quest opens Brief Fog scene.
 - Brief Fog v0.1 now has a scene-first task workflow: task brief drawer, chunk generation, fog-patch chunk drawers, highlight categories, plain-meaning notes, action-created notes, flags, missed loot, dismissed wording, chunk state decisions, summary, and clear behaviour.
+- The rendered Brief Fog task drawer now uses the button label `Suggest chunks` for the chunk-generation action.
 - Brief Fog completion now returns to Cave Base, keeps Brief Fog completed, unlocks Source Mine placeholder, and updates progress to 1 / 7.
 - Cave Base has compact placeholder panels for Outfit Chest, Cave Journal / Route Ledger, Completed Chamber Summary, and Flags / Missed Loot.
 - Brief Fog export is available from the summary drawer as `.md`, `.txt`, and Word-openable `.doc` copy/download panels.
@@ -58,9 +61,9 @@ Relevant files:
 
 ## Current known issues
 
+- Brief Fog v0.1 needs browser retesting after the Quest Board → Task Map handoff fix.
 - Cave Base background needs sharpening. This is flagged for later asset/image work, not urgent route logic.
 - Character blending is improved but still CSS-based. A better future fix is a cave-specific avatar PNG with lighting baked in.
-- Brief Fog v0.1 is implemented as a functional placeholder and needs Izzy testing before it can be marked completed locked.
 - Brief Fog v0.1 currently uses compact drawers and placeholder CSS scene effects, not final monster animation/art.
 - UI should continue avoiding long scrolling forms. Current version uses compact drawers, but this needs visual review on Izzy's screen.
 - Final Area 1 cave character poses and magic-light assets are not in repo yet.
@@ -88,9 +91,10 @@ Still useful later:
 
 Brief Fog v0.1 implementation status:
 
-active / needs Izzy review
+active / needs browser retest after route handoff fix
 
 Review question for Izzy:
+
 - If Brief Fog v0.1 works and feels acceptable for now, mark it `completed needs further edits` because final art, monster effects, and visual polish are still future work.
 - If Izzy is happy to lock this placeholder behaviour, mark route/workflow behaviour `completed locked` while keeping visual polish as future work.
 - If Izzy is not happy, keep it `active` and list exact fixes needed.
@@ -144,12 +148,13 @@ Needed later:
 ## Next priorities
 
 Priority 1 review:
-Test Brief Fog v0.1 in browser and decide whether it is acceptable for now.
+Test Brief Fog v0.1 in browser after the route handoff fix and decide whether it is acceptable for now.
 
 Test path:
 - Open `docs/cave.html`
 - Open Quest Board
 - Select Study Skills Trial
+- Confirm Task Map threshold opens
 - Enter Cave Base
 - Continue Quest
 - Save task brief
@@ -161,6 +166,7 @@ Test path:
 - Finish Brief Fog
 - Confirm Source Mine unlocks and Cave Base shows progress 1 / 7
 - Test exports from Brief Fog summary drawer
+- Return to Task Map and Quest Board to confirm Source Mine/current progress displays correctly
 
 Priority 2:
 Improve Cave Base interaction after Izzy review if needed.
