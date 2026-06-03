@@ -49,6 +49,8 @@ Implemented in repo:
 - Brief Fog cutscene direction is now: character on the left, smoke cloud / Command Imp on the right.
 - Brief Fog cutscene should feel more like a short Mortal Kombat/comic-frame duel overlay than a normal room interaction.
 - Brief Fog magic should read as twinkle/sparkle magic, not a hard laser beam.
+- Area 3 pose-swapping is now registered in the active project-notes handover as `docs/project-notes/area-3-pose-swapping.md`.
+- `docs/character-display.js` now has a safe fallback to the current default teal explorer avatar when a requested pose image is missing or fails to load.
 
 Relevant files:
 
@@ -58,6 +60,9 @@ Relevant files:
 - `docs/study-cave-task-map-fallback.js`
 - `docs/assets/study-cave/cave-base-placeholder-v01.jpg`
 - `docs/assets/study-cave/brief-fog-placeholder-v01.jpg`
+- `docs/character-poses.js`
+- `docs/character-display.js`
+- `docs/project-notes/area-3-pose-swapping.md`
 
 ## Current known issues
 
@@ -67,6 +72,7 @@ Relevant files:
 - Brief Fog v0.1 currently uses compact drawers and placeholder CSS scene effects, not final monster animation/art.
 - UI should continue avoiding long scrolling forms. Current version uses compact drawers, but this needs visual review on Izzy's screen.
 - Final Area 1 cave character poses and magic-light assets are not in repo yet.
+- Area 3 approved pose PNGs are not present in the repo at their mapped paths yet, so live screens should not be switched fully to pose IDs until assets or deliberate fallback behaviour are confirmed.
 - Command Imp CSS placeholder reveal works as a temporary effect, but the imp fall/flee sequence is not good enough yet. Future fix: proper Command Imp art/animation or stronger CSS fall/flee keyframes.
 - Brief Fog character facing/casting is currently a CSS flip and hand-spark placeholder. Future fix: Area 1 should provide final focused hand-spark and casting light-beam poses facing the fog/imp direction.
 - Area 1 now needs a proper Brief Fog cutscene pose set: attack/casting pose, confident/smug follow-up pose, threat-with-sparkle pose, and scared/defensive reaction poses for later scenes.
@@ -82,10 +88,12 @@ Received and recorded:
 - Area 11 — Brief Fog save/export structure. Status: completed. Saved in `docs/project-notes/area-11-save-export.md`.
 - Area 12 — Cave Base panels and route update after Brief Fog clears. Status: completed. Saved in `docs/project-notes/area-12-route-behaviour.md`.
 - Area 1 — Brief Fog character pose/effect asset plan and rejected-art-style reset. Status: needs approval / no approved preview yet. Saved in `docs/project-notes/area-1-character-assets.md`.
+- Area 3 — Character pose-swapping. Status: active / safe helper added / needs asset import before live screen wiring. Saved in `docs/project-notes/area-3-pose-swapping.md`.
 
 Still useful later:
 
 - Area 1 — final cave character poses, cave outfits, sparkle/light overlays, and cave-specific avatar polish. Not blocking placeholder build.
+- Area 3 — pose asset import and safe screen wiring after approved pose PNGs exist in repo.
 
 ## Current review status
 
@@ -121,6 +129,7 @@ Area ownership:
 - Area 11 owns Cave Base persistence, progress, flags, missed loot, and outfit override save fields.
 - Area 10 owns Cave Base visual hotspot placement and background/asset polish.
 - Area 1 owns final Cave Base character/outfit/chest poses later.
+- Area 3 owns later pose mapping once approved Cave Base pose assets exist.
 
 Priority 3 belongs mainly to Area 11.
 
@@ -133,9 +142,9 @@ Needed features:
 - reset Study Skills Trial only
 - export updated route as `.md`, `.txt`, and Word-openable `.doc`
 
-Priority 4 belongs mainly to Area 10 and Area 1.
+Priority 4 belongs mainly to Area 10, Area 1, and Area 3.
 
-Asset polish.
+Asset and pose polish.
 
 Needed later:
 - sharpen Cave Base background
@@ -144,6 +153,8 @@ Needed later:
 - light beam / sparkle overlays
 - Command Imp placeholder or final art
 - cave-specific avatar lighting asset
+- approved pose PNGs imported into `docs/assets/characters/academic-adventurer/poses/`
+- live screens wired to request pose IDs after pose assets exist or fallback behaviour is deliberately accepted
 
 ## Next priorities
 
@@ -185,7 +196,7 @@ Current v0.1 uses localStorage key `esslay-study-cave-save-v01`.
 Future improvement may be needed if the final data shape is moved into separate files or shared with other systems.
 
 Priority 4:
-Asset polish.
+Asset and pose polish.
 
 Needed later:
 - sharpen Cave Base background
@@ -197,6 +208,8 @@ Needed later:
 - Command Imp placeholder or final art
 - Command Imp fall/flee sequence polish
 - cave-specific avatar lighting asset
+- approved pose PNGs imported into the pose folder
+- Area 3 live screen wiring after approved pose assets exist
 
 ## Current Area 1 request needed
 
@@ -211,6 +224,15 @@ Required first cutscene direction:
 - later direction variants can wait unless needed
 
 Area 1 returned a precise asset plan but no approved preview yet. Latest generated previews are rejected because the art style was incorrect. Next Area 1 pass must match the approved soft illustrated academic-adventurer base style before image approval can happen.
+
+## Current Area 3 request needed
+
+Area 3 should not generate new art or switch live screens to missing pose PNGs yet.
+
+Next Area 3 step:
+- import approved pose PNGs into `docs/assets/characters/academic-adventurer/poses/` if Izzy has them
+- then wire chosen screens to request pose IDs through `docs/character-display.js`
+- keep outfit swapping and pose swapping separate until the data relationship is deliberately designed
 
 ## Coordination rule
 
