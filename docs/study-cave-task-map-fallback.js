@@ -205,7 +205,7 @@
 
   function patchBriefFogLabels(root = document) {
     root.querySelectorAll("[data-suggest-chunks]").forEach((button) => {
-      button.textContent = "Suggest chunks";
+      if (button.textContent !== "Suggest chunks") button.textContent = "Suggest chunks";
     });
   }
 
@@ -223,7 +223,9 @@
         z-index: 120 !important;
         pointer-events: auto !important;
       }
-      .stage-scene .brief-fog-room .flow-hotspot {
+      .stage-scene .brief-fog-room .flow-hotspot,
+      .stage-scene .brief-fog-room [data-brief-panel],
+      .stage-scene .brief-fog-room [data-next-chunk] {
         z-index: 110 !important;
         pointer-events: auto !important;
       }
@@ -237,14 +239,6 @@
     saveState(state);
     renderTaskMap(state);
     patchBriefFogLabels();
-
-    const stage = document.getElementById("stage-scene");
-    if (stage && "MutationObserver" in window) {
-      new MutationObserver(() => {
-        patchBriefFogLabels(stage);
-        injectBriefFogClickSafety();
-      }).observe(stage, { childList: true, subtree: true });
-    }
 
     document.addEventListener("click", (event) => {
       const close = event.target.closest("[data-close-panel]");
