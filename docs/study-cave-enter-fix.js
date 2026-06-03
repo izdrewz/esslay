@@ -1,227 +1,122 @@
 (() => {
-  const KEY = "esslay-study-cave-save-v01";
+  const KEY = "esslay-study-cave-save-v02";
+  const OLD_KEY = "esslay-study-cave-save-v01";
   const QUEST_ID = "study-skills-trial";
   const TOTAL = 7;
-  const MAX_SAVE_CHARS = 220000;
-  const MAX_RENDERED_CHUNKS = 24;
-  const MAX_SAVED_CHUNKS = 60;
-  const MAX_AUTO_CHUNKS = 12;
-  const MAX_TASK_TEXT = 12000;
-  const MAX_CHUNK_TEXT = 2200;
-  const MAX_NOTE_TEXT = 1800;
   const SAMPLE = "Write an 800-word practice response explaining how a student can use planning, source notes, drafting, proofreading, and referencing habits to improve the quality of an academic assignment.";
-
-  const cats = ["Command word / action word", "Topic keyword", "Scope / limit", "Evidence / source requirement", "Format / output rule", "Word count / deadline rule", "Marking / quality clue", "Optional / context wording", "Dismissed wording", "Unsure"];
-  const states = ["Not started", "In progress", "Fully unpacked", "Dismissed with reason", "Flagged for later", "Parked as missed loot", "Partially unpacked - warning accepted"];
-  const typeLabels = ["Main question", "Task instruction", "Guidance note", "Marking instruction", "Source requirement", "Format instruction", "Word count / deadline instruction", "Submission instruction", "Tutor feedback instruction", "Reflection instruction", "Unknown"];
-  const resolvedStates = ["Fully unpacked", "Dismissed with reason", "Flagged for later", "Parked as missed loot", "Partially unpacked - warning accepted"];
+  const MAX_TASK_TEXT = 9000;
+  const MAX_CHUNKS = 8;
+  const MAX_CHUNK_TEXT = 1200;
+  const resolvedStates = ["Fully unpacked", "Flagged for later", "Parked as missed loot"];
 
   const now = () => new Date().toISOString();
-  const id = (prefix) => `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
   const esc = (value) => String(value ?? "").replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
-  const options = (items, selected) => items.map((item) => `<option${item === selected ? " selected" : ""}>${esc(item)}</option>`).join("");
-  const unique = (items, item) => Array.from(new Set([...(Array.isArray(items) ? items : []), item]));
-  const toArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
-  const capText = (value, max) => String(value ?? "").slice(0, max);
-  const firstValid = (value, fallback, max = null) => {
-    const text = String(value ?? "").trim() || fallback;
-    return max ? capText(text, max) : text;
+  const cap = (value, max) => String(value ?? "").slice(0, max);
+  const preview = (value, max = 72) => {
+    const text = String(value ?? "").replace(/\s+/g, " ").trim();
+    return text.length > max ? `${text.slice(0, max)}…` : text || "Untitled chunk";
   };
-  const preview = (value, max = 70) => {
-    const text = String(value ?? "Recovered blank chunk").replace(/\s+/g, " ").trim();
-    return text.length > max ? `${text.slice(0, max)}…` : text;
-  };
+  const id = (prefix) => `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 
-  function blankOutputCards() {
-    return { commandWordCards: [], keywordCards: [], scopeLimitCards: [], sourceRequirementCards: [], taskDemandSummary: null };
-  }
-
-  function blankFog() {
+  function freshState() {
     return {
-      taskTitle: "Study Skills Trial",
-      assessmentType: "practice task",
-      rawTaskText: SAMPLE,
-      chunks: [],
-      highlights: [],
-      notes: [],
-      dismissed: [],
-      flags: [],
-      missedLoot: [],
-      outputCards: blankOutputCards(),
-      status: "unlocked",
-      clearedAt: null,
-      safetyWarnings: []
-    };
-  }
-
-  function baseState() {
-    return {
-      version: "0.1",
+      version: "0.2-stable-brief-fog",
       activeQuestId: QUEST_ID,
-      selectedQuestId: QUEST_ID,
       quests: {
         [QUEST_ID]: {
           questId: QUEST_ID,
           questTitle: "Study Skills Trial",
-          status: "not_started",
-          questStatus: "task-map-started",
           currentRouteLocation: "task_map_threshold",
           currentChamberId: "brief-fog",
-          currentChamberLabel: "Brief Fog / Question-Unpacking Chamber",
           completedChambers: [],
           unlockedChambers: ["cave-base", "brief-fog"],
           flags: [],
           missedLoot: [],
-          collectedLoot: [],
-          progressLog: [],
           nextAction: "Enter Cave Base",
-          buttonLabel: "Open Test Quest",
-          taskMapSummary: { currentChamber: "Brief Fog / Question-Unpacking Chamber", progress: "0 / 7 chambers complete", nextAction: "Enter Cave Base" },
-          briefFog: blankFog(),
-          chamberSaves: { briefFog: { rawTaskText: SAMPLE, wordCount: 800 } },
-          createdAt: now(),
+          briefFog: {
+            taskTitle: "Study Skills Trial",
+            assessmentType: "practice task",
+            rawTaskText: SAMPLE,
+            chunks: [],
+            notes: [],
+            status: "unlocked"
+          },
           updatedAt: now()
         }
       },
-      caveBase: {},
-      globalProgressLog: [],
       lastSavedAt: now()
     };
   }
 
-  function normaliseOutputCards(cards) {
-    const base = blankOutputCards();
-    const safe = cards && typeof cards === "object" ? cards : {};
+  function cleanChunk(chunk, index) {
+    const safe = chunk && typeof chunk === "object" ? chunk : {};
     return {
-      commandWordCards: toArray(safe.commandWordCards).slice(0, 80),
-      keywordCards: toArray(safe.keywordCards).slice(0, 80),
-      scopeLimitCards: toArray(safe.scopeLimitCards).slice(0, 80),
-      sourceRequirementCards: toArray(safe.sourceRequirementCards).slice(0, 80),
-      taskDemandSummary: safe.taskDemandSummary && typeof safe.taskDemandSummary === "object" ? safe.taskDemandSummary : base.taskDemandSummary
-    };
-  }
-
-  function normaliseChunk(chunk, index) {
-    const raw = chunk && typeof chunk === "object" ? chunk : {};
-    const state = states.includes(raw.state) ? raw.state : "Not started";
-    const type = typeLabels.includes(raw.type) ? raw.type : "Unknown";
-    return {
-      id: firstValid(raw.id, id("chunk"), 120),
-      order: Number.isFinite(Number(raw.order)) ? Number(raw.order) : index,
-      originalText: firstValid(raw.originalText ?? raw.text, `Recovered chunk ${index + 1}`, MAX_CHUNK_TEXT),
-      type,
-      state,
-      createdAt: raw.createdAt || now(),
-      updatedAt: raw.updatedAt || now()
-    };
-  }
-
-  function safeNote(item) {
-    const source = item && typeof item === "object" ? item : {};
-    return { ...source, text: capText(source.text || source.note || source.itemMissed || "", MAX_NOTE_TEXT), note: capText(source.note || source.text || "", MAX_NOTE_TEXT), itemMissed: capText(source.itemMissed || source.text || "", MAX_NOTE_TEXT) };
-  }
-
-  function normaliseFog(fog) {
-    const base = blankFog();
-    const safe = fog && typeof fog === "object" ? fog : {};
-    const warnings = toArray(safe.safetyWarnings);
-    const rawTaskText = firstValid(safe.rawTaskText, base.rawTaskText, MAX_TASK_TEXT);
-    if (String(safe.rawTaskText || "").length > MAX_TASK_TEXT) warnings.push(`Task text was capped to ${MAX_TASK_TEXT} characters for browser stability.`);
-    const sourceChunks = toArray(safe.chunks);
-    if (sourceChunks.length > MAX_SAVED_CHUNKS) warnings.push(`Chunk list was capped from ${sourceChunks.length} to ${MAX_SAVED_CHUNKS} for browser stability.`);
-    return {
-      ...base,
-      ...safe,
-      taskTitle: firstValid(safe.taskTitle, base.taskTitle, 180),
-      assessmentType: firstValid(safe.assessmentType, base.assessmentType, 180),
-      rawTaskText,
-      chunks: sourceChunks.slice(0, MAX_SAVED_CHUNKS).map(normaliseChunk),
-      highlights: toArray(safe.highlights).slice(0, 120).map(safeNote),
-      notes: toArray(safe.notes).slice(0, 120).map(safeNote),
-      dismissed: toArray(safe.dismissed).slice(0, 120).map(safeNote),
-      flags: toArray(safe.flags).slice(0, 80).map(safeNote),
-      missedLoot: toArray(safe.missedLoot).slice(0, 80).map(safeNote),
-      outputCards: normaliseOutputCards(safe.outputCards),
-      status: firstValid(safe.status, base.status, 80),
-      clearedAt: safe.clearedAt || null,
-      safetyWarnings: Array.from(new Set(warnings)).slice(0, 8)
+      id: cap(safe.id || id("chunk"), 80),
+      order: Number.isFinite(Number(safe.order)) ? Number(safe.order) : index,
+      originalText: cap(safe.originalText || safe.text || `Chunk ${index + 1}`, MAX_CHUNK_TEXT),
+      state: resolvedStates.includes(safe.state) || safe.state === "In progress" ? safe.state : "Not started",
+      plain: cap(safe.plain || "", 1200),
+      action: cap(safe.action || "", 1200),
+      updatedAt: safe.updatedAt || now()
     };
   }
 
   function load() {
     let stored = null;
     try {
-      const raw = localStorage.getItem(KEY) || "";
-      if (raw.length > MAX_SAVE_CHARS) {
-        window.__esslayStorageWarning = "Old Study Cave saved data was too large to open safely, so this session opened a clean safe copy. Use Reset Brief Fog save to clear the old browser save.";
-        stored = null;
-      } else {
-        stored = raw ? JSON.parse(raw) : null;
-      }
+      const raw = localStorage.getItem(KEY);
+      if (raw && raw.length < 80000) stored = JSON.parse(raw);
     } catch {
-      window.__esslayStorageWarning = "Old Study Cave saved data could not be read, so this session opened a clean safe copy. Use Reset Brief Fog save to clear the old browser save.";
       stored = null;
     }
-    const base = baseState();
-    const save = { ...base, ...(stored && typeof stored === "object" ? stored : {}) };
-    save.quests = { ...base.quests, ...(save.quests && typeof save.quests === "object" ? save.quests : {}) };
-    const quest = { ...base.quests[QUEST_ID], ...(save.quests[QUEST_ID] && typeof save.quests[QUEST_ID] === "object" ? save.quests[QUEST_ID] : {}) };
-    quest.completedChambers = toArray(quest.completedChambers);
-    quest.unlockedChambers = toArray(quest.unlockedChambers).length ? toArray(quest.unlockedChambers) : ["cave-base", "brief-fog"];
-    quest.flags = toArray(quest.flags).slice(0, 80).map(safeNote);
-    quest.missedLoot = toArray(quest.missedLoot).slice(0, 80).map(safeNote);
-    quest.collectedLoot = toArray(quest.collectedLoot).slice(0, 80);
-    quest.progressLog = toArray(quest.progressLog).slice(0, 80);
-    quest.briefFog = normaliseFog(quest.briefFog);
+
+    const base = freshState();
+    const save = stored && typeof stored === "object" ? { ...base, ...stored } : base;
+    save.quests = save.quests && typeof save.quests === "object" ? save.quests : base.quests;
+    const quest = save.quests[QUEST_ID] && typeof save.quests[QUEST_ID] === "object" ? { ...base.quests[QUEST_ID], ...save.quests[QUEST_ID] } : base.quests[QUEST_ID];
+    quest.completedChambers = Array.isArray(quest.completedChambers) ? quest.completedChambers : [];
+    quest.unlockedChambers = Array.isArray(quest.unlockedChambers) && quest.unlockedChambers.length ? quest.unlockedChambers : ["cave-base", "brief-fog"];
+    quest.flags = Array.isArray(quest.flags) ? quest.flags.slice(0, 30) : [];
+    quest.missedLoot = Array.isArray(quest.missedLoot) ? quest.missedLoot.slice(0, 30) : [];
+    quest.briefFog = quest.briefFog && typeof quest.briefFog === "object" ? { ...base.quests[QUEST_ID].briefFog, ...quest.briefFog } : base.quests[QUEST_ID].briefFog;
+    quest.briefFog.taskTitle = cap(quest.briefFog.taskTitle || "Study Skills Trial", 160);
+    quest.briefFog.assessmentType = cap(quest.briefFog.assessmentType || "practice task", 160);
+    quest.briefFog.rawTaskText = cap(quest.briefFog.rawTaskText || SAMPLE, MAX_TASK_TEXT);
+    quest.briefFog.chunks = Array.isArray(quest.briefFog.chunks) ? quest.briefFog.chunks.slice(0, MAX_CHUNKS).map(cleanChunk) : [];
+    quest.briefFog.notes = Array.isArray(quest.briefFog.notes) ? quest.briefFog.notes.slice(0, 30) : [];
     save.quests[QUEST_ID] = quest;
     return save;
   }
 
-  const getQuest = (save) => save.quests[QUEST_ID];
-  const getFog = (save) => getQuest(save).briefFog;
-  const progressLabel = (quest) => `${quest.completedChambers.length} / ${TOTAL} chambers complete`;
-  const chamberLabel = (idValue) => idValue === "source-mine" ? "Source Mine" : idValue === "brief-fog" ? "Brief Fog / Question-Unpacking Chamber" : "Cave Base";
-
-  function safeSave(save) {
+  function saveState(save) {
+    const quest = save.quests[QUEST_ID];
+    save.lastSavedAt = now();
+    quest.updatedAt = save.lastSavedAt;
     try {
       localStorage.setItem(KEY, JSON.stringify(save));
       window.__esslayStorageWarning = "";
-      return true;
-    } catch (error) {
-      window.__esslayStorageWarning = "The browser could not save this Brief Fog state. The task brief may be too large, or old saved data may need resetting.";
-      console.warn("Study Cave save failed", error);
-      return false;
+    } catch {
+      window.__esslayStorageWarning = "This browser could not save Study Cave progress. Reset the Brief Fog save if this keeps happening.";
     }
-  }
-
-  function saveState(save) {
-    const quest = getQuest(save);
-    save.lastSavedAt = now();
-    quest.updatedAt = save.lastSavedAt;
-    quest.briefFog = normaliseFog(quest.briefFog);
-    save.caveBase = {
-      activeQuestId: QUEST_ID,
-      currentChamberId: quest.currentChamberId,
-      currentRouteLocation: quest.currentRouteLocation,
-      completedChambers: quest.completedChambers,
-      unlockedChambers: quest.unlockedChambers,
-      missedLoot: quest.missedLoot,
-      openFlags: quest.flags.filter((flag) => flag.status === "open"),
-      lastSavedAt: save.lastSavedAt
-    };
-    safeSave(save);
     updateStaticQuestCard(save);
   }
 
+  const quest = (save) => save.quests[QUEST_ID];
+  const fog = (save) => quest(save).briefFog;
+  const progressLabel = (q) => `${q.completedChambers.length} / ${TOTAL} chambers complete`;
+  const chamberLabel = (idValue) => idValue === "source-mine" ? "Source Mine" : idValue === "brief-fog" ? "Brief Fog / Question-Unpacking Chamber" : "Cave Base";
+
   function updateStaticQuestCard(save) {
-    const quest = getQuest(save);
-    document.querySelectorAll("[data-flow-progress]").forEach((node) => { node.textContent = `${quest.completedChambers.length} / ${TOTAL}`; });
+    const q = quest(save);
+    document.querySelectorAll("[data-flow-progress]").forEach((node) => { node.textContent = `${q.completedChambers.length} / ${TOTAL}`; });
     const card = document.querySelector('[data-open-quest="study-skills-trial"]')?.closest(".quest-board-card");
     if (!card) return;
-    const started = quest.completedChambers.includes("brief-fog");
-    card.querySelector(".quest-card-task").textContent = `Neutral 800-word practice task. Current chamber: ${chamberLabel(quest.currentChamberId)}. Progress: ${progressLabel(quest)}.`;
-    card.querySelector(".quest-card-status").innerHTML = `<strong>Status:</strong> ${started ? "In progress" : "Not started"} · <strong>Flags:</strong> ${quest.flags.length} · <strong>Missed loot:</strong> ${quest.missedLoot.length}`;
-    card.querySelector('[data-open-quest="study-skills-trial"]').textContent = started ? "Continue Test Quest" : "Open Test Quest";
+    const task = card.querySelector(".quest-card-task");
+    const status = card.querySelector(".quest-card-status");
+    const button = card.querySelector('[data-open-quest="study-skills-trial"]');
+    if (task) task.textContent = `Neutral practice task. Current chamber: ${chamberLabel(q.currentChamberId)}. Progress: ${progressLabel(q)}.`;
+    if (status) status.innerHTML = `<strong>Status:</strong> ${q.completedChambers.includes("brief-fog") ? "In progress" : "Not started"} · <strong>Flags:</strong> ${q.flags.length} · <strong>Missed loot:</strong> ${q.missedLoot.length}`;
+    if (button) button.textContent = q.completedChambers.includes("brief-fog") ? "Continue Test Quest" : "Open Test Quest";
   }
 
   function stage() { return document.getElementById("stage-scene"); }
@@ -241,261 +136,120 @@
   function drawer(title, body, wide = false, extraClass = "") {
     return `<aside class="scene-drawer ${wide ? "wide-drawer" : "compact-drawer"} ${extraClass}"><button type="button" class="drawer-close" data-close-drawer>×</button><h2>${esc(title)}</h2>${body}</aside>`;
   }
-  function list(items, key) {
-    const safeItems = toArray(items).slice(0, 30);
-    return safeItems.length ? `<ul>${safeItems.map((item) => `<li>${esc(item?.[key] || item?.text || "item")}</li>`).join("")}</ul>` : `<p>None yet.</p>`;
-  }
   function storageWarning() {
     return window.__esslayStorageWarning ? `<p class="warning-list"><strong>Save warning:</strong> ${esc(window.__esslayStorageWarning)}</p>` : "";
   }
-  function fogSafetyWarning(fog) {
-    const warnings = toArray(fog.safetyWarnings);
-    return warnings.length ? `<section class="warning-list"><h3>Browser safety changes</h3><ul>${warnings.map((warning) => `<li>${esc(warning)}</li>`).join("")}</ul></section>` : "";
+
+  function routeCards(q) {
+    const current = q.completedChambers.includes("brief-fog") ? "source-mine" : "brief-fog";
+    const nodes = [
+      ["cave-base", "Cave Base"],
+      ["brief-fog", "Brief Fog"],
+      ["source-mine", "Source Mine"],
+      ["quote-bank", "Quote Bank"],
+      ["draft-route", "Draft Route"],
+      ["dirty-draft", "Dirty Draft"],
+      ["coherence-boss", "Coherence Boss"]
+    ];
+    return nodes.map(([idValue, label]) => {
+      const complete = q.completedChambers.includes(idValue);
+      const unlocked = q.unlockedChambers.includes(idValue);
+      const active = idValue === current;
+      const status = complete ? "Complete" : active ? "Current" : unlocked ? "Unlocked" : "Locked";
+      return `<article class="route-node-card ${complete ? "complete" : ""} ${unlocked ? "unlocked" : "locked"} ${active ? "current" : ""}"><strong>${esc(label)}</strong><p>${esc(status)}</p></article>`;
+    }).join("");
+  }
+
+  function renderTaskMap(save) {
+    const q = quest(save);
+    const current = q.completedChambers.includes("brief-fog") ? "source-mine" : "brief-fog";
+    q.currentChamberId = current;
+    const html = `<section class="task-map-grid"><article class="flow-card"><p class="eyebrow">Selected task becomes the map</p><h2>${esc(q.questTitle)}</h2><p><strong>Current chamber:</strong> ${esc(chamberLabel(current))}</p><p><strong>Progress:</strong> ${esc(progressLabel(q))}</p><p><strong>Completed chambers:</strong> ${esc(q.completedChambers.join(", ") || "none yet")}</p><p><strong>Open flags:</strong> ${q.flags.length}</p><p><strong>Missed loot:</strong> ${q.missedLoot.length}</p><div class="flow-actions"><button type="button" data-enter-cave-base>Enter Cave Base</button><button type="button" class="secondary-button" data-back-quest-board>Back to Quest Board</button></div></article><article class="flow-card"><h3>Route nodes</h3><div class="route-node-grid">${routeCards(q)}</div></article></section>`;
+    document.querySelectorAll("[data-task-map]").forEach((mount) => { mount.innerHTML = html; });
   }
 
   function caveBase(save, activeDrawer = "") {
-    const quest = getQuest(save);
-    return `<section class="stage-room cave-base-room"><button class="stage-close" data-close-stage>×</button><span class="scene-label">Cave Base · safe hub</span><div class="stage-character stage-character-base"></div><button class="flow-hotspot hotspot-chest" data-hotspot-label="Outfit chest" data-base-panel="outfit">Outfit chest</button><button class="flow-hotspot hotspot-ledger" data-hotspot-label="Journal" data-base-panel="ledger">Journal</button><button class="flow-hotspot hotspot-shelf" data-hotspot-label="Completed" data-base-panel="completed">Completed</button><button class="flow-hotspot hotspot-flags" data-hotspot-label="Flags" data-base-panel="flags">Flags</button><button class="flow-hotspot hotspot-continue" data-hotspot-label="Continue" data-continue-quest>Continue</button><button class="flow-hotspot hotspot-return" data-hotspot-label="Task map" data-open-task-map>Task map</button><article class="stage-card"><h2>Cave Base</h2><p><strong>Active quest:</strong> ${esc(quest.questTitle)}</p><p><strong>Current chamber:</strong> ${esc(chamberLabel(quest.currentChamberId))}</p><p><strong>Progress:</strong> ${esc(progressLabel(quest))}</p><p><strong>Completed:</strong> ${esc(quest.completedChambers.join(", ") || "none yet")}</p><p><strong>Flags:</strong> ${quest.flags.length} · <strong>Missed loot:</strong> ${quest.missedLoot.length}</p>${storageWarning()}</article>${activeDrawer}</section>`;
+    const q = quest(save);
+    return `<section class="stage-room cave-base-room"><button class="stage-close" data-close-stage>×</button><span class="scene-label">Cave Base · safe hub</span><div class="stage-character stage-character-base"></div><button class="flow-hotspot hotspot-chest" data-hotspot-label="Outfit chest" data-base-panel="outfit">Outfit chest</button><button class="flow-hotspot hotspot-ledger" data-hotspot-label="Journal" data-base-panel="ledger">Journal</button><button class="flow-hotspot hotspot-shelf" data-hotspot-label="Completed" data-base-panel="completed">Completed</button><button class="flow-hotspot hotspot-flags" data-hotspot-label="Flags" data-base-panel="flags">Flags</button><button class="flow-hotspot hotspot-continue" data-hotspot-label="Continue" data-continue-quest>Continue</button><button class="flow-hotspot hotspot-return" data-hotspot-label="Task map" data-open-task-map>Task map</button><article class="stage-card"><h2>Cave Base</h2><p><strong>Active quest:</strong> ${esc(q.questTitle)}</p><p><strong>Current chamber:</strong> ${esc(chamberLabel(q.currentChamberId))}</p><p><strong>Progress:</strong> ${esc(progressLabel(q))}</p><p><strong>Completed:</strong> ${esc(q.completedChambers.join(", ") || "none yet")}</p><p><strong>Flags:</strong> ${q.flags.length} · <strong>Missed loot:</strong> ${q.missedLoot.length}</p>${storageWarning()}</article>${activeDrawer}</section>`;
   }
 
   function basePanel(save, type) {
-    const quest = getQuest(save);
+    const q = quest(save);
     if (type === "outfit") return drawer("Outfit Chest", `<p>Study Cave outfit changing will live here. For v0.1 this is a placeholder and does not change progress.</p>`);
-    if (type === "ledger") return drawer("Cave Journal / Route Ledger", `<p><strong>Current:</strong> ${esc(chamberLabel(quest.currentChamberId))}</p><p><strong>Progress:</strong> ${esc(progressLabel(quest))}</p><p><strong>Unlocked:</strong> ${esc(quest.unlockedChambers.join(", "))}</p>`);
-    if (type === "completed") return drawer("Completed Chamber Summary", quest.completedChambers.includes("brief-fog") ? `<p>Brief Fog / Question-Unpacking Chamber is completed and reviewable.</p><button data-review-brief-fog>Review Brief Fog</button>` : `<p>No chambers completed yet.</p>`);
-    return drawer("Flags / Missed Loot", `<h3>Flags</h3>${list(quest.flags, "note")}<h3>Missed loot</h3>${list(quest.missedLoot, "itemMissed")}`);
+    if (type === "ledger") return drawer("Cave Journal / Route Ledger", `<p><strong>Current:</strong> ${esc(chamberLabel(q.currentChamberId))}</p><p><strong>Progress:</strong> ${esc(progressLabel(q))}</p><p><strong>Unlocked:</strong> ${esc(q.unlockedChambers.join(", "))}</p>`);
+    if (type === "completed") return drawer("Completed Chamber Summary", q.completedChambers.includes("brief-fog") ? `<p>Brief Fog is completed and Source Mine is unlocked.</p><button type="button" data-review-brief-fog>Review Brief Fog</button>` : `<p>No chambers completed yet.</p>`);
+    return drawer("Flags / Missed Loot", `<h3>Flags</h3>${q.flags.length ? `<ul>${q.flags.map((flag) => `<li>${esc(flag.note)}</li>`).join("")}</ul>` : `<p>None yet.</p>`}<h3>Missed loot</h3>${q.missedLoot.length ? `<ul>${q.missedLoot.map((item) => `<li>${esc(item.itemMissed)}</li>`).join("")}</ul>` : `<p>None yet.</p>`}`);
   }
 
-  function patchClass(fog, index) {
-    const chunk = fog.chunks[index];
+  function patchClass(f, index) {
+    const chunk = f.chunks[index];
     if (!chunk) return "empty";
-    if (chunk.state === "Fully unpacked" || chunk.state === "Partially unpacked - warning accepted") return "cleared";
+    if (chunk.state === "Fully unpacked") return "cleared";
     if (chunk.state === "Flagged for later") return "flagged";
     if (chunk.state === "Parked as missed loot") return "missed";
-    if (chunk.state === "Dismissed with reason") return "dismissed";
     if (chunk.state === "In progress") return "processing";
     return "unprocessed";
   }
 
-  function nextChunkIndex(fog) {
-    const index = fog.chunks.findIndex((chunk) => !resolvedStates.includes(chunk.state));
-    return index >= 0 ? index : Math.max(0, fog.chunks.length - 1);
-  }
-
   function briefFog(save, activeDrawer = "", activeIndex = null) {
-    const fog = getFog(save);
-    const done = fog.chunks.filter((chunk) => resolvedStates.includes(chunk.state)).length;
+    const f = fog(save);
+    const done = f.chunks.filter((chunk) => resolvedStates.includes(chunk.state)).length;
     const activeClass = activeIndex !== null ? "cutscene-active" : "";
-    const patch = (index) => `<span class="fog-patch visual-fog-patch fog-patch-${index + 1} ${patchClass(fog, index)} ${activeIndex === index ? "cutscene-target" : ""}" aria-hidden="true"></span>`;
-    return `<section class="stage-room brief-fog-room ${activeClass}"><button class="stage-close" data-return-cave-base>×</button><span class="scene-label">Brief Fog · Question-Unpacking Chamber</span><div class="stage-character stage-character-brief"></div><span class="light-beam ${activeIndex !== null ? "active" : ""}"></span><button class="flow-hotspot hotspot-parchment" data-hotspot-label="Task Brief" data-brief-panel="task">Task</button>${patch(0)}${patch(1)}${patch(2)}${patch(3)}<button class="flow-hotspot hotspot-brief-flag" data-hotspot-label="Flags" data-brief-panel="flags">Flags</button><button class="flow-hotspot hotspot-brief-loot" data-hotspot-label="Missed loot" data-brief-panel="flags">Loot</button><button class="flow-hotspot hotspot-forward ${canClear(fog) ? "ready" : "locked"}" data-hotspot-label="Route forward" data-brief-panel="summary">Route</button><article class="stage-card"><h2>Brief Fog</h2><p><strong>Chunks:</strong> ${fog.chunks.length} · <strong>Resolved:</strong> ${done}/${fog.chunks.length}</p><p><strong>Cards:</strong> ${fog.outputCards.commandWordCards.length} command · ${fog.outputCards.keywordCards.length} keyword · ${fog.outputCards.scopeLimitCards.length} scope · ${fog.outputCards.sourceRequirementCards.length} source</p><p>This chamber is for understanding the task, not writing the answer.</p><div class="stage-card-actions"><button type="button" data-next-chunk>${fog.chunks.length ? "Work next chunk" : "Start task"}</button><button type="button" data-brief-panel="task">Task Brief</button><button type="button" data-brief-panel="summary">Summary</button></div>${storageWarning()}</article>${activeDrawer}</section>`;
+    const patch = (index) => `<span class="fog-patch visual-fog-patch fog-patch-${index + 1} ${patchClass(f, index)} ${activeIndex === index ? "cutscene-target" : ""}" aria-hidden="true"></span>`;
+    return `<section class="stage-room brief-fog-room ${activeClass}"><button class="stage-close" data-return-cave-base>×</button><span class="scene-label">Brief Fog · visual-novel task unpacking</span><div class="stage-character stage-character-brief"></div><span class="light-beam ${activeIndex !== null ? "active" : ""}"></span><button class="flow-hotspot hotspot-parchment" data-hotspot-label="Task Brief" data-brief-panel="task">Task</button>${patch(0)}${patch(1)}${patch(2)}${patch(3)}<button class="flow-hotspot hotspot-brief-flag" data-hotspot-label="Flags" data-brief-panel="flags">Flags</button><button class="flow-hotspot hotspot-brief-loot" data-hotspot-label="Missed loot" data-brief-panel="flags">Loot</button><button class="flow-hotspot hotspot-forward ${canFinish(f) ? "ready" : "locked"}" data-hotspot-label="Route forward" data-brief-panel="summary">Route</button><article class="stage-card"><h2>Brief Fog</h2><p><strong>Chunks:</strong> ${f.chunks.length} · <strong>Resolved:</strong> ${done}/${f.chunks.length}</p><p>This chamber is for understanding the task, not writing the answer.</p><div class="stage-card-actions"><button type="button" data-brief-panel="task">Task Brief</button><button type="button" data-next-chunk>${f.chunks.length ? "Work next chunk" : "Start task"}</button><button type="button" data-brief-panel="summary">Summary</button></div>${storageWarning()}</article>${activeDrawer}</section>`;
   }
 
   function taskPanel(save) {
-    const fog = getFog(save);
-    const visibleChunks = fog.chunks.slice(0, MAX_RENDERED_CHUNKS);
-    const hiddenCount = Math.max(0, fog.chunks.length - visibleChunks.length);
-    const chunkList = visibleChunks.length ? `<ol class="chunk-list">${visibleChunks.map((chunk, index) => `<li><button type="button" data-open-chunk="${index}">${esc(preview(chunk.originalText))}</button> <small>${esc(chunk.state)}</small></li>`).join("")}</ol>${hiddenCount ? `<p class="drawer-kicker">${hiddenCount} more chunks are hidden for browser stability. Use Refresh fog chunks to rebuild a shorter list from the task text.</p>` : ""}` : `<p>No chunks yet.</p>`;
-    return drawer("Task Brief", `${storageWarning()}${fogSafetyWarning(fog)}<p>Paste or adjust the task, question, brief, guidance, or marking notes. This drawer now caps old saved data so it cannot freeze the browser.</p><form data-task-form><label>Task title<input name="taskTitle" value="${esc(fog.taskTitle)}"></label><label>Assessment type<input name="assessmentType" value="${esc(fog.assessmentType)}"></label><label>Paste task / question / guidance<textarea name="rawTaskText" rows="7">${esc(fog.rawTaskText)}</textarea></label><div class="drawer-actions"><button data-save-task type="button">Save task brief</button><button data-suggest-chunks type="button">Refresh fog chunks</button><button data-add-chunk type="button">Add chunk manually</button><button data-reset-brief-fog type="button">Reset Brief Fog save</button></div></form><h3>Chunk list</h3>${chunkList}`, true);
-  }
-
-  function note(fog, chunkId, type) {
-    return toArray(fog.notes).find((noteItem) => noteItem?.chunkId === chunkId && noteItem?.type === type)?.text || "";
+    const f = fog(save);
+    const chunks = f.chunks.length ? `<ol class="chunk-list">${f.chunks.map((chunk, index) => `<li><button type="button" data-open-chunk="${index}">${esc(preview(chunk.originalText))}</button> <small>${esc(chunk.state)}</small></li>`).join("")}</ol>` : `<p>No fog chunks yet. Paste the task, then click Suggest chunks.</p>`;
+    return drawer("Task Brief", `<p>This is the stable v0.1 Task Brief drawer. It uses a fresh safe save key and does not load the old broken Brief Fog save.</p><form data-task-form><label>Task title<input name="taskTitle" value="${esc(f.taskTitle)}"></label><label>Assessment type<input name="assessmentType" value="${esc(f.assessmentType)}"></label><label>Paste task / question / guidance<textarea name="rawTaskText" rows="7">${esc(f.rawTaskText)}</textarea></label><div class="drawer-actions"><button data-save-task type="button">Save task brief</button><button data-suggest-chunks type="button">Suggest chunks</button><button data-reset-brief-fog type="button">Reset stable Brief Fog save</button></div></form><h3>Chunk list</h3>${chunks}`, true);
   }
 
   function chunkPanel(save, index) {
-    const fog = getFog(save);
-    const chunk = fog.chunks[index];
+    const f = fog(save);
+    const chunk = f.chunks[index];
     if (!chunk) return taskPanel(save);
-    const highlights = fog.highlights.filter((highlight) => highlight.chunkId === chunk.id);
-    const flags = fog.flags.filter((flag) => flag.chunkId === chunk.id);
-    const missed = fog.missedLoot.filter((loot) => loot.chunkId === chunk.id);
-    const dismissed = fog.dismissed.filter((entry) => entry.chunkId === chunk.id);
-    return drawer(`Chunk ${index + 1}`, `<form data-chunk-form data-index="${index}" class="chunk-drawer"><p class="drawer-kicker">Scene-state target: fog patch ${index + 1}</p><label>Original wording<textarea name="originalText" rows="4">${esc(chunk.originalText)}</textarea></label><div class="drawer-grid"><label>Chunk type<select name="type">${options(typeLabels, chunk.type)}</select></label><label>Chunk state<select name="state">${options(states, chunk.state)}</select></label></div><label>Plain-meaning note<textarea name="plain" rows="3">${esc(note(fog, chunk.id, "plain"))}</textarea></label><label>Action-created note<textarea name="action" rows="3">${esc(note(fog, chunk.id, "action"))}</textarea></label><details open><summary>Add highlight</summary><label>Selected wording<input name="highlightedText"></label><label>Highlight category<select name="category">${options(cats, cats[0])}</select></label><label>Confidence<select name="confidence"><option>Sure</option><option>Unsure</option><option>Needs checking</option></select></label><label>Highlight note<input name="highlightNote"></label><button data-add-highlight type="button">Add highlight</button></details><h3>Selected highlights</h3>${list(highlights.map((highlight) => ({ text: `${highlight.text} — ${highlight.category}` })), "text")}<details><summary>Flags, missed loot, dismissed wording</summary><label>Flag note<input name="flagNote"></label><button data-add-flag type="button">Add flag</button><label>Missed loot note<input name="missedNote"></label><button data-add-missed type="button">Add missed loot</button><label>Dismissed wording<input name="dismissedText"></label><button data-dismiss-wording type="button">Dismiss wording</button></details><h3>Flags</h3>${list(flags, "note")}<h3>Missed loot</h3>${list(missed, "itemMissed")}<h3>Dismissed wording</h3>${list(dismissed, "text")}<div class="drawer-actions sticky-actions"><button data-save-chunk type="button">Save chunk</button><button data-mark-full type="button">Mark fully unpacked</button><button data-park type="button">Park for later</button><button data-open-chunk="${Math.max(0, index - 1)}" type="button">Previous chunk</button><button data-open-chunk="${Math.min(fog.chunks.length - 1, index + 1)}" type="button">Next chunk</button></div></form>`, true, "chunk-action-drawer");
-  }
-
-  function chunkResultPanel(save, index, actionName) {
-    const fog = getFog(save);
-    const chunk = fog.chunks[index];
-    const resolved = resolvedStates.includes(chunk?.state);
-    const nextLabel = canClear(fog) ? "Open summary / finish" : "Work next chunk";
-    return drawer("Chunk saved", `<p><strong>Chunk ${index + 1}</strong> saved as <strong>${esc(chunk?.state || "saved")}</strong>.</p><p>${resolved ? "The matching fog patch changed state in the scene." : "The matching fog patch is now marked as in progress."}</p><p class="drawer-kicker">Last action: ${esc(actionName)}</p><div class="drawer-actions"><button type="button" data-open-chunk="${index}">Reopen this chunk</button><button type="button" ${canClear(fog) ? "data-brief-panel=\"summary\"" : "data-next-chunk"}>${nextLabel}</button><button type="button" data-brief-panel="summary">Summary</button><button type="button" data-return-cave-base>Back to Cave Base</button></div>`, true, "chunk-result-drawer");
-  }
-
-  function flagsPanel(save) {
-    const quest = getQuest(save);
-    return drawer("Flags / Missed Loot", `<p>Flags and missed loot do not undo completion.</p><h3>Flags</h3>${list(quest.flags, "note")}<h3>Missed loot</h3>${list(quest.missedLoot, "itemMissed")}`);
+    return drawer(`Chunk ${index + 1}`, `<form data-chunk-form data-index="${index}" class="chunk-drawer"><p class="drawer-kicker">Visual-novel state target: fog patch ${index + 1}</p><label>Original wording<textarea name="originalText" rows="4">${esc(chunk.originalText)}</textarea></label><label>Plain meaning<textarea name="plain" rows="3">${esc(chunk.plain || "")}</textarea></label><label>Action this creates<textarea name="action" rows="3">${esc(chunk.action || "")}</textarea></label><div class="drawer-actions sticky-actions"><button data-save-chunk type="button">Save chunk</button><button data-mark-full type="button">Mark unpacked</button><button data-add-flag type="button">Flag</button><button data-add-missed type="button">Park as missed loot</button><button data-open-chunk="${Math.max(0, index - 1)}" type="button">Previous</button><button data-open-chunk="${Math.min(f.chunks.length - 1, index + 1)}" type="button">Next</button></div></form>`, true, "chunk-action-drawer");
   }
 
   function summaryPanel(save, cleared = false) {
-    const quest = getQuest(save);
-    const fog = getFog(save);
-    const warningList = warnings(fog);
-    return drawer(cleared ? "Brief Fog Cleared" : "Brief Fog Summary", `${cleared ? `<p>Source Mine is now unlocked. Progress updated to ${esc(progressLabel(quest))}.</p>` : `<p>Check every chunk has a decision before moving forward.</p>`}<dl class="summary-grid"><div><dt>Task title</dt><dd>${esc(fog.taskTitle)}</dd></div><div><dt>Assessment type</dt><dd>${esc(fog.assessmentType)}</dd></div><div><dt>Number of chunks</dt><dd>${fog.chunks.length}</dd></div><div><dt>Command words found</dt><dd>${fog.outputCards.commandWordCards.length}</dd></div><div><dt>Topic keywords found</dt><dd>${fog.outputCards.keywordCards.length}</dd></div><div><dt>Open flags</dt><dd>${quest.flags.length}</dd></div><div><dt>Missed loot</dt><dd>${quest.missedLoot.length}</dd></div></dl><h3>Task demand summary</h3><p>${esc(fog.outputCards.taskDemandSummary?.summaryText || "No summary yet.")}</p>${warningList.length ? `<section class="warning-list"><h3>Warnings</h3><ul>${warningList.map((warning) => `<li>${esc(warning)}</li>`).join("")}</ul></section>` : `<p class="success-note">Every chunk has a decision and the route can continue.</p>`}<div class="drawer-actions"><button data-finish-brief-fog type="button" ${warningList.length ? "disabled" : ""}>Finish Brief Fog</button><button data-export="md" type="button">Export .md</button><button data-export="txt" type="button">Export .txt</button><button data-export="doc" type="button">Export .doc</button>${quest.unlockedChambers.includes("source-mine") ? `<button data-open-source-mine type="button">Continue to Source Mine</button>` : ""}<button data-return-cave-base type="button">Stay in Cave Base</button></div>`, true);
+    const q = quest(save);
+    const f = fog(save);
+    const done = f.chunks.filter((chunk) => resolvedStates.includes(chunk.state)).length;
+    const ready = canFinish(f);
+    return drawer(cleared ? "Brief Fog Cleared" : "Brief Fog Summary", `${cleared ? `<p>Source Mine is now unlocked. Progress updated to ${esc(progressLabel(q))}.</p>` : `<p>Resolved chunks: ${done}/${f.chunks.length}</p>`}<dl class="summary-grid"><div><dt>Task title</dt><dd>${esc(f.taskTitle)}</dd></div><div><dt>Assessment type</dt><dd>${esc(f.assessmentType)}</dd></div><div><dt>Chunks</dt><dd>${f.chunks.length}</dd></div><div><dt>Flags</dt><dd>${q.flags.length}</dd></div><div><dt>Missed loot</dt><dd>${q.missedLoot.length}</dd></div></dl>${ready ? `<p class="success-note">Ready to clear Brief Fog.</p>` : `<section class="warning-list"><p>Create chunks and mark each one unpacked, flagged, or parked before finishing.</p></section>`}<div class="drawer-actions"><button data-finish-brief-fog type="button" ${ready ? "" : "disabled"}>Finish Brief Fog</button><button data-export="txt" type="button">Export .txt</button><button data-return-cave-base type="button">Stay in Cave Base</button></div>`, true);
+  }
+
+  function flagsPanel(save) {
+    return basePanel(save, "flags");
   }
 
   function sourceMine(save) {
-    const quest = getQuest(save);
-    return `<section class="stage-room source-mine-room brief-fog-room"><button class="stage-close" data-return-cave-base>×</button><span class="scene-label">Source Mine · placeholder</span><article class="stage-card"><h2>Source Mine</h2><p>This chamber will hold source gathering, source notes, quote preparation, and source-to-task links. For v0.1 this is a placeholder.</p><p><strong>Progress:</strong> ${esc(progressLabel(quest))}</p><button data-return-cave-base>X Return to Cave Base</button></article></section>`;
-  }
-
-  function canClear(fog) {
-    return Boolean(fog.chunks.length && fog.chunks.every((chunk) => resolvedStates.includes(chunk.state)) && fog.outputCards.taskDemandSummary);
-  }
-
-  function warnings(fog) {
-    const result = [];
-    if (!fog.chunks.length) result.push("No chunks have been created yet. Split the task into chunks before entering Brief Fog.");
-    fog.chunks.forEach((chunk, index) => {
-      if (!resolvedStates.includes(chunk.state)) result.push(`Chunk ${index + 1} has no decision yet.`);
-      if (!["Dismissed with reason", "Parked as missed loot"].includes(chunk.state) && !note(fog, chunk.id, "plain")) result.push(`Chunk ${index + 1} has no plain-meaning note.`);
-      if (!["Dismissed with reason", "Parked as missed loot"].includes(chunk.state) && !note(fog, chunk.id, "action")) result.push(`Chunk ${index + 1} does not say what action it creates.`);
-    });
-    if (fog.chunks.length && !fog.outputCards.taskDemandSummary) result.push("Task demand summary has not been created yet. Save a chunk to generate it.");
-    return result;
+    const q = quest(save);
+    return `<section class="stage-room source-mine-room brief-fog-room"><button class="stage-close" data-return-cave-base>×</button><span class="scene-label">Source Mine · placeholder</span><article class="stage-card"><h2>Source Mine</h2><p>This chamber will hold source gathering, source notes, quote preparation, and source-to-task links. For v0.1 this is a placeholder.</p><p><strong>Progress:</strong> ${esc(progressLabel(q))}</p><button data-return-cave-base>Return to Cave Base</button></article></section>`;
   }
 
   function splitText(text) {
-    const clean = capText(text || SAMPLE, MAX_TASK_TEXT).trim();
-    const lineUnits = clean.split(/\n+/).map((unit) => unit.trim()).filter(Boolean);
-    const sentenceUnits = clean.split(/(?<=[.!?])\s+(?=[A-Z0-9])/).map((unit) => unit.trim()).filter(Boolean);
-    const units = (lineUnits.length > 1 ? lineUnits : sentenceUnits).slice(0, MAX_AUTO_CHUNKS);
-    return units.map((unit, index) => normaliseChunk({
-      id: id("chunk"),
-      order: index,
-      originalText: capText(unit.replace(/^[-*•\d.)\s]+/, "").trim(), MAX_CHUNK_TEXT),
-      type: /source|reference|reading/i.test(unit) ? "Source requirement" : /word|deadline|due/i.test(unit) ? "Word count / deadline instruction" : /write|explain|discuss|evaluate|compare|describe|analyse|identify/i.test(unit) ? "Task instruction" : "Guidance note",
-      state: "Not started",
-      createdAt: now(),
-      updatedAt: now()
-    }, index));
+    const clean = cap(text || SAMPLE, MAX_TASK_TEXT).trim();
+    const lines = clean.split(/\n+/).map((part) => part.trim()).filter(Boolean);
+    const sentences = clean.split(/(?<=[.!?])\s+/).map((part) => part.trim()).filter(Boolean);
+    const units = (lines.length > 1 ? lines : sentences).slice(0, MAX_CHUNKS);
+    const useful = units.length ? units : [clean || SAMPLE];
+    return useful.map((unit, index) => cleanChunk({ id: id("chunk"), order: index, originalText: unit, state: "Not started" }, index));
   }
 
-  function ensureAutoChunks(save) {
-    const fog = getFog(save);
-    if (!fog.rawTaskText) fog.rawTaskText = SAMPLE;
-    if (!fog.chunks.length) {
-      fog.chunks = splitText(fog.rawTaskText);
-      fog.highlights = [];
-      fog.notes = [];
-      fog.dismissed = [];
-      fog.outputCards = blankOutputCards();
-    }
-    return save;
-  }
-
-  function ensureSummary(fog) {
-    if (!fog.outputCards.taskDemandSummary) {
-      fog.outputCards.taskDemandSummary = {
-        summaryText: note(fog, fog.chunks[0]?.id, "plain") || "The task has been broken into fog patches and each patch needs a decision.",
-        createdAt: now()
-      };
-    }
-  }
-
-  function addOutputCard(fog, highlight) {
-    const card = { text: capText(highlight.text, MAX_NOTE_TEXT), summaryText: capText(highlight.note || highlight.text, MAX_NOTE_TEXT), createdAt: now() };
-    if (highlight.category === cats[0]) fog.outputCards.commandWordCards.push({ ...card, commandWord: highlight.text });
-    else if (highlight.category === cats[1]) fog.outputCards.keywordCards.push({ ...card, keyword: highlight.text });
-    else if ([cats[2], cats[4], cats[5], cats[6]].includes(highlight.category)) fog.outputCards.scopeLimitCards.push({ ...card, scopeText: highlight.text });
-    else if (highlight.category === cats[3]) fog.outputCards.sourceRequirementCards.push({ ...card, requirementText: highlight.text });
-  }
-
-  function saveChunk(form, action) {
-    const save = load();
-    const fog = getFog(save);
-    const quest = getQuest(save);
-    const index = Number(form.dataset.index);
-    const chunk = fog.chunks[index];
-    if (!chunk) return openStage(briefFog(save, taskPanel(save)));
-    const data = new FormData(form);
-    const actionLabels = { save: "saved chunk", highlight: "added highlight", flag: "added flag", missed: "added missed loot", dismiss: "dismissed wording", full: "marked fully unpacked", park: "parked for later" };
-
-    chunk.originalText = firstValid(data.get("originalText"), chunk.originalText, MAX_CHUNK_TEXT);
-    chunk.type = typeLabels.includes(String(data.get("type"))) ? String(data.get("type")) : chunk.type;
-    chunk.state = states.includes(String(data.get("state"))) ? String(data.get("state")) : chunk.state;
-
-    const plain = capText(data.get("plain") || "", MAX_NOTE_TEXT).trim();
-    const actionNote = capText(data.get("action") || "", MAX_NOTE_TEXT).trim();
-    fog.notes = fog.notes.filter((noteItem) => !(noteItem.chunkId === chunk.id && ["plain", "action"].includes(noteItem.type)));
-    if (plain) fog.notes.push({ id: id("note"), chunkId: chunk.id, type: "plain", text: plain, createdAt: now() });
-    if (actionNote) fog.notes.push({ id: id("note"), chunkId: chunk.id, type: "action", text: actionNote, createdAt: now() });
-
-    if (action === "highlight" && String(data.get("highlightedText") || "").trim()) {
-      const highlight = { id: id("highlight"), chunkId: chunk.id, text: capText(data.get("highlightedText"), MAX_NOTE_TEXT).trim(), category: String(data.get("category")), confidence: String(data.get("confidence")), note: capText(data.get("highlightNote") || "", MAX_NOTE_TEXT), createdAt: now() };
-      fog.highlights.push(highlight);
-      addOutputCard(fog, highlight);
-    }
-    if (action === "flag") {
-      const flag = { id: id("flag"), chunkId: chunk.id, note: capText(data.get("flagNote") || "This chunk needs checking later.", MAX_NOTE_TEXT), status: "open", createdAt: now() };
-      fog.flags.push(flag);
-      quest.flags.push(flag);
-      chunk.state = "Flagged for later";
-    }
-    if (action === "missed" || action === "park") {
-      const missed = { id: id("missed"), chunkId: chunk.id, itemMissed: capText(data.get("missedNote") || "Useful task work left for later.", MAX_NOTE_TEXT), status: "missed", createdAt: now() };
-      fog.missedLoot.push(missed);
-      quest.missedLoot.push(missed);
-      chunk.state = "Parked as missed loot";
-    }
-    if (action === "dismiss") {
-      fog.dismissed.push({ id: id("dismissed"), chunkId: chunk.id, text: capText(data.get("dismissedText") || chunk.originalText, MAX_NOTE_TEXT), createdAt: now() });
-      chunk.state = "Dismissed with reason";
-    }
-    if (action === "full") chunk.state = actionNote ? "Partially unpacked - warning accepted" : "Fully unpacked";
-    if (chunk.state === "Not started") chunk.state = "In progress";
-
-    ensureSummary(fog);
-    chunk.updatedAt = now();
-    quest.progressLog.unshift({ id: id("log"), summary: `Brief Fog chunk ${index + 1}: ${actionLabels[action] || "saved"}.`, createdAt: now() });
-    saveState(save);
-    openStage(briefFog(save, "", index));
-    window.setTimeout(() => {
-      const latest = load();
-      openStage(briefFog(latest, chunkResultPanel(latest, index, actionLabels[action] || "saved"), index));
-    }, 500);
-  }
-
-  function clearFog() {
-    const save = load();
-    const quest = getQuest(save);
-    const fog = getFog(save);
-    ensureSummary(fog);
-    if (warnings(fog).length) return openStage(briefFog(save, summaryPanel(save)));
-    fog.status = "cleared";
-    fog.clearedAt = now();
-    quest.completedChambers = unique(quest.completedChambers, "brief-fog");
-    quest.unlockedChambers = unique(quest.unlockedChambers, "source-mine");
-    quest.currentChamberId = "source-mine";
-    quest.currentChamberLabel = "Source Mine";
-    quest.currentRouteLocation = "cave_base";
-    quest.status = "in_progress";
-    quest.questStatus = "in-cave";
-    quest.nextAction = "Continue to Source Mine";
-    quest.buttonLabel = "Continue Test Quest";
-    quest.progressLog.unshift({ id: id("log"), summary: "Brief Fog / Question-Unpacking Chamber cleared. Source Mine unlocked.", createdAt: now() });
-    saveState(save);
-    openStage(caveBase(save, summaryPanel(save, true)));
-  }
-
-  function exportPanel(format) {
-    const save = load();
-    const quest = getQuest(save);
-    const fog = getFog(save);
-    const content = `Brief Fog / Question-Unpacking Chamber Export\n\nQuest: ${quest.questTitle}\nExport date: ${now()}\nCurrent chamber: ${chamberLabel(quest.currentChamberId)}\nStatus: ${fog.status}\n\nRaw task text\n${fog.rawTaskText}\n\nChunks\n${fog.chunks.map((chunk, index) => `${index + 1}. ${chunk.originalText}\nState: ${chunk.state}\nPlain meaning: ${note(fog, chunk.id, "plain") || "None"}\nAction created: ${note(fog, chunk.id, "action") || "None"}`).join("\n\n")}\n\nFlags: ${quest.flags.map((flag) => flag.note).join("; ") || "None"}\nMissed loot: ${quest.missedLoot.map((loot) => loot.itemMissed).join("; ") || "None"}\nNext action: ${quest.nextAction || "Continue route"}`;
-    const name = `${new Date().toISOString().slice(0, 10)}_Study-Skills-Trial_Brief-Fog-Export.${format}`;
-    const mime = format === "md" ? "text/markdown" : format === "doc" ? "application/msword" : "text/plain";
-    const href = `data:${mime};charset=utf-8,${encodeURIComponent(format === "doc" ? `<!doctype html><meta charset='utf-8'><pre>${esc(content)}</pre>` : content)}`;
-    return drawer(`Export .${format}`, `<p>Download or copy this export.</p><a class="download-link" download="${esc(name)}" href="${href}">Download ${esc(name)}</a><textarea rows="12" readonly>${esc(content)}</textarea>`, true);
+  function canFinish(f) {
+    return Boolean(f.chunks.length && f.chunks.every((chunk) => resolvedStates.includes(chunk.state)));
   }
 
   function enterBase(event) {
     event.preventDefault();
     event.stopImmediatePropagation();
     const save = load();
-    const quest = getQuest(save);
-    quest.currentRouteLocation = "cave_base";
-    quest.currentChamberId = quest.completedChambers.includes("brief-fog") ? "source-mine" : "brief-fog";
-    quest.nextAction = quest.currentChamberId === "source-mine" ? "Continue to Source Mine" : "Continue to Brief Fog";
+    const q = quest(save);
+    q.currentRouteLocation = "cave_base";
+    q.currentChamberId = q.completedChambers.includes("brief-fog") ? "source-mine" : "brief-fog";
+    q.nextAction = q.currentChamberId === "source-mine" ? "Continue to Source Mine" : "Continue to Brief Fog";
     saveState(save);
     openStage(caveBase(save));
   }
@@ -503,26 +257,113 @@
   function continueRoute(event) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    const save = ensureAutoChunks(load());
-    const quest = getQuest(save);
-    quest.currentRouteLocation = "working_chamber";
+    const save = load();
+    const q = quest(save);
+    q.currentRouteLocation = "working_chamber";
     saveState(save);
-    openStage(quest.currentChamberId === "source-mine" ? sourceMine(save) : briefFog(save));
+    openStage(q.currentChamberId === "source-mine" ? sourceMine(save) : briefFog(save));
+  }
+
+  function openTaskMap(event) {
+    event?.preventDefault();
+    event?.stopImmediatePropagation();
+    const save = load();
+    quest(save).currentRouteLocation = "task_map_threshold";
+    renderTaskMap(save);
+    saveState(save);
+    closeStage();
+    const panel = document.getElementById("map-board-panel");
+    if (panel) panel.open = true;
+  }
+
+  function openQuestBoard(event) {
+    event?.preventDefault();
+    event?.stopImmediatePropagation();
+    closeStage();
+    const panel = document.getElementById("quest-board-panel");
+    if (panel) panel.open = true;
   }
 
   function resetBriefFog() {
     localStorage.removeItem(KEY);
+    localStorage.removeItem(OLD_KEY);
     window.__esslayStorageWarning = "";
-    const save = baseState();
-    openStage(caveBase(save, drawer("Brief Fog save reset", `<p>The old saved Study Cave data was cleared from this browser. Open Brief Fog again and the Task Brief should load from a clean state.</p><button type="button" data-continue-quest>Continue to Brief Fog</button>`, true)));
+    const save = freshState();
+    saveState(save);
+    openStage(caveBase(save, drawer("Brief Fog save reset", `<p>The old and stable browser Brief Fog saves were cleared. Continue to Brief Fog and open Task Brief again.</p><button type="button" data-continue-quest>Continue to Brief Fog</button>`, true)));
+  }
+
+  function saveTask(event) {
+    const form = event.target.closest("form");
+    if (!form) return;
+    const data = new FormData(form);
+    const save = load();
+    const f = fog(save);
+    f.taskTitle = cap(data.get("taskTitle") || f.taskTitle, 160);
+    f.assessmentType = cap(data.get("assessmentType") || f.assessmentType, 160);
+    f.rawTaskText = cap(data.get("rawTaskText") || f.rawTaskText, MAX_TASK_TEXT);
+    if (event.target.closest("[data-suggest-chunks]")) f.chunks = splitText(f.rawTaskText);
+    saveState(save);
+    openStage(briefFog(save, taskPanel(save)));
+  }
+
+  function saveChunk(event, action) {
+    const form = event.target.closest("form[data-chunk-form]");
+    if (!form) return;
+    const save = load();
+    const f = fog(save);
+    const q = quest(save);
+    const index = Number(form.dataset.index);
+    const chunk = f.chunks[index];
+    if (!chunk) return openStage(briefFog(save, taskPanel(save)));
+    const data = new FormData(form);
+    chunk.originalText = cap(data.get("originalText") || chunk.originalText, MAX_CHUNK_TEXT);
+    chunk.plain = cap(data.get("plain") || chunk.plain || "", 1200);
+    chunk.action = cap(data.get("action") || chunk.action || "", 1200);
+    if (action === "full") chunk.state = "Fully unpacked";
+    else if (action === "flag") {
+      chunk.state = "Flagged for later";
+      q.flags.push({ id: id("flag"), chunkId: chunk.id, note: chunk.plain || preview(chunk.originalText), createdAt: now() });
+    } else if (action === "missed") {
+      chunk.state = "Parked as missed loot";
+      q.missedLoot.push({ id: id("missed"), chunkId: chunk.id, itemMissed: chunk.action || preview(chunk.originalText), createdAt: now() });
+    } else if (chunk.state === "Not started") chunk.state = "In progress";
+    chunk.updatedAt = now();
+    saveState(save);
+    openStage(briefFog(save, drawer("Chunk saved", `<p>Chunk ${index + 1} saved as <strong>${esc(chunk.state)}</strong>.</p><div class="drawer-actions"><button type="button" data-open-chunk="${index}">Reopen</button><button type="button" data-next-chunk>Next chunk</button><button type="button" data-brief-panel="summary">Summary</button></div>`, true, "chunk-result-drawer"), index));
+  }
+
+  function finishBriefFog() {
+    const save = load();
+    const q = quest(save);
+    if (!canFinish(fog(save))) return openStage(briefFog(save, summaryPanel(save)));
+    q.completedChambers = Array.from(new Set([...q.completedChambers, "brief-fog"]));
+    q.unlockedChambers = Array.from(new Set([...q.unlockedChambers, "source-mine"]));
+    q.currentChamberId = "source-mine";
+    q.currentRouteLocation = "cave_base";
+    q.nextAction = "Continue to Source Mine";
+    fog(save).status = "cleared";
+    saveState(save);
+    openStage(caveBase(save, summaryPanel(save, true)));
+  }
+
+  function exportText() {
+    const save = load();
+    const q = quest(save);
+    const f = fog(save);
+    const content = `Brief Fog Export\n\nQuest: ${q.questTitle}\nTask: ${f.taskTitle}\nAssessment: ${f.assessmentType}\n\nRaw task\n${f.rawTaskText}\n\nChunks\n${f.chunks.map((chunk, index) => `${index + 1}. ${chunk.originalText}\nState: ${chunk.state}\nPlain meaning: ${chunk.plain || ""}\nAction: ${chunk.action || ""}`).join("\n\n")}`;
+    return drawer("Export .txt", `<p>Copy or download the current Brief Fog notes.</p><a class="download-link" download="brief-fog-export.txt" href="data:text/plain;charset=utf-8,${encodeURIComponent(content)}">Download brief-fog-export.txt</a><textarea rows="12" readonly>${esc(content)}</textarea>`, true);
   }
 
   document.addEventListener("click", (event) => {
+    if (event.target.closest("[data-open-quest-board]")) return openQuestBoard(event);
+    if (event.target.closest('[data-open-quest="study-skills-trial"]')) return openTaskMap(event);
+    if (event.target.closest("[data-open-task-map]")) return openTaskMap(event);
+    if (event.target.closest("[data-back-quest-board]")) return openQuestBoard(event);
     if (event.target.closest("[data-enter-cave-base]")) return enterBase(event);
     if (event.target.closest("[data-continue-quest]")) return continueRoute(event);
     if (event.target.closest("[data-close-stage]")) { event.preventDefault(); event.stopImmediatePropagation(); return closeStage(); }
-    if (event.target.closest("[data-return-cave-base]")) { event.preventDefault(); event.stopImmediatePropagation(); const save = load(); getQuest(save).currentRouteLocation = "cave_base"; saveState(save); return openStage(caveBase(save)); }
-    if (event.target.closest("[data-open-task-map]") && stage()?.hidden === false) { event.preventDefault(); event.stopImmediatePropagation(); closeStage(); const panel = document.getElementById("map-board-panel"); if (panel) panel.open = true; return; }
+    if (event.target.closest("[data-return-cave-base]")) { event.preventDefault(); event.stopImmediatePropagation(); const save = load(); quest(save).currentRouteLocation = "cave_base"; saveState(save); return openStage(caveBase(save)); }
 
     const baseButton = event.target.closest("[data-base-panel]");
     if (baseButton) { event.preventDefault(); event.stopImmediatePropagation(); const save = load(); return openStage(caveBase(save, basePanel(save, baseButton.dataset.basePanel))); }
@@ -531,74 +372,40 @@
     if (briefButton) {
       event.preventDefault();
       event.stopImmediatePropagation();
-      try {
-        const save = load();
-        const type = briefButton.dataset.briefPanel;
-        return openStage(briefFog(save, type === "task" ? taskPanel(save) : type === "flags" ? flagsPanel(save) : summaryPanel(save)));
-      } catch (error) {
-        console.warn("Brief Fog drawer failed", error);
-        const save = baseState();
-        return openStage(caveBase(save, drawer("Task Brief could not open safely", `<p>The saved Brief Fog data in this browser looks damaged or too large. Use the reset button to clear only this browser save and reopen Brief Fog.</p><button type="button" data-reset-brief-fog>Reset Brief Fog save</button>`, true)));
-      }
+      const save = load();
+      const type = briefButton.dataset.briefPanel;
+      return openStage(briefFog(save, type === "task" ? taskPanel(save) : type === "flags" ? flagsPanel(save) : summaryPanel(save)));
     }
 
-    if (event.target.closest("[data-next-chunk]")) { event.preventDefault(); event.stopImmediatePropagation(); const save = ensureAutoChunks(load()); const index = nextChunkIndex(getFog(save)); saveState(save); return openStage(briefFog(save, chunkPanel(save, index), index)); }
+    if (event.target.closest("[data-next-chunk]")) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const save = load();
+      const f = fog(save);
+      if (!f.chunks.length) return openStage(briefFog(save, taskPanel(save)));
+      const index = Math.max(0, f.chunks.findIndex((chunk) => !resolvedStates.includes(chunk.state)));
+      return openStage(briefFog(save, chunkPanel(save, index), index));
+    }
 
     const openChunkButton = event.target.closest("[data-open-chunk]");
-    if (openChunkButton && stage()?.hidden === false) { event.preventDefault(); event.stopImmediatePropagation(); const save = load(); const index = Number(openChunkButton.dataset.openChunk); return openStage(briefFog(save, chunkPanel(save, index), index)); }
+    if (openChunkButton) { event.preventDefault(); event.stopImmediatePropagation(); const save = load(); const index = Number(openChunkButton.dataset.openChunk); return openStage(briefFog(save, chunkPanel(save, index), index)); }
 
-    if (event.target.closest("[data-close-drawer]")) { event.preventDefault(); event.stopImmediatePropagation(); const save = load(); return openStage(getQuest(save).currentRouteLocation === "working_chamber" ? briefFog(save) : caveBase(save)); }
-
+    if (event.target.closest("[data-close-drawer]")) { event.preventDefault(); event.stopImmediatePropagation(); const save = load(); return openStage(quest(save).currentRouteLocation === "working_chamber" ? briefFog(save) : caveBase(save)); }
     if (event.target.closest("[data-reset-brief-fog]")) { event.preventDefault(); event.stopImmediatePropagation(); return resetBriefFog(); }
-
-    if (event.target.closest("[data-save-task]") || event.target.closest("[data-suggest-chunks]")) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      const form = event.target.closest("form");
-      if (!form) return;
-      const data = new FormData(form);
-      const save = load();
-      const fog = getFog(save);
-      fog.taskTitle = firstValid(data.get("taskTitle"), fog.taskTitle, 180);
-      fog.assessmentType = firstValid(data.get("assessmentType"), fog.assessmentType, 180);
-      fog.rawTaskText = firstValid(data.get("rawTaskText"), fog.rawTaskText, MAX_TASK_TEXT);
-      if (event.target.closest("[data-suggest-chunks]")) {
-        fog.chunks = splitText(fog.rawTaskText);
-        fog.highlights = [];
-        fog.notes = [];
-        fog.outputCards = blankOutputCards();
-      }
-      saveState(save);
-      return openStage(briefFog(save, taskPanel(save)));
-    }
-
-    if (event.target.closest("[data-add-chunk]")) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      const save = load();
-      const fog = getFog(save);
-      fog.chunks.push(normaliseChunk({ id: id("chunk"), order: fog.chunks.length, originalText: "New chunk — edit this wording.", type: "Unknown", state: "Not started", createdAt: now(), updatedAt: now() }, fog.chunks.length));
-      saveState(save);
-      return openStage(briefFog(save, chunkPanel(save, fog.chunks.length - 1), fog.chunks.length - 1));
-    }
-
-    const chunkForm = event.target.closest("form[data-chunk-form]");
-    if (chunkForm) {
-      if (event.target.closest("[data-save-chunk]")) { event.preventDefault(); event.stopImmediatePropagation(); return saveChunk(chunkForm, "save"); }
-      if (event.target.closest("[data-add-highlight]")) { event.preventDefault(); event.stopImmediatePropagation(); return saveChunk(chunkForm, "highlight"); }
-      if (event.target.closest("[data-add-flag]")) { event.preventDefault(); event.stopImmediatePropagation(); return saveChunk(chunkForm, "flag"); }
-      if (event.target.closest("[data-add-missed]")) { event.preventDefault(); event.stopImmediatePropagation(); return saveChunk(chunkForm, "missed"); }
-      if (event.target.closest("[data-dismiss-wording]")) { event.preventDefault(); event.stopImmediatePropagation(); return saveChunk(chunkForm, "dismiss"); }
-      if (event.target.closest("[data-mark-full]")) { event.preventDefault(); event.stopImmediatePropagation(); return saveChunk(chunkForm, "full"); }
-      if (event.target.closest("[data-park]")) { event.preventDefault(); event.stopImmediatePropagation(); return saveChunk(chunkForm, "park"); }
-    }
-
-    if (event.target.closest("[data-finish-brief-fog]")) { event.preventDefault(); event.stopImmediatePropagation(); return clearFog(); }
-    const exportButton = event.target.closest("[data-export]");
-    if (exportButton) { event.preventDefault(); event.stopImmediatePropagation(); const save = load(); return openStage(briefFog(save, exportPanel(exportButton.dataset.export))); }
+    if (event.target.closest("[data-save-task]") || event.target.closest("[data-suggest-chunks]")) { event.preventDefault(); event.stopImmediatePropagation(); return saveTask(event); }
+    if (event.target.closest("[data-save-chunk]")) { event.preventDefault(); event.stopImmediatePropagation(); return saveChunk(event, "save"); }
+    if (event.target.closest("[data-mark-full]")) { event.preventDefault(); event.stopImmediatePropagation(); return saveChunk(event, "full"); }
+    if (event.target.closest("[data-add-flag]")) { event.preventDefault(); event.stopImmediatePropagation(); return saveChunk(event, "flag"); }
+    if (event.target.closest("[data-add-missed]")) { event.preventDefault(); event.stopImmediatePropagation(); return saveChunk(event, "missed"); }
+    if (event.target.closest("[data-finish-brief-fog]")) { event.preventDefault(); event.stopImmediatePropagation(); return finishBriefFog(); }
+    if (event.target.closest("[data-export]")) { event.preventDefault(); event.stopImmediatePropagation(); const save = load(); return openStage(briefFog(save, exportText())); }
     if (event.target.closest("[data-open-source-mine]")) { event.preventDefault(); event.stopImmediatePropagation(); const save = load(); return openStage(sourceMine(save)); }
     if (event.target.closest("[data-review-brief-fog]")) { event.preventDefault(); event.stopImmediatePropagation(); const save = load(); return openStage(briefFog(save, summaryPanel(save))); }
   }, true);
 
-  document.addEventListener("DOMContentLoaded", () => updateStaticQuestCard(load()));
+  document.addEventListener("DOMContentLoaded", () => {
+    const save = load();
+    renderTaskMap(save);
+    updateStaticQuestCard(save);
+  });
 })();
