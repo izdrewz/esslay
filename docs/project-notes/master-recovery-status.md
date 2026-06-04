@@ -51,6 +51,15 @@ Simple cave room-flow recovery:
 - Visible local browser save status now appears in Cave Base, Brief Fog, Source Mine, Task Brief, Chunk, Summary, Export, and Flags/Loot.
 - The UI now shows a timestamp and last action such as task saved, chunks refreshed, chunk saved, or Source Mine unlocked.
 
+Future visual-novel/story direction:
+- Izzy wants future development to include a stronger visual-novel/story layer with characters, story beats, text boxes, and choice-dependent scene screens.
+- This story layer is an upgrade path and should not replace the core cave functionality.
+- The cave function must remain usable with story mode temporarily disabled or simplified for focus mode.
+- For Brief Fog specifically, Izzy prefers choice-dependent slideshow / scene stills over layered animation because it should be easier to keep consistent and less likely to break.
+- Future room structure should support clickable in-scene objects, such as clicking the scroll/read prompt to open writing or quest choices, not only detached utility buttons.
+- Current image references include possible visual-novel dialogue/text-box direction, but the final art style is not locked yet.
+- Future characters and story scenes should be recorded as visual-novel upgrades, separate from the functional writing workflow.
+
 Current master priority:
 - Run the Brief Fog functional acceptance test with a two-chunk brief.
 - Confirm save persistence after refresh.
