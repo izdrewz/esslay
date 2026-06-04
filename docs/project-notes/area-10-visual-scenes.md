@@ -1,6 +1,6 @@
 # Area 10 — Visual scenes
 
-Last updated: 2026-05-31
+Last updated: 2026-06-04
 
 ## Area role
 
@@ -102,6 +102,69 @@ Clickable zones needed:
 - missed loot stash
 - route forward
 
+## Brief Fog static slideshow / composite production direction
+
+Status: active / replaces animation-heavy plan for this room
+
+Izzy wants Brief Fog to feel like a visual-novel game scene, not a utility screen. The current working cave functionality must be preserved, but the next visual pass should restore in-world interaction.
+
+Core direction:
+- Use static choice-dependent slideshow / scene stills, not layered animation or video.
+- Use the first image as the opening state where the player sees the cave, the fog, the heroine, and a readable in-world object such as the scroll/task parchment.
+- The player should click the scroll/read prompt, not a detached utility rail, to enter the scene choice.
+- After clicking the read prompt, swap to the second scene still and show a choice overlay.
+- Choice overlay text:
+  - Header: Begin Quest?
+  - Clickable 1: VANQUISH THE FOG
+  - Header: Scared?
+  - Clickable 2: Escape…
+  - Header: Confident, Bold, Perhaps Unwise?
+  - Clickable 3: Venture Forth… Into The Unknown
+- Route behaviour:
+  - VANQUISH THE FOG begins the assisted Brief Fog task/chunk flow.
+  - Escape leaves the cave.
+  - Venture Forth skips the assistance chunks and progresses to the next/missed-loot path.
+
+Consistency / asset-building rule:
+- Do not regenerate whole images for every correction if that causes drift.
+- Keep the background static wherever possible.
+- Use a stable background plate, then place/edit the girl as a separate layer, and place/edit the Command Imp/fog as a separate layer.
+- This is to prevent background drift, unwanted character movement, and inconsistent imp placement.
+- If a full baked still is exported for the slideshow, it should be created from stable components: background plate + girl layer + imp/fog layer + optional baked glow/effect.
+- Text boxes and choice UI should remain separate from the art unless Izzy explicitly asks for baked text.
+- For the current static slideshow, spell glow can be baked into the relevant stills. Separate overlays are optional later, not required now.
+
+Placement rules:
+- Keep the same camera and background plate across the main Brief Fog slideshow frames.
+- Keep the girl’s position stable unless the scene beat explicitly needs her to move.
+- Keep the fog/imp on the opposite side from the girl and maintain consistent scale.
+- Prioritise consistent placement over novelty.
+- If editing a frame, alter only the necessary layer: girl, imp/fog, glow, or UI. Do not change the whole scene.
+- The scroll/task parchment should remain an obvious clickable in-world object for the writing task.
+
+Command Imp / fog direction:
+- Command Imp should feel like a dark-fantasy goblin/fog creature, not cute and not generic smoke only.
+- It can have amber/gold eyes in the fog and a shadowy silhouette before reveal.
+- Revealed imp should stay in the same family as the hidden eyes/fog mass.
+- It should support the scene beats: hidden in fog, revealed by sparkle magic, knocked back/fallen, retreating.
+- Area 10 owns imp/fog visual requirements and should coordinate with Area 1 character staging.
+
+Current still-sequence use:
+- BF01 opening still: calm/uneasy opening, scroll readable/clickable.
+- BF02 read/choice still: more tension after clicking the scroll; choice overlay appears.
+- BF03 charge / vanquish start: heroine begins spell charge.
+- BF04 threat manifestation: fog/imp reveal or stronger visible threat.
+- BF05 aftermath / transition: glow fades, route can continue.
+- BF06 escape route: new still needed, heroine retreating or turning back.
+- BF07 venture forth route: new still needed, heroine going deeper / bypassing help.
+
+Outfit / glow visual note:
+- Brief Fog leading outfit direction is wizard light / stars outfit, likely darker navy/purple star cloak rather than the pale pink version.
+- Bag should be removed or redesigned as a smaller magical item: spell pouch, moon/star pouch, scroll case, crystal pouch, or charm pouch.
+- During spell charge/cast frames, selected cloak stars and moon/star accessories may glow softly.
+- Hair may have a subtle rim glow from reflected magic light, but it should not become fully luminous.
+- Do not make the outfit neon. Keep the glow magical, warm, and controlled.
+
 ## Required fog mini-scene sequence
 
 1. character has sparkle/light in hand, fog with hidden eyes is present
@@ -128,10 +191,9 @@ Clickable zones needed:
 
 - final character pose set
 - final Command Imp art
-- final Brief Fog layered animation
+- final Brief Fog static slideshow frames
 - full fog-clearing image sequence
-- animated light beam
-- imp falling/running animation
+- imp falling/running stills
 - custom Cave Base chest/progress art
 - final route map art
 - full chamber-specific background set
@@ -262,7 +324,7 @@ Final art/polish needed later:
 - sharper Brief Fog chamber background
 - custom fog patch layers
 - custom eyes-in-fog art
-- custom light beam and sparkle overlays
+- custom light beam and sparkle overlays if not using baked slideshow stills
 - cleared-fog visual state
 - final clue / geode icons
 - Command Imp reveal art
@@ -271,6 +333,10 @@ Final art/polish needed later:
 - final flag marker prop
 - final missed-loot stash prop
 - final route-forward locked / partial / open states
+- static background plate for Brief Fog slideshow
+- girl layer aligned to the static background plate
+- imp/fog layer aligned to the static background plate
+- baked still exports for the approved slideshow states
 
 ### Cave Base visual guidance
 
