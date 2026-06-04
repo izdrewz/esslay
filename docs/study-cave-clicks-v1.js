@@ -17,6 +17,14 @@
     return Array.isArray(value) ? value.filter(Boolean) : [];
   }
 
+  function timeStamp() {
+    try {
+      return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    } catch (error) {
+      return new Date().toISOString();
+    }
+  }
+
   function hotspot(className, label, action) {
     return '<button type="button" class="flow-hotspot ' + esc(className) + '" data-action="' + esc(action) + '" data-hotspot-label="' + esc(label) + '">' + esc(label) + '</button>';
   }
@@ -29,6 +37,8 @@
       unlocked: ["cave-base", "brief-fog"],
       flags: [],
       missedLoot: [],
+      lastSavedAt: "Not saved yet",
+      lastAction: "Ready",
       briefFog: {
         taskTitle: "Study Skills Trial",
         assessmentType: "practice task",
@@ -36,6 +46,11 @@
         chunks: []
       }
     };
+  }
+
+  function saveInfo(state) {
+    state = state || loadState();
+    return '<p class="save-status"><strong>Browser save:</strong> ' + esc(state.lastSavedAt || "Not saved yet") + ' · ' + esc(state.lastAction || "Ready") + '</p>';
   }
 
   function normaliseChunk(chunk, index) {
@@ -70,6 +85,8 @@
       unlocked: safeArray(saved.unlocked).length ? safeArray(saved.unlocked) : base.unlocked.slice(),
       flags: safeArray(saved.flags),
       missedLoot: safeArray(saved.missedLoot),
+      lastSavedAt: String(saved.lastSavedAt || base.lastSavedAt),
+      lastAction: String(saved.lastAction || base.lastAction),
       briefFog: Object.assign({}, base.briefFog, saved.briefFog || {})
     };
 
@@ -82,10 +99,14 @@
     return next;
   }
 
-  function saveState(state) {
+  function saveState(state, message) {
+    state.lastSavedAt = timeStamp();
+    state.lastAction = message || "Saved locally";
     try {
       localStorage.setItem(SAVE_KEY, JSON.stringify(state));
-    } catch (error) {}
+    } catch (error) {
+      state.lastAction = "Save failed in this browser";
+    }
     updateHud(state);
     renderTaskMap(state);
   }
@@ -163,6 +184,7 @@
       '<h2>' + esc(state.questTitle) + '</h2>' +
       '<p><strong>Current chamber:</strong> ' + esc(routeLabel(current)) + '</p>' +
       '<p><strong>Progress:</strong> ' + state.completed.length + ' / ' + TOTAL_CHAMBERS + ' chambers complete</p>' +
+      saveInfo(state) +
       '<p><strong>Flags:</strong> ' + state.flags.length + ' · <strong>Missed loot:</strong> ' + state.missedLoot.length + '</p>' +
       '<div class="flow-actions">' +
       '<button type="button" data-action="enter-cave-base">Enter Cave Base</button>' +
@@ -215,7 +237,6 @@
   function openCaveBase(extra) {
     var state = loadState();
     openStage('<section class="simple-room cave-base-room">' +
-      '<button type="button" class="stage-close" data-action="close-stage">×</button>' +
       '<p class="scene-label">Cave Base</p>' +
       caveBaseHotspots() +
       '<article class="stage-card simple-card">' +
@@ -223,7 +244,8 @@
       '<p><strong>Active quest:</strong> ' + esc(state.questTitle) + '</p>' +
       '<p><strong>Current chamber:</strong> ' + esc(routeLabel(state.current)) + '</p>' +
       '<p><strong>Progress:</strong> ' + state.completed.length + ' / ' + TOTAL_CHAMBERS + '</p>' +
-      '<p>Use the room hotspots or the buttons below.</p>' +
+      saveInfo(state) +
+      '<p>This is now treated as a room, not a dismissible popup. Use Task Map to leave the route.</p>' +
       '<div class="simple-actions">' +
       '<button type="button" data-action="continue-quest">Continue</button>' +
       '<button type="button" data-action="open-brief-fog">Open Brief Fog</button>' +
@@ -242,14 +264,14 @@
       return chunk.state === "unpacked" || chunk.state === "flagged" || chunk.state === "missed";
     }).length;
     openStage('<section class="simple-room brief-fog-room">' +
-      '<button type="button" class="stage-close" data-action="return-cave-base">×</button>' +
       '<p class="scene-label">Brief Fog</p>' +
       briefFogHotspots() +
       '<article class="stage-card simple-card">' +
       '<h2>Brief Fog</h2>' +
       '<p>This version removes the visual effects and uses reliable buttons only.</p>' +
       '<p><strong>Chunks:</strong> ' + fog.chunks.length + ' · <strong>Resolved:</strong> ' + resolved + '/' + fog.chunks.length + '</p>' +
-      '<p>Use the room hotspots or the buttons below.</p>' +
+      saveInfo(state) +
+      '<p>Use Cave Base or Task Map to navigate. The corner X is only for drawers now.</p>' +
       '<div class="simple-actions">' +
       '<button type="button" data-action="open-task-brief">Task Brief</button>' +
       '<button type="button" data-action="work-next-chunk">Work Next Chunk</button>' +
@@ -266,7 +288,6 @@
       return openCaveBase(drawer("Source Mine locked", '<p>Finish Brief Fog first. Source Mine unlocks after the task brief has been unpacked.</p><button type="button" data-action="open-brief-fog">Open Brief Fog</button>', "cave-base"));
     }
     openStage('<section class="simple-room source-mine-room">' +
-      '<button type="button" class="stage-close" data-action="return-cave-base">×</button>' +
       '<p class="scene-label">Source Mine</p>' +
       sourceMineHotspots() +
       '<article class="stage-card simple-card">' +
@@ -274,6 +295,7 @@
       '<p>This placeholder proves the route can progress after Brief Fog.</p>' +
       '<p><strong>Unlocked by:</strong> Brief Fog completion</p>' +
       '<p><strong>Progress:</strong> ' + state.completed.length + ' / ' + TOTAL_CHAMBERS + '</p>' +
+      saveInfo(state) +
       '<p>Source gathering, quote notes, and evidence linking will be built here later.</p>' +
       '<div class="simple-actions">' +
       '<button type="button" data-action="return-cave-base">Cave Base</button>' +
@@ -289,7 +311,7 @@
       var text = String(chunk.text || "Recovered chunk");
       return '<li><button type="button" data-action="open-chunk" data-index="' + index + '">' + esc(text.slice(0, 90)) + (text.length > 90 ? "…" : "") + '</button> <small>' + esc(chunk.state || "not started") + '</small></li>';
     }).join("") + '</ol>' : '<p>No chunks yet. Paste the task, then press Suggest chunks.</p>';
-    openBriefFog(drawer("Task Brief", '<form data-task-form>' +
+    openBriefFog(drawer("Task Brief", saveInfo(state) + '<form data-task-form>' +
       '<label>Task title<input name="taskTitle" value="' + esc(fog.taskTitle) + '"></label>' +
       '<label>Assessment type<input name="assessmentType" value="' + esc(fog.assessmentType) + '"></label>' +
       '<label>Paste task / question / guidance<textarea name="rawTaskText" rows="8">' + esc(fog.rawTaskText) + '</textarea></label>' +
@@ -320,7 +342,7 @@
     state.briefFog.assessmentType = String(data.get("assessmentType") || "practice task").slice(0, 160);
     state.briefFog.rawTaskText = String(data.get("rawTaskText") || SAMPLE_TASK).slice(0, 9000);
     if (split) state.briefFog.chunks = splitTask(state.briefFog.rawTaskText);
-    saveState(state);
+    saveState(state, split ? "Task brief saved and chunks refreshed" : "Task brief saved");
     openTaskBrief();
   }
 
@@ -328,7 +350,7 @@
     var state = loadState();
     var chunk = state.briefFog.chunks[index];
     if (!chunk) return openTaskBrief();
-    openBriefFog(drawer("Chunk " + (index + 1), '<form data-chunk-form data-index="' + index + '">' +
+    openBriefFog(drawer("Chunk " + (index + 1), saveInfo(state) + '<form data-chunk-form data-index="' + index + '">' +
       '<label>Original wording<textarea name="text" rows="5">' + esc(chunk.text) + '</textarea></label>' +
       '<label>Plain meaning<textarea name="plain" rows="4">' + esc(chunk.plain || "") + '</textarea></label>' +
       '<label>Action this creates<textarea name="action" rows="4">' + esc(chunk.action || "") + '</textarea></label>' +
@@ -355,7 +377,7 @@
     chunk.state = stateName || "in progress";
     if (stateName === "flagged") state.flags.push({ id: uid(), text: chunk.plain || chunk.text.slice(0, 120) });
     if (stateName === "missed") state.missedLoot.push({ id: uid(), text: chunk.action || chunk.text.slice(0, 120) });
-    saveState(state);
+    saveState(state, "Chunk " + (index + 1) + " saved as " + chunk.state);
     openChunk(index);
   }
 
@@ -381,7 +403,7 @@
       return '<li><strong>Chunk ' + (index + 1) + ':</strong> ' + esc(chunk.state) + ' — ' + esc(chunk.plain || chunk.text.slice(0, 90)) + '</li>';
     }).join("");
     var body = done ? '<p>Brief Fog is complete. Source Mine is now unlocked.</p>' : '<p>' + (ready ? "Ready to finish Brief Fog." : "Resolve each chunk before finishing.") + '</p>';
-    openBriefFog(drawer(done ? "Brief Fog Cleared" : "Brief Fog Summary", body +
+    openBriefFog(drawer(done ? "Brief Fog Cleared" : "Brief Fog Summary", body + saveInfo(state) +
       '<ul>' + (chunks || '<li>No chunks yet.</li>') + '</ul>' +
       '<div class="simple-actions">' +
       '<button type="button" data-action="finish-brief-fog" ' + (ready ? "" : "disabled") + '>Finish Brief Fog</button>' +
@@ -396,8 +418,8 @@
     if (state.completed.indexOf("brief-fog") === -1) state.completed.push("brief-fog");
     if (state.unlocked.indexOf("source-mine") === -1) state.unlocked.push("source-mine");
     state.current = "source-mine";
-    saveState(state);
-    openSourceMine(drawer("Brief Fog Cleared", '<p>Source Mine is now unlocked. Progress has updated to ' + state.completed.length + ' / ' + TOTAL_CHAMBERS + '.</p><button type="button" data-action="return-cave-base">Cave Base</button>', "source-mine"));
+    saveState(state, "Brief Fog completed and Source Mine unlocked");
+    openSourceMine(drawer("Brief Fog Cleared", '<p>Source Mine is now unlocked. Progress has updated to ' + state.completed.length + ' / ' + TOTAL_CHAMBERS + '.</p>' + saveInfo(state) + '<button type="button" data-action="return-cave-base">Cave Base</button>', "source-mine"));
   }
 
   function exportBriefFog() {
@@ -406,22 +428,23 @@
     var content = "Brief Fog Export\n\nTask: " + fog.taskTitle + "\nAssessment: " + fog.assessmentType + "\n\nRaw task:\n" + fog.rawTaskText + "\n\nChunks:\n" + fog.chunks.map(function (chunk, index) {
       return (index + 1) + ". " + chunk.text + "\nState: " + chunk.state + "\nPlain meaning: " + chunk.plain + "\nAction: " + chunk.action;
     }).join("\n\n");
-    openBriefFog(drawer("Export", '<p>Copy or download the current Brief Fog notes.</p><a class="download-link" download="brief-fog-export.txt" href="data:text/plain;charset=utf-8,' + encodeURIComponent(content) + '">Download brief-fog-export.txt</a><textarea rows="12" readonly>' + esc(content) + '</textarea>', "brief-fog"));
+    openBriefFog(drawer("Export", '<p>Copy or download the current Brief Fog notes.</p>' + saveInfo(state) + '<a class="download-link" download="brief-fog-export.txt" href="data:text/plain;charset=utf-8,' + encodeURIComponent(content) + '">Download brief-fog-export.txt</a><textarea rows="12" readonly>' + esc(content) + '</textarea>', "brief-fog"));
   }
 
   function showFlags() {
     var state = loadState();
     var flags = state.flags.length ? '<ul>' + state.flags.map(function (item) { return '<li>' + esc(item.text) + '</li>'; }).join("") + '</ul>' : '<p>None yet.</p>';
     var loot = state.missedLoot.length ? '<ul>' + state.missedLoot.map(function (item) { return '<li>' + esc(item.text) + '</li>'; }).join("") + '</ul>' : '<p>None yet.</p>';
-    openCaveBase(drawer("Flags / Missed Loot", '<h3>Flags</h3>' + flags + '<h3>Missed loot</h3>' + loot, "cave-base"));
+    openCaveBase(drawer("Flags / Missed Loot", saveInfo(state) + '<h3>Flags</h3>' + flags + '<h3>Missed loot</h3>' + loot, "cave-base"));
   }
 
   function resetSave() {
     localStorage.removeItem(SAVE_KEY);
     localStorage.removeItem("esslay-study-cave-save-v01");
     localStorage.removeItem("esslay-study-cave-save-v02");
-    saveState(defaultState());
-    openCaveBase(drawer("Save reset", '<p>The Study Cave save was reset. Continue to Brief Fog when ready.</p><button type="button" data-action="open-brief-fog">Open Brief Fog</button>', "cave-base"));
+    var state = defaultState();
+    saveState(state, "Study Cave save reset");
+    openCaveBase(drawer("Save reset", '<p>The Study Cave save was reset. Continue to Brief Fog when ready.</p>' + saveInfo(state) + '<button type="button" data-action="open-brief-fog">Open Brief Fog</button>', "cave-base"));
   }
 
   function closeDrawer(button) {
@@ -436,7 +459,7 @@
   }
 
   function sourcePlaceholder() {
-    openSourceMine(drawer("Source Mine placeholder", '<p>Source notes, source gathering, quote preparation, and evidence links are not built yet. This confirms the route can reach this chamber after Brief Fog.</p><button type="button" data-action="return-cave-base">Cave Base</button>', "source-mine"));
+    openSourceMine(drawer("Source Mine placeholder", '<p>Source notes, source gathering, quote preparation, and evidence links are not built yet. This confirms the route can reach this chamber after Brief Fog.</p>' + saveInfo(loadState()) + '<button type="button" data-action="return-cave-base">Cave Base</button>', "source-mine"));
   }
 
   document.addEventListener("click", function (event) {
@@ -466,7 +489,7 @@
     if (action === "open-brief-fog") return openBriefFog();
     if (action === "open-source-mine") return openSourceMine();
     if (action === "return-cave-base") return openCaveBase();
-    if (action === "close-stage") return closeStage();
+    if (action === "close-stage") return openTaskMap();
     if (action === "close-drawer") return closeDrawer(button);
     if (action === "open-task-brief") return openTaskBrief();
     if (action === "save-task") return saveTask(false);
@@ -481,7 +504,7 @@
     if (action === "finish-brief-fog") return finishBriefFog();
     if (action === "export-brief-fog") return exportBriefFog();
     if (action === "show-flags") return showFlags();
-    if (action === "show-outfit") return openCaveBase(drawer("Outfit Chest", '<p>Outfit changing is a placeholder here. It should connect to the wardrobe/outfit system later.</p>', "cave-base"));
+    if (action === "show-outfit") return openCaveBase(drawer("Outfit Chest", '<p>Outfit changing is a placeholder here. It should connect to the wardrobe/outfit system later.</p>' + saveInfo(loadState()), "cave-base"));
     if (action === "reset-study-cave-save") return resetSave();
     if (action === "source-placeholder") return sourcePlaceholder();
   });
