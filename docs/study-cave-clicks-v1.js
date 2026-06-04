@@ -167,6 +167,7 @@
       '<div class="flow-actions">' +
       '<button type="button" data-action="enter-cave-base">Enter Cave Base</button>' +
       '<button type="button" data-action="open-brief-fog">Open Brief Fog directly</button>' +
+      '<button type="button" data-action="open-source-mine">Open Source Mine</button>' +
       '<button type="button" class="secondary-button" data-action="open-quest-board">Back to Quest Board</button>' +
       '</div></article>' +
       '<article class="flow-card"><h3>Route nodes</h3><div class="route-node-grid">' + nodeHtml + '</div></article>' +
@@ -204,6 +205,13 @@
       hotspot("hotspot-brief-flag", "Cave Base", "return-cave-base");
   }
 
+  function sourceMineHotspots() {
+    return hotspot("hotspot-parchment", "Source Notes", "source-placeholder") +
+      hotspot("hotspot-forward", "Next later", "source-placeholder") +
+      hotspot("hotspot-brief-flag", "Cave Base", "return-cave-base") +
+      hotspot("hotspot-brief-loot", "Task Map", "open-task-map");
+  }
+
   function openCaveBase(extra) {
     var state = loadState();
     openStage('<section class="simple-room cave-base-room">' +
@@ -215,10 +223,11 @@
       '<p><strong>Active quest:</strong> ' + esc(state.questTitle) + '</p>' +
       '<p><strong>Current chamber:</strong> ' + esc(routeLabel(state.current)) + '</p>' +
       '<p><strong>Progress:</strong> ' + state.completed.length + ' / ' + TOTAL_CHAMBERS + '</p>' +
-      '<p>Use the glowing room hotspots or the buttons below.</p>' +
+      '<p>Use the room hotspots or the buttons below.</p>' +
       '<div class="simple-actions">' +
       '<button type="button" data-action="continue-quest">Continue</button>' +
       '<button type="button" data-action="open-brief-fog">Open Brief Fog</button>' +
+      '<button type="button" data-action="open-source-mine">Open Source Mine</button>' +
       '<button type="button" data-action="open-task-map">Task Map</button>' +
       '<button type="button" data-action="show-flags">Flags / Missed Loot</button>' +
       '<button type="button" data-action="show-outfit">Outfit Chest</button>' +
@@ -247,6 +256,29 @@
       '<button type="button" data-action="open-summary">Summary</button>' +
       '<button type="button" data-action="return-cave-base">Cave Base</button>' +
       '<button type="button" data-action="open-task-map">Task Map</button>' +
+      '</div></article>' + (extra || "") + '</section>');
+  }
+
+  function openSourceMine(extra) {
+    var state = loadState();
+    var unlocked = state.unlocked.indexOf("source-mine") >= 0;
+    if (!unlocked) {
+      return openCaveBase(drawer("Source Mine locked", '<p>Finish Brief Fog first. Source Mine unlocks after the task brief has been unpacked.</p><button type="button" data-action="open-brief-fog">Open Brief Fog</button>', "cave-base"));
+    }
+    openStage('<section class="simple-room source-mine-room">' +
+      '<button type="button" class="stage-close" data-action="return-cave-base">×</button>' +
+      '<p class="scene-label">Source Mine</p>' +
+      sourceMineHotspots() +
+      '<article class="stage-card simple-card">' +
+      '<h2>Source Mine</h2>' +
+      '<p>This placeholder proves the route can progress after Brief Fog.</p>' +
+      '<p><strong>Unlocked by:</strong> Brief Fog completion</p>' +
+      '<p><strong>Progress:</strong> ' + state.completed.length + ' / ' + TOTAL_CHAMBERS + '</p>' +
+      '<p>Source gathering, quote notes, and evidence linking will be built here later.</p>' +
+      '<div class="simple-actions">' +
+      '<button type="button" data-action="return-cave-base">Cave Base</button>' +
+      '<button type="button" data-action="open-task-map">Task Map</button>' +
+      '<button type="button" data-action="source-placeholder">Source Notes placeholder</button>' +
       '</div></article>' + (extra || "") + '</section>');
   }
 
@@ -365,7 +397,7 @@
     if (state.unlocked.indexOf("source-mine") === -1) state.unlocked.push("source-mine");
     state.current = "source-mine";
     saveState(state);
-    openCaveBase(drawer("Brief Fog Cleared", '<p>Source Mine is unlocked. The next chamber can stay as a placeholder for now.</p><button type="button" data-action="continue-quest">Continue</button>', "cave-base"));
+    openSourceMine(drawer("Brief Fog Cleared", '<p>Source Mine is now unlocked. Progress has updated to ' + state.completed.length + ' / ' + TOTAL_CHAMBERS + '.</p><button type="button" data-action="return-cave-base">Cave Base</button>', "source-mine"));
   }
 
   function exportBriefFog() {
@@ -398,8 +430,13 @@
       var drawerNode = button.closest("[data-drawer-context]");
       target = drawerNode ? drawerNode.dataset.drawerContext : "";
     }
-    if (!target) target = button.closest(".cave-base-room") ? "cave-base" : "brief-fog";
+    if (!target) target = button.closest(".source-mine-room") ? "source-mine" : button.closest(".cave-base-room") ? "cave-base" : "brief-fog";
+    if (target === "source-mine") return openSourceMine();
     return target === "cave-base" ? openCaveBase() : openBriefFog();
+  }
+
+  function sourcePlaceholder() {
+    openSourceMine(drawer("Source Mine placeholder", '<p>Source notes, source gathering, quote preparation, and evidence links are not built yet. This confirms the route can reach this chamber after Brief Fog.</p><button type="button" data-action="return-cave-base">Cave Base</button>', "source-mine"));
   }
 
   document.addEventListener("click", function (event) {
@@ -424,11 +461,10 @@
     if (action === "enter-cave-base") return openCaveBase();
     if (action === "continue-quest") {
       var state = loadState();
-      return state.current === "source-mine"
-        ? openCaveBase(drawer("Source Mine", '<p>Source Mine is a placeholder for now.</p><button type="button" data-action="return-cave-base">Cave Base</button>', "cave-base"))
-        : openBriefFog();
+      return state.current === "source-mine" ? openSourceMine() : openBriefFog();
     }
     if (action === "open-brief-fog") return openBriefFog();
+    if (action === "open-source-mine") return openSourceMine();
     if (action === "return-cave-base") return openCaveBase();
     if (action === "close-stage") return closeStage();
     if (action === "close-drawer") return closeDrawer(button);
@@ -447,6 +483,7 @@
     if (action === "show-flags") return showFlags();
     if (action === "show-outfit") return openCaveBase(drawer("Outfit Chest", '<p>Outfit changing is a placeholder here. It should connect to the wardrobe/outfit system later.</p>', "cave-base"));
     if (action === "reset-study-cave-save") return resetSave();
+    if (action === "source-placeholder") return sourcePlaceholder();
   });
 
   document.addEventListener("DOMContentLoaded", function () {
