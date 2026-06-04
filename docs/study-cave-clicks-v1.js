@@ -13,12 +13,8 @@
     return "id-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7);
   }
 
-  function isArray(value) {
-    return Array.isArray(value);
-  }
-
   function safeArray(value) {
-    return isArray(value) ? value.filter(Boolean) : [];
+    return Array.isArray(value) ? value.filter(Boolean) : [];
   }
 
   function defaultState() {
@@ -119,9 +115,10 @@
     node.hidden = true;
   }
 
-  function drawer(title, body) {
-    return '<section class="simple-drawer" role="dialog" aria-label="' + esc(title) + '">' +
-      '<button type="button" class="simple-close" data-action="close-drawer">×</button>' +
+  function drawer(title, body, closeTarget) {
+    var target = closeTarget || "brief-fog";
+    return '<section class="simple-drawer" role="dialog" aria-label="' + esc(title) + '" data-drawer-context="' + esc(target) + '">' +
+      '<button type="button" class="simple-close" data-action="close-drawer" data-close-target="' + esc(target) + '">×</button>' +
       '<h2>' + esc(title) + '</h2>' + body + '</section>';
   }
 
@@ -165,6 +162,7 @@
       '<p><strong>Flags:</strong> ' + state.flags.length + ' · <strong>Missed loot:</strong> ' + state.missedLoot.length + '</p>' +
       '<div class="flow-actions">' +
       '<button type="button" data-action="enter-cave-base">Enter Cave Base</button>' +
+      '<button type="button" data-action="open-brief-fog">Open Brief Fog directly</button>' +
       '<button type="button" class="secondary-button" data-action="open-quest-board">Back to Quest Board</button>' +
       '</div></article>' +
       '<article class="flow-card"><h3>Route nodes</h3><div class="route-node-grid">' + nodeHtml + '</div></article>' +
@@ -203,6 +201,7 @@
       '<button type="button" data-action="open-task-map">Task Map</button>' +
       '<button type="button" data-action="show-flags">Flags / Missed Loot</button>' +
       '<button type="button" data-action="show-outfit">Outfit Chest</button>' +
+      '<button type="button" data-action="reset-study-cave-save">Reset save</button>' +
       '</div></article>' + (extra || "") + '</section>');
   }
 
@@ -224,6 +223,7 @@
       '<button type="button" data-action="work-next-chunk">Work Next Chunk</button>' +
       '<button type="button" data-action="open-summary">Summary</button>' +
       '<button type="button" data-action="return-cave-base">Cave Base</button>' +
+      '<button type="button" data-action="open-task-map">Task Map</button>' +
       '</div></article>' + (extra || "") + '</section>');
   }
 
@@ -242,7 +242,7 @@
       '<button type="button" data-action="save-task">Save task brief</button>' +
       '<button type="button" data-action="suggest-chunks">Suggest chunks</button>' +
       '<button type="button" data-action="reset-study-cave-save">Reset save</button>' +
-      '</div></form><h3>Chunk list</h3>' + chunks));
+      '</div></form><h3>Chunk list</h3>' + chunks, "brief-fog"));
   }
 
   function splitTask(text) {
@@ -283,7 +283,7 @@
       '<button type="button" data-action="flag-chunk">Flag</button>' +
       '<button type="button" data-action="missed-chunk">Park as missed loot</button>' +
       '<button type="button" data-action="open-task-brief">Task Brief</button>' +
-      '</div></form>'));
+      '</div></form>', "brief-fog"));
   }
 
   function saveChunk(stateName) {
@@ -332,7 +332,7 @@
       '<button type="button" data-action="finish-brief-fog" ' + (ready ? "" : "disabled") + '>Finish Brief Fog</button>' +
       '<button type="button" data-action="export-brief-fog">Export text</button>' +
       '<button type="button" data-action="return-cave-base">Cave Base</button>' +
-      '</div>'));
+      '</div>', "brief-fog"));
   }
 
   function finishBriefFog() {
@@ -342,7 +342,7 @@
     if (state.unlocked.indexOf("source-mine") === -1) state.unlocked.push("source-mine");
     state.current = "source-mine";
     saveState(state);
-    openCaveBase(drawer("Brief Fog Cleared", '<p>Source Mine is unlocked. The next chamber can stay as a placeholder for now.</p><button type="button" data-action="continue-quest">Continue</button>'));
+    openCaveBase(drawer("Brief Fog Cleared", '<p>Source Mine is unlocked. The next chamber can stay as a placeholder for now.</p><button type="button" data-action="continue-quest">Continue</button>', "cave-base"));
   }
 
   function exportBriefFog() {
@@ -351,14 +351,14 @@
     var content = "Brief Fog Export\n\nTask: " + fog.taskTitle + "\nAssessment: " + fog.assessmentType + "\n\nRaw task:\n" + fog.rawTaskText + "\n\nChunks:\n" + fog.chunks.map(function (chunk, index) {
       return (index + 1) + ". " + chunk.text + "\nState: " + chunk.state + "\nPlain meaning: " + chunk.plain + "\nAction: " + chunk.action;
     }).join("\n\n");
-    openBriefFog(drawer("Export", '<p>Copy or download the current Brief Fog notes.</p><a class="download-link" download="brief-fog-export.txt" href="data:text/plain;charset=utf-8,' + encodeURIComponent(content) + '">Download brief-fog-export.txt</a><textarea rows="12" readonly>' + esc(content) + '</textarea>'));
+    openBriefFog(drawer("Export", '<p>Copy or download the current Brief Fog notes.</p><a class="download-link" download="brief-fog-export.txt" href="data:text/plain;charset=utf-8,' + encodeURIComponent(content) + '">Download brief-fog-export.txt</a><textarea rows="12" readonly>' + esc(content) + '</textarea>', "brief-fog"));
   }
 
   function showFlags() {
     var state = loadState();
     var flags = state.flags.length ? '<ul>' + state.flags.map(function (item) { return '<li>' + esc(item.text) + '</li>'; }).join("") + '</ul>' : '<p>None yet.</p>';
     var loot = state.missedLoot.length ? '<ul>' + state.missedLoot.map(function (item) { return '<li>' + esc(item.text) + '</li>'; }).join("") + '</ul>' : '<p>None yet.</p>';
-    openCaveBase(drawer("Flags / Missed Loot", '<h3>Flags</h3>' + flags + '<h3>Missed loot</h3>' + loot));
+    openCaveBase(drawer("Flags / Missed Loot", '<h3>Flags</h3>' + flags + '<h3>Missed loot</h3>' + loot, "cave-base"));
   }
 
   function resetSave() {
@@ -366,7 +366,17 @@
     localStorage.removeItem("esslay-study-cave-save-v01");
     localStorage.removeItem("esslay-study-cave-save-v02");
     saveState(defaultState());
-    openTaskBrief();
+    openCaveBase(drawer("Save reset", '<p>The Study Cave save was reset. Continue to Brief Fog when ready.</p><button type="button" data-action="open-brief-fog">Open Brief Fog</button>', "cave-base"));
+  }
+
+  function closeDrawer(button) {
+    var target = button.dataset.closeTarget || "";
+    if (!target) {
+      var drawerNode = button.closest("[data-drawer-context]");
+      target = drawerNode ? drawerNode.dataset.drawerContext : "";
+    }
+    if (!target) target = button.closest(".cave-base-room") ? "cave-base" : "brief-fog";
+    return target === "cave-base" ? openCaveBase() : openBriefFog();
   }
 
   document.addEventListener("click", function (event) {
@@ -392,13 +402,13 @@
     if (action === "continue-quest") {
       var state = loadState();
       return state.current === "source-mine"
-        ? openCaveBase(drawer("Source Mine", '<p>Source Mine is a placeholder for now.</p><button type="button" data-action="return-cave-base">Cave Base</button>'))
+        ? openCaveBase(drawer("Source Mine", '<p>Source Mine is a placeholder for now.</p><button type="button" data-action="return-cave-base">Cave Base</button>', "cave-base"))
         : openBriefFog();
     }
     if (action === "open-brief-fog") return openBriefFog();
     if (action === "return-cave-base") return openCaveBase();
     if (action === "close-stage") return closeStage();
-    if (action === "close-drawer") return openBriefFog();
+    if (action === "close-drawer") return closeDrawer(button);
     if (action === "open-task-brief") return openTaskBrief();
     if (action === "save-task") return saveTask(false);
     if (action === "suggest-chunks") return saveTask(true);
@@ -412,7 +422,7 @@
     if (action === "finish-brief-fog") return finishBriefFog();
     if (action === "export-brief-fog") return exportBriefFog();
     if (action === "show-flags") return showFlags();
-    if (action === "show-outfit") return openCaveBase(drawer("Outfit Chest", '<p>Outfit changing is a placeholder here. It should connect to the wardrobe/outfit system later.</p>'));
+    if (action === "show-outfit") return openCaveBase(drawer("Outfit Chest", '<p>Outfit changing is a placeholder here. It should connect to the wardrobe/outfit system later.</p>', "cave-base"));
     if (action === "reset-study-cave-save") return resetSave();
   });
 
