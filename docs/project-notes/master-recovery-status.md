@@ -9,6 +9,7 @@ Correct repo: `izdrewz/esslay`, not `izdrewz/game`.
 Source of truth for continuing work:
 - `docs/project-notes/README.md`
 - `docs/project-notes/main-repo-status.md`
+- `docs/project-notes/asset-reference-system.md`
 - all relevant area notes in `docs/project-notes/`
 
 Current project position:
@@ -29,6 +30,16 @@ Clarification added for Area 1:
 - Area 1 must tell Izzy directly whether the repo note was updated.
 - Area 1 must send Izzy previews/output directly if there are images to approve.
 - Area 1 must say clearly if the work is only a plan and no preview exists yet.
+
+Asset reference system:
+- `docs/project-notes/asset-reference-system.md` now defines the reference-image handoff system.
+- Reference images are not approved game assets by default.
+- Master may read the full asset registry.
+- Area 1 should use Area 1 character/outfit/sprite references unless Izzy or Master points it elsewhere.
+- Area 10 should use Area 10 scene/background/imp/fog/VN references unless Izzy or Master points it elsewhere.
+- The setup must not change playable cave files unless a later implementation task explicitly imports approved assets.
+- Image files have not yet been committed through the new intake system.
+- Next safe step is small labelled image batches with exact paths and status labels.
 
 Task Brief stability patch:
 - `docs/study-cave-enter-fix.js` was patched after Task Brief started crashing/freezing the browser.
@@ -61,6 +72,8 @@ Future visual-novel/story direction:
 - Future characters and story scenes should be recorded as visual-novel upgrades, separate from the functional writing workflow.
 
 Current master priority:
+- Finish asset reference intake setup.
+- Add current Brief Fog references in small labelled batches when available.
 - Run the Brief Fog functional acceptance test with a two-chunk brief.
 - Confirm save persistence after refresh.
 - If that passes, mark Cave Base + Brief Fog simple flow as functional placeholder / visual polish later.
