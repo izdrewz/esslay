@@ -1,6 +1,6 @@
 # Master recovery status
 
-Last updated: 2026-06-03
+Last updated: 2026-06-04
 
 Status: active / recovered handover
 
@@ -36,18 +36,26 @@ Task Brief stability patch:
 - Patch added saved-chunk normalisation, safer output-card normalisation, safer storage writes, capped automatic chunk creation, capped visible chunk-list rendering, a Task Brief reset button, and a safe fallback if the Task Brief drawer cannot open.
 - Commit: `92ec52ab0094163764c7cb8541e6689706f28554`.
 
-Simple cave entry fix:
-- The current `docs/cave.html` is now the simple click-flow rebuild with visual effects disabled while the cave workflow is stabilised.
-- Entry broke after the rebuild because the page was still opening route rooms into `#stage-scene`, but the stage-scene stylesheet link had been removed.
-- `docs/cave.html` now restores `study-cave-stage-scene.css` and bumps the simple click script version to `study-cave-clicks-v1.js?v=2`.
-- Commit: `5c9d12fe81fe6c80bdb081d4ccfb9c7a37155d53`.
-- `docs/study-cave-clicks-v1.js` was also rewritten to avoid newer regex parsing issues and to make the simple route entry more browser-safe.
-- Commit: `e635fa91323cd21a5308f12affa18ebac1f84927`.
-- Test next: hard refresh `docs/cave.html`, click Enter cave or Task map, click Enter Cave Base, click Continue, confirm Brief Fog opens, then open Task Brief.
+Simple cave room-flow recovery:
+- The current `docs/cave.html` is a simple click-flow rebuild with visual effects disabled while the cave workflow is stabilised.
+- Working checkpoint commits to preserve:
+  - Visible clickable room hotspots: `c2dfb30f95509989d2f7c9b065b421699738454d`
+  - Direct room hotspots in script: `d88f4652b42c71179544fdca7b7a438db3e7881d`
+  - Source Mine progression: `655143972e2901e45dcb6431e92299f6e6f17926`
+  - Room navigation/save-status update: `6850ea9da825b0963ef0870ea38aa7899725dd7c`
+  - Current `cave.html` loading `study-cave-clicks-v1.js?v=7`: `32f94ec9cf5333239e183856c54f4c7809577957`
+- Izzy confirmed the cave rooms now work.
+- Cave Base, Brief Fog, and Source Mine are now treated as route rooms, not dismissible overlays.
+- Room-level corner X controls were removed.
+- Drawer X controls remain for panels/drawers only.
+- Visible local browser save status now appears in Cave Base, Brief Fog, Source Mine, Task Brief, Chunk, Summary, Export, and Flags/Loot.
+- The UI now shows a timestamp and last action such as task saved, chunks refreshed, chunk saved, or Source Mine unlocked.
 
 Current master priority:
-- First confirm the simple cave entry path works again.
-- Keep Brief Fog v0.1 as active / needs Izzy review.
+- Run the Brief Fog functional acceptance test with a two-chunk brief.
+- Confirm save persistence after refresh.
+- If that passes, mark Cave Base + Brief Fog simple flow as functional placeholder / visual polish later.
+- Then build Source Mine v0.1 functionality.
 - Do not use rejected Area 1 generated previews.
 - Do not replace the approved base girl or drift art style.
 - Keep repo notes updated after meaningful changes.
