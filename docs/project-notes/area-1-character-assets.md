@@ -1,6 +1,6 @@
 # Area 1 — Character assets
 
-Last updated: 2026-06-03
+Last updated: 2026-06-04
 
 ## Area role
 
@@ -41,16 +41,35 @@ Izzy has decided the project is no longer pursuing an animation-heavy pipeline f
 
 This means Area 1 should not try to create a smooth animation or full frame-by-frame sequence. It should make clean static character pose states that can be swapped by the game.
 
+Updated direction from Izzy, 2026-06-04:
+- Brief Fog should feel like a game/visual-novel scene, not only a utility panel.
+- In-scene objects should remain important; for example, the player should click the scroll/read prompt to enter the writing/quest flow.
+- The preferred approach is choice-dependent slideshow / still-frame scene states rather than layered animation.
+- The same Brief Fog sequence can be used during the room and later when completing the cave.
+- The first image should likely be the opening state.
+- Clicking the read prompt/scroll should swap to the second state and show a choice overlay:
+  - Header: Begin Quest?
+  - Clickable 1: VANQUISH THE FOG
+  - Header: Scared?
+  - Clickable 2: Escape…
+  - Header: Confident, Bold, Perhaps Unwise?
+  - Clickable 3: Venture Forth… Into The Unknown
+- Route meaning:
+  - VANQUISH THE FOG begins the assisted Brief Fog task/chunk flow.
+  - Escape leaves the cave.
+  - Venture Forth skips the assistance chunks and progresses into the next/missed-loot path.
+
 Required scene-state direction:
-- static character pose PNGs
+- static character/scene state images or clean character pose PNGs, depending on final implementation choice
 - consistent character identity
 - consistent canvas/alignment
-- black-background previews first for approval
-- final transparent PNGs after approval
+- black-background previews first for cutout/asset work where relevant
+- final transparent PNGs after approval for reusable character assets
+- if using full CG stills, keep text/UI separate from the art unless Izzy explicitly asks for baked text
 - magic/effects separated as overlays where practical
 - no requirement for video, GIF, or frame-by-frame animation
 
-Required Brief Fog scene states:
+Required Brief Fog scene states from earlier plan:
 
 1. `brief_fog_01_light_ready_left.png`
 - Character on one side, facing the smoke/imp target.
@@ -81,6 +100,59 @@ Required Brief Fog scene states:
 - Pose: controlled threat, confident, ready to continue.
 - Expression: confident, not rageful.
 - Imp retreat/flee is now a static visual-novel scene-state requirement, not animation.
+
+Additional Brief Fog route stills now needed:
+
+6. Escape route image/state
+- Same cave/lighting/outfit language.
+- Character retreating, turning back, or visibly deciding to leave.
+- Should read as leaving the fog encounter, not combat.
+
+7. Venture Forth route image/state
+- Same cave/lighting/outfit language.
+- Character moving deeper onward or bypassing the assistance path.
+- Should read as bold/confident/risky progression, not careful tutorial support.
+
+## Brief Fog outfit direction — wizard light / stars outfit
+
+Status: active visual direction / not locked final until Izzy approves exact outfit asset
+
+Izzy has supplied wizard-light / stars outfit sprite references and likes this direction for Brief Fog because the room involves magic, light, and fog.
+
+Current master recommendation:
+- Use the wizard light / stars outfit as the likely locked Brief Fog room outfit for visual-novel stills.
+- Keep room outfit lock separate from the broader wardrobe system.
+- The outfit may be room-specific for story/CG consistency even if later gameplay supports outfit changes elsewhere.
+- Remove the modern/adventurer satchel bag if it distracts, or redesign it to be more on-theme.
+- Possible bag redesign: smaller spell satchel, moon/star pouch, scroll case, charm pouch, or crystal pouch.
+- Do not let bag removal/redesign change the body silhouette, pose alignment, or character identity.
+
+Relevant outfit consistency notes:
+- Blonde hair identity must stay consistent.
+- Keep green eyes where visible.
+- Keep right-arm tattoo rule consistent; do not add tattoos to both arms.
+- Keep boots/socks, skirt/cape length, star detailing, moon charms, sleeve sheerness, and corset colour consistent once a version is chosen.
+- The pink/lilac star outfit and darker navy/purple star cloak outfit are both possible directions, but final Brief Fog outfit should be chosen based on consistency with the current cave stills.
+- The darker navy/purple cloak reads more cave/magic/night and may fit Brief Fog better than the pale pink version, but Izzy has not locked the final outfit version yet.
+
+## Future visual-novel/story upgrade note
+
+Status: future direction / does not block cave functionality
+
+Izzy has provided references for future visual-novel dialogue/text-box presentation and wants the project to eventually include:
+- future characters
+- story beats
+- dialogue/text boxes
+- choice screens
+- visual-novel style scene progression
+
+This should be treated as an upgrade layer, not the core cave function.
+
+Important implementation/asset rule:
+- The core cave writing workflow must remain functional even if story mode is temporarily disabled or simplified for focus mode.
+- Do not bake dialogue/text boxes into final background art unless Izzy explicitly asks for that.
+- Keep UI overlays, text boxes, and story choices separate from character/background art where practical.
+- Future story/textbox style is not fully settled yet, so references should be recorded as direction, not locked final style.
 
 ## Brief Fog outfit modularity rule
 
@@ -246,6 +318,8 @@ Brief Fog assets:
 - casting afterglow / extended hand pose
 - confident pose after imp reveal
 - sparkle threat pose while imp retreats
+- escape route still / pose
+- venture-forth route still / pose
 
 Effects:
 - hand sparkle transparent overlay
@@ -279,6 +353,8 @@ Suggested Brief Fog files:
 - `brief_fog_03_afterglow_imp_reveal.png`
 - `brief_fog_04_confident_after_reveal.png`
 - `brief_fog_05_warning_spark_imp_retreat.png`
+- `brief_fog_06_escape_route.png`
+- `brief_fog_07_venture_forth_route.png`
 - `brief_fog_hand_sparkle_overlay_v01.png`
 - `brief_fog_twinkle_shot_overlay_v01.png`
 - `brief_fog_afterglow_overlay_v01.png`
@@ -293,3 +369,6 @@ Suggested Brief Fog files:
 - Area 1 must now explicitly tell Izzy when it updates this note and must send previews/output directly if there is anything visual to approve.
 - The next preview must fix the childlike read by correcting proportions, posture, styling, and expression while preserving the approved base girl.
 - Clothing is not the main approval point for the Brief Fog visual-novel states because the worn outfit can change in-game; pose, identity, adult proportions, staging, and separated effects matter more.
+- The exact Brief Fog room outfit is not locked yet, but wizard light / stars outfit is the leading direction.
+- Bag should be removed or redesigned to feel more magical/on-theme if it distracts from the Brief Fog outfit.
+- Future visual-novel text boxes and story choices are planned, but art style and UI treatment are not locked yet.
