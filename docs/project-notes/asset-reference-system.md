@@ -9,6 +9,24 @@ This note defines how reference images and planning assets should be stored so f
 
 Reference files are not approved game assets by default. They are approved only if Izzy explicitly approves them.
 
+## Default image intake rule
+
+Izzy should not have to label every image manually.
+
+Default rule for all images Izzy uploads into project chats:
+- treat them as reference-only intake unless Izzy explicitly says approved, rejected, final, locked, or preferred
+- Master should sort, name, group, and describe images for the correct area
+- Area chats should not make Izzy repeat image admin already handled by Master
+- if status is unclear, keep the image as reference only and ask only for the necessary decision
+- never treat chat-uploaded images as repo-accessible until they are committed or listed with a stable external path
+
+Current safe defaults:
+- navy/purple star-cloak sprite = active candidate / leading Brief Fog outfit direction
+- pink/lilac star outfit = alternate outfit reference
+- current Brief Fog scene stills = active placeholder sequence candidates
+- VN textbox/story images = future visual-novel UI reference only
+- old wrong-style generated images = rejected / do not use
+
 ## Runtime safety
 
 This system is for handoff and planning. It should not affect the playable cave unless a later implementation task explicitly imports approved assets.
