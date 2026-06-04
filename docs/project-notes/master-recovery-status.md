@@ -23,6 +23,9 @@ Area 1 check:
 - Area 1 has no approved Brief Fog preview recorded yet.
 - A local handoff mentioned `area1_avatar_front_default_locked_base.png`, but repo search did not find that filename in `izdrewz/esslay` at recovery time.
 - Do not treat that local handoff file as imported or approved unless it is added to the repo and Izzy confirms its status.
+- 2026-06-04 Area 1 reported status: active / needs current image set before corrected preview production.
+- Area 1 is aligned on the static slideshow workflow and is now waiting for the current Brief Fog images / closest current frames so it can identify usable placeholders and avoid regenerating whole scenes unnecessarily.
+- Area 1 lists BF01 opening, BF02 read/choice, BF03 charge/vanquish, BF04 threat manifestation, BF05 aftermath, BF06 Escape, and BF07 Venture Forth as missing stills or layer-aligned assets.
 
 Clarification added for Area 1:
 - Area 1 must update the active task section in `area-1-character-assets.md`.
@@ -72,6 +75,7 @@ Future visual-novel/story direction:
 - Future characters and story scenes should be recorded as visual-novel upgrades, separate from the functional writing workflow.
 
 Current master priority:
+- Provide Area 1 / Area 10 with the current Brief Fog image set as reference-only intake.
 - Finish asset reference intake setup.
 - Add current Brief Fog references in small labelled batches when available.
 - Run the Brief Fog functional acceptance test with a two-chunk brief.
