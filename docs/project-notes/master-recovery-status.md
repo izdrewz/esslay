@@ -24,7 +24,8 @@ Area 1 check:
 - A local handoff mentioned `area1_avatar_front_default_locked_base.png`, but repo search did not find that filename in `izdrewz/esslay` at recovery time.
 - Do not treat that local handoff file as imported or approved unless it is added to the repo and Izzy confirms its status.
 - 2026-06-04 Area 1 reported status: active / needs current image set before corrected preview production.
-- Area 1 is aligned on the static slideshow workflow and is now waiting for the current Brief Fog images / closest current frames so it can identify usable placeholders and avoid regenerating whole scenes unnecessarily.
+- Correction: Izzy is not responsible for supplying a complete finished image set. Izzy has already supplied available references and closest frames. Area 10 should assemble/produce the missing Brief Fog still set from the supplied references, and Area 1 should support character/outfit consistency.
+- Area 1 should not make sheets or new concept art while waiting. Its next step is to review the closest current frames supplied through Master/Area 10, classify usable placeholders, and identify exact corrections.
 - Area 1 lists BF01 opening, BF02 read/choice, BF03 charge/vanquish, BF04 threat manifestation, BF05 aftermath, BF06 Escape, and BF07 Venture Forth as missing stills or layer-aligned assets.
 
 Clarification added for Area 1:
@@ -75,7 +76,10 @@ Future visual-novel/story direction:
 - Future characters and story scenes should be recorded as visual-novel upgrades, separate from the functional writing workflow.
 
 Current master priority:
-- Provide Area 1 / Area 10 with the current Brief Fog image set as reference-only intake.
+- Stop asking Izzy to supply a finished Brief Fog image set.
+- Use the references/closest frames Izzy already sent as reference-only intake.
+- Area 10 should assemble/produce the BF01–BF07 current image set using a stable background/camera and layer/composite method where possible.
+- Area 1 should review/support character identity, outfit, pose, and consistency, not make sheets.
 - Finish asset reference intake setup.
 - Add current Brief Fog references in small labelled batches when available.
 - Run the Brief Fog functional acceptance test with a two-chunk brief.
