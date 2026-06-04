@@ -35,12 +35,19 @@ Task Brief stability patch:
 - Likely cause: old or malformed saved Brief Fog data in browser `localStorage`, or a task/chunk list too large for the drawer to render safely.
 - Patch added saved-chunk normalisation, safer output-card normalisation, safer storage writes, capped automatic chunk creation, capped visible chunk-list rendering, a Task Brief reset button, and a safe fallback if the Task Brief drawer cannot open.
 - Commit: `92ec52ab0094163764c7cb8541e6689706f28554`.
-- Test next: hard refresh `docs/cave.html`, enter Cave Base, continue to Brief Fog, open Task Brief, save task brief, refresh fog chunks, open a chunk, save chunk, and confirm browser does not crash.
-- If the old page still appears, hard refresh because `cave.html` still points at `study-cave-enter-fix.js?v=5` and the browser may cache it.
+
+Simple cave entry fix:
+- The current `docs/cave.html` is now the simple click-flow rebuild with visual effects disabled while the cave workflow is stabilised.
+- Entry broke after the rebuild because the page was still opening route rooms into `#stage-scene`, but the stage-scene stylesheet link had been removed.
+- `docs/cave.html` now restores `study-cave-stage-scene.css` and bumps the simple click script version to `study-cave-clicks-v1.js?v=2`.
+- Commit: `5c9d12fe81fe6c80bdb081d4ccfb9c7a37155d53`.
+- `docs/study-cave-clicks-v1.js` was also rewritten to avoid newer regex parsing issues and to make the simple route entry more browser-safe.
+- Commit: `e635fa91323cd21a5308f12affa18ebac1f84927`.
+- Test next: hard refresh `docs/cave.html`, click Enter cave or Task map, click Enter Cave Base, click Continue, confirm Brief Fog opens, then open Task Brief.
 
 Current master priority:
+- First confirm the simple cave entry path works again.
 - Keep Brief Fog v0.1 as active / needs Izzy review.
-- Test the Task Brief stability patch before locking Brief Fog.
 - Do not use rejected Area 1 generated previews.
 - Do not replace the approved base girl or drift art style.
 - Keep repo notes updated after meaningful changes.
