@@ -22,6 +22,10 @@
     return RESOLVED_STATES.indexOf(String(chunk && chunk.state || "")) >= 0;
   }
 
+  function textKey(value) {
+    return String(value || "").replace(/\s+/g, " ").trim().toLowerCase();
+  }
+
   function timeStamp() {
     try {
       return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
@@ -179,6 +183,22 @@
     return -1;
   }
 
+  function appendUniqueChunks(existing, suggested) {
+    var seen = {};
+    var added = 0;
+    safeArray(existing).forEach(function (chunk) {
+      seen[textKey(chunk.text)] = true;
+    });
+    safeArray(suggested).forEach(function (chunk) {
+      var key = textKey(chunk.text);
+      if (!key || seen[key]) return;
+      existing.push(chunk);
+      seen[key] = true;
+      added += 1;
+    });
+    return added;
+  }
+
   function renderTaskMap(state) {
     state = state || loadState();
     var mount = document.querySelector("[data-task-map]");
@@ -331,14 +351,16 @@
   function openTaskBrief() {
     var state = loadState();
     var fog = state.briefFog;
-    var chunks = fog.chunks.length ? chunkOverview(fog, -1) : '<p>No chunks yet. Paste the task, then press Suggest chunks.</p>';
+    var chunks = fog.chunks.length ? chunkOverview(fog, -1) : '<p>No chunks yet. Paste the task, then press Add suggested chunks.</p>';
     openBriefFog(drawer("Task Brief", saveInfo(state) + '<form data-task-form>' +
       '<label>Task title<input name="taskTitle" value="' + esc(fog.taskTitle) + '"></label>' +
       '<label>Assessment type<input name="assessmentType" value="' + esc(fog.assessmentType) + '"></label>' +
       '<label>Paste task / question / guidance<textarea name="rawTaskText" rows="8">' + esc(fog.rawTaskText) + '</textarea></label>' +
+      '<p><strong>Add suggested chunks</strong> appends new chunks and keeps existing chunk notes/states. <strong>Replace all chunks</strong> wipes the current chunk list.</p>' +
       '<div class="simple-actions">' +
       '<button type="button" data-action="save-task">Save task brief</button>' +
-      '<button type="button" data-action="suggest-chunks">Suggest chunks</button>' +
+      '<button type="button" data-action="suggest-chunks">Add suggested chunks</button>' +
+      '<button type="button" data-action="replace-chunks">Replace all chunks</button>' +
       '<button type="button" data-action="reset-study-cave-save">Reset save</button>' +
       '</div></form><h3>Chunk list</h3>' + chunks, "brief-fog"));
   }
@@ -354,16 +376,24 @@
     });
   }
 
-  function saveTask(split) {
+  function saveTask(mode) {
     var form = document.querySelector("[data-task-form]");
     if (!form) return;
     var data = new FormData(form);
     var state = loadState();
+    var message = "Task brief saved";
     state.briefFog.taskTitle = String(data.get("taskTitle") || "Study Skills Trial").slice(0, 160);
     state.briefFog.assessmentType = String(data.get("assessmentType") || "practice task").slice(0, 160);
     state.briefFog.rawTaskText = String(data.get("rawTaskText") || SAMPLE_TASK).slice(0, 9000);
-    if (split) state.briefFog.chunks = splitTask(state.briefFog.rawTaskText);
-    saveState(state, split ? "Task brief saved and chunks refreshed" : "Task brief saved");
+    if (mode === "append") {
+      var added = appendUniqueChunks(state.briefFog.chunks, splitTask(state.briefFog.rawTaskText));
+      message = added ? "Task brief saved; " + added + " new chunk" + (added === 1 ? "" : "s") + " added" : "Task brief saved; no new chunks added";
+    }
+    if (mode === "replace") {
+      state.briefFog.chunks = splitTask(state.briefFog.rawTaskText);
+      message = "Task brief saved; chunks replaced";
+    }
+    saveState(state, message);
     openTaskBrief();
   }
 
@@ -527,8 +557,9 @@
     if (action === "close-stage") return openTaskMap();
     if (action === "close-drawer") return closeDrawer(button);
     if (action === "open-task-brief") return openTaskBrief();
-    if (action === "save-task") return saveTask(false);
-    if (action === "suggest-chunks") return saveTask(true);
+    if (action === "save-task") return saveTask("save");
+    if (action === "suggest-chunks") return saveTask("append");
+    if (action === "replace-chunks") return saveTask("replace");
     if (action === "work-next-chunk") return workNextChunk();
     if (action === "open-chunk") return openChunk(Number(button.dataset.index));
     if (action === "save-chunk") return saveChunk("in progress", false);
