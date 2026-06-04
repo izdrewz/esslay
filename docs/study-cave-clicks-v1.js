@@ -17,6 +17,10 @@
     return Array.isArray(value) ? value.filter(Boolean) : [];
   }
 
+  function hotspot(className, label, action) {
+    return '<button type="button" class="flow-hotspot ' + esc(className) + '" data-action="' + esc(action) + '" data-hotspot-label="' + esc(label) + '">' + esc(label) + '</button>';
+  }
+
   function defaultState() {
     return {
       questTitle: "Study Skills Trial",
@@ -185,16 +189,33 @@
     if (panel) panel.open = true;
   }
 
+  function caveBaseHotspots() {
+    return hotspot("hotspot-continue", "Continue", "continue-quest") +
+      hotspot("hotspot-shelf", "Open Brief Fog", "open-brief-fog") +
+      hotspot("hotspot-return", "Task Map", "open-task-map") +
+      hotspot("hotspot-flags", "Flags", "show-flags") +
+      hotspot("hotspot-chest", "Outfit", "show-outfit");
+  }
+
+  function briefFogHotspots() {
+    return hotspot("hotspot-parchment", "Task Brief", "open-task-brief") +
+      hotspot("hotspot-brief-loot", "Work Chunk", "work-next-chunk") +
+      hotspot("hotspot-forward", "Summary", "open-summary") +
+      hotspot("hotspot-brief-flag", "Cave Base", "return-cave-base");
+  }
+
   function openCaveBase(extra) {
     var state = loadState();
     openStage('<section class="simple-room cave-base-room">' +
       '<button type="button" class="stage-close" data-action="close-stage">×</button>' +
       '<p class="scene-label">Cave Base</p>' +
+      caveBaseHotspots() +
       '<article class="stage-card simple-card">' +
       '<h2>Cave Base</h2>' +
       '<p><strong>Active quest:</strong> ' + esc(state.questTitle) + '</p>' +
       '<p><strong>Current chamber:</strong> ' + esc(routeLabel(state.current)) + '</p>' +
       '<p><strong>Progress:</strong> ' + state.completed.length + ' / ' + TOTAL_CHAMBERS + '</p>' +
+      '<p>Use the glowing room hotspots or the buttons below.</p>' +
       '<div class="simple-actions">' +
       '<button type="button" data-action="continue-quest">Continue</button>' +
       '<button type="button" data-action="open-brief-fog">Open Brief Fog</button>' +
@@ -214,10 +235,12 @@
     openStage('<section class="simple-room brief-fog-room">' +
       '<button type="button" class="stage-close" data-action="return-cave-base">×</button>' +
       '<p class="scene-label">Brief Fog</p>' +
+      briefFogHotspots() +
       '<article class="stage-card simple-card">' +
       '<h2>Brief Fog</h2>' +
       '<p>This version removes the visual effects and uses reliable buttons only.</p>' +
       '<p><strong>Chunks:</strong> ' + fog.chunks.length + ' · <strong>Resolved:</strong> ' + resolved + '/' + fog.chunks.length + '</p>' +
+      '<p>Use the room hotspots or the buttons below.</p>' +
       '<div class="simple-actions">' +
       '<button type="button" data-action="open-task-brief">Task Brief</button>' +
       '<button type="button" data-action="work-next-chunk">Work Next Chunk</button>' +
