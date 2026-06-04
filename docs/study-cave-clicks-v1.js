@@ -2,6 +2,7 @@
   var SAVE_KEY = "esslay-study-cave-simple-v1";
   var SAMPLE_TASK = "Write an 800-word practice response explaining how a student can use planning, source notes, drafting, proofreading, and referencing habits to improve the quality of an academic assignment.";
   var TOTAL_CHAMBERS = 7;
+  var RESOLVED_STATES = ["unpacked", "flagged", "missed"];
 
   function esc(value) {
     return String(value == null ? "" : value).replace(/[&<>"]/g, function (char) {
@@ -15,6 +16,10 @@
 
   function safeArray(value) {
     return Array.isArray(value) ? value.filter(Boolean) : [];
+  }
+
+  function isResolved(chunk) {
+    return RESOLVED_STATES.indexOf(String(chunk && chunk.state || "")) >= 0;
   }
 
   function timeStamp() {
@@ -153,6 +158,27 @@
     return "Cave Base";
   }
 
+  function chunkOverview(fog, activeIndex) {
+    var chunks = safeArray(fog.chunks);
+    if (!chunks.length) return '<p>No chunks yet.</p>';
+    return '<ol class="chunk-list chunk-status-list">' + chunks.map(function (chunk, index) {
+      var text = String(chunk.text || "Recovered chunk");
+      var active = index === activeIndex ? ' <strong>current</strong>' : '';
+      return '<li><button type="button" data-action="open-chunk" data-index="' + index + '">Chunk ' + (index + 1) + ': ' + esc(text.slice(0, 70)) + (text.length > 70 ? "…" : "") + '</button> <small>state: ' + esc(chunk.state || "not started") + active + '</small></li>';
+    }).join("") + '</ol>';
+  }
+
+  function nextUnresolvedIndex(chunks, currentIndex) {
+    var i;
+    for (i = currentIndex + 1; i < chunks.length; i += 1) {
+      if (!isResolved(chunks[i])) return i;
+    }
+    for (i = 0; i < chunks.length; i += 1) {
+      if (!isResolved(chunks[i])) return i;
+    }
+    return -1;
+  }
+
   function renderTaskMap(state) {
     state = state || loadState();
     var mount = document.querySelector("[data-task-map]");
@@ -260,9 +286,7 @@
   function openBriefFog(extra) {
     var state = loadState();
     var fog = state.briefFog;
-    var resolved = fog.chunks.filter(function (chunk) {
-      return chunk.state === "unpacked" || chunk.state === "flagged" || chunk.state === "missed";
-    }).length;
+    var resolved = fog.chunks.filter(function (chunk) { return isResolved(chunk); }).length;
     openStage('<section class="simple-room brief-fog-room">' +
       '<p class="scene-label">Brief Fog</p>' +
       briefFogHotspots() +
@@ -271,7 +295,7 @@
       '<p>This version removes the visual effects and uses reliable buttons only.</p>' +
       '<p><strong>Chunks:</strong> ' + fog.chunks.length + ' · <strong>Resolved:</strong> ' + resolved + '/' + fog.chunks.length + '</p>' +
       saveInfo(state) +
-      '<p>Use Cave Base or Task Map to navigate. The corner X is only for drawers now.</p>' +
+      '<p>Save chunk keeps a draft. Mark unpacked, flag, or park to resolve and move the route forward.</p>' +
       '<div class="simple-actions">' +
       '<button type="button" data-action="open-task-brief">Task Brief</button>' +
       '<button type="button" data-action="work-next-chunk">Work Next Chunk</button>' +
@@ -307,10 +331,7 @@
   function openTaskBrief() {
     var state = loadState();
     var fog = state.briefFog;
-    var chunks = fog.chunks.length ? '<ol class="chunk-list">' + fog.chunks.map(function (chunk, index) {
-      var text = String(chunk.text || "Recovered chunk");
-      return '<li><button type="button" data-action="open-chunk" data-index="' + index + '">' + esc(text.slice(0, 90)) + (text.length > 90 ? "…" : "") + '</button> <small>' + esc(chunk.state || "not started") + '</small></li>';
-    }).join("") + '</ol>' : '<p>No chunks yet. Paste the task, then press Suggest chunks.</p>';
+    var chunks = fog.chunks.length ? chunkOverview(fog, -1) : '<p>No chunks yet. Paste the task, then press Suggest chunks.</p>';
     openBriefFog(drawer("Task Brief", saveInfo(state) + '<form data-task-form>' +
       '<label>Task title<input name="taskTitle" value="' + esc(fog.taskTitle) + '"></label>' +
       '<label>Assessment type<input name="assessmentType" value="' + esc(fog.assessmentType) + '"></label>' +
@@ -348,28 +369,40 @@
 
   function openChunk(index) {
     var state = loadState();
-    var chunk = state.briefFog.chunks[index];
+    var fog = state.briefFog;
+    var chunk = fog.chunks[index];
     if (!chunk) return openTaskBrief();
-    openBriefFog(drawer("Chunk " + (index + 1), saveInfo(state) + '<form data-chunk-form data-index="' + index + '">' +
+    var previousIndex = Math.max(0, index - 1);
+    var nextIndex = Math.min(fog.chunks.length - 1, index + 1);
+    openBriefFog(drawer("Chunk " + (index + 1), saveInfo(state) +
+      '<p><strong>Current state:</strong> ' + esc(chunk.state) + '</p>' +
+      '<p>Save chunk keeps this as a draft. Mark unpacked, flag, or park as missed loot when this chunk is resolved.</p>' +
+      '<form data-chunk-form data-index="' + index + '">' +
       '<label>Original wording<textarea name="text" rows="5">' + esc(chunk.text) + '</textarea></label>' +
       '<label>Plain meaning<textarea name="plain" rows="4">' + esc(chunk.plain || "") + '</textarea></label>' +
       '<label>Action this creates<textarea name="action" rows="4">' + esc(chunk.action || "") + '</textarea></label>' +
       '<div class="simple-actions">' +
-      '<button type="button" data-action="save-chunk">Save chunk</button>' +
+      '<button type="button" data-action="save-chunk">Save draft only</button>' +
+      '<button type="button" data-action="save-chunk-next">Save draft + next</button>' +
       '<button type="button" data-action="mark-unpacked">Mark unpacked</button>' +
-      '<button type="button" data-action="flag-chunk">Flag</button>' +
-      '<button type="button" data-action="missed-chunk">Park as missed loot</button>' +
+      '<button type="button" data-action="mark-unpacked-next">Mark unpacked + next</button>' +
+      '<button type="button" data-action="flag-chunk-next">Flag + next</button>' +
+      '<button type="button" data-action="missed-chunk-next">Park missed + next</button>' +
+      '<button type="button" data-action="open-chunk" data-index="' + previousIndex + '">Previous chunk</button>' +
+      '<button type="button" data-action="open-chunk" data-index="' + nextIndex + '">Next chunk</button>' +
       '<button type="button" data-action="open-task-brief">Task Brief</button>' +
-      '</div></form>', "brief-fog"));
+      '<button type="button" data-action="open-summary">Summary</button>' +
+      '</div></form><h3>All chunk states</h3>' + chunkOverview(fog, index), "brief-fog"));
   }
 
-  function saveChunk(stateName) {
+  function saveChunk(stateName, moveNext) {
     var form = document.querySelector("[data-chunk-form]");
     if (!form) return;
     var index = Number(form.dataset.index);
     var data = new FormData(form);
     var state = loadState();
-    var chunk = state.briefFog.chunks[index];
+    var fog = state.briefFog;
+    var chunk = fog.chunks[index];
     if (!chunk) return openTaskBrief();
     chunk.text = String(data.get("text") || chunk.text).slice(0, 1200);
     chunk.plain = String(data.get("plain") || "").slice(0, 1200);
@@ -378,22 +411,24 @@
     if (stateName === "flagged") state.flags.push({ id: uid(), text: chunk.plain || chunk.text.slice(0, 120) });
     if (stateName === "missed") state.missedLoot.push({ id: uid(), text: chunk.action || chunk.text.slice(0, 120) });
     saveState(state, "Chunk " + (index + 1) + " saved as " + chunk.state);
+
+    if (moveNext) {
+      var nextIndex = nextUnresolvedIndex(fog.chunks, index);
+      if (nextIndex >= 0) return openChunk(nextIndex);
+      return openSummary(false);
+    }
     openChunk(index);
   }
 
   function workNextChunk() {
     var state = loadState();
     if (!state.briefFog.chunks.length) return openTaskBrief();
-    var index = state.briefFog.chunks.findIndex(function (chunk) {
-      return ["unpacked", "flagged", "missed"].indexOf(chunk.state) === -1;
-    });
+    var index = nextUnresolvedIndex(state.briefFog.chunks, -1);
     openChunk(index >= 0 ? index : 0);
   }
 
   function canFinish(state) {
-    return Boolean(state.briefFog.chunks.length && state.briefFog.chunks.every(function (chunk) {
-      return ["unpacked", "flagged", "missed"].indexOf(chunk.state) >= 0;
-    }));
+    return Boolean(state.briefFog.chunks.length && state.briefFog.chunks.every(function (chunk) { return isResolved(chunk); }));
   }
 
   function openSummary(done) {
@@ -402,7 +437,7 @@
     var chunks = state.briefFog.chunks.map(function (chunk, index) {
       return '<li><strong>Chunk ' + (index + 1) + ':</strong> ' + esc(chunk.state) + ' — ' + esc(chunk.plain || chunk.text.slice(0, 90)) + '</li>';
     }).join("");
-    var body = done ? '<p>Brief Fog is complete. Source Mine is now unlocked.</p>' : '<p>' + (ready ? "Ready to finish Brief Fog." : "Resolve each chunk before finishing.") + '</p>';
+    var body = done ? '<p>Brief Fog is complete. Source Mine is now unlocked.</p>' : '<p>' + (ready ? "Ready to finish Brief Fog." : "Resolve each chunk before finishing. Draft-only chunks are saved, but they do not count as resolved.") + '</p>';
     openBriefFog(drawer(done ? "Brief Fog Cleared" : "Brief Fog Summary", body + saveInfo(state) +
       '<ul>' + (chunks || '<li>No chunks yet.</li>') + '</ul>' +
       '<div class="simple-actions">' +
@@ -496,10 +531,14 @@
     if (action === "suggest-chunks") return saveTask(true);
     if (action === "work-next-chunk") return workNextChunk();
     if (action === "open-chunk") return openChunk(Number(button.dataset.index));
-    if (action === "save-chunk") return saveChunk("in progress");
-    if (action === "mark-unpacked") return saveChunk("unpacked");
-    if (action === "flag-chunk") return saveChunk("flagged");
-    if (action === "missed-chunk") return saveChunk("missed");
+    if (action === "save-chunk") return saveChunk("in progress", false);
+    if (action === "save-chunk-next") return saveChunk("in progress", true);
+    if (action === "mark-unpacked") return saveChunk("unpacked", false);
+    if (action === "mark-unpacked-next") return saveChunk("unpacked", true);
+    if (action === "flag-chunk") return saveChunk("flagged", false);
+    if (action === "flag-chunk-next") return saveChunk("flagged", true);
+    if (action === "missed-chunk") return saveChunk("missed", false);
+    if (action === "missed-chunk-next") return saveChunk("missed", true);
     if (action === "open-summary") return openSummary(false);
     if (action === "finish-brief-fog") return finishBriefFog();
     if (action === "export-brief-fog") return exportBriefFog();
