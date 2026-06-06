@@ -114,9 +114,7 @@
       '.bf-imp-marker{position:absolute;left:23%;top:47%;padding:9px 12px;border-radius:16px;background:rgba(10,8,12,.72);border:1px solid rgba(245,184,76,.5);color:#ffd98d;font-weight:900;text-transform:uppercase;font-size:.72rem;}' +
       '.bf-girl-marker{position:absolute;right:11%;bottom:10%;width:17%;height:54%;min-width:120px;border-radius:46% 46% 12% 12%;background:linear-gradient(180deg,rgba(246,220,148,.86),rgba(41,34,74,.72));border:2px solid rgba(255,231,174,.42);box-shadow:0 24px 32px rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;color:#fff7df;font-weight:900;padding-bottom:18px;text-shadow:0 2px 4px #000;}' +
       '.bf-scroll-hotspot{position:absolute;left:22%;bottom:18%;z-index:42;pointer-events:auto;border:2px solid rgba(255,230,164,.84);border-radius:999px;padding:12px 18px;background:rgba(74,45,18,.92);color:#fff7df;font-weight:900;box-shadow:0 0 22px rgba(255,210,112,.35);cursor:pointer;}' +
-      '.bf-glow-marker{position:absolute;right:25%;top:42%;width:16%;height:8px;border-radius:999px;background:linear-gradient(90deg,transparent,rgba(255,240,168,.7),rgba(151,205,255,.5),transparent);box-shadow:0 0 24px rgba(255,230,150,.52);transform:rotate(-10deg);opacity:.15;}' +
       '.bf-route-marker{position:absolute;right:8%;top:24%;padding:9px 12px;border-radius:999px;background:rgba(10,20,32,.7);border:1px solid rgba(180,213,255,.42);color:#dcecff;font-weight:800;}' +
-      '.bf-scene-choice .bf-glow-marker,.bf-scene-vanquish .bf-glow-marker,.bf-scene-venture .bf-glow-marker{opacity:.9;}' +
       '.bf-scene-escape .bf-girl-marker{right:4%;opacity:.78;}.bf-scene-venture .bf-girl-marker{right:29%;}.bf-scene-venture .bf-route-marker{box-shadow:0 0 22px rgba(180,213,255,.48);}' +
       '.bf-choice-panel{position:absolute;right:24px;top:64px;z-index:90;width:min(390px,38vw);padding:18px;border-radius:22px;border:2px solid rgba(255,223,157,.72);background:rgba(10,13,26,.88);color:#fff7df;box-shadow:0 22px 56px rgba(0,0,0,.48);}' +
       '.bf-choice-panel h2,.bf-choice-panel h3{margin:8px 0 7px;color:#fff1cf;}.bf-choice-panel button{display:block;width:100%;margin:6px 0 12px;padding:11px 14px;border-radius:999px;border:1px solid rgba(255,232,174,.78);background:rgba(78,49,22,.92);color:#fff7df;font-weight:900;cursor:pointer;text-align:left;}' +
@@ -132,7 +130,6 @@
       '<div class="bf-fog-mass"><span></span><span></span><span></span></div>' +
       '<div class="bf-imp-marker">imp/fog</div>' +
       '<div class="bf-girl-marker">girl</div>' +
-      '<div class="bf-glow-marker"></div>' +
       '<div class="bf-route-marker">next route</div>' +
       '<button type="button" class="bf-scroll-hotspot" data-action="bf-read-scroll">Read task scroll</button>' +
       '</div>';
