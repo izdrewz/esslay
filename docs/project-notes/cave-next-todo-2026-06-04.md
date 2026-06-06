@@ -88,9 +88,11 @@ Image status:
 - do not reject the placeholder yet; shuffle hotspots and stage the UI first
 - flag that a later final Source Mine image should include clearer environmental places for locked/unlocked interactions
 
-## Source Mine metaphor / room monster
+## Source Mine metaphor / gather quest
 
-Source Mine should not just be a form room. The stronger game metaphor is: mine evidence crystals/gems needed for spell casting.
+Source Mine is a gather quest, not a monster room.
+
+The stronger game metaphor is: mine evidence crystals/gems needed for later spell casting.
 
 Room idea:
 - sources are raw ore
@@ -99,7 +101,7 @@ Room idea:
 - linking the quote to a Brief Fog chunk sets the gem into the correct spell slot
 - weak/missing evidence becomes cracked ore, unstable crystal, or missed loot
 
-The room monster can be a Source Gremlin / Citation Goblin / Echo Bat / Footnote Wraith that hoards or distorts sources. The monster does not need to be visible yet. Mechanically it represents quote dumping, weak evidence, bad source links, and missing citation details.
+No Source Mine monster is needed. The challenge is collection, sorting, and making the evidence usable.
 
 Possible Source Mine quest loop:
 1. Enter Source Mine.
@@ -173,7 +175,7 @@ Problem: the placeholder glow made the scene look like a casting moment when it 
 
 Fix:
 - removed the fake glow marker from the Brief Fog VN placeholder layer
-- removed the CSS state that made that glow visible
+- removed the CSS state that made the glow visible
 
 Commit:
 - `efa4e23fc3865c85fbb50e0d788047c33ee4986e`
