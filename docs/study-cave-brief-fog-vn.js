@@ -114,23 +114,22 @@
       '.bf-imp-marker{position:absolute;left:23%;top:47%;padding:9px 12px;border-radius:16px;background:rgba(10,8,12,.72);border:1px solid rgba(245,184,76,.5);color:#ffd98d;font-weight:900;text-transform:uppercase;font-size:.72rem;}' +
       '.bf-girl-marker{position:absolute;right:11%;bottom:10%;width:17%;height:54%;min-width:120px;border-radius:46% 46% 12% 12%;background:linear-gradient(180deg,rgba(246,220,148,.86),rgba(41,34,74,.72));border:2px solid rgba(255,231,174,.42);box-shadow:0 24px 32px rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;color:#fff7df;font-weight:900;padding-bottom:18px;text-shadow:0 2px 4px #000;}' +
       '.bf-scroll-hotspot{position:absolute;left:22%;bottom:18%;z-index:42;pointer-events:auto;border:2px solid rgba(255,230,164,.84);border-radius:999px;padding:12px 18px;background:rgba(74,45,18,.92);color:#fff7df;font-weight:900;box-shadow:0 0 22px rgba(255,210,112,.35);cursor:pointer;}' +
-      '.bf-route-marker{position:absolute;right:8%;top:24%;padding:9px 12px;border-radius:999px;background:rgba(10,20,32,.7);border:1px solid rgba(180,213,255,.42);color:#dcecff;font-weight:800;}' +
-      '.bf-scene-escape .bf-girl-marker{right:4%;opacity:.78;}.bf-scene-venture .bf-girl-marker{right:29%;}.bf-scene-venture .bf-route-marker{box-shadow:0 0 22px rgba(180,213,255,.48);}' +
+      '.bf-scene-escape .bf-girl-marker{right:4%;opacity:.78;}.bf-scene-venture .bf-girl-marker{right:29%;}' +
       '.bf-choice-panel{position:absolute;right:24px;top:64px;z-index:90;width:min(390px,38vw);padding:18px;border-radius:22px;border:2px solid rgba(255,223,157,.72);background:rgba(10,13,26,.88);color:#fff7df;box-shadow:0 22px 56px rgba(0,0,0,.48);}' +
       '.bf-choice-panel h2,.bf-choice-panel h3{margin:8px 0 7px;color:#fff1cf;}.bf-choice-panel button{display:block;width:100%;margin:6px 0 12px;padding:11px 14px;border-radius:999px;border:1px solid rgba(255,232,174,.78);background:rgba(78,49,22,.92);color:#fff7df;font-weight:900;cursor:pointer;text-align:left;}' +
       '.bf-choice-panel button:hover,.bf-choice-panel button:focus-visible,.bf-scroll-hotspot:hover,.bf-scroll-hotspot:focus-visible{outline:3px solid rgba(255,240,188,.7);background:rgba(104,65,25,.96);}' +
       '.bf-vn-room .bf-status-card{max-width:420px!important;}' +
-      '@media(max-width:820px){.bf-choice-panel{left:12px;right:12px;top:56px;width:auto;}.bf-girl-marker{right:4%;height:42%;}.bf-fog-mass{width:58%;}.bf-scroll-hotspot{left:14%;bottom:14%;}}' +
+      '.source-mine-room .source-card{width:min(520px,44vw)!important;}' +
+      '@media(max-width:820px){.bf-choice-panel{left:12px;right:12px;top:56px;width:auto;}.bf-girl-marker{right:4%;height:42%;}.bf-fog-mass{width:58%;}.bf-scroll-hotspot{left:14%;bottom:14%;}.source-mine-room .source-card{width:calc(100% - 24px)!important;}}' +
       '</style>';
   }
 
-  function visualMarkup(scene) {
+  function visualMarkup() {
     return '<div class="bf-placeholder-layer" aria-hidden="false">' +
       '<div class="bf-placeholder-bg-note">Placeholder VN scene · final art swaps in later</div>' +
       '<div class="bf-fog-mass"><span></span><span></span><span></span></div>' +
       '<div class="bf-imp-marker">imp/fog</div>' +
       '<div class="bf-girl-marker">girl</div>' +
-      '<div class="bf-route-marker">next route</div>' +
       '<button type="button" class="bf-scroll-hotspot" data-action="bf-read-scroll">Read task scroll</button>' +
       '</div>';
   }
@@ -156,7 +155,16 @@
     scene = scene || state.briefFog.sceneState || "opening";
     closePanels();
     node.hidden = false;
-    node.innerHTML = styleBlock() + '<section class="simple-room brief-fog-room bf-vn-room bf-scene-' + esc(scene) + '"><p class="scene-label">Brief Fog · ' + esc(scene === "choice" ? "Read/Choice" : scene.charAt(0).toUpperCase() + scene.slice(1)) + '</p>' + visualMarkup(scene) + statusCard(state, scene) + (scene === "choice" ? choicePanel(state) : "") + '</section>';
+    node.innerHTML = styleBlock() + '<section class="simple-room brief-fog-room bf-vn-room bf-scene-' + esc(scene) + '"><p class="scene-label">Brief Fog · ' + esc(scene === "choice" ? "Read/Choice" : scene.charAt(0).toUpperCase() + scene.slice(1)) + '</p>' + visualMarkup() + statusCard(state, scene) + (scene === "choice" ? choicePanel(state) : "") + '</section>';
+  }
+
+  function renderSourceMine(extra) {
+    var state = loadState();
+    var node = stage();
+    if (!node) return;
+    closePanels();
+    node.hidden = false;
+    node.innerHTML = styleBlock() + '<section class="simple-room source-mine-room"><p class="scene-label">Source Mine</p><article class="stage-card simple-card source-card"><h2>Source Mine</h2><p>This is the next cave room placeholder. It exists so Venture Forth has somewhere to land while Source Mine gameplay is built.</p><p><strong>Unlocked by:</strong> Brief Fog completion or Venture Forth skip</p><p><strong>Progress:</strong> ' + safeArray(state.completed).length + ' / 7</p>' + saveInfo(state) + '<div class="simple-actions"><button type="button" data-action="source-placeholder">Source Notes placeholder</button><button type="button" data-action="return-cave-base">Cave Base</button><button type="button" data-action="open-task-map">Task Map</button><button type="button" data-action="show-flags">Flags / Missed Loot</button></div></article>' + (extra || "") + '</section>';
   }
 
   function readScroll() {
@@ -195,7 +203,12 @@
       state.missedLoot.push({ id: uid(), tag: "brief-fog-venture-skip", text: "Brief Fog assistance skipped: question-unpacking chunks were left as missed loot." });
     }
     saveState(state, "Venture Forth selected; Source Mine unlocked and missed loot recorded");
-    passToExisting("open-source-mine");
+    renderSourceMine('<section class="simple-drawer" role="dialog" aria-label="Venture Forth"><button type="button" class="simple-close" data-action="source-close-note" aria-label="Close note">×</button><h2>Venture Forth</h2><p>You pushed past the fog without the assistance chunks. Source Mine is now open, and the skipped support has been recorded as missed loot.</p>' + saveInfo(state) + '</section>');
+  }
+
+  function sourceNote() {
+    var state = loadState();
+    renderSourceMine('<section class="simple-drawer" role="dialog" aria-label="Source Notes"><button type="button" class="simple-close" data-action="source-close-note" aria-label="Close note">×</button><h2>Source Notes placeholder</h2><p>Source gathering, quote notes, and evidence linking will be built here next.</p>' + saveInfo(state) + '</section>');
   }
 
   document.addEventListener("click", function (event) {
@@ -209,12 +222,29 @@
     }
     if (action === "continue-quest") {
       var state = loadState();
-      if (state.current !== "source-mine") {
+      if (state.current === "source-mine") {
         event.preventDefault();
         event.stopImmediatePropagation();
-        return renderBriefFog();
+        return renderSourceMine();
       }
-      return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return renderBriefFog();
+    }
+    if (action === "open-source-mine") {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return renderSourceMine();
+    }
+    if (action === "source-placeholder") {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return sourceNote();
+    }
+    if (action === "source-close-note") {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return renderSourceMine();
     }
     if (action === "bf-read-scroll") {
       event.preventDefault();
