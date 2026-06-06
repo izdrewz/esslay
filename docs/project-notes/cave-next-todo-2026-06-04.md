@@ -2,7 +2,7 @@
 
 Status: active
 
-Izzy confirmed the Brief Fog placeholder choice shell broadly works. Next work should prioritise playable UI and routing over final art.
+Izzy confirmed the Brief Fog placeholder choice shell works and Venture Forth reaches the Source Mine placeholder. Next work should prioritise playable UI and routing over final art.
 
 ## Cave Base UI
 
@@ -13,6 +13,20 @@ Minimum requirement:
 - use clear clickable places on the Cave Base image
 - support Brief Fog entrance, Task Map, flags/missed loot, outfit/chest, and continue/next route
 - use placeholders if needed
+- do not make final art a blocker
+
+## Source Mine next-room placeholder
+
+Source Mine is the next cave room after Brief Fog.
+
+Izzy will provide a placeholder image for Source Mine. Treat it as a temporary room background, not final art, unless Izzy explicitly approves it as final.
+
+When the image is provided:
+- use it as the Source Mine room background
+- keep the current Source Mine route shell working
+- add clickable places on the image rather than only utility buttons
+- support at least Source Notes, Cave Base, Task Map, and Flags / Missed Loot
+- do not rebuild Brief Fog to add this
 - do not make final art a blocker
 
 ## Brief Fog visual placeholder cleanup
@@ -45,6 +59,7 @@ Browser note:
 ## Next build order
 
 1. Cave Base clickable-place UI pass.
-2. Source Mine room shell with its own clickable objects.
-3. Source Notes placeholder panel.
-4. Later: final images and visual polish.
+2. Add Izzy's Source Mine placeholder image as the next-room background.
+3. Source Mine room shell with its own clickable objects.
+4. Source Notes placeholder panel.
+5. Later: final images and visual polish.
