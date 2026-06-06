@@ -2,11 +2,11 @@
 
 Status: active
 
-Izzy confirmed the Brief Fog placeholder choice shell works and Venture Forth reaches the Source Mine placeholder. Next work should prioritise playable UI and routing over final art.
+Izzy confirmed the Brief Fog placeholder choice shell works and Venture Forth reaches Source Mine. Next work should prioritise playable UI and routing over final art.
 
 ## Cave Base UI
 
-Cave Base needs a clickable-place pass because it already has a room image.
+Cave Base still needs a clickable-place pass because it already has a room image.
 
 Minimum requirement:
 - keep Cave Base as a room
@@ -15,18 +15,23 @@ Minimum requirement:
 - use placeholders if needed
 - do not make final art a blocker
 
+Status: active / next UI polish task.
+
 ## Source Mine next-room placeholder
 
 Source Mine is the next cave room after Brief Fog.
 
 Izzy supplied a Source Mine placeholder background on 2026-06-06.
 
-Status:
-- active placeholder for UI build once added as a stable asset
-- not final art unless Izzy explicitly approves it as final
+Current repo status:
+- `docs/assets/study-cave/source-mine-placeholder-v01.png` exists in the repo
+- `docs/cave.html` references the Source Mine placeholder image as the Source Mine room background
+- `docs/cave.html` loads `study-cave-brief-fog-vn-v3.js?v=1`
+- `docs/study-cave-brief-fog-vn-v3.js` adds the Source Mine interaction shell
 
-Recommended repo target path:
-`docs/assets/study-cave/source-mine-placeholder-v01.png`
+Status:
+- active placeholder / needs browser testing
+- not final art unless Izzy explicitly approves it as final
 
 Checked image size in chat runtime:
 1672 × 941
@@ -39,26 +44,32 @@ Room content:
 - tunnel route deeper into the cave
 - Draft Route sign
 
-Current connector limitation:
-- this chat can update repo text notes
-- this chat cannot directly commit the binary image file through the available GitHub connector
-- the image still needs to be uploaded/committed to the recommended repo path before code references it as a real asset
+Implemented Source Mine clickable zones:
+- Source Notes / Add Source
+- Mined Quotes / Saved Evidence
+- Evidence Nodes / quote-to-task-chunk review
+- Missing Evidence / weak source gaps
+- Draft Route checkpoint
+- Task Map
+- Cave Base through compact room controls
 
-When the image is committed:
-- use it as the Source Mine room background
-- keep the current Source Mine route shell working
-- add clickable places on the image rather than only utility buttons
-- support Source Notes, Cave Base, Task Map, Flags / Missed Loot, Quote Bank / saved evidence, and Draft Route / next route
-- do not rebuild Brief Fog to add this
-- do not make final art a blocker
+Implemented Source Mine data flow:
+- source records are stored in the local Study Cave save
+- quote/paraphrase/evidence notes are stored in the local Study Cave save
+- evidence notes can link to saved Brief Fog chunks
+- missing evidence gaps can be recorded as missed loot
+- Draft Route currently acts as a checkpoint, not the full drafting room yet
 
-Planned clickable zones:
-- left research desk / open book / papers = Source Notes / add source
-- mine cart with scrolls = saved quotes / mined evidence
-- crystal clusters = useful quote or evidence nodes
-- lower/right stash or crate = missed evidence / gaps
-- back tunnel / Draft Route sign = next route once enough source notes exist
-- Cave Base return = clear navigation hotspot or compact room control
+Test required:
+1. Hard refresh the cave.
+2. Use Brief Fog → Read task scroll → Venture Forth.
+3. Confirm Source Mine opens with the supplied placeholder image.
+4. Click Source Notes and save a source.
+5. Click Mined Quotes and save a quote/evidence note.
+6. Click Evidence Nodes and confirm saved evidence appears.
+7. Click Missing Evidence and record a missing evidence gap if Brief Fog chunks exist.
+8. Click Draft Route and confirm the checkpoint opens.
+9. Refresh and confirm source/evidence save persists.
 
 ## Prompt correction for future Area 10 image work
 
@@ -85,25 +96,16 @@ Commit:
 
 ## Venture Forth routing
 
-Problem: Venture Forth was still landing back at Cave Base.
+Problem: Venture Forth was landing back at Cave Base.
 
 Fix:
-- Venture Forth now renders a Source Mine placeholder room directly
-- Source Mine has a Source Notes placeholder panel
+- Venture Forth now opens Source Mine
 - Venture still marks Brief Fog complete, unlocks Source Mine, and records skipped assistance as missed loot
-
-Commit:
-- `efa4e23fc3865c85fbb50e0d788047c33ee4986e`
-
-Browser note:
-- hard refresh is required after this change
-- later clean-up should bump the script cache or consolidate route scripts
 
 ## Next build order
 
-1. Cave Base clickable-place UI pass.
-2. Upload/commit Izzy's Source Mine placeholder image to `docs/assets/study-cave/source-mine-placeholder-v01.png`.
-3. Add the Source Mine image as the room background after the asset exists in the repo.
-4. Source Mine room shell with clickable objects for source notes, mined quotes/evidence, missed evidence, and Draft Route.
-5. Source Notes placeholder panel.
-6. Later: final images and visual polish.
+1. Browser-test Source Mine image + clickable source/evidence flow.
+2. Fix any Source Mine routing or save bugs found in testing.
+3. Cave Base clickable-place UI pass.
+4. Draft Route shell after Source Mine is stable.
+5. Later: final images and visual polish.
