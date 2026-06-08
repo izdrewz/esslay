@@ -15,15 +15,21 @@
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function clean(v, n) { return String(v || "").replace(/\s+/g, " ").trim().slice(0, n || 500); }
   function arr(v) { return Array.isArray(v) ? v.filter(Boolean) : []; }
-  function id() { return "id-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7); }
+  function uid() { return "id-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7); }
   function stamp() { try { return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }); } catch (e) { return new Date().toISOString(); } }
+
+  function weakQuestion(text) {
+    text = clean(text, 9000);
+    return !text || /neutral\s+800-word\s+practice\s+task/i.test(text) || (text.length < 70 && !/\b(explain|analyse|analyze|evaluate|compare|discuss|use|using|improve)\b/i.test(text));
+  }
 
   function load() {
     var s = null;
     try { s = JSON.parse(localStorage.getItem(SAVE_KEY)); } catch (e) { s = null; }
     if (!s || typeof s !== "object") s = { questTitle: "Study Skills Trial", current: "brief-fog", completed: [], unlocked: ["cave-base", "brief-fog"], flags: [], missedLoot: [], lastSavedAt: "Not saved yet", lastAction: "Ready", briefFog: { rawTaskText: SAMPLE_TASK, chunks: [], sceneState: "opening", routeChoice: "" }, sourceMine: { started: false, sources: [], quotes: [] } };
     s.completed = arr(s.completed); s.unlocked = arr(s.unlocked).length ? arr(s.unlocked) : ["cave-base", "brief-fog"]; s.flags = arr(s.flags); s.missedLoot = arr(s.missedLoot);
-    s.briefFog = s.briefFog && typeof s.briefFog === "object" ? s.briefFog : {}; s.briefFog.rawTaskText = String(s.briefFog.rawTaskText || SAMPLE_TASK); s.briefFog.chunks = arr(s.briefFog.chunks); s.briefFog.chunkTags = s.briefFog.chunkTags && typeof s.briefFog.chunkTags === "object" ? s.briefFog.chunkTags : {};
+    s.briefFog = s.briefFog && typeof s.briefFog === "object" ? s.briefFog : {}; s.briefFog.rawTaskText = weakQuestion(s.briefFog.rawTaskText) ? SAMPLE_TASK : String(s.briefFog.rawTaskText);
+    s.briefFog.chunks = arr(s.briefFog.chunks); s.briefFog.chunkTags = s.briefFog.chunkTags && typeof s.briefFog.chunkTags === "object" ? s.briefFog.chunkTags : {};
     s.sourceMine = s.sourceMine && typeof s.sourceMine === "object" ? s.sourceMine : { started: false, sources: [], quotes: [] }; s.sourceMine.sources = arr(s.sourceMine.sources); s.sourceMine.quotes = arr(s.sourceMine.quotes);
     return s;
   }
@@ -42,42 +48,16 @@
     var blocked = {}; stop.forEach(function (x) { blocked[x] = true; });
     return clean(text, 9000).toLowerCase().replace(/[^a-z0-9\s-]/g, " ").split(/\s+/).filter(function (x) { return x.length > 2 && !blocked[x]; });
   }
-
-  function loadMemory() {
-    try { return arr(JSON.parse(localStorage.getItem(MEMORY_KEY))); } catch (e) { return []; }
-  }
-
-  function memoryScore(raw, item) {
-    var a = tokens(raw); var b = tokens(item.rawTaskText || "");
-    if (!a.length || !b.length) return 0;
-    var seen = {}; var overlap = 0;
-    a.forEach(function (x) { seen[x] = true; });
-    b.forEach(function (x) { if (seen[x]) overlap += 1; });
-    var denom = Math.max(a.length, b.length);
-    return overlap / denom;
-  }
-
-  function bestMemory(raw) {
-    var best = null;
-    loadMemory().forEach(function (item) {
-      var score = memoryScore(raw, item);
-      if (!best || score > best.score) best = { score: score, item: item };
-    });
-    return best && best.score >= 0.24 ? best : null;
-  }
-
-  function rememberMap(s, m) {
-    var raw = String(s.briefFog.rawTaskText || SAMPLE_TASK).slice(0, 9000);
-    var memory = loadMemory().filter(function (item) { return clean(item.rawTaskText, 9000) !== clean(raw, 9000); });
-    memory.unshift({ rawTaskText: raw, map: m, savedAt: new Date().toISOString() });
-    try { localStorage.setItem(MEMORY_KEY, JSON.stringify(memory.slice(0, 30))); } catch (e) {}
-  }
+  function loadMemory() { try { return arr(JSON.parse(localStorage.getItem(MEMORY_KEY))); } catch (e) { return []; } }
+  function memoryScore(raw, item) { var a = tokens(raw), b = tokens(item.rawTaskText || ""), seen = {}, overlap = 0; if (!a.length || !b.length) return 0; a.forEach(function (x) { seen[x] = true; }); b.forEach(function (x) { if (seen[x]) overlap += 1; }); return overlap / Math.max(a.length, b.length); }
+  function bestMemory(raw) { var best = null; loadMemory().forEach(function (item) { var score = memoryScore(raw, item); if (!best || score > best.score) best = { score: score, item: item }; }); return best && best.score >= 0.24 ? best : null; }
+  function rememberMap(s, m) { var raw = String(s.briefFog.rawTaskText || SAMPLE_TASK).slice(0, 9000); var memory = loadMemory().filter(function (item) { return clean(item.rawTaskText, 9000) !== clean(raw, 9000); }); memory.unshift({ rawTaskText: raw, map: m, savedAt: new Date().toISOString() }); try { localStorage.setItem(MEMORY_KEY, JSON.stringify(memory.slice(0, 30))); } catch (e) {} }
 
   function infer(s) {
     var raw = String(s.briefFog.rawTaskText || SAMPLE_TASK);
     var command = /\b(analyse|analyze|analysing|analyzing)\b/i.test(raw) ? "analyse" : /\b(evaluate|evaluating)\b/i.test(raw) ? "evaluate" : /\b(compare|comparing)\b/i.test(raw) ? "compare" : /\b(discuss|discussing)\b/i.test(raw) ? "discuss" : /\b(describe|describing)\b/i.test(raw) ? "describe" : "explain";
     var focus = /\bto what extent\b/i.test(raw) ? "to what extent" : /\bhow\b/i.test(raw) ? "how" : /\bwhy\b/i.test(raw) ? "why" : "main focus";
-    var out = raw.match(/\b(\d{2,5})\s*(?:-|\s)?word\s+(essay|response|report|reflection|practice response)?\b/i);
+    var out = raw.match(/\b(\d{2,5})\s*(?:-|\s)?word\s+(essay|practice response|response|report|reflection)?\b/i);
     var process = raw.match(/use\s+(.+?)\s+to\s+(improve|develop|support|create|achieve)\b/i) || raw.match(/using\s+(.+?)\s+to\s+(improve|develop|support|create|achieve)\b/i);
     var outcome = raw.match(/\bto\s+(improve\s+.+?)(?:\.|\?|$)/i) || raw.match(/\bto\s+(develop\s+.+?)(?:\.|\?|$)/i) || raw.match(/\bto\s+(support\s+.+?)(?:\.|\?|$)/i);
     var m = {
@@ -95,69 +75,51 @@
     if (old && old.item && old.item.map) {
       var oldMap = old.item.map;
       if (genericMap(m) && !genericMap(oldMap)) m = Object.assign({}, oldMap, { reason: "I used a similar approved question map from your browser history because the rule parser was unsure.", learnedFromMemory: true, memoryScore: Math.round(old.score * 100) });
-      else if (arr(oldMap.buckets).length && genericMap({ buckets: m.buckets, process: m.process, outcome: m.outcome })) { m.buckets = arr(oldMap.buckets); m.reason += " I also found a similar old map and reused its bucket pattern."; m.learnedFromMemory = true; m.memoryScore = Math.round(old.score * 100); }
     }
     return m;
   }
 
-  function map(s) {
-    var inferred = infer(s);
-    var saved = s.briefFog.taskMap && typeof s.briefFog.taskMap === "object" ? s.briefFog.taskMap : null;
-    var m = genericMap(saved) ? inferred : saved;
-    m.buckets = arr(m.buckets).length ? arr(m.buckets) : inferred.buckets;
-    return m;
-  }
+  function map(s) { var inferred = infer(s), saved = s.briefFog.taskMap && typeof s.briefFog.taskMap === "object" ? s.briefFog.taskMap : null, m = genericMap(saved) ? inferred : saved; m.buckets = arr(m.buckets).length ? arr(m.buckets) : inferred.buckets; return m; }
 
   function applyMap(s, m) {
     s.briefFog.taskMap = m; s.briefFog.chunkTags = {};
     s.briefFog.chunks = arr(m.buckets).map(function (bucket, i) {
       var stem = clean(bucket, 80).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-      var cid = stem ? "bucket-" + stem : "bucket-" + i + "-" + id();
+      var cid = stem ? "bucket-" + stem : "bucket-" + i + "-" + uid();
       s.briefFog.chunkTags[cid] = { subject: m.subject, command: m.command, focus: m.focus, action: bucket, target: m.outcome, outcome: m.outcome, keyAreas: bucket };
       return { id: cid, text: bucket, plain: "Find evidence or examples for " + bucket + ".", action: "Use Source Mine to gather at least one evidence gem for " + bucket + ".", state: "unpacked" };
     });
   }
 
   function stage() { return document.getElementById("stage-scene"); }
+  function lockStage(n) { n.style.position = "fixed"; n.style.inset = "0"; n.style.zIndex = "9999"; n.style.width = "100vw"; n.style.height = "100dvh"; document.documentElement.style.overflow = "hidden"; document.body.style.overflow = "hidden"; }
   function closePanels() { document.querySelectorAll("details[open]").forEach(function (d) { d.open = false; }); }
-  function info(s) { return '<p class="save-status"><strong>Browser save:</strong> ' + esc(s.lastSavedAt || "Not saved yet") + ' · ' + esc(s.lastAction || "Ready") + '</p>'; }
+  function info(s) { return '<p class="save-status bf-save"><strong>Saved:</strong> ' + esc(s.lastSavedAt || "Not saved yet") + ' · ' + esc(s.lastAction || "Ready") + '</p>'; }
   function chips(b) { return '<div class="bf-compass-buckets">' + arr(b).map(function (x) { return '<span title="' + esc(FIELD_TIPS.buckets) + '">' + esc(x) + '</span>'; }).join("") + '</div>'; }
   function field(key, label, value) { return '<div class="bf-field" title="' + esc(FIELD_TIPS[key]) + '" data-tip="' + esc(FIELD_TIPS[key]) + '"><strong>' + esc(label) + '</strong>' + esc(value) + '</div>'; }
 
-  function styles() { return '<style data-bf-compass-stable>.bf-compass-card{width:min(620px,50vw)!important}.bf-compact-question{margin:8px 0}.bf-compact-question summary{cursor:pointer;font-weight:900}.bf-question-full{padding:10px;border-radius:14px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.15);line-height:1.35}.bf-compass-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}.bf-field{position:relative;padding:8px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}.bf-field strong{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;opacity:.78}.bf-field:hover::after,.bf-field:focus-within::after{content:attr(data-tip);position:absolute;left:0;top:100%;z-index:300;width:min(320px,70vw);padding:8px;border-radius:10px;background:rgba(250,242,225,.98);color:#2f2118;border:1px solid rgba(97,70,45,.32);box-shadow:0 10px 30px rgba(0,0,0,.35);font-size:.85rem;line-height:1.3;text-transform:none;letter-spacing:0}.bf-compass-buckets{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 10px}.bf-compass-buckets span{display:inline-block;padding:6px 9px;border-radius:999px;background:rgba(255,231,171,.90);color:#2f2118;font-weight:900}.bf-compass-note{padding:8px;border-radius:12px;background:rgba(255,231,171,.18);border:1px solid rgba(255,231,171,.34);margin:8px 0}.bf-memory-note{font-size:.88rem;opacity:.9}.bf-compass-drawer textarea{min-height:80px}@media(max-width:820px){.bf-compass-card{width:calc(100% - 24px)!important;top:auto!important;bottom:12px!important}.bf-compass-grid{grid-template-columns:1fr}}</style>'; }
+  function styles() { return '<style data-bf-compass-stable>.bf-compass-card{top:14px!important;left:14px!important;width:min(560px,calc(100vw - 28px))!important;max-height:calc(100dvh - 28px)!important;overflow:auto!important;padding:12px!important;font-size:.92rem}.bf-compass-card h2{margin:0 0 4px!important}.bf-compass-card h3{margin:8px 0 4px!important}.bf-compass-card p{margin:5px 0!important}.bf-compact-question{margin:6px 0}.bf-compact-question summary{cursor:pointer;font-weight:900}.bf-question-full{padding:8px;border-radius:12px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.15);line-height:1.3}.bf-compass-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:7px 0}.bf-field{position:relative;padding:7px;border-radius:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}.bf-field strong{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;opacity:.78}.bf-field:hover::after,.bf-field:focus-within::after{content:attr(data-tip);position:absolute;left:0;top:100%;z-index:300;width:min(320px,70vw);padding:8px;border-radius:10px;background:rgba(250,242,225,.98);color:#2f2118;border:1px solid rgba(97,70,45,.32);box-shadow:0 10px 30px rgba(0,0,0,.35);font-size:.85rem;line-height:1.3;text-transform:none;letter-spacing:0}.bf-compass-buckets{display:flex;flex-wrap:wrap;gap:6px;margin:7px 0}.bf-compass-buckets span{display:inline-block;padding:5px 8px;border-radius:999px;background:rgba(255,231,171,.90);color:#2f2118;font-weight:900}.bf-compass-note{padding:7px;border-radius:10px;background:rgba(255,231,171,.18);border:1px solid rgba(255,231,171,.34);margin:6px 0}.bf-memory-note,.bf-save{font-size:.82rem}.bf-compass-card .simple-actions{gap:6px!important;margin-top:8px!important}.bf-compass-card .simple-actions button{padding:7px 10px!important}.bf-compass-drawer textarea{min-height:70px}@media(max-width:820px){.bf-compass-card{width:calc(100vw - 20px)!important;left:10px!important;top:10px!important;max-height:calc(100dvh - 20px)!important}.bf-compass-grid{grid-template-columns:1fr}}</style>'; }
 
   function summary(m, s) {
-    var memory = m.learnedFromMemory ? '<p class="bf-memory-note"><strong>Learned pattern:</strong> this map reused a similar approved question from this browser.</p>' : '';
+    var memory = m.learnedFromMemory ? '<p class="bf-memory-note"><strong>Learned pattern:</strong> reused a similar approved question from this browser.</p>' : '';
     return '<section><details class="bf-compact-question"><summary>Show full question</summary><p class="bf-question-full">' + esc(s.briefFog.rawTaskText || SAMPLE_TASK) + '</p></details><p><strong>Plain English:</strong><br>' + esc(m.command) + ' ' + esc(m.focus) + ' ' + esc(m.subject) + ' can use ' + esc(m.process) + ' to ' + esc(m.outcome) + '.</p><div class="bf-compass-grid">' + field('output', 'Output', m.output) + field('command', 'Command', m.command) + field('focus', 'Focus', m.focus) + field('subject', 'Subject', m.subject) + field('process', 'Process', m.process) + field('outcome', 'Outcome', m.outcome) + '</div><h3 title="' + esc(FIELD_TIPS.buckets) + '">Source Mine evidence buckets</h3>' + chips(m.buckets) + '<p class="bf-compass-note">' + esc(m.reason) + '</p>' + memory + '</section>';
   }
 
   function drawer(title, body) { return '<section class="simple-drawer bf-compass-drawer" role="dialog" aria-label="' + esc(title) + '"><button type="button" class="simple-close" data-action="bf-compass-close" aria-label="Close panel">×</button><h2>' + esc(title) + '</h2>' + body + '</section>'; }
 
   function render(extra) {
-    var s = load(); var m = map(s); var n = stage(); if (!n) return;
-    closePanels(); n.hidden = false; s.briefFog.routeChoice = "vanquish"; s.briefFog.sceneState = "compass"; s.briefFog.taskMap = m; save(s, "Brief Fog Quest Compass opened");
-    n.innerHTML = styles() + '<section class="simple-room brief-fog-room bf-vn-room bf-scene-compass"><p class="scene-label">Brief Fog · Quest Compass</p><article class="stage-card simple-card bf-compass-card"><h2>Brief Fog</h2><p>Check the map, hover over a box if a label is unclear, then send the buckets to Source Mine.</p>' + summary(m, s) + info(s) + '<div class="simple-actions"><button type="button" data-action="bf-compass-edit">Edit map</button><button type="button" data-action="bf-compass-reread">Re-read question</button><button type="button" data-action="bf-compass-confirm">Confirm map → Source Mine</button><button type="button" data-action="bf-compass-flag">Flag confusion</button><button type="button" data-action="bf-read-scroll">Choices</button></div></article>' + (extra || "") + '</section>';
+    var s = load(), m = map(s), n = stage(); if (!n) return;
+    closePanels(); n.hidden = false; lockStage(n); s.briefFog.routeChoice = "vanquish"; s.briefFog.sceneState = "compass"; s.briefFog.taskMap = m; save(s, "Brief Fog Quest Compass opened");
+    n.innerHTML = styles() + '<section class="simple-room brief-fog-room bf-vn-room bf-scene-compass"><p class="scene-label">Brief Fog · Quest Compass</p><article class="stage-card simple-card bf-compass-card"><h2>Brief Fog</h2><p>Check the map. Hover over a box for help.</p>' + summary(m, s) + info(s) + '<div class="simple-actions"><button type="button" data-action="bf-compass-edit">Edit map</button><button type="button" data-action="bf-compass-reread">Re-read</button><button type="button" data-action="bf-compass-confirm">Confirm → Source Mine</button><button type="button" data-action="bf-compass-flag">Flag confusion</button><button type="button" data-action="bf-compass-fullscreen">Full screen</button><button type="button" data-action="bf-read-scroll">Choices</button></div></article>' + (extra || "") + '</section>';
   }
 
-  function edit() { var s = load(); var m = map(s); render(drawer("Edit Quest Compass", info(s) + '<form data-bf-compass-form><label>Full question<textarea name="rawTaskText" rows="5">' + esc(s.briefFog.rawTaskText || SAMPLE_TASK) + '</textarea></label><label>Output<input name="output" value="' + esc(m.output) + '"></label><label>Command<input name="command" value="' + esc(m.command) + '"></label><label>Focus<input name="focus" value="' + esc(m.focus) + '"></label><label>Subject<input name="subject" value="' + esc(m.subject) + '"></label><label>Process<textarea name="process" rows="3">' + esc(m.process) + '</textarea></label><label>Outcome<textarea name="outcome" rows="3">' + esc(m.outcome) + '</textarea></label><label>Evidence buckets<textarea name="buckets" rows="6">' + esc(arr(m.buckets).join("\n")) + '</textarea></label><div class="simple-actions"><button type="button" data-action="bf-compass-save">Save map</button><button type="button" data-action="bf-compass-reread">Re-read question</button><button type="button" data-action="bf-compass-confirm">Confirm map → Source Mine</button></div></form>')); }
-
+  function edit() { var s = load(), m = map(s); render(drawer("Edit Quest Compass", info(s) + '<form data-bf-compass-form><label>Full question<textarea name="rawTaskText" rows="5">' + esc(s.briefFog.rawTaskText || SAMPLE_TASK) + '</textarea></label><label>Output<input name="output" value="' + esc(m.output) + '"></label><label>Command<input name="command" value="' + esc(m.command) + '"></label><label>Focus<input name="focus" value="' + esc(m.focus) + '"></label><label>Subject<input name="subject" value="' + esc(m.subject) + '"></label><label>Process<textarea name="process" rows="3">' + esc(m.process) + '</textarea></label><label>Outcome<textarea name="outcome" rows="3">' + esc(m.outcome) + '</textarea></label><label>Evidence buckets<textarea name="buckets" rows="6">' + esc(arr(m.buckets).join("\n")) + '</textarea></label><div class="simple-actions"><button type="button" data-action="bf-compass-save">Save map</button><button type="button" data-action="bf-compass-reread">Re-read</button><button type="button" data-action="bf-compass-confirm">Confirm → Source Mine</button></div></form>')); }
   function formMap() { var f = document.querySelector("[data-bf-compass-form]"); if (!f) return null; var d = new FormData(f); return { output: clean(d.get("output"), 180), command: clean(d.get("command"), 80), focus: clean(d.get("focus"), 120), subject: clean(d.get("subject"), 160), process: clean(d.get("process"), 600), outcome: clean(d.get("outcome"), 500), buckets: String(d.get("buckets") || "").split(/[\n;,]/).map(function (x) { return clean(x, 80); }).filter(Boolean), reason: "Edited manually." }; }
-
-  function reread() { var s = load(); var f = document.querySelector("[data-bf-compass-form]"); if (f) { var d = new FormData(f); s.briefFog.rawTaskText = String(d.get("rawTaskText") || s.briefFog.rawTaskText || SAMPLE_TASK); } delete s.briefFog.taskMap; save(s, "Brief Fog re-read the question"); render(); }
-  function saveCompass() { var s = load(); var f = document.querySelector("[data-bf-compass-form]"); if (f) { var d = new FormData(f); s.briefFog.rawTaskText = String(d.get("rawTaskText") || s.briefFog.rawTaskText || SAMPLE_TASK); } var m = formMap() || map(s); applyMap(s, m); rememberMap(s, m); save(s, "Brief Fog Quest Compass saved and learned"); render(drawer("Map Saved", '<p>Saved. Source Mine will use these buckets, and future similar questions can reuse this pattern.</p>' + summary(m, s) + info(s))); }
-  function confirm() { var s = load(); var m = formMap() || map(s); applyMap(s, m); rememberMap(s, m); if (s.completed.indexOf("brief-fog") === -1) s.completed.push("brief-fog"); if (s.unlocked.indexOf("source-mine") === -1) s.unlocked.push("source-mine"); s.current = "source-mine"; save(s, "Brief Fog cleared; Source Mine unlocked"); click("open-source-mine"); }
-  function flag() { var s = load(); var m = map(s); s.flags.push({ id: id(), text: "Brief Fog confusion: check Quest Compass buckets: " + arr(m.buckets).join(", ") }); save(s, "Brief Fog confusion flagged"); render(drawer("Confusion Flagged", '<p>Flag saved.</p>' + info(s))); }
-
+  function reread() { var s = load(), f = document.querySelector("[data-bf-compass-form]"); if (f) { var d = new FormData(f); s.briefFog.rawTaskText = weakQuestion(d.get("rawTaskText")) ? SAMPLE_TASK : String(d.get("rawTaskText") || SAMPLE_TASK); } delete s.briefFog.taskMap; save(s, "Brief Fog re-read the question"); render(); }
+  function saveCompass() { var s = load(), f = document.querySelector("[data-bf-compass-form]"); if (f) { var d = new FormData(f); s.briefFog.rawTaskText = weakQuestion(d.get("rawTaskText")) ? SAMPLE_TASK : String(d.get("rawTaskText") || SAMPLE_TASK); } var m = formMap() || map(s); applyMap(s, m); rememberMap(s, m); save(s, "Brief Fog Quest Compass saved and learned"); render(drawer("Map Saved", '<p>Saved. Future similar questions can reuse this pattern.</p>' + summary(m, s) + info(s))); }
+  function confirm() { var s = load(), m = formMap() || map(s); applyMap(s, m); rememberMap(s, m); if (s.completed.indexOf("brief-fog") === -1) s.completed.push("brief-fog"); if (s.unlocked.indexOf("source-mine") === -1) s.unlocked.push("source-mine"); s.current = "source-mine"; save(s, "Brief Fog cleared; Source Mine unlocked"); click("open-source-mine"); }
+  function flag() { var s = load(), m = map(s); s.flags.push({ id: uid(), text: "Brief Fog confusion: check Quest Compass buckets: " + arr(m.buckets).join(", ") }); save(s, "Brief Fog confusion flagged"); render(drawer("Confusion Flagged", '<p>Flag saved.</p>' + info(s))); }
+  function goFullscreen() { var el = document.querySelector(".game-cave") || stage() || document.documentElement; if (el.requestFullscreen) el.requestFullscreen().catch(function () {}); }
   function click(action, data) { var b = document.createElement("button"); b.type = "button"; b.dataset.action = action; Object.keys(data || {}).forEach(function (k) { b.dataset[k] = String(data[k]); }); document.body.appendChild(b); b.click(); b.remove(); }
-
-  document.addEventListener("click", function (e) {
-    var b = e.target.closest("button, a"); if (!b) return; var a = b.dataset.action || "";
-    if (["bf-vanquish", "open-task-brief", "work-next-chunk", "open-summary", "finish-brief-fog"].indexOf(a) >= 0) { e.preventDefault(); e.stopImmediatePropagation(); return render(); }
-    if (a === "bf-compass-edit") { e.preventDefault(); e.stopImmediatePropagation(); return edit(); }
-    if (a === "bf-compass-save") { e.preventDefault(); e.stopImmediatePropagation(); return saveCompass(); }
-    if (a === "bf-compass-reread") { e.preventDefault(); e.stopImmediatePropagation(); return reread(); }
-    if (a === "bf-compass-confirm") { e.preventDefault(); e.stopImmediatePropagation(); return confirm(); }
-    if (a === "bf-compass-flag") { e.preventDefault(); e.stopImmediatePropagation(); return flag(); }
-    if (a === "bf-compass-close") { e.preventDefault(); e.stopImmediatePropagation(); return render(); }
-  }, true);
+  document.addEventListener("click", function (e) { var b = e.target.closest("button, a"); if (!b) return; var a = b.dataset.action || ""; if (["bf-vanquish", "open-task-brief", "work-next-chunk", "open-summary", "finish-brief-fog"].indexOf(a) >= 0) { e.preventDefault(); e.stopImmediatePropagation(); return render(); } if (a === "bf-compass-edit") { e.preventDefault(); e.stopImmediatePropagation(); return edit(); } if (a === "bf-compass-save") { e.preventDefault(); e.stopImmediatePropagation(); return saveCompass(); } if (a === "bf-compass-reread") { e.preventDefault(); e.stopImmediatePropagation(); return reread(); } if (a === "bf-compass-confirm") { e.preventDefault(); e.stopImmediatePropagation(); return confirm(); } if (a === "bf-compass-flag") { e.preventDefault(); e.stopImmediatePropagation(); return flag(); } if (a === "bf-compass-fullscreen") { e.preventDefault(); e.stopImmediatePropagation(); return goFullscreen(); } if (a === "bf-compass-close") { e.preventDefault(); e.stopImmediatePropagation(); return render(); } }, true);
 })();
