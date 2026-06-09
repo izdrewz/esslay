@@ -478,57 +478,57 @@
       event.stopImmediatePropagation();
       return state.current === "source-mine" ? renderSourceMine() : renderBriefFog();
     }
-    if (action === "open-source-mine") {
+    if (false && action === "open-source-mine") {
       event.preventDefault();
       event.stopImmediatePropagation();
       return renderSourceMine();
     }
-    if (action === "source-begin") {
+    if (false && action === "source-begin") {
       event.preventDefault();
       event.stopImmediatePropagation();
       return beginSourceMine();
     }
-    if (action === "source-placeholder" || action === "source-open-notes") {
+    if (false && (action === "source-placeholder" || action === "source-open-notes")) {
       event.preventDefault();
       event.stopImmediatePropagation();
       return openSourceNotes();
     }
-    if (action === "source-open-quotes") {
+    if (false && action === "source-open-quotes") {
       event.preventDefault();
       event.stopImmediatePropagation();
       return openQuotes();
     }
-    if (action === "source-open-evidence") {
+    if (false && action === "source-open-evidence") {
       event.preventDefault();
       event.stopImmediatePropagation();
       return openEvidence();
     }
-    if (action === "source-open-gaps") {
+    if (false && action === "source-open-gaps") {
       event.preventDefault();
       event.stopImmediatePropagation();
       return openGaps();
     }
-    if (action === "source-draft-route") {
+    if (false && action === "source-draft-route") {
       event.preventDefault();
       event.stopImmediatePropagation();
       return draftRoute();
     }
-    if (action === "source-save-source") {
+    if (false && action === "source-save-source") {
       event.preventDefault();
       event.stopImmediatePropagation();
       return saveSource();
     }
-    if (action === "source-save-quote") {
+    if (false && action === "source-save-quote") {
       event.preventDefault();
       event.stopImmediatePropagation();
       return saveQuote();
     }
-    if (action === "source-log-gap") {
+    if (false && action === "source-log-gap") {
       event.preventDefault();
       event.stopImmediatePropagation();
       return logGap(Number(button.dataset.gapIndex));
     }
-    if (action === "source-close-note") {
+    if (false && action === "source-close-note") {
       event.preventDefault();
       event.stopImmediatePropagation();
       return renderSourceMine();
