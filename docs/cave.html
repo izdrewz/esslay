@@ -121,6 +121,32 @@
     <script src="study-cave-test-mode-v1.js?v=1"></script>
     <script src="study-cave-brief-fog-compass-stable-v1.js?v=2"></script>
     <script src="study-cave-source-mine-sieve-v2.js?v=6"></script>
+    <script data-source-mine-bridge>
+      (function () {
+        function tabFor(action) {
+          if (action === "open-source-mine") return "add";
+          if (action === "source-begin") return "add";
+          if (action === "source-placeholder") return "add";
+          if (action === "source-open-notes") return "add";
+          if (action === "source-open-quotes") return "sieve";
+          if (action === "source-open-evidence") return "vault";
+          if (action === "source-open-gaps") return "review";
+          if (action === "source-draft-route") return "vault";
+          return "";
+        }
+
+        window.addEventListener("click", function (event) {
+          var button = event.target.closest("button, a");
+          if (!button) return;
+
+          var tab = tabFor(button.dataset.action || "");
+          if (!tab) return;
+
+          button.dataset.action = "source-tab";
+          button.dataset.tab = tab;
+        }, true);
+      })();
+    </script>
 <script>
       document.addEventListener("click", function (event) {
         var button = event.target.closest('[data-action="toggle-cave-fullscreen"]');
