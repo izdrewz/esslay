@@ -449,4 +449,65 @@
       return saveParagraph();
     }
   }, true);
+
+  function forgeContinueToBridgeHall() {
+    const state = load();
+
+    if (!state.completed.includes("paragraph-forge")) {
+      state.completed.push("paragraph-forge");
+    }
+
+    if (!state.unlocked.includes("bridge-hall")) {
+      state.unlocked.push("bridge-hall");
+    }
+
+    state.current = "bridge-hall";
+    save(state, "Paragraph Forge complete; Bridge Hall unlocked");
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.hidden = true;
+    button.dataset.action = "route-next";
+    button.dataset.room = "paragraph-forge";
+    button.dataset.forceLegacyRoute = "1";
+    document.body.appendChild(button);
+    button.click();
+    button.remove();
+  }
+
+  document.addEventListener("click", function (event) {
+    const button = event.target.closest("button, a");
+    if (!button) return;
+
+    const action = button.dataset.action || "";
+    const room = button.dataset.room || "";
+
+    if (room !== "paragraph-forge") return;
+    if (button.dataset.forceLegacyRoute) return;
+
+    if (action === "route-begin" || action === "route-open-work" || action === "route-close-panel") {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return render("forge", "Paragraph Forge opened");
+    }
+
+    if (action === "route-review") {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return render("saved", "Opened Saved Paragraphs");
+    }
+
+    if (action === "route-gap") {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return render("missing", "Opened Missing");
+    }
+
+    if (action === "route-next") {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return forgeContinueToBridgeHall();
+    }
+  }, true);
+
 })();
