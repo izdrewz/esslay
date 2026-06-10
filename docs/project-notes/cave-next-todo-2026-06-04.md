@@ -1,234 +1,175 @@
-# Cave next to-do — 2026-06-04
+# Cave next to-do — current route build
 
-Status: active
+Status: active / route logic progressing
 
-Izzy confirmed the Brief Fog placeholder choice shell works and Venture Forth reaches Source Mine. Current priority is building the complete route architecture before fine UI/art polish.
+Last updated: 2026-06-10
 
-## Current repo status — 2026-06-07
+## Current confirmed progress
 
-Implemented route code now includes placeholder shells for the remaining cave rooms:
+The Study Cave placeholder route is now working through the first three real build stages:
 
-- Brief Fog
-- Source Mine
-- Draft Route
-- Paragraph Forge
-- Bridge Hall
-- Citation Vault
-- Polish Pool
-- Submission Gate / Final Spell
+1. Brief Fog / Quest Compass — working enough to move on.
+2. Source Mine / Crystal Sieve — working enough to move on.
+3. Draft Route v1 — working enough to move on.
+4. Paragraph Forge — opens, but is still the old placeholder and needs its real v1 logic.
 
-Current route-shell files:
-- `docs/study-cave-brief-fog-vn-v4.js`
-- `docs/study-cave-source-mine-v4-hotfix.js`
-- `docs/study-cave-route-rooms-v1.js`
+## Confirmed browser tests
 
-`docs/cave.html` now loads the route room controller before the room-specific handlers so Draft Route and later rooms can intercept their route actions.
+### Brief Fog
 
-Commits:
-- `ad02f1427e8a8250a1a477d4d60ccef785c75b76` — added remaining room shells
-- `7e4937333f1eb5c154ee70a905c72abe48aafa3c` — loaded route room controller before room-specific handlers
+Confirmed:
+- real Brief Fog route can be entered from Cave Base
+- Quest Compass shows the full task meaning and real buckets
+- real buckets passed forward correctly:
+  - planning
+  - source notes
+  - drafting
+  - proofreading
+  - referencing habits
 
-## Cave Base UI
+Still needed later:
+- visual polish
+- less visually noisy hotspot outlines outside test mode
+- final visual-novel style intro/state art
 
-Cave Base still needs a clickable-place pass because it already has a room image.
+### Source Mine / Crystal Sieve
 
-Minimum requirement:
-- keep Cave Base as a room
-- use clear clickable places on the Cave Base image
-- support Brief Fog entrance, Task Map, flags/missed loot, outfit/chest, and continue/next route
-- use placeholders if needed
-- do not make final art a blocker
+Confirmed:
+- Source Mine opens from Brief Fog
+- Add Source works
+- Seed demo cards works
+- Crystal Sieve shows one card at a time
+- real Brief Fog buckets are used, not only generic test buckets
+- saving an evidence gem works
+- Bucket Vault shows the saved evidence gem
+- parked / restored card logic worked in testing
+- browser refresh keeps the saved Source Mine data
 
-Status: active / later UI polish task after route shells are tested.
+Important current data shape:
+- source cards live in `state.sourceMine.sieveQueue`
+- saved evidence lives in `state.sourceMine.evidenceGems`
+- each evidence gem stores bucket, source label, evidence text, note/link, matched words, and timestamp
 
-## Source Mine next-room placeholder
+Still needed later:
+- first-time intro / Begin Source Mine step
+- layout compaction
+- clearer wording for multi-bucket matches
+- make strongest match the only auto-ticked bucket by default
+- show source labels in Bucket Vault previews more clearly
+- hide or reduce giant hotspot boxes outside test mode
+- do not restore the old cream Source Notes drawer
 
-Source Mine is the next cave room after Brief Fog.
+### Draft Route v1
 
-Izzy supplied a Source Mine placeholder background on 2026-06-06.
+Implemented by commit:
+- `45b58e3` — Add Draft Route planner v1
 
-Current repo status:
-- `docs/assets/study-cave/source-mine-placeholder-v01.png` exists in the repo
-- `docs/cave.html` references the Source Mine placeholder image as the Source Mine room background
-- Source Mine opens from Venture Forth
-- Source Mine is a gather quest, not a monster room
+Files changed:
+- `docs/study-cave-draft-route-v1.js`
+- `docs/cave.html`
+- follow-up connection edits in:
+  - `docs/study-cave-clicks-v1.js`
+  - `docs/study-cave-source-mine-sieve-v2.js`
 
-Status:
-- active placeholder / needs browser testing after route-shell update
-- not final art unless Izzy explicitly approves it as final
+Confirmed:
+- Draft Route opens from the current route after Source Mine has evidence
+- Draft Route reads Source Mine evidence gems
+- Route Planner shows evidence-gem counts by bucket
+- Build route from evidence gems creates a route marker
+- Review Route shows the saved route marker
+- Continue to Paragraph Forge opens Paragraph Forge
 
-Checked image size in chat runtime:
-1672 × 941
+Important current data shape:
+- route markers live in `state.routeRooms["draft-route"].markers`
+- each marker stores bucket, focus/title, evidence text, source label, note/purpose, and evidenceGemId
 
-Room content:
-- fantasy-academic mine room
-- research desk with books and papers
-- crystals and lanterns
-- mine cart with scrolls
-- tunnel route deeper into the cave
-- Draft Route sign
+Still needed later:
+- route marker ordering controls need a proper UI pass
+- route markers should eventually be editable, removable, and reorderable
+- Draft Route should feel more like a path/route mini-game, not only a panel
+- Task Map node status still needs polish so locked/unlocked/current labels stay intuitive
 
-Implemented Source Mine data flow:
-- source records are stored in the local Study Cave save
-- quote/paraphrase/evidence notes are stored in the local Study Cave save
-- evidence notes can link to saved Brief Fog chunks
-- missing evidence gaps can be recorded as missed loot
-- Draft Route now opens the Draft Route placeholder shell when route controller is loaded
+## Current active next build: Paragraph Forge v1
 
-## Source Mine UX correction after first visual test
+Paragraph Forge currently opens, but it is still the old placeholder form. It does not yet use the Draft Route markers.
 
-Izzy tested the Source Mine room and found the screen too overwhelming because every hotspot was visible immediately.
+Next build should make Paragraph Forge read:
 
-Design correction:
-- Source Mine should use a Begin Quest / room-intro gate like Brief Fog.
-- On first entry, show the room image and one clear opening action, such as `Begin Source Mine`.
-- After beginning, unlock Source Notes first.
-- Unlock Mined Quotes only after at least one source exists.
-- Unlock Evidence Nodes only after at least one quote/evidence note exists.
-- Unlock Missing Evidence only after Brief Fog chunks exist or after at least one evidence note is being mapped.
-- Unlock Draft Route only after there is enough saved source/evidence material to justify continuing.
-- Locked zones can remain visible as environmental areas, but they should not all present as active choices at once.
+- `state.routeRooms["draft-route"].markers`
 
-Clickable placement correction:
-- The current image is usable as a placeholder, but some hotspot boxes do not sit naturally on the objects.
-- Source Notes works best on the left desk/open book area.
-- Mined Quotes works best on the centre mine cart with scrolls.
-- Evidence Nodes works best on the glowing crystal clusters.
-- Missing Evidence works best on a crate/stash or shadowed lower-right area, but it needs less visual dominance.
-- Draft Route works best on the existing right-side route sign/tunnel.
-- Task Map should be a compact room control, not a huge floor hotspot.
-- Cave Base should also be a compact room control unless a clear return path is added to the art.
+Paragraph Forge v1 should:
 
-Image status:
-- do not reject the placeholder yet; shuffle hotspots and stage the UI first
-- flag that a later final Source Mine image should include clearer environmental places for locked/unlocked interactions
+1. Show saved Draft Route markers.
+2. Let Izzy pick a route marker.
+3. Turn the marker into a rough paragraph starter.
+4. Keep the evidence text and source label visible beside the paragraph draft.
+5. Save rough paragraphs into `state.routeRooms["paragraph-forge"].paragraphs`.
+6. Unlock Bridge Hall after at least one rough paragraph is saved.
+7. Preserve saved paragraphs after refresh.
 
-## Source Mine metaphor / gather quest
+Suggested Paragraph Forge tabs:
 
-Source Mine is a gather quest, not a monster room.
+- Forge Paragraph
+- Route Markers
+- Saved Paragraphs
+- Missing / Weak
 
-The stronger game metaphor is: mine evidence crystals/gems needed for later spell casting.
+Minimum test for Paragraph Forge v1:
 
-Room idea:
-- sources are raw ore
-- quotes/paraphrases/examples are mined gems or evidence crystals
-- explaining the quote in the player's own words polishes the gem
-- linking the quote to a Brief Fog chunk sets the gem into the correct spell slot
-- weak/missing evidence becomes cracked ore, unstable crystal, or missed loot
+1. Start with one Source Mine evidence gem.
+2. Build one Draft Route marker.
+3. Continue to Paragraph Forge.
+4. Confirm the marker appears in Paragraph Forge.
+5. Save one rough paragraph from that marker.
+6. Refresh the browser.
+7. Confirm the rough paragraph persists.
+8. Confirm Bridge Hall unlocks.
 
-No Source Mine monster is needed. The challenge is collection, sorting, and making the evidence usable.
+## Later route rooms still needing real v1 logic
 
-Possible Source Mine quest loop:
-1. Enter Source Mine.
-2. Begin quest.
-3. Add source ore.
-4. Mine evidence gems from the source.
-5. Polish each gem by explaining it in own words.
-6. Slot gems into Brief Fog task chunks.
-7. Record gaps as missed loot.
-8. Continue to Draft Route when enough gems are ready.
+After Paragraph Forge v1:
 
-## Cave route / room purpose plan
+1. Bridge Hall v1
+   - should read saved paragraphs
+   - should help add flow/signpost links between paragraphs
+   - should save bridge links
+   - should unlock Citation Vault
 
-Current functional route:
-- Save the question/task and guidance.
-- Brief Fog: break down and understand the task.
-- Source Mine: gather quotes/evidence relevant to each part of the question.
+2. Citation Vault v1
+   - should read evidence/source labels used in paragraphs
+   - should flag missing citation details
+   - should save citation checks
+   - should unlock Polish Pool
 
-Implemented placeholder room sequence:
-- Draft Route: turn task chunks plus evidence gems into a paragraph route / argument path.
-- Paragraph Forge: write rough body paragraphs from the route.
-- Bridge Hall: improve flow, signposting, and paragraph links.
-- Citation Vault: check citations, references, page numbers, and quote integration.
-- Polish Pool: final clarity, wording, formatting, and obvious mistakes.
-- Submission Gate / Final Spell: final read-through and submit/export moment.
+3. Polish Pool v1
+   - should read rough paragraphs and bridge/citation checks
+   - should record final clarity/proofreading fixes
+   - should unlock Submission Gate
 
-Each placeholder room currently has:
-- a Begin room state
-- one main save form
-- Review
-- Issues / missed loot capture
-- Next-room unlock after at least one saved item
-- placeholder background path with fallback to existing cave images until Izzy supplies room images
+4. Submission Gate / Final Spell v1
+   - should show final route summary
+   - should show remaining missing/weak items
+   - should provide final copy/export placeholder
+   - should feel like final academic spell cast, not normal editing
 
-Future image target paths:
-- `docs/assets/study-cave/draft-route-placeholder-v01.png`
-- `docs/assets/study-cave/paragraph-forge-placeholder-v01.png`
-- `docs/assets/study-cave/bridge-hall-placeholder-v01.png`
-- `docs/assets/study-cave/citation-vault-placeholder-v01.png`
-- `docs/assets/study-cave/polish-pool-placeholder-v01.png`
-- `docs/assets/study-cave/submission-gate-placeholder-v01.png`
+## Current known code/UX issues
 
-Boss concept:
-- The boss should not be ordinary editing.
-- The boss should be the final submission/read-through trial where all collected components become one spell.
-- Brief Fog gives the spell target.
-- Source Mine gives evidence gems.
-- Draft Route shapes the spell path.
-- Paragraph Forge creates the spell body.
-- Bridge Hall stabilises the spell flow.
-- Citation Vault prevents the spell collapsing through weak references.
-- Polish Pool cleans the spell.
-- Submission Gate is the boss / final cast.
+- There are still older placeholder scripts in the route. Some old Task Map labels can lag behind the newer room logic.
+- Several route rooms open but still use generic placeholder save forms.
+- GitHub Pages cache needs version bumps and hard refreshes after changes.
+- Some large hotspot boxes are visually distracting.
+- The current implementation uses localStorage key `esslay-study-cave-simple-v1`.
+- Source Mine and Draft Route now use the newer localStorage structure, while some older code still normalises/reshapes the save state.
+- Future consolidation is needed once the route behaviour is stable.
 
-Final boss direction:
-- The final boss can be Submission Gate, Deadline Dragon, Rubric Warden, or Final Read-Through Guardian.
-- The final action should feel like casting the completed academic spell, not just pressing submit.
-- Missing chunks, weak evidence, and citation gaps become boss weaknesses or damage risks.
+## Do not do yet
 
-## Test required
+Do not spend time on final art, final CGs, pose swaps, monster/imp animation, or room background polish until Paragraph Forge v1 works.
 
-1. Hard refresh the cave.
-2. Use Brief Fog → Read task scroll → Venture Forth.
-3. Confirm Source Mine opens with the supplied placeholder image.
-4. Begin Source Mine and confirm Add Source opens.
-5. Save a source and confirm Mine Quote unlocks.
-6. Save an evidence gem and confirm Evidence Gems and Draft Route unlock.
-7. Use Draft Route and confirm the Draft Route placeholder room opens.
-8. Save one item in each later room and confirm the next room unlocks:
-   - Draft Route → Paragraph Forge
-   - Paragraph Forge → Bridge Hall
-   - Bridge Hall → Citation Vault
-   - Citation Vault → Polish Pool
-   - Polish Pool → Submission Gate
-9. Refresh and confirm saved state persists.
+Do not rewrite working Brief Fog, Source Mine, or Draft Route logic unless a browser test finds a specific bug.
 
-## Prompt correction for future Area 10 image work
+Do not restore old blank/cream Source Notes style UI.
 
-Area 10 produced bad geometric/abstract outputs for Source Mine, so the next image prompt must be stricter.
+## Immediate next action
 
-Future prompt must say:
-- make a hand-painted fantasy-academic game room background, not a geometric diagram, icon layout, map, flowchart, UI mockup, or abstract concept board
-- use one coherent wide interior room with readable perspective
-- no floating geometric panels, boxes, triangles, grid overlays, or diagram shapes
-- clickable areas should be environmental props, not UI blocks
-- no baked UI buttons or labels; in-world wooden signs are acceptable only if they belong naturally to the scene
-- leave open floor/negative space for future panels and hotspots
-
-## Brief Fog visual placeholder cleanup
-
-Problem: the placeholder glow made the scene look like a casting moment when it should not.
-
-Fix:
-- removed the fake glow marker from the Brief Fog VN placeholder layer
-- removed the CSS state that made the glow visible
-
-Commit:
-- `efa4e23fc3865c85fbb50e0d788047c33ee4986e`
-
-## Venture Forth routing
-
-Problem: Venture Forth was landing back at Cave Base.
-
-Fix:
-- Venture Forth now opens Source Mine
-- Venture still marks Brief Fog complete, unlocks Source Mine, and records skipped assistance as missed loot
-
-## Next build order
-
-1. Browser-test full placeholder route from Source Mine to Submission Gate.
-2. Fix route bugs before adding more polish.
-3. Add supplied room background images one by one into the target paths.
-4. Cave Base clickable-place UI pass.
-5. Consolidate the temporary hotfix files after route behaviour is stable.
-6. Later: final images and visual polish.
+Build Paragraph Forge v1 using the working Draft Route marker data.
