@@ -155,6 +155,8 @@
       saveState(state, "Test mode opened source-mine");
       return clickAction("open-source-mine");
     }
+    if (roomId === "draft-route") return clickAction("open-draft-route");
+    if (roomId === "paragraph-forge") return clickAction("open-paragraph-forge");
     return clickAction("continue-quest");
   }
 
