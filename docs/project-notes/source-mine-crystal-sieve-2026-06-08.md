@@ -109,6 +109,42 @@ Parked or discarded cards can be restored to the sieve.
 9. Confirm Review Cart shows it and restore works.
 10. Confirm refresh keeps the saved source cards and evidence gems.
 
+## Latest browser-test result
+
+Source Mine Sieve is now reachable from the real route and is receiving the correct Brief Fog buckets:
+
+- planning
+- source notes
+- drafting
+- proofreading
+- referencing habits
+
+The demo source card matched planning and drafting, which confirms the word-matching logic is working.
+
+## Flagged future improvement: Source Mine intro / begin quest
+
+Izzy flagged that Source Mine should still have a clearer intro / begin-quest moment before the Crystal Sieve starts.
+
+Current issue:
+
+- the room can jump straight into Add Source / Crystal Sieve once the route is active
+- this works for code testing, but feels abrupt as a game room
+- the old Begin Source Mine popup existed, but it belonged to the old Source Notes flow and should not be reused as-is
+
+Future desired behaviour:
+
+- Source Mine opens with a short themed intro the first time only
+- intro explains that this is a gather quest
+- intro explains that buckets are crystal slots from Brief Fog
+- player chooses Begin Source Mine, then Add Source / Crystal Sieve unlocks
+- after the first begin, returning to Source Mine should resume the current Sieve state, not force the intro every time
+
+Suggested wording direction:
+
+"Source Mine is a gather quest. Your Brief Fog buckets are crystal slots. Add a source, sift it into useful cards, then save the best cards as evidence gems."
+
+Do not restore the old cream Source Notes drawer. Build the intro into the new Sieve flow.
+
 ## Known limits
 
 - This is local/browser rule-matching, not AI.
@@ -116,9 +152,10 @@ Parked or discarded cards can be restored to the sieve.
 - Uploaded audio/video need transcripts before they can become source cards.
 - Source Mine visual polish is still placeholder and may need compaction after Izzy tests.
 - Cave Base review hooks are planned but not yet visible as a dedicated Base review panel.
+- Source Mine needs a new first-time intro / Begin Source Mine step for the Sieve flow.
 
 ## Next decision after test
 
-If Izzy approves the working loop, mark this as completed needs further edits because the workflow is usable but still needs visual polish and Cave Base review integration.
+If Izzy approves the working loop, mark this as completed needs further edits because the workflow is usable but still needs visual polish, a first-time intro, and Cave Base review integration.
 
 If it fails, keep active and record the exact failing click or save state.
