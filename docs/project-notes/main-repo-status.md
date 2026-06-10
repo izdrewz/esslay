@@ -1,250 +1,138 @@
 # Main repo status
 
-Last updated: 2026-06-03
+Last updated: 2026-06-10
 
-## Current locked Study Cave flow
+## Current Study Cave route status
 
-The Study Cave opening flow is now:
+The active Study Cave build is now a static visual-novel / click-flow cave route using browser localStorage.
 
-1. Study Cave entrance
-2. Quest Board
-3. Task Map threshold
-4. Cave Base
-5. Brief Fog / Question-Unpacking Chamber
-6. Source Mine placeholder
+Confirmed working enough to move on:
 
-The old first-chamber flow is outdated:
+1. Brief Fog / Quest Compass
+2. Source Mine / Crystal Sieve
+3. Draft Route v1
 
-- Task Intake Chamber as first separate chamber
-- Command Word Gate as second separate chamber
+Current active build:
 
-Those are now absorbed into Brief Fog / Question-Unpacking Chamber.
+4. Paragraph Forge v1
 
-## Current visual direction decision
+Still placeholder / needs real v1 logic after Paragraph Forge:
 
-The project is no longer pursuing an animation-heavy pipeline for the current Study Cave / Brief Fog work.
+5. Bridge Hall
+6. Citation Vault
+7. Polish Pool
+8. Submission Gate / Final Spell
 
-Use an interactive visual-novel / game-CG style instead:
+## Current confirmed flow
 
-- static scene backgrounds
-- character pose swaps
-- expression/pose state changes
-- separate sparkle/light overlays
-- smoke/Command Imp as separate scene-state art
-- click-to-advance or click-hotspot interactions
-- compact drawers/panels over the scene
-- optional subtle CSS glow/fade only where it supports the static scene
+The current working chain is:
 
-Do not require full frame-by-frame animation, video, or complex animated sequences for v0.1.
+1. Cave Base
+2. Brief Fog / Quest Compass
+3. Source Mine / Crystal Sieve
+4. Draft Route v1
+5. Paragraph Forge placeholder opens
 
-For Brief Fog, the earlier five-part idea should be treated as five interactive visual-novel scene states, not an animation requirement:
+Browser testing confirmed:
 
-1. light ready / wary
-2. twinkle cast
-3. afterglow / imp reveal
-4. confident after reveal
-5. warning sparkle / imp retreats
+- Brief Fog passes real buckets forward:
+  - planning
+  - source notes
+  - drafting
+  - proofreading
+  - referencing habits
+- Source Mine can save an evidence gem to a real bucket.
+- Bucket Vault shows saved evidence.
+- Source Mine save persists after refresh.
+- Draft Route reads Source Mine evidence gems.
+- Draft Route builds a route marker from the evidence gem.
+- Review Route shows the route marker.
+- Continue to Paragraph Forge opens Paragraph Forge.
 
-## Current implemented state
+## Current key files
 
-Implemented in repo:
-
-- `docs/cave.html` uses the new Study Cave scene shell.
-- Quest Board can open.
-- Study Skills Trial can be selected.
-- Study Skills Trial selection is now intercepted by `docs/study-cave-task-map-fallback.js` and sent to the Task Map threshold instead of the old quest placeholder panel.
-- Task Map threshold can open.
-- Enter Cave Base now works.
-- `docs/study-cave-task-map-fallback.js` no longer owns the Cave Base or Continue Quest buttons. The newer Brief Fog route script, `docs/study-cave-enter-fix.js`, owns Cave Base, Continue Quest, Brief Fog, completion, and Source Mine placeholder behaviour.
-- Cave Base scene opens using `docs/assets/study-cave/cave-base-placeholder-v01.jpg`.
-- Character appears in Cave Base at a workable size.
-- Character has CSS filter/drop-shadow blending.
-- The rectangle lighting box bug was removed by removing the rectangular pseudo-element overlay and bumping the CSS cache to `study-cave-stage-scene.css?v=4`.
-- Continue Quest opens Brief Fog scene.
-- Brief Fog v0.1 now has a scene-first task workflow: task brief drawer, chunk generation, fog-patch chunk drawers, highlight categories, plain-meaning notes, action-created notes, flags, missed loot, dismissed wording, chunk state decisions, summary, and clear behaviour.
-- The rendered Brief Fog task drawer now uses the button label `Suggest chunks` for the chunk-generation action.
-- Brief Fog completion now returns to Cave Base, keeps Brief Fog completed, unlocks Source Mine placeholder, and updates progress to 1 / 7.
-- Cave Base has compact placeholder panels for Outfit Chest, Cave Journal / Route Ledger, Completed Chamber Summary, and Flags / Missed Loot.
-- Brief Fog export is available from the summary drawer as `.md`, `.txt`, and Word-openable `.doc` copy/download panels.
-- Brief Fog fog patches are visual-only CSS scene-state patches, not clickable buttons.
-- Brief Fog chunk actions save correctly and show a temporary visual response before the chunk-saved result drawer.
-- Brief Fog quest box is more translucent and fog patch oval outlines were removed.
-- Brief Fog placeholder light effect currently points from the character hand area toward the active fog/imp target during the temporary CSS visual response.
-- Brief Fog placeholder character is flipped during the active visual response so she faces toward the fog/imp target better until final pose art exists.
-- Brief Fog visual direction is now: interactive visual-novel scene states with character on one side and smoke/Command Imp target on the other, not full animation.
-- Brief Fog magic should read as twinkle/sparkle magic, not a hard laser beam.
-- Area 3 pose-swapping is now registered in the active project-notes handover as `docs/project-notes/area-3-pose-swapping.md`.
-- `docs/character-display.js` now has a safe fallback to the current default teal explorer avatar when a requested pose image is missing or fails to load.
-
-Relevant files:
+Active shell and room scripts:
 
 - `docs/cave.html`
-- `docs/study-cave-enter-fix.js`
-- `docs/study-cave-stage-scene.css`
-- `docs/study-cave-task-map-fallback.js`
-- `docs/quest-board.js`
-- `docs/assets/study-cave/cave-base-placeholder-v01.jpg`
-- `docs/assets/study-cave/brief-fog-placeholder-v01.jpg`
-- `docs/character-poses.js`
-- `docs/character-display.js`
-- `docs/project-notes/area-3-pose-swapping.md`
+- `docs/study-cave-clicks-v1.js`
+- `docs/study-cave-brief-fog-compass-stable-v1.js`
+- `docs/study-cave-source-mine-sieve-v2.js`
+- `docs/study-cave-draft-route-v1.js`
+- `docs/study-cave-route-rooms-v1.js`
+- `docs/study-cave-test-mode-v1.js`
 
-## Current known issues
+Important project notes:
 
-- Brief Fog v0.1 needs browser retesting after the Task Brief fallback intercept was reverted.
-- Task Brief had been reported to crash/freeze the browser when clicked. The latest crash-guard patches were reverted; next fix should be smaller and should target the actual active Brief Fog handler only.
-- Cave Base background needs sharpening. This is flagged for later asset/image work, not urgent route logic.
-- Character blending is improved but still CSS-based. A better future fix is a cave-specific avatar PNG with lighting baked in.
-- Brief Fog v0.1 currently uses compact drawers and placeholder CSS scene effects, not final visual-novel CG/state art.
-- UI should continue avoiding long scrolling forms. Current version uses compact drawers, but this needs visual review on Izzy's screen.
-- Final Area 1 cave character poses and magic-light assets are not in repo yet.
-- Area 3 approved pose PNGs are not present in the repo at their mapped paths yet, so live screens should not be switched fully to pose IDs until assets or deliberate fallback behaviour are confirmed.
-- Command Imp CSS placeholder reveal works as a temporary effect, but final direction is now static/interactive visual-novel scene-state art rather than a fall/flee animation requirement.
-- Brief Fog character facing/casting is currently a CSS flip and hand-spark placeholder. Future fix: Area 1 should provide final focused hand-spark and casting pose states facing the fog/imp direction.
-- Area 1 now needs Brief Fog visual-novel pose states: light-ready pose, casting pose, afterglow pose, confident follow-up pose, and warning-spark pose.
-- Latest Area 1 generated outfit/pose previews were rejected because the art style was incorrect and drifted into a glossy/semi-realistic fantasy look. Do not treat them as approved assets.
+- `docs/project-notes/cave-next-todo-2026-06-04.md`
+- `docs/project-notes/source-mine-crystal-sieve-2026-06-08.md`
+- `docs/project-notes/main-repo-status.md`
 
-## Received area responses
+Current localStorage key:
 
-Received and recorded:
+- `esslay-study-cave-simple-v1`
 
-- Area 9 — Brief Fog v0.1 field/UI workflow. Status: completed. Saved in `docs/project-notes/area-9-brief-fog-workflow.md`.
-- Area 10 — Brief Fog and Cave Base scene-first layout support. Status: completed needs further edits. Saved in `docs/project-notes/area-10-visual-scenes.md`.
-- Area 11 — Brief Fog save/export structure. Status: completed. Saved in `docs/project-notes/area-11-save-export.md`.
-- Area 12 — Cave Base panels and route update after Brief Fog clears. Status: completed. Saved in `docs/project-notes/area-12-route-behaviour.md`.
-- Area 1 — Brief Fog character pose/effect asset plan and rejected-art-style reset. Status: needs approval / no approved preview yet. Saved in `docs/project-notes/area-1-character-assets.md`.
-- Area 3 — Character pose-swapping. Status: active / safe helper added / needs asset import before live screen wiring. Saved in `docs/project-notes/area-3-pose-swapping.md`.
+## Latest commits of note
 
-Still useful later:
+- `45b58e3` — Add Draft Route planner v1
+- `2fc920d` — Flag Source Mine intro improvement
 
-- Area 1 — final cave character poses, cave outfits, sparkle/light overlays, and cave-specific avatar polish. Not blocking placeholder build.
-- Area 3 — pose asset import and safe screen wiring after approved pose PNGs exist in repo.
+## Current data chain
 
-## Current review status
+Brief Fog produces task buckets.
 
-Brief Fog v0.1 implementation status:
+Source Mine uses those buckets to sort source cards and save evidence gems at:
 
-active / needs browser retest after reverting the Task Brief crash-guard attempts
+- `state.sourceMine.evidenceGems`
 
-Review question for Izzy:
+Draft Route uses those evidence gems to build route markers at:
 
-- If Task Brief now opens without crashing, continue retesting Brief Fog v0.1.
-- If Brief Fog v0.1 works and feels acceptable for now, mark it `completed needs further edits` because final visual-novel art, monster effects, and visual polish are still future work.
-- If Izzy is happy to lock this placeholder behaviour, mark route/workflow behaviour `completed locked` while keeping visual polish as future work.
-- If Izzy is not happy, keep it `active` and list exact fixes needed.
+- `state.routeRooms["draft-route"].markers`
 
-## Priority ownership by area
+Paragraph Forge v1 should use those route markers to create rough paragraphs at:
 
-Priority 1 belongs mainly to Area 9, with support from Area 10, Area 11, and Area 12.
+- `state.routeRooms["paragraph-forge"].paragraphs`
 
-Build Brief Fog / Question-Unpacking Chamber v0.1 as a usable scene-first workflow.
+## Current active next build: Paragraph Forge v1
 
-Area ownership:
-- Area 9 owns the academic chunk/highlight workflow.
-- Area 10 owns the scene-first visual layout, clickable object placement, fog patches, and visual states.
-- Area 11 owns saving chunks, highlights, notes, flags, missed loot, completion, and export data.
-- Area 12 owns how Brief Fog opens from Cave Base, how progress returns to Task Map/Cave Base, and how Source Mine unlocks.
-- Area 1 owns character pose/effect assets later, but it is not blocking the placeholder build.
+Paragraph Forge currently opens, but it is still a generic placeholder from `study-cave-route-rooms-v1.js`.
 
-Priority 2 belongs mainly to Area 12 and Area 11, with Area 10 support.
+Next work should make Paragraph Forge read Draft Route markers and use them as paragraph starters.
 
-Improve Cave Base interaction.
+Minimum Paragraph Forge v1 behaviour:
 
-Area ownership:
-- Area 12 owns Cave Base behaviour, buttons, return flow, and route state.
-- Area 11 owns Cave Base persistence, progress, flags, missed loot, and outfit override save fields.
-- Area 10 owns Cave Base visual hotspot placement and background/asset polish.
-- Area 1 owns final Cave Base character/outfit/chest poses later.
-- Area 3 owns later pose mapping once approved Cave Base pose assets exist.
+1. Read `state.routeRooms["draft-route"].markers`.
+2. Show available route markers.
+3. Let Izzy choose a marker.
+4. Show the evidence text and source label beside the paragraph drafting area.
+5. Save a rough paragraph to `state.routeRooms["paragraph-forge"].paragraphs`.
+6. Keep saved rough paragraphs after refresh.
+7. Unlock Bridge Hall after at least one rough paragraph is saved.
 
-Priority 3 belongs mainly to Area 11.
+Suggested Paragraph Forge tabs:
 
-Persist Study Cave state cleanly.
+- Forge Paragraph
+- Route Markers
+- Saved Paragraphs
+- Missing / Weak
 
-Needed features:
-- localStorage StudyCaveSaveState
-- completed chambers persist
-- flags and missed loot persist
-- reset Study Skills Trial only
-- export updated route as `.md`, `.txt`, and Word-openable `.doc`
+## Current known issues / later polish
 
-Priority 4 belongs mainly to Area 10, Area 1, and Area 3.
+- Source Mine needs a first-time Begin Source Mine intro.
+- Source Mine layout needs compaction.
+- Draft Route marker ordering/editing is not polished yet.
+- Large hotspot boxes are visually noisy and should be reduced outside test mode.
+- Task Map status labels can lag behind newer route logic because older scripts still normalise route state.
+- Some room scripts are temporary/hotfix-style and should be consolidated after route logic is stable.
+- Final room art and character pose work are not blocking the current route build.
 
-Asset and pose polish.
+## Do not spend time on yet
 
-Needed later:
-- sharpen Cave Base background
-- final Cave Base character pose
-- final Brief Fog visual-novel character pose states
-- sparkle/afterglow overlays
-- Command Imp placeholder or final art
-- cave-specific avatar lighting asset
-- approved pose PNGs imported into `docs/assets/characters/academic-adventurer/poses/`
-- live screens wired to request pose IDs after pose assets exist or fallback behaviour is deliberately accepted
+Do not prioritise final art, pose swaps, imp/monster animation, or room background polish until Paragraph Forge v1 works.
 
-## Next priorities
+Do not rewrite working Brief Fog, Source Mine, or Draft Route unless a specific browser test fails.
 
-Priority 1 review:
-Test Brief Fog v0.1 in browser after reverting the Task Brief crash-guard attempts and decide whether it is acceptable for now.
+Do not restore the old blank/cream Source Notes drawer.
 
-Test path:
-- Open `docs/cave.html`
-- Open Quest Board
-- Select Study Skills Trial
-- Confirm Task Map threshold opens
-- Enter Cave Base
-- Continue Quest
-- Click Task Brief and confirm whether it opens or freezes
-- Save task brief if it opens
-- Suggest chunks if available
-- Open fog patches
-- Add highlight / note / flag / missed loot / dismissal
-- Mark chunks fully unpacked or parked
-- Open summary
-- Finish Brief Fog
-- Confirm Source Mine unlocks and Cave Base shows progress 1 / 7
-- Test exports from Brief Fog summary drawer
-- Return to Task Map and Quest Board to confirm Source Mine/current progress displays correctly
+## Next immediate action
 
-Priority 2:
-Improve Cave Base interaction after Izzy review if needed.
-
-Potential future improvements:
-- better hotspot placement
-- clearer labels on hover
-- nicer compact panel styling
-- stronger visual state feedback
-
-Priority 3:
-Persist Study Cave state cleanly.
-
-Current v0.1 uses localStorage key `esslay-study-cave-save-v01`.
-
-Future improvement may be needed if the final data shape is moved into separate files or shared with other systems.
-
-Priority 4:
-Asset and pose polish.
-
-Needed later:
-- sharpen Cave Base background
-- final Cave Base character pose
-- final Brief Fog character visual-novel pose states
-- final casting pose facing fog/imp target
-- final attack/casting pose with character on one side and smoke/imp target on the other
-- sparkle/afterglow overlays
-- Command Imp placeholder or final art
-- Command Imp retreat/fallen state as static visual-novel state art, not animation
-- cave-specific avatar lighting asset
-- approved pose PNGs imported into the pose folder
-- Area 3 live screen wiring after approved pose assets exist
-
-## Current Area 1 request needed
-
-Area 1 should make or plan the final Brief Fog visual-novel character pose states using Izzy's references as pose/expression direction, while preserving the approved base character identity.
-
-Required first scene-state direction:
-- character on one side
-- smoke cloud / Command Imp target on the other side
-- character faces and casts toward the imp
-- magic should look twinkly/sparkly, not like a hard laser beam
-- output should support interactive visual-novel scene states, not full animation
+Build Paragraph Forge v1.
