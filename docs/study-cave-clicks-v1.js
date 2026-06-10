@@ -96,7 +96,9 @@
       missedLoot: safeArray(saved.missedLoot),
       lastSavedAt: String(saved.lastSavedAt || base.lastSavedAt),
       lastAction: String(saved.lastAction || base.lastAction),
-      briefFog: Object.assign({}, base.briefFog, saved.briefFog || {})
+      briefFog: Object.assign({}, base.briefFog, saved.briefFog || {}),
+      sourceMine: Object.assign({ evidenceGems: [] }, saved.sourceMine || {}),
+      routeRooms: saved.routeRooms && typeof saved.routeRooms === "object" ? saved.routeRooms : {}
     };
 
     next.briefFog.taskTitle = String(next.briefFog.taskTitle || base.briefFog.taskTitle).slice(0, 160);
@@ -236,6 +238,7 @@
       '<button type="button" data-action="enter-cave-base">Enter Cave Base</button>' +
       '<button type="button" data-action="open-brief-fog">Open Brief Fog directly</button>' +
       '<button type="button" data-action="open-source-mine">Open Source Mine</button>' +
+      (state.unlocked.indexOf("draft-route") >= 0 ? '<button type="button" data-action="open-draft-route">Open Draft Route</button>' : "") +
       '<button type="button" class="secondary-button" data-action="open-quest-board">Back to Quest Board</button>' +
       '</div></article>' +
       '<article class="flow-card"><h3>Route nodes</h3><div class="route-node-grid">' + nodeHtml + '</div></article>' +
@@ -296,6 +299,7 @@
       '<button type="button" data-action="continue-quest">Continue</button>' +
       '<button type="button" data-action="open-brief-fog">Open Brief Fog</button>' +
       '<button type="button" data-action="open-source-mine">Open Source Mine</button>' +
+      (state.unlocked.indexOf("draft-route") >= 0 ? '<button type="button" data-action="open-draft-route">Open Draft Route</button>' : "") +
       '<button type="button" data-action="open-task-map">Task Map</button>' +
       '<button type="button" data-action="show-flags">Flags / Missed Loot</button>' +
       '<button type="button" data-action="show-outfit">Outfit Chest</button>' +

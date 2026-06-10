@@ -318,7 +318,9 @@
       '<p>Sort source cards into Brief Fog buckets. Saved cards become evidence gems.</p>' +
       '<p><strong>Sources:</strong> ' + state.sourceMine.sourceLibrary.length + ' · <strong>Cards waiting:</strong> ' + activeCards(state).length + ' · <strong>Evidence gems:</strong> ' + state.sourceMine.evidenceGems.length + '</p>' +
       saveInfo(state) + tabs(chosenTab) + panelFor(state, chosenTab) +
-      '<div class="simple-actions"><button type="button" data-action="return-cave-base">Cave Base</button><button type="button" data-action="open-task-map">Task Map</button></div>' +
+      '<div class="simple-actions"><button type="button" data-action="return-cave-base">Cave Base</button><button type="button" data-action="open-task-map">Task Map</button>' +
+      (state.sourceMine.evidenceGems.length ? '<button type="button" data-action="source-draft-route">Draft Route</button>' : "") +
+      '</div>' +
       '</article></section>';
   }
 
@@ -392,6 +394,7 @@
       state.sourceMine.evidenceGems.push({ id: uid(), bucket: bucket, bucketId: bucketId(bucket), sourceId: card.sourceId, sourceTitle: card.sourceTitle, citationLabel: card.citationLabel, evidence: clean(card.text, 1600), note: note, link: note, matchWords: match ? arr(match.matchWords) : [], createdAt: new Date().toISOString() });
     });
     state.sourceMine.reviewedCount += 1;
+    if (state.unlocked.indexOf("draft-route") === -1) state.unlocked.push("draft-route");
     state.sourceMine.activeCardId = "";
     save(state, "Evidence gem saved");
     render("sieve", "Evidence gem saved");
@@ -408,6 +411,7 @@
     if (kind === "parked") state.sourceMine.parkedChunks.unshift(card);
     if (kind === "discarded") state.sourceMine.discardedChunks.unshift(card);
     state.sourceMine.reviewedCount += 1;
+    if (state.unlocked.indexOf("draft-route") === -1) state.unlocked.push("draft-route");
     state.sourceMine.activeCardId = "";
     save(state, kind === "parked" ? "Card parked" : "Card discarded");
     render("sieve", kind === "parked" ? "Card parked" : "Card discarded");
