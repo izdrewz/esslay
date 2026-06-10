@@ -105,6 +105,8 @@
     next.briefFog.assessmentType = String(next.briefFog.assessmentType || base.briefFog.assessmentType).slice(0, 160);
     next.briefFog.rawTaskText = String(next.briefFog.rawTaskText || base.briefFog.rawTaskText).slice(0, 9000);
     next.briefFog.chunks = safeArray(next.briefFog.chunks).map(normaliseChunk);
+    next.sourceMine.evidenceGems = safeArray(next.sourceMine.evidenceGems);
+    if (next.sourceMine.evidenceGems.length && next.unlocked.indexOf("draft-route") === -1) next.unlocked.push("draft-route");
     if (next.completed.indexOf("brief-fog") >= 0 && next.unlocked.indexOf("source-mine") === -1) next.unlocked.push("source-mine");
     next.current = next.completed.indexOf("brief-fog") >= 0 ? "source-mine" : "brief-fog";
     return next;
