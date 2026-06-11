@@ -1,17 +1,23 @@
 # Cave next to-do — current route build
 
-Status: active / route logic progressing
+Status: full Study Cave v1 route passing / cleanup phase next
 
-Last updated: 2026-06-10
+Last updated: 2026-06-11
 
 ## Current confirmed progress
 
-The Study Cave placeholder route is now working through the first three real build stages:
+The Study Cave v1 route is now working end-to-end in browser testing:
 
-1. Brief Fog / Quest Compass — working enough to move on.
-2. Source Mine / Crystal Sieve — working enough to move on.
-3. Draft Route v1 — working enough to move on.
-4. Paragraph Forge — opens, but is still the old placeholder and needs its real v1 logic.
+1. Brief Fog / Quest Compass — passing.
+2. Source Mine / Crystal Sieve — passing.
+3. Draft Route v1 — passing.
+4. Paragraph Forge v1 — passing.
+5. Bridge Hall v1 — passing.
+6. Citation Vault v1 — passing.
+7. Polish Pool v1 — passing.
+8. Submission Gate / Final Spell v1 — passing.
+
+The next step is not another new room. The next step is cleanup, route hardening, UX polish, and reducing old placeholder/fallback behaviour.
 
 ## Confirmed browser tests
 
@@ -61,15 +67,9 @@ Still needed later:
 
 ### Draft Route v1
 
-Implemented by commit:
+Implemented by commits:
 - `45b58e3` — Add Draft Route planner v1
-
-Files changed:
-- `docs/study-cave-draft-route-v1.js`
-- `docs/cave.html`
-- follow-up connection edits in:
-  - `docs/study-cave-clicks-v1.js`
-  - `docs/study-cave-source-mine-sieve-v2.js`
+- `14e38c6` — Add Paragraph Forge shortcut to Draft Route planner
 
 Confirmed:
 - Draft Route opens from the current route after Source Mine has evidence
@@ -78,6 +78,7 @@ Confirmed:
 - Build route from evidence gems creates a route marker
 - Review Route shows the saved route marker
 - Continue to Paragraph Forge opens Paragraph Forge
+- Route Planner now also shows Continue to Paragraph Forge when at least one route marker exists
 
 Important current data shape:
 - route markers live in `state.routeRooms["draft-route"].markers`
@@ -89,87 +90,169 @@ Still needed later:
 - Draft Route should feel more like a path/route mini-game, not only a panel
 - Task Map node status still needs polish so locked/unlocked/current labels stay intuitive
 
-## Current active next build: Paragraph Forge v1
+### Paragraph Forge v1
 
-Paragraph Forge currently opens, but it is still the old placeholder form. It does not yet use the Draft Route markers.
+Confirmed:
+- Paragraph Forge opens from Draft Route and Test Mode
+- it reads Draft Route markers
+- Forge Paragraph tab shows the marker/evidence
+- Route Markers tab works
+- Missing tab works
+- Save rough paragraph works
+- Saved Paragraphs shows the saved rough paragraph
+- Bridge Hall unlocks after a rough paragraph is saved
 
-Next build should make Paragraph Forge read:
+Important current data shape:
+- rough paragraphs live in `state.routeRooms["paragraph-forge"].paragraphs`
+- each paragraph stores markerId, bucket, citationLabel, focus, paragraph text, evidence, needs, and timestamps
+
+Still needed later:
+- paragraph text should become more genuinely useful for real assignments
+- better edit/remove controls
+- better visual distinction between evidence and paragraph draft
+- reduce old generic route-shell fallback risk
+
+### Bridge Hall v1
+
+Confirmed:
+- Bridge Hall opens from Paragraph Forge
+- it reads saved rough paragraphs
+- Build Bridge tab works
+- Paragraphs tab works
+- Save bridge link works
+- Saved Bridges shows the saved bridge link
+- Citation Vault unlocks after a bridge link is saved
+
+Important current data shape:
+- bridge/signpost links live in `state.routeRooms["bridge-hall"].links`
+
+Still needed later:
+- better multi-paragraph transition logic
+- drag/reorder or explicit paragraph ordering
+- clearer language for signposting vs explanation
+
+### Citation Vault v1
+
+Confirmed:
+- Citation Vault opens from Bridge Hall
+- it reads saved bridge links
+- Check Citation tab works
+- Bridge Links tab works
+- Save citation check works
+- Saved Checks shows the saved citation check
+- Polish Pool unlocks after a citation check is saved
+
+Important current data shape:
+- citation checks live in `state.routeRooms["citation-vault"].checks`
+
+Still needed later:
+- real citation fields should be more structured
+- should distinguish source label, author/year/page, URL, timestamp, and module/unit details
+- should better flag placeholder/demo sources
+
+### Polish Pool v1
+
+Confirmed:
+- Polish Pool opens from Citation Vault
+- it reads saved citation checks
+- Polish Fix tab works
+- Citation Checks tab works
+- Save polish fix works
+- Saved Fixes shows the saved polish fix
+- Submission Gate unlocks after a polish fix is saved
+
+Important current data shape:
+- polish fixes live in `state.routeRooms["polish-pool"].fixes`
+
+Still needed later:
+- improve proofreading categories
+- make final wording more student-friendly
+- add checks for clarity, repetition, citation placeholders, and missing links
+
+### Submission Gate / Final Spell v1
+
+Confirmed:
+- Submission Gate opens from Polish Pool
+- it reads saved polish fixes
+- Final Spell tab works
+- Route Summary tab works
+- Save final check works
+- Saved Checks shows the saved final check
+- browser save says route complete
+
+Important current data shape:
+- final checks live in `state.routeRooms["submission-gate"].checks`
+- `state.finalSpellComplete` may be set true when final spell is completed
+
+Still needed later:
+- export/copy helper
+- final checklist should be more useful and less placeholder
+- should show a clear “route complete” state on Task Map
+
+## Current data chain
+
+Brief Fog produces task buckets.
+
+Source Mine saves evidence gems at:
+
+- `state.sourceMine.evidenceGems`
+
+Draft Route saves route markers at:
 
 - `state.routeRooms["draft-route"].markers`
 
-Paragraph Forge v1 should:
+Paragraph Forge saves rough paragraphs at:
 
-1. Show saved Draft Route markers.
-2. Let Izzy pick a route marker.
-3. Turn the marker into a rough paragraph starter.
-4. Keep the evidence text and source label visible beside the paragraph draft.
-5. Save rough paragraphs into `state.routeRooms["paragraph-forge"].paragraphs`.
-6. Unlock Bridge Hall after at least one rough paragraph is saved.
-7. Preserve saved paragraphs after refresh.
+- `state.routeRooms["paragraph-forge"].paragraphs`
 
-Suggested Paragraph Forge tabs:
+Bridge Hall saves bridge/signpost links at:
 
-- Forge Paragraph
-- Route Markers
-- Saved Paragraphs
-- Missing / Weak
+- `state.routeRooms["bridge-hall"].links`
 
-Minimum test for Paragraph Forge v1:
+Citation Vault saves citation checks at:
 
-1. Start with one Source Mine evidence gem.
-2. Build one Draft Route marker.
-3. Continue to Paragraph Forge.
-4. Confirm the marker appears in Paragraph Forge.
-5. Save one rough paragraph from that marker.
-6. Refresh the browser.
-7. Confirm the rough paragraph persists.
-8. Confirm Bridge Hall unlocks.
+- `state.routeRooms["citation-vault"].checks`
 
-## Later route rooms still needing real v1 logic
+Polish Pool saves polish fixes at:
 
-After Paragraph Forge v1:
+- `state.routeRooms["polish-pool"].fixes`
 
-1. Bridge Hall v1
-   - should read saved paragraphs
-   - should help add flow/signpost links between paragraphs
-   - should save bridge links
-   - should unlock Citation Vault
+Submission Gate saves final readiness checks at:
 
-2. Citation Vault v1
-   - should read evidence/source labels used in paragraphs
-   - should flag missing citation details
-   - should save citation checks
-   - should unlock Polish Pool
-
-3. Polish Pool v1
-   - should read rough paragraphs and bridge/citation checks
-   - should record final clarity/proofreading fixes
-   - should unlock Submission Gate
-
-4. Submission Gate / Final Spell v1
-   - should show final route summary
-   - should show remaining missing/weak items
-   - should provide final copy/export placeholder
-   - should feel like final academic spell cast, not normal editing
+- `state.routeRooms["submission-gate"].checks`
 
 ## Current known code/UX issues
 
 - There are still older placeholder scripts in the route. Some old Task Map labels can lag behind the newer room logic.
-- Several route rooms open but still use generic placeholder save forms.
+- Several new v1 rooms were added as separate hotfix-style scripts and should eventually be consolidated.
 - GitHub Pages cache needs version bumps and hard refreshes after changes.
 - Some large hotspot boxes are visually distracting.
 - The current implementation uses localStorage key `esslay-study-cave-simple-v1`.
-- Source Mine and Draft Route now use the newer localStorage structure, while some older code still normalises/reshapes the save state.
+- Source Mine and Draft Route now use newer localStorage structures, while older code still normalises/reshapes some save state.
 - Future consolidation is needed once the route behaviour is stable.
+- Test Mode is useful, but the normal route should stay the source of truth.
+
+## Cleanup priorities
+
+1. Prevent old route-shell fallback from taking over any new v1 room.
+2. Clean Task Map status labels for complete/current/locked/unlocked route nodes.
+3. Make normal route buttons obvious so Test Mode is not needed for normal navigation.
+4. Reduce or hide giant hotspot boxes outside test mode.
+5. Compact Source Mine, Draft Route, and later-room panels.
+6. Add Source Mine first-time intro / Begin Source Mine step.
+7. Add edit/remove/reorder controls for Draft Route markers and later saved items.
+8. Improve real-assignment language across Paragraph Forge, Citation Vault, Polish Pool, and Submission Gate.
+9. Add Submission Gate copy/export helper.
+10. Consolidate temporary scripts after behaviour is stable.
 
 ## Do not do yet
 
-Do not spend time on final art, final CGs, pose swaps, monster/imp animation, or room background polish until Paragraph Forge v1 works.
+Do not spend time on final art, final CGs, pose swaps, monster/imp animation, or room background polish until the route cleanup pass is done.
 
-Do not rewrite working Brief Fog, Source Mine, or Draft Route logic unless a browser test finds a specific bug.
+Do not rewrite working Brief Fog, Source Mine, Draft Route, Paragraph Forge, Bridge Hall, Citation Vault, Polish Pool, or Submission Gate logic unless a specific browser test fails.
 
 Do not restore old blank/cream Source Notes style UI.
 
 ## Immediate next action
 
-Build Paragraph Forge v1 using the working Draft Route marker data.
+Start a cleanup pass for the completed Study Cave v1 route.
