@@ -242,6 +242,12 @@
       </ol>`;
   }
 
+  function paragraphForgeButton(state) {
+    return routeMarkers(state).length
+      ? '<div class="simple-actions"><button type="button" data-action="route-next" data-room="draft-route">Continue to Paragraph Forge</button></div>'
+      : '';
+  }
+
   function plannerPanel(state) {
     return `
       <h3>Route Planner</h3>
@@ -270,7 +276,8 @@
       </div>
 
       <h3>Current route</h3>
-      ${routeList(state)}`;
+      ${routeList(state)}
+      ${paragraphForgeButton(state)}`;
   }
 
   function evidencePanel(state) {
@@ -325,11 +332,7 @@
       return `
         <h3>Review Route</h3>
         ${routeList(state)}
-        ${
-          routeMarkers(state).length
-            ? `<div class="simple-actions"><button type="button" data-action="route-next" data-room="draft-route">Continue to Paragraph Forge</button></div>`
-            : ""
-        }`;
+        ${paragraphForgeButton(state)}`;
     }
 
     if (activeTab === "missing") return missingPanel(state);
@@ -358,21 +361,18 @@
     routeState(state).started = true;
     routeState(state).activeTab = tab || routeState(state).activeTab || "planner";
 
-    saveState(state, message || "Draft Route opened");
+    saveState(state, message || "Opened Draft Route");
 
     node.innerHTML = `
       ${styles()}
       <section class="simple-room draft-route-room">
         <p class="scene-label">Draft Route</p>
-
         <article class="stage-card simple-card draft-route-card">
           <h2>Draft Route</h2>
           <p>Choose the order your evidence will travel in before Paragraph Forge.</p>
-
           ${saveInfo(state)}
           ${tabs(routeState(state).activeTab)}
           ${panelBody(state, routeState(state).activeTab)}
-
           <div class="simple-actions">
             <button type="button" data-action="open-source-mine">Source Mine</button>
             <button type="button" data-action="open-task-map">Task Map</button>
@@ -381,69 +381,61 @@
       </section>`;
   }
 
-  function addMarker(state, gem) {
-    const bucket = clean(gem.bucket, 80);
-
-    routeState(state).markers.push({
-      id: uid(),
-      order: routeState(state).markers.length + 1,
-      title: bucket,
-      detail: clean(gem.evidence, 1600),
-      note: gem.note || `Use this evidence for ${bucket}.`,
-      bucket,
-      focus: bucket,
-      purpose: gem.note || `Use this evidence for ${bucket}.`,
-      evidenceGemId: gem.id,
-      evidence: clean(gem.evidence, 1600),
-      citationLabel: sourceLabel(gem)
-    });
-  }
-
   function buildRoute() {
     const state = loadState();
-    const usedGemIds = routeMarkers(state).map(marker => marker.evidenceGemId);
+    const existingGemIds = new Set(routeMarkers(state).map(marker => marker.evidenceGemId));
+    const newGems = evidenceGems(state).filter(gem => !existingGemIds.has(gem.id));
 
-    let added = 0;
-
-    getBuckets(state).forEach(bucket => {
-      gemsForBucket(state, bucket).forEach(gem => {
-        if (usedGemIds.includes(gem.id)) return;
-
-        addMarker(state, gem);
-        usedGemIds.push(gem.id);
-        added += 1;
-      });
-    });
-
-    if (routeMarkers(state).length && !state.unlocked.includes("paragraph-forge")) {
-      state.unlocked.push("paragraph-forge");
+    if (!newGems.length) {
+      return renderDraftRoute("planner", "No new gems to add");
     }
 
-    saveState(state, added ? `Built ${added} route marker(s)` : "No new gems to add");
-    renderDraftRoute("planner", state.lastAction);
+    newGems.forEach(gem => addMarkerForGem(state, gem));
+
+    saveState(state, `Built ${newGems.length} route marker(s)`);
+    renderDraftRoute("planner", `Built ${newGems.length} route marker(s)`);
   }
 
-  function addOneGem(gemId) {
-    const state = loadState();
-    const gem = evidenceGems(state).find(item => item.id === gemId);
+  function addMarkerForGem(state, gem) {
+    const marker = {
+      id: uid(),
+      order: routeMarkers(state).length + 1,
+      bucket: clean(gem.bucket, 80) || "uncategorised",
+      title: clean(gem.bucket || "Paragraph point", 120),
+      focus: clean(gem.bucket || "Paragraph point", 120),
+      evidenceGemId: gem.id,
+      citationLabel: sourceLabel(gem),
+      detail: clean(gem.evidence, 1600),
+      evidence: clean(gem.evidence, 1600),
+      note: clean(gem.note || gem.link || gem.purpose, 600),
+      purpose: clean(gem.note || gem.link || gem.purpose, 600),
+      createdAt: new Date().toISOString()
+    };
 
-    if (!gem) {
-      return renderDraftRoute("evidence", "Gem not found");
-    }
-
-    addMarker(state, gem);
+    routeState(state).markers.push(marker);
 
     if (!state.unlocked.includes("paragraph-forge")) {
       state.unlocked.push("paragraph-forge");
     }
+  }
 
-    saveState(state, "Route marker saved; Paragraph Forge unlocked");
-    renderDraftRoute("review", state.lastAction);
+  function addGem(gemId) {
+    const state = loadState();
+    const gem = evidenceGems(state).find(item => item.id === gemId);
+
+    if (!gem) return renderDraftRoute("evidence", "Evidence gem not found");
+
+    if (routeMarkers(state).some(marker => marker.evidenceGemId === gem.id)) {
+      return renderDraftRoute("evidence", "Evidence gem already on route");
+    }
+
+    addMarkerForGem(state, gem);
+    saveState(state, "Added evidence gem to route");
+    renderDraftRoute("review", "Added evidence gem to route");
   }
 
   document.addEventListener("click", function (event) {
     const button = event.target.closest("button, a");
-
     if (!button) return;
 
     const action = button.dataset.action || "";
@@ -451,7 +443,7 @@
     if (action === "open-draft-route" || action === "source-draft-route") {
       event.preventDefault();
       event.stopImmediatePropagation();
-      return renderDraftRoute("planner", "Draft Route opened");
+      return renderDraftRoute("planner", "Opened Draft Route");
     }
 
     if (action === "draft-tab") {
@@ -469,7 +461,7 @@
     if (action === "draft-add-gem") {
       event.preventDefault();
       event.stopImmediatePropagation();
-      return addOneGem(button.dataset.gemId);
+      return addGem(button.dataset.gemId || "");
     }
   }, true);
 })();
