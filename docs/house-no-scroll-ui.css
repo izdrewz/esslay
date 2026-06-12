@@ -184,35 +184,40 @@ body[data-room-id="house"] .life-task-room-hotspot {
 
 body[data-room-id="house"] .house-status {
   position: absolute;
-  z-index: 30;
-  left: max(12px, calc((100vw - min(1540px, calc((100dvh - 70px) * 16 / 9))) / 2 + 12px));
-  bottom: 12px;
+  z-index: 6000;
+  left: max(12px, calc((100vw - 1540px) / 2 + 18px));
+  top: 13px;
+  bottom: auto;
   width: auto;
-  max-width: min(260px, calc(100vw - 28px));
+  max-width: min(420px, 34vw);
   margin: 0;
-  padding: 6px;
-  border: 2px solid #5a3825;
-  border-radius: 14px;
-  background: rgba(239, 226, 194, .9);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 8px 22px rgba(0,0,0,.24);
+  gap: 7px;
+  backdrop-filter: none;
+  box-shadow: none;
 }
 
 body[data-room-id="house"] .house-status > div:first-child {
   display: inline-flex;
   align-items: center;
-  max-width: 86px;
+  max-width: none;
 }
 
 body[data-room-id="house"] .house-status h2 {
   margin: 0;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: .75rem;
+  font-size: .78rem;
   line-height: 1;
   cursor: help;
+  padding: 5px 8px;
+  border: 1px solid rgba(90, 56, 37, .55);
+  border-radius: 999px;
+  background: rgba(255, 244, 220, .62);
 }
 
 body[data-room-id="house"] #room-level-note,
@@ -234,6 +239,10 @@ body[data-room-id="house"] .layer-note {
 body[data-room-id="house"] .layer-note strong {
   font-size: .72rem;
   cursor: help;
+  padding: 5px 8px;
+  border: 1px solid rgba(90, 56, 37, .55);
+  border-radius: 999px;
+  background: rgba(255, 244, 220, .62);
 }
 
 body[data-room-id="house"] .life-task-status-button,
@@ -334,6 +343,12 @@ body[data-room-id="house"] .mirror-panel {
     justify-content: flex-start;
   }
 
+  body[data-room-id="house"] .house-status {
+    top: 8px;
+    left: 8px;
+    max-width: calc(100vw - 16px);
+  }
+
   body[data-room-id="house"] .room-shell {
     width: min(calc(100vw - 10px), calc((100dvh - 122px) * 16 / 9));
     max-height: calc(100dvh - 122px);
@@ -342,11 +357,6 @@ body[data-room-id="house"] .mirror-panel {
   body[data-room-id="house"] .room-stage {
     min-height: 0;
     aspect-ratio: 16 / 9;
-  }
-
-  body[data-room-id="house"] .house-status {
-    left: 8px;
-    bottom: 8px;
   }
 
   body[data-room-id="house"] .asset-library {
