@@ -1,0 +1,191 @@
+.life-task-nav-button,
+.life-task-status-button {
+  border: 1px solid rgba(236, 215, 170, .75);
+  border-radius: 999px;
+  padding: 9px 13px;
+  background: rgba(250, 242, 225, .96);
+  color: #2f2118;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.life-task-room-hotspot {
+  left: 22%;
+  top: 72%;
+}
+
+.life-task-panel {
+  position: fixed;
+  inset: 14px;
+  z-index: 5200;
+  display: none;
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid rgba(236, 215, 170, .72);
+  border-radius: 24px;
+  background: rgba(8, 8, 18, .95);
+  color: #fff7df;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, .58);
+}
+
+.life-task-panel.open {
+  display: block;
+}
+
+.life-task-header,
+.life-task-tabs,
+.life-task-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.life-task-header {
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.life-task-header h2,
+.life-task-header p {
+  margin: 0 0 4px;
+}
+
+.life-task-close,
+.life-task-tabs button,
+.life-task-actions button,
+.life-task-actions a,
+.life-task-card button {
+  border: 1px solid rgba(236, 215, 170, .75);
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: rgba(250, 242, 225, .96);
+  color: #2f2118;
+  font: inherit;
+  font-weight: 900;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.life-task-tabs {
+  margin: 8px 0 12px;
+}
+
+.life-task-tabs button[aria-current="true"] {
+  background: rgba(255, 231, 171, .95);
+  outline: 3px solid rgba(255, 231, 171, .28);
+}
+
+.life-task-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 12px;
+}
+
+.life-task-chip,
+.life-task-room-chip {
+  display: inline-flex;
+  align-items: center;
+  margin: 2px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255, 231, 171, .92);
+  color: #2f2118;
+  font-weight: 900;
+  font-size: .84rem;
+}
+
+.life-task-list,
+.life-task-room-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 10px;
+}
+
+.life-task-card,
+.life-task-room-block,
+.life-task-reward-card {
+  padding: 11px;
+  border: 1px solid rgba(236, 215, 170, .4);
+  border-radius: 18px;
+  background: rgba(11, 13, 25, .82);
+  color: #fff7df;
+}
+
+.life-task-card[data-status="done"] {
+  opacity: .72;
+  border-color: rgba(174, 255, 174, .52);
+}
+
+.life-task-card[data-status="skipped"] {
+  opacity: .58;
+  border-style: dashed;
+}
+
+.life-task-card h3,
+.life-task-room-block h3,
+.life-task-reward-card h3 {
+  margin: 0 0 6px;
+}
+
+.life-task-card p,
+.life-task-room-block p,
+.life-task-reward-card p {
+  color: rgba(255, 247, 223, .86);
+  margin: 0 0 8px;
+}
+
+.life-task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.life-task-first-step {
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .08);
+  color: #fff7df !important;
+  font-weight: 800;
+}
+
+.life-task-empty {
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .08);
+  color: rgba(255, 247, 223, .86);
+}
+
+.life-task-room-block h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.life-task-reward-card strong {
+  color: #ffe7ab;
+}
+
+@media (max-width: 820px) {
+  .life-task-panel {
+    inset: 8px;
+    padding: 12px;
+  }
+
+  .life-task-header {
+    display: block;
+  }
+
+  .life-task-close {
+    margin-top: 8px;
+  }
+
+  .life-task-list,
+  .life-task-room-list {
+    grid-template-columns: 1fr;
+  }
+}
