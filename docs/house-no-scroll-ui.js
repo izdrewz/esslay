@@ -43,6 +43,38 @@
     stage.appendChild(note);
   }
 
+  function installHoverHelp() {
+    var headerCopy = qs(".house-header > div");
+    var headerNote = qs(".house-header p:not(.eyebrow)");
+    if (headerCopy && headerNote) {
+      var help = headerNote.textContent.trim();
+      headerCopy.dataset.hoverHelp = help;
+      headerCopy.title = help;
+      headerCopy.tabIndex = 0;
+      headerNote.setAttribute("aria-hidden", "true");
+    }
+
+    var roomTitle = qs("#room-level-title");
+    var roomNote = qs("#room-level-note");
+    if (roomTitle && roomNote) {
+      var fullTitle = roomTitle.textContent.trim();
+      var note = roomNote.textContent.trim();
+      roomTitle.textContent = "Living room";
+      roomTitle.dataset.hoverHelp = fullTitle + ": " + note;
+      roomTitle.title = roomTitle.dataset.hoverHelp;
+      roomTitle.tabIndex = 0;
+      roomNote.setAttribute("aria-hidden", "true");
+    }
+
+    var wallet = qs(".layer-note");
+    if (wallet) {
+      var walletText = wallet.textContent.replace(/\s+/g, " ").trim();
+      wallet.dataset.hoverHelp = walletText || "Wallet and rewards.";
+      wallet.title = wallet.dataset.hoverHelp;
+      wallet.tabIndex = 0;
+    }
+  }
+
   function retargetWardrobeButton() {
     var wardrobe = qs(".desk-hotspot");
     if (!wardrobe || wardrobe.dataset.houseNoScrollReady === "true") return;
@@ -68,5 +100,6 @@
   addLifeAdminHotspot();
   addAssetLibraryClose();
   addAvatarPausedNote();
+  installHoverHelp();
   retargetWardrobeButton();
 })();
