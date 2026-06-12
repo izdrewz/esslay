@@ -13,8 +13,8 @@ body[data-room-id="house"] .house-shell {
   min-height: 0;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
-  gap: 10px;
-  padding: 10px 12px;
+  gap: 8px;
+  padding: 8px 12px;
   overflow: hidden;
   position: relative;
 }
@@ -22,7 +22,7 @@ body[data-room-id="house"] .house-shell {
 body[data-room-id="house"] .house-header {
   width: min(1360px, 100%);
   margin: 0 auto;
-  padding: 10px 14px;
+  padding: 8px 12px;
   border-width: 3px;
   border-radius: 16px;
   gap: 10px;
@@ -30,13 +30,15 @@ body[data-room-id="house"] .house-header {
 }
 
 body[data-room-id="house"] .house-header h1 {
-  font-size: clamp(2rem, 4.3vw, 3.7rem);
-  margin-bottom: 4px;
+  font-size: clamp(1.85rem, 3.8vw, 3.25rem);
+  margin-bottom: 3px;
 }
 
 body[data-room-id="house"] .house-header p {
   margin-bottom: 0;
   max-width: 560px;
+  font-size: .88rem;
+  line-height: 1.2;
 }
 
 body[data-room-id="house"] .house-nav {
@@ -56,22 +58,28 @@ body[data-room-id="house"] .import-item-form button {
 }
 
 body[data-room-id="house"] .room-shell {
-  width: min(1360px, 100%);
-  height: 100%;
+  width: min(1360px, calc(100vw - 24px), calc((100dvh - 112px) * 16 / 9));
+  height: auto;
+  max-height: calc(100dvh - 112px);
+  aspect-ratio: 16 / 9;
   min-height: 0;
   margin: 0 auto;
   border-width: 5px;
   border-radius: 16px;
+  align-self: start;
 }
 
 body[data-room-id="house"] .room-stage {
+  width: 100%;
   height: 100%;
   min-height: 0;
-  aspect-ratio: auto;
+  aspect-ratio: 16 / 9;
+  background: #211713;
 }
 
 body[data-room-id="house"] .room-background {
-  object-fit: cover;
+  object-fit: contain;
+  background: #211713;
 }
 
 body[data-room-id="house"] .avatar-layer,
@@ -92,11 +100,11 @@ body[data-room-id="house"] .life-admin-room-hotspot {
 body[data-room-id="house"] .house-status {
   position: absolute;
   z-index: 30;
-  left: max(16px, calc((100vw - 1360px) / 2 + 20px));
-  bottom: 18px;
-  width: min(390px, calc(100vw - 36px));
+  left: max(16px, calc((100vw - min(1360px, calc((100dvh - 112px) * 16 / 9))) / 2 + 16px));
+  bottom: 16px;
+  width: min(360px, calc(100vw - 36px));
   margin: 0;
-  padding: 10px 12px;
+  padding: 8px 10px;
   border-width: 3px;
   border-radius: 16px;
   background: rgba(255, 244, 223, .92);
@@ -106,18 +114,18 @@ body[data-room-id="house"] .house-status {
 
 body[data-room-id="house"] .house-status h2 {
   margin-bottom: 3px;
-  font-size: 1rem;
+  font-size: .95rem;
 }
 
 body[data-room-id="house"] .house-status p,
 body[data-room-id="house"] .layer-note span {
   margin-bottom: 0;
-  font-size: .78rem;
-  line-height: 1.25;
+  font-size: .74rem;
+  line-height: 1.2;
 }
 
 body[data-room-id="house"] .layer-note {
-  padding: 8px 10px;
+  padding: 7px 9px;
   border-width: 2px;
   border-radius: 14px;
 }
@@ -197,7 +205,11 @@ body[data-room-id="house"] .mirror-panel {
 
   body[data-room-id="house"] .house-header {
     display: block;
-    padding: 9px 10px;
+    padding: 8px 10px;
+  }
+
+  body[data-room-id="house"] .house-header h1 {
+    font-size: 2rem;
   }
 
   body[data-room-id="house"] .house-nav {
@@ -205,9 +217,14 @@ body[data-room-id="house"] .mirror-panel {
     justify-content: flex-start;
   }
 
+  body[data-room-id="house"] .room-shell {
+    width: min(calc(100vw - 14px), calc((100dvh - 150px) * 16 / 9));
+    max-height: calc(100dvh - 150px);
+  }
+
   body[data-room-id="house"] .room-stage {
     min-height: 0;
-    aspect-ratio: auto;
+    aspect-ratio: 16 / 9;
   }
 
   body[data-room-id="house"] .house-status {
