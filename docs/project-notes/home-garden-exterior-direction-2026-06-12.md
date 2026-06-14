@@ -1,5 +1,11 @@
 # Home Garden / Exterior Direction — 2026-06-12
 
+## Status
+
+Direction is approved as a concept. No Garden image is approved yet.
+
+A previous SVG/vector-style placeholder was rejected and removed. Do not use SVG/vector diagram placeholders for this room.
+
 ## Decision
 
 Use the **right-hand cliffside house reference** as the main exterior direction.
@@ -43,11 +49,25 @@ Preferred garden type:
 - no UI baked into the image
 - no characters
 
+## Visual quality bar
+
+The Garden must be a proper painterly environment background, not a flat/vector placeholder.
+
+It should match the room-art direction more closely:
+
+- wide 16:9 visual-novel / point-and-click background
+- coherent environment, not a concept diagram
+- painterly fantasy-academic style
+- warm lanterns plus cool mountain/cave atmosphere
+- readable hotspots but no UI baked in
+- enough negative space for overlays/hotspots
+- central XP tree/sapling must feel integrated into the terrace, not pasted on
+
 ## Intended assets
 
-Expected asset paths:
+Expected future asset paths once approved:
 
-- `docs/assets/rooms/garden/xp-garden-terrace-v01.webp`
+- `docs/assets/rooms/garden/xp-garden-cliff-terrace-approved.webp`
 - `docs/assets/reference/home-exterior-cliffhouse-reference-right.webp`
 
 The reference exterior image is reference-only unless confirmed safe/licensed for public repo use.
