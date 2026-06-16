@@ -1,0 +1,195 @@
+:root {
+  --garden-ink: #211812;
+  --garden-paper: rgba(255, 245, 224, .94);
+  --garden-border: #4d3022;
+  --garden-gold: #e4b667;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--garden-ink);
+  background: #17120f;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.garden-shell {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(238, 205, 138, .2), transparent 34%),
+    linear-gradient(180deg, #2d2118 0%, #17120f 100%);
+}
+
+.garden-room {
+  position: relative;
+  width: min(1540px, calc(100vw - 16px), calc((100dvh - 16px) * 16 / 9));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 4px solid #5a3825;
+  border-radius: 18px;
+  background: #211713;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, .45);
+}
+
+.garden-room::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 5px rgba(255, 244, 223, .12),
+    inset 0 -34px 50px rgba(0, 0, 0, .18);
+}
+
+.garden-room-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.garden-topbar,
+.garden-progress-card {
+  position: absolute;
+  z-index: 5;
+  border: 1px solid rgba(90, 56, 37, .68);
+  background: var(--garden-paper);
+  color: var(--garden-ink);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .25);
+  backdrop-filter: blur(5px);
+}
+
+.garden-topbar {
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 16px;
+}
+
+.garden-eyebrow {
+  margin: 0 0 3px;
+  color: #8a6338;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.garden-topbar h1,
+.garden-progress-card h2,
+.garden-progress-card p {
+  margin-top: 0;
+}
+
+.garden-topbar h1 {
+  margin-bottom: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.45rem, 2.4vw, 2.35rem);
+  line-height: .95;
+}
+
+.garden-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.garden-nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #5a3825;
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: linear-gradient(180deg, #fff4dc 0%, #e9d5ad 100%);
+  color: #2c1d16;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: .76rem;
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, .18), inset 0 -2px 0 rgba(0, 0, 0, .12);
+}
+
+.garden-progress-card {
+  left: 14px;
+  bottom: 14px;
+  width: min(310px, calc(100% - 28px));
+  padding: 10px 12px;
+  border-radius: 18px;
+}
+
+.garden-progress-card h2 {
+  margin-bottom: 7px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.05rem;
+  line-height: 1.1;
+}
+
+.garden-progress-card p {
+  margin-bottom: 6px;
+  color: #5b4636;
+  font-weight: 700;
+}
+
+.garden-progress-card p:last-child {
+  margin-bottom: 0;
+}
+
+.garden-progress-card strong {
+  color: #4d3022;
+  font-size: 1.1em;
+}
+
+@media (max-width: 780px) {
+  .garden-shell {
+    align-items: start;
+    padding: 5px;
+  }
+
+  .garden-room {
+    width: min(calc(100vw - 10px), calc((100dvh - 10px) * 16 / 9));
+    border-radius: 14px;
+  }
+
+  .garden-topbar {
+    top: 7px;
+    left: 7px;
+    right: 7px;
+    padding: 7px 8px;
+  }
+
+  .garden-topbar h1 {
+    font-size: 1.45rem;
+  }
+
+  .garden-nav a {
+    padding: 5px 8px;
+    font-size: .7rem;
+  }
+
+  .garden-progress-card {
+    left: 9px;
+    bottom: 9px;
+    padding: 8px 10px;
+  }
+}
