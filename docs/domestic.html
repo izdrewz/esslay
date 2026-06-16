@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Domestic Quest Board</title>
+    <link rel="stylesheet" href="room-viewport.css?v=3">
     <link rel="stylesheet" href="simple-screen.css?v=1">
   </head>
-  <body>
-    <main class="simple-shell domestic-screen">
+  <body data-room-id="domestic">
+    <main class="simple-shell domestic-screen" data-room-viewport data-room-id="domestic" data-room-aspect="1.7777777778" data-room-max-width="1180" data-room-reserve-top="120" data-room-safe-bottom="90" data-room-default-scale="0.9">
       <header class="simple-header">
         <div>
           <p class="eyebrow">Esslay</p>
@@ -15,12 +16,13 @@
           <p>Cleaning, admin, room setup, rest, and other non-academic quests will live here.</p>
         </div>
         <nav class="simple-nav">
+          <div data-room-viewport-controls-slot aria-label="Domestic Quest Board view size controls"></div>
           <a href="hub.html">Village</a>
           <a href="house.html">Home Base</a>
         </nav>
       </header>
 
-      <section class="simple-card">
+      <section class="simple-card room-viewport-frame" data-room-viewport-frame>
         <h2>First board slots</h2>
         <button type="button">Vacuuming quest</button>
         <button type="button">Room reset quest</button>
@@ -29,5 +31,6 @@
         <p>This is a local app screen shell, not a GitHub branch.</p>
       </section>
     </main>
+    <script src="room-viewport.js?v=3"></script>
   </body>
 </html>
