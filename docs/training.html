@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Notebook Shrine</title>
+    <link rel="stylesheet" href="room-viewport.css?v=3">
     <link rel="stylesheet" href="simple-screen.css?v=1">
   </head>
-  <body>
-    <main class="simple-shell training-screen">
+  <body data-room-id="training">
+    <main class="simple-shell training-screen" data-room-viewport data-room-id="training" data-room-aspect="1.7777777778" data-room-max-width="1180" data-room-reserve-top="120" data-room-safe-bottom="90" data-room-default-scale="0.9">
       <header class="simple-header">
         <div>
           <p class="eyebrow">Esslay</p>
@@ -15,17 +16,19 @@
           <p>Training notes, NotebookLM imports, and study material reminders live here. These are not citation-ready evidence until checked against sources.</p>
         </div>
         <nav class="simple-nav">
+          <div data-room-viewport-controls-slot aria-label="Notebook Shrine view size controls"></div>
           <a href="hub.html">Village</a>
           <a href="cave.html">Study Cave</a>
         </nav>
       </header>
 
-      <section class="simple-card">
+      <section class="simple-card room-viewport-frame" data-room-viewport-frame>
         <h2>Training archive shell</h2>
         <textarea placeholder="Paste NotebookLM notes, summaries, questions, or study-guide output here."></textarea>
         <button type="button">Save training note</button>
         <p>This is a local app screen shell, not a GitHub branch.</p>
       </section>
     </main>
+    <script src="room-viewport.js?v=3"></script>
   </body>
 </html>
