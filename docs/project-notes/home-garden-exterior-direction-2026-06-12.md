@@ -67,6 +67,27 @@ It should match the room-art direction more closely:
 - enough negative space for overlays/hotspots
 - central XP tree/sapling must feel integrated into the terrace, not pasted on
 
+## Shared viewport direction — 2026-06-16
+
+Garden is now the first room using the shared room viewport system.
+
+Shared viewport files:
+
+- `docs/room-viewport.css`
+- `docs/room-viewport.js`
+
+Current Garden viewport behaviour:
+
+- dynamically measures the browser viewport
+- fits the 16:9 room frame within available width and height
+- keeps the image contained rather than cropped
+- reserves bottom safety space for screens where the browser/taskbar area leaves less usable height
+- adds a medieval fantasy frame/backdrop so any gaps look intentional
+- adds a small in-game View control with smaller / reset / larger buttons
+- saves the chosen size per room in localStorage key `esslay-room-viewport-settings-v1`
+
+Important: this shared viewport system is intended to be reused by future rooms, but it is only applied to Garden first. Do not mass-apply it to Study Cave, Home Base, or unfinished rooms until Garden fitting is confirmed.
+
 ## Implemented XP Garden assets — 2026-06-16
 
 Installed asset paths:
@@ -97,6 +118,8 @@ Implementation files:
 - `docs/garden.css`
 - `docs/garden.js`
 - `docs/garden-xp-bridge.js`
+- `docs/room-viewport.css`
+- `docs/room-viewport.js`
 
 Current behaviour:
 
@@ -110,6 +133,7 @@ Known follow-up:
 
 - Home Base will later be redesigned so the Garden is reached through an in-scene door / room transition, not just a nav link.
 - Garden art is implemented for progression use, but should not be marked locked final unless Izzy explicitly locks it.
+- Once Garden viewport fitting is approved, the shared viewport system can be considered for other visual-novel rooms and future locked / placeholder room shells.
 
 ## Reference asset warning
 
