@@ -79,13 +79,14 @@ Shared viewport files:
 Current shared viewport behaviour:
 
 - dynamically measures the browser viewport
-- fits a 16:9 room frame within available width and height
 - supports top reserve and bottom safety spacing for pages with separate headers
-- keeps room art contained rather than cropped where image art is involved
 - adds a medieval fantasy frame/backdrop so any gaps look intentional
-- adds a small in-game View control with smaller / reset / larger buttons
+- adds a small in-game View control with Fit / Wide / Fill / smaller / reset / larger buttons
+- Fit keeps the full room image visible inside a 16:9 frame
+- Wide prioritises horizontal screen width and may crop slightly on height when image art uses cover mode
+- Fill uses more of the available frame area and may crop more than Wide
 - places the View control in the room top bar/header when a slot is provided
-- saves the chosen size per room in localStorage key `esslay-room-viewport-settings-v1`
+- saves the chosen size and mode per room in localStorage key `esslay-room-viewport-settings-v1`
 
 Applied room/screen shells:
 
