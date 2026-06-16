@@ -23,13 +23,15 @@ Shared room viewport fitting is now a repo-wide room system through:
 
 Shared viewport behaviour:
 
-- dynamically fits a 16:9 room frame to the current browser viewport
+- dynamically fits room frames to the current browser viewport
 - supports top reserve and bottom safety spacing for pages with separate headers
-- keeps room art contained rather than cropped where image art is involved
 - adds a medieval fantasy frame/backdrop so gaps look intentional
-- provides a small in-game View control: smaller / reset / larger
+- provides a small in-game View control: Fit / Wide / Fill / smaller / reset / larger
+- Fit keeps the full image visible inside a 16:9 frame
+- Wide prioritises horizontal screen width and may crop slightly on height for image rooms
+- Fill uses more of the available frame and may crop more than Wide
 - places the View control into a page header/top-bar slot when available
-- saves per-room view scale in `localStorage` key `esslay-room-viewport-settings-v1`
+- saves per-room view scale and mode in `localStorage` key `esslay-room-viewport-settings-v1`
 
 Current applied room/screen shells:
 
@@ -190,8 +192,15 @@ Current localStorage keys:
 - `f47ed66` — Apply shared viewport to Domestic board shell
 - `36ac485` — Apply shared viewport to training shell
 - `baf3b52` — Apply shared viewport to Study Cave
-- `785ae7c` — Bump Garden shared viewport cache
-- `5145099` — Update shared viewport rollout note
+- `22c10b1` — Add shared viewport fit wide fill modes
+- `0574b0e` — Style shared viewport mode controls
+- `52f9a7c` — Bump Garden viewport mode cache
+- `38a2806` — Bump Home Base viewport mode cache
+- `0a8203a` — Bump Hub viewport mode cache
+- `8331028` — Bump Domestic viewport mode cache
+- `5e33556` — Bump training viewport mode cache
+- `ca81917` — Bump Study Cave viewport mode cache
+- `3038196` — Record viewport view modes
 
 ## Current Study Cave data chain
 
@@ -230,11 +239,12 @@ Submission Gate uses polish fixes to create final readiness checks at:
 Viewport rollout test order:
 
 1. Test `garden.html` first because it is the confirmed working reference.
-2. Test `house.html`, especially whether the room image, task board, and mirror still open.
-3. Test `cave.html`, especially Enter cave, Task Map, route drawers, and Full screen.
-4. Test `edit-room.html`, especially the stage fit and hotspots.
-5. Test `hub.html`, `domestic.html`, and `training.html` as placeholder/future-room shells.
-6. If one room fails, fix the shared viewport or that room's viewport data.
+2. Try Fit, Wide, and Fill on Garden. Wide should use more horizontal width than Fit.
+3. Test `house.html`, especially whether the room image, task board, and mirror still open.
+4. Test `cave.html`, especially Enter cave, Task Map, route drawers, and Full screen.
+5. Test `edit-room.html`, especially the stage fit and hotspots.
+6. Test `hub.html`, `domestic.html`, and `training.html` as placeholder/future-room shells.
+7. If one room fails, fix the shared viewport or that room's viewport data.
 
 For Home Base / Garden direction:
 
@@ -258,6 +268,7 @@ For Study Cave cleanup later:
 ## Known issues / later polish
 
 - Shared viewport has now been applied across current room/screen shells and needs cross-room browser testing.
+- `docs/edit-room.html` still references `room-viewport.css?v=3` and `room-viewport.js?v=3` because a direct cache-bump write was blocked; hard refresh should still retrieve the current shared files if needed.
 - Home Base will be redesigned later so room routes use doors / in-scene transitions instead of only nav links.
 - Garden art is implemented for progression use but not locked final unless Izzy explicitly locks it.
 - Garden XP currently comes from Home task completion. Study Cave completion can be connected later.
