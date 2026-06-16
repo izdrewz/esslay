@@ -4,20 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Hub</title>
+    <link rel="stylesheet" href="room-viewport.css?v=3">
     <link rel="stylesheet" href="hub.css?v=4">
   </head>
-  <body>
-    <main class="hub-shell">
+  <body data-room-id="hub">
+    <main class="hub-shell" data-room-viewport data-room-id="hub" data-room-aspect="1.7777777778" data-room-max-width="1320" data-room-reserve-top="110" data-room-safe-bottom="90" data-room-default-scale="0.9">
       <header class="hub-header">
         <div>
           <p class="eyebrow">Esslay</p>
           <h1>Quest Village</h1>
           <p>Click a place to open that game screen inside the app.</p>
         </div>
-        <a href="index.html">Return to idle camp</a>
+        <nav class="hub-nav" aria-label="Quest Village navigation">
+          <div data-room-viewport-controls-slot aria-label="Quest Village view size controls"></div>
+          <a href="index.html">Return to idle camp</a>
+        </nav>
       </header>
 
-      <section class="village-map" aria-label="Clickable village map">
+      <section class="village-map room-viewport-frame" data-room-viewport-frame aria-label="Clickable village map">
         <a class="place cave" href="cave.html">
           <span></span>
           <strong>Study Cave</strong>
@@ -38,12 +42,13 @@
           <strong>Quest Board</strong>
           <small>domestic</small>
         </a>
-        <a class="place shrine" href="training.html">
+        <a class="place training" href="training.html">
           <span></span>
-          <strong>Notebook Shrine</strong>
+          <strong>Notebook Room</strong>
           <small>training</small>
         </a>
       </section>
     </main>
+    <script src="room-viewport.js?v=3"></script>
   </body>
 </html>
