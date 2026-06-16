@@ -60,6 +60,10 @@
     return numberFrom(shell.dataset.roomSafeBottom, desktopFallback);
   }
 
+  function reserveTop(shell) {
+    return numberFrom(shell.dataset.roomReserveTop, 0);
+  }
+
   function fitShell(shell) {
     var frame = shell.querySelector("[data-room-viewport-frame]") || shell.querySelector(".room-viewport-frame");
     if (!frame) return;
@@ -68,8 +72,9 @@
     var maxWidth = numberFrom(shell.dataset.roomMaxWidth, 1540);
     var padding = numberFrom(shell.dataset.roomViewportPadding, window.innerWidth > 780 ? 10 : 5);
     var bottom = safeBottom(shell);
+    var top = reserveTop(shell);
     var availableWidth = Math.max(260, window.innerWidth - padding * 2);
-    var availableHeight = Math.max(180, window.innerHeight - padding * 2 - bottom);
+    var availableHeight = Math.max(180, window.innerHeight - padding * 2 - bottom - top);
     var baseWidth = Math.min(maxWidth, availableWidth, availableHeight * aspect);
     var scale = roomScale(shell);
     var width = Math.min(availableWidth, Math.max(240, Math.round(baseWidth * scale)));
