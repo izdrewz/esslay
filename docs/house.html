@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Home Base</title>
+    <link rel="stylesheet" href="room-viewport.css?v=3">
     <link rel="stylesheet" href="house.css?v=8">
     <link rel="stylesheet" href="house-links.css?v=1">
     <link rel="stylesheet" href="avatar-placement.css?v=3">
@@ -12,7 +13,16 @@
     <link rel="stylesheet" href="home-life-admin-task-board.css?v=1">
   </head>
   <body data-room-id="house">
-    <main class="house-shell">
+    <main
+      class="house-shell"
+      data-room-viewport
+      data-room-id="house"
+      data-room-aspect="1.7777777778"
+      data-room-max-width="1320"
+      data-room-reserve-top="120"
+      data-room-safe-bottom="110"
+      data-room-default-scale="0.9"
+    >
       <header class="house-header">
         <div>
           <p class="eyebrow">Esslay</p>
@@ -20,6 +30,7 @@
           <p>The house hub is fixed background art. Avatar artwork and future furniture layers sit above it.</p>
         </div>
         <nav class="house-nav" aria-label="House navigation">
+          <div data-room-viewport-controls-slot aria-label="Home Base view size controls"></div>
           <a href="hub.html">Village</a>
           <a href="edit-room.html">Edit Room</a>
           <a href="cave.html">Study Cave</a>
@@ -30,7 +41,7 @@
       </header>
 
       <section class="room-shell" aria-label="Inside the house hub">
-        <div class="room-stage" id="room-stage">
+        <div class="room-stage room-viewport-frame" id="room-stage" data-room-viewport-frame>
           <img class="room-background" src="assets/rooms/house-hub/house-hub-furnished-default.png?v=1" alt="Characterless cosy medieval cottage living room house hub with fireplace, sofa, staircase, stained glass window, and study cave doorway">
           <div class="placed-items" id="placed-items" aria-label="Placed home items"></div>
           <span class="avatar-floor-shadow" aria-hidden="true"></span>
@@ -162,5 +173,6 @@
     <script src="house-no-scroll-ui.js?v=2"></script>
     <script src="home-life-admin-task-board.js?v=1"></script>
     <script src="garden-xp-bridge.js?v=1"></script>
+    <script src="room-viewport.js?v=3"></script>
   </body>
 </html>
