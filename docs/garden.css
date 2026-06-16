@@ -3,6 +3,7 @@
   --garden-paper: rgba(255, 245, 224, .94);
   --garden-border: #4d3022;
   --garden-gold: #e4b667;
+  --garden-safe-bottom: 68px;
 }
 
 * { box-sizing: border-box; }
@@ -10,7 +11,8 @@
 html,
 body {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -21,10 +23,12 @@ body {
 }
 
 .garden-shell {
-  min-height: 100dvh;
+  height: 100dvh;
+  min-height: 0;
   display: grid;
-  place-items: center;
-  padding: 8px;
+  place-items: start center;
+  padding: 8px 8px var(--garden-safe-bottom);
+  overflow: hidden;
   background:
     radial-gradient(circle at 50% 12%, rgba(238, 205, 138, .2), transparent 34%),
     linear-gradient(180deg, #2d2118 0%, #17120f 100%);
@@ -32,13 +36,14 @@ body {
 
 .garden-room {
   position: relative;
-  width: min(1540px, calc(100vw - 16px), calc((100dvh - 16px) * 16 / 9));
+  width: min(1480px, calc(100vw - 16px), calc((100dvh - var(--garden-safe-bottom) - 16px) * 16 / 9));
+  max-width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border: 4px solid #5a3825;
   border-radius: 18px;
   background: #211713;
-  box-shadow: 0 22px 70px rgba(0, 0, 0, .45);
+  box-shadow: 0 18px 56px rgba(0, 0, 0, .42);
 }
 
 .garden-room::after {
@@ -56,7 +61,8 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #211713;
 }
 
 .garden-topbar,
@@ -71,25 +77,25 @@ body {
 }
 
 .garden-topbar {
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  min-height: 48px;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  min-height: 42px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 8px 10px;
-  border-radius: 16px;
+  gap: 10px;
+  padding: 6px 9px;
+  border-radius: 14px;
 }
 
 .garden-eyebrow {
-  margin: 0 0 3px;
+  margin: 0 0 2px;
   color: #8a6338;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: .62rem;
+  font-size: .56rem;
   font-weight: 900;
-  letter-spacing: .16em;
+  letter-spacing: .15em;
   text-transform: uppercase;
 }
 
@@ -102,7 +108,7 @@ body {
 .garden-topbar h1 {
   margin-bottom: 0;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(1.45rem, 2.4vw, 2.35rem);
+  font-size: clamp(1.18rem, 2vw, 1.85rem);
   line-height: .95;
 }
 
@@ -110,7 +116,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 7px;
+  gap: 6px;
 }
 
 .garden-nav a {
@@ -119,11 +125,11 @@ body {
   justify-content: center;
   border: 2px solid #5a3825;
   border-radius: 999px;
-  padding: 6px 10px;
+  padding: 5px 9px;
   background: linear-gradient(180deg, #fff4dc 0%, #e9d5ad 100%);
   color: #2c1d16;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: .76rem;
+  font-size: .72rem;
   font-weight: 900;
   line-height: 1;
   text-decoration: none;
@@ -131,23 +137,27 @@ body {
 }
 
 .garden-progress-card {
-  left: 14px;
-  bottom: 14px;
-  width: min(310px, calc(100% - 28px));
-  padding: 10px 12px;
-  border-radius: 18px;
+  left: 10px;
+  bottom: 10px;
+  width: min(280px, calc(100% - 20px));
+  max-height: 34%;
+  overflow: hidden;
+  padding: 8px 10px;
+  border-radius: 16px;
 }
 
 .garden-progress-card h2 {
-  margin-bottom: 7px;
+  margin-bottom: 5px;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 1.05rem;
-  line-height: 1.1;
+  font-size: .92rem;
+  line-height: 1.08;
 }
 
 .garden-progress-card p {
-  margin-bottom: 6px;
+  margin-bottom: 5px;
   color: #5b4636;
+  font-size: .84rem;
+  line-height: 1.15;
   font-weight: 700;
 }
 
@@ -157,10 +167,14 @@ body {
 
 .garden-progress-card strong {
   color: #4d3022;
-  font-size: 1.1em;
+  font-size: 1.05em;
 }
 
 @media (max-width: 780px) {
+  :root {
+    --garden-safe-bottom: 12px;
+  }
+
   .garden-shell {
     align-items: start;
     padding: 5px;
@@ -175,21 +189,22 @@ body {
     top: 7px;
     left: 7px;
     right: 7px;
-    padding: 7px 8px;
+    padding: 6px 8px;
   }
 
   .garden-topbar h1 {
-    font-size: 1.45rem;
+    font-size: 1.25rem;
   }
 
   .garden-nav a {
     padding: 5px 8px;
-    font-size: .7rem;
+    font-size: .68rem;
   }
 
   .garden-progress-card {
-    left: 9px;
-    bottom: 9px;
-    padding: 8px 10px;
+    left: 8px;
+    bottom: 8px;
+    width: min(260px, calc(100% - 16px));
+    padding: 7px 9px;
   }
 }
