@@ -3,6 +3,7 @@
   var MIN_SCALE = 0.72;
   var MAX_SCALE = 1;
   var STEP = 0.04;
+  var MODES = ["fit", "wide", "fill"];
 
   function loadSettings() {
     try {
@@ -29,29 +30,49 @@
     return shell.dataset.roomId || document.body.dataset.roomId || "default-room";
   }
 
-  function roomScale(shell) {
+  function defaultMode(shell) {
+    return MODES.indexOf(shell.dataset.roomDefaultMode) !== -1 ? shell.dataset.roomDefaultMode : "fit";
+  }
+
+  function roomSettings(shell) {
     var settings = loadSettings();
     var key = roomKey(shell);
+    settings[key] = settings[key] || {};
+    return { all: settings, key: key, room: settings[key] };
+  }
+
+  function roomScale(shell) {
+    var parts = roomSettings(shell);
     var fallback = numberFrom(shell.dataset.roomDefaultScale, 0.92);
-    return clamp(numberFrom(settings[key] && settings[key].scale, fallback), MIN_SCALE, MAX_SCALE);
+    return clamp(numberFrom(parts.room.scale, fallback), MIN_SCALE, MAX_SCALE);
+  }
+
+  function roomMode(shell) {
+    var parts = roomSettings(shell);
+    var mode = parts.room.mode || defaultMode(shell);
+    return MODES.indexOf(mode) !== -1 ? mode : "fit";
   }
 
   function setRoomScale(shell, scale) {
-    var settings = loadSettings();
-    var key = roomKey(shell);
-    settings[key] = settings[key] || {};
-    settings[key].scale = clamp(scale, MIN_SCALE, MAX_SCALE);
-    saveSettings(settings);
+    var parts = roomSettings(shell);
+    parts.room.scale = clamp(scale, MIN_SCALE, MAX_SCALE);
+    saveSettings(parts.all);
     fitShell(shell);
   }
 
-  function resetRoomScale(shell) {
-    var settings = loadSettings();
-    var key = roomKey(shell);
-    var fallback = numberFrom(shell.dataset.roomDefaultScale, 0.92);
-    settings[key] = settings[key] || {};
-    settings[key].scale = clamp(fallback, MIN_SCALE, MAX_SCALE);
-    saveSettings(settings);
+  function setRoomMode(shell, mode) {
+    if (MODES.indexOf(mode) === -1) return;
+    var parts = roomSettings(shell);
+    parts.room.mode = mode;
+    saveSettings(parts.all);
+    fitShell(shell);
+  }
+
+  function resetRoom(shell) {
+    var parts = roomSettings(shell);
+    parts.room.scale = clamp(numberFrom(shell.dataset.roomDefaultScale, 0.92), MIN_SCALE, MAX_SCALE);
+    parts.room.mode = defaultMode(shell);
+    saveSettings(parts.all);
     fitShell(shell);
   }
 
@@ -62,6 +83,17 @@
 
   function reserveTop(shell) {
     return numberFrom(shell.dataset.roomReserveTop, 0);
+  }
+
+  function setFrameSize(shell, frame, width, height, mode) {
+    frame.style.setProperty("width", Math.round(width) + "px", "important");
+    frame.style.setProperty("height", Math.round(height) + "px", "important");
+    frame.style.setProperty("aspect-ratio", "auto", "important");
+    frame.dataset.roomViewportMode = mode;
+    shell.dataset.roomViewportMode = mode;
+    shell.style.setProperty("--room-viewport-frame-width", Math.round(width) + "px");
+    shell.style.setProperty("--room-viewport-frame-height", Math.round(height) + "px");
+    updateControls(shell);
   }
 
   function fitShell(shell) {
@@ -75,30 +107,53 @@
     var top = reserveTop(shell);
     var availableWidth = Math.max(260, window.innerWidth - padding * 2);
     var availableHeight = Math.max(180, window.innerHeight - padding * 2 - bottom - top);
-    var baseWidth = Math.min(maxWidth, availableWidth, availableHeight * aspect);
     var scale = roomScale(shell);
-    var width = Math.min(availableWidth, Math.max(240, Math.round(baseWidth * scale)));
-    var height = Math.round(width / aspect);
+    var mode = roomMode(shell);
+    var width;
+    var height;
 
-    if (height > availableHeight) {
-      height = Math.floor(availableHeight);
-      width = Math.floor(height * aspect);
+    if (mode === "wide") {
+      width = Math.min(maxWidth, availableWidth) * scale;
+      height = width / aspect;
+      if (height > availableHeight) height = availableHeight;
+      width = Math.min(availableWidth, width);
+    } else if (mode === "fill") {
+      width = Math.min(maxWidth, availableWidth) * scale;
+      height = availableHeight * scale;
+      if (height > availableHeight) height = availableHeight;
+    } else {
+      width = Math.min(maxWidth, availableWidth, availableHeight * aspect) * scale;
+      height = width / aspect;
+      if (height > availableHeight) {
+        height = availableHeight;
+        width = height * aspect;
+      }
     }
 
-    frame.style.setProperty("width", width + "px", "important");
-    frame.style.setProperty("height", height + "px", "important");
-    frame.style.setProperty("aspect-ratio", "auto", "important");
-    shell.style.setProperty("--room-viewport-frame-width", width + "px");
-    shell.style.setProperty("--room-viewport-frame-height", height + "px");
+    width = Math.max(240, Math.min(availableWidth, width));
+    height = Math.max(160, Math.min(availableHeight, height));
+    setFrameSize(shell, frame, width, height, mode);
   }
 
   function controlsMarkup() {
-    return '<span>View</span><button type="button" data-room-viewport-size="smaller" aria-label="Make room view smaller">−</button><button type="button" data-room-viewport-size="reset" aria-label="Reset room view size">Reset</button><button type="button" data-room-viewport-size="larger" aria-label="Make room view larger">+</button>';
+    return '<span>View</span><button type="button" data-room-viewport-mode-button="fit" aria-label="Fit whole room">Fit</button><button type="button" data-room-viewport-mode-button="wide" aria-label="Use more horizontal room">Wide</button><button type="button" data-room-viewport-mode-button="fill" aria-label="Fill available room space">Fill</button><button type="button" data-room-viewport-size="smaller" aria-label="Make room view smaller">−</button><button type="button" data-room-viewport-size="reset" aria-label="Reset room view size">Reset</button><button type="button" data-room-viewport-size="larger" aria-label="Make room view larger">+</button>';
+  }
+
+  function updateControls(shell) {
+    var mode = roomMode(shell);
+    shell.querySelectorAll("[data-room-viewport-mode-button]").forEach(function (button) {
+      var active = button.dataset.roomViewportModeButton === mode;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
   }
 
   function addControls(shell) {
     if (shell.dataset.roomViewportControls === "false") return;
-    if (shell.querySelector(".room-viewport-controls")) return;
+    if (shell.querySelector(".room-viewport-controls")) {
+      updateControls(shell);
+      return;
+    }
 
     var slot = shell.querySelector("[data-room-viewport-controls-slot]");
     var controls = document.createElement("div");
@@ -113,6 +168,8 @@
       controls.classList.add("room-viewport-controls--floating");
       shell.appendChild(controls);
     }
+
+    updateControls(shell);
   }
 
   function installShell(shell) {
@@ -126,7 +183,9 @@
   }
 
   document.addEventListener("click", function (event) {
-    var button = event.target.closest("[data-room-viewport-size]");
+    var modeButton = event.target.closest("[data-room-viewport-mode-button]");
+    var sizeButton = event.target.closest("[data-room-viewport-size]");
+    var button = modeButton || sizeButton;
     if (!button) return;
 
     var shell = button.closest("[data-room-viewport]") || document.querySelector("[data-room-viewport]");
@@ -134,11 +193,16 @@
 
     event.preventDefault();
 
-    var action = button.dataset.roomViewportSize;
+    if (modeButton) {
+      setRoomMode(shell, modeButton.dataset.roomViewportModeButton);
+      return;
+    }
+
+    var action = sizeButton.dataset.roomViewportSize;
     var current = roomScale(shell);
     if (action === "smaller") setRoomScale(shell, current - STEP);
     if (action === "larger") setRoomScale(shell, current + STEP);
-    if (action === "reset") resetRoomScale(shell);
+    if (action === "reset") resetRoom(shell);
   });
 
   var resizeTimer;
