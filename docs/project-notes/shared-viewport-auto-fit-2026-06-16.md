@@ -26,21 +26,29 @@ Implemented structure:
 - `section.room-shell.room-viewport-frame[data-room-viewport-frame]`
 - inner `div.room-stage` fills the frame
 
-## Home Base side rail — 2026-06-16
+## Home Base floating menu button + zoom — 2026-06-16
 
-The intended direction is a thin vertical control strip on the far left, not a full top menu bar.
+The left rail was still too much UI and made the menu feel inaccessible. The corrected direction is now:
 
-Current Home Base structure:
+- no top control bar
+- no full vertical rail
+- one small floating menu button on the far left edge
+- menu opens as an overlay drawer from the left
+- scene is zoomed slightly with a medieval border/backdrop so wide-screen gaps feel intentional
 
-- far-left vertical rail holds the Home Base label and menu button
-- the old top header is no longer used as a horizontal control strip
-- the room scene sits to the right of the rail and can use more vertical screen space
-- the drawer opens from the left side as an overlay instead of pushing or squeezing the scene
+Current files:
 
-Side menu files:
-
+- `docs/house.html`
 - `docs/house-side-menu.css`
 - `docs/house-side-menu.js`
+
+Current Home Base layout behaviour:
+
+- `docs/house.html` uses `data-room-viewport-padding="8"` and no top reserve so the scene can use more of the screen.
+- `docs/house-side-menu.css` places the menu button as a fixed floating tab at the left edge.
+- `docs/house-side-menu.css` scales the room frame to `1.11` on desktop to make the image visibly larger.
+- The frame uses a stronger medieval border/shadow so any remaining gaps read as an intentional game frame.
+- The side menu drawer overlays the scene and does not push or squeeze it.
 
 Side menu contents:
 
@@ -76,8 +84,10 @@ Expected Home Base result:
 - no visible Fit / Wide / Fill / Reset / plus / minus controls
 - no large empty black/right-side frame area
 - no horizontal top button strip
-- a thin left vertical rail appears on the far left
-- the room image has more vertical space than it did with the top bar
+- no full vertical side rail
+- one small menu tab appears on the far left edge
+- the room image is larger than before because the scene is zoomed
+- the remaining border/gap reads as intentional fantasy game framing
 - the menu button opens a left-side overlay drawer
 - drawer does not resize or push the room scene
 - Today’s tasks opens the task board
