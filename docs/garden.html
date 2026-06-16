@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay XP Garden</title>
-    <link rel="stylesheet" href="room-viewport.css?v=1">
-    <link rel="stylesheet" href="garden.css?v=3">
+    <link rel="stylesheet" href="room-viewport.css?v=2">
+    <link rel="stylesheet" href="garden.css?v=4">
   </head>
   <body data-room-id="garden" data-room-viewport-active="true">
     <main
@@ -26,14 +26,17 @@
         >
 
         <header class="garden-topbar">
-          <div>
+          <div class="garden-title-block">
             <p class="garden-eyebrow">Esslay</p>
             <h1>XP Garden</h1>
           </div>
-          <nav class="garden-nav" aria-label="Garden navigation">
-            <a href="house.html">Home Base</a>
-            <a href="cave.html">Study Cave</a>
-          </nav>
+          <div class="garden-topbar-actions">
+            <div class="garden-view-slot" data-room-viewport-controls-slot aria-label="Garden view size controls"></div>
+            <nav class="garden-nav" aria-label="Garden navigation">
+              <a href="house.html">Home Base</a>
+              <a href="cave.html">Study Cave</a>
+            </nav>
+          </div>
         </header>
 
         <section class="garden-progress-card" aria-live="polite">
@@ -45,7 +48,7 @@
       </section>
     </main>
 
-    <script src="room-viewport.js?v=1"></script>
+    <script src="room-viewport.js?v=2"></script>
     <script src="garden.js?v=1"></script>
   </body>
 </html>
