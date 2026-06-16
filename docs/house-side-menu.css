@@ -1,104 +1,95 @@
+body[data-room-id="house"] {
+  overflow: hidden !important;
+}
+
 body[data-room-id="house"] .house-shell {
-  grid-template-columns: 58px minmax(0, 1fr) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
   grid-template-rows: minmax(0, 1fr) !important;
-  gap: 8px !important;
-  padding: 6px 8px !important;
+  place-items: center !important;
+  gap: 0 !important;
+  padding: 4px !important;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(108, 75, 42, .38), transparent 44%),
+    linear-gradient(180deg, #2a1d17 0%, #17110e 100%) !important;
 }
 
 body[data-room-id="house"] .house-header {
-  grid-column: 1 !important;
-  grid-row: 1 !important;
-  width: 58px !important;
-  height: calc(100dvh - 12px) !important;
+  position: fixed !important;
+  left: 10px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 8200 !important;
+  width: auto !important;
+  height: auto !important;
   min-height: 0 !important;
   margin: 0 !important;
-  padding: 8px 5px !important;
-  border: 2px solid #5a3825;
-  border-radius: 18px;
-  display: flex !important;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(255,255,255,.34), transparent 28%),
-    linear-gradient(180deg, #efe2c2 0%, #e2cca1 100%);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, .28);
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  display: block !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
-body[data-room-id="house"] .house-header > div {
-  grid-column: auto;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  min-width: 0;
-  min-height: 0;
-  width: 100%;
-  flex: 1 1 auto;
-  cursor: help;
-}
-
+body[data-room-id="house"] .house-header > div,
 body[data-room-id="house"] .house-header .eyebrow,
-body[data-room-id="house"] .house-header p:not(.eyebrow) {
-  display: none !important;
-}
-
-body[data-room-id="house"] .house-header h1 {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  margin: 0 auto;
-  color: #2c1d16;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: .95rem;
-  line-height: 1;
-  font-weight: 900;
-  letter-spacing: .12em;
-  text-align: center;
-  white-space: nowrap;
-}
-
-body[data-room-id="house"] .house-nav {
-  grid-column: auto;
-  display: flex !important;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end !important;
-  gap: 8px;
-  width: 100%;
-  margin: 0 !important;
-}
-
+body[data-room-id="house"] .house-header h1,
+body[data-room-id="house"] .house-header p:not(.eyebrow),
 body[data-room-id="house"] .house-nav .life-task-nav-button,
 body[data-room-id="house"] .house-nav .life-admin-nav-button,
 body[data-room-id="house"] .house-nav a {
   display: none !important;
 }
 
+body[data-room-id="house"] .house-nav {
+  display: block !important;
+  width: auto !important;
+  margin: 0 !important;
+}
+
 body[data-room-id="house"] .house-menu-button {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 54px;
   display: grid;
   place-items: center;
-  border: 2px solid #5a3825;
-  border-radius: 14px;
+  border: 2px solid rgba(255, 232, 176, .72);
+  border-radius: 0 16px 16px 0;
   padding: 0;
-  background: linear-gradient(180deg, #6d4528 0%, #332016 100%);
+  background:
+    linear-gradient(180deg, rgba(109, 69, 40, .98) 0%, rgba(51, 32, 22, .98) 100%);
   color: #fff7df;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 1.05rem;
+  font-size: 1.18rem;
   font-weight: 900;
   line-height: 1;
-  box-shadow: 0 2px 7px rgba(0, 0, 0, .18), inset 0 -2px 0 rgba(0, 0, 0, .18);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .38), inset 0 -2px 0 rgba(0, 0, 0, .18);
   cursor: pointer;
 }
 
 body[data-room-id="house"] .room-shell.room-viewport-frame {
-  grid-column: 2 !important;
+  grid-column: 1 !important;
   grid-row: 1 !important;
   justify-self: center;
   align-self: center;
-  max-width: calc(100vw - 84px) !important;
-  max-height: calc(100dvh - 12px) !important;
+  max-width: calc(100vw - 8px) !important;
+  max-height: calc(100dvh - 8px) !important;
+  transform: scale(1.11);
+  transform-origin: center center;
+  border-width: 6px;
+  border-radius: 20px;
+  box-shadow:
+    0 0 0 2px rgba(218, 169, 91, .48),
+    0 0 0 12px rgba(38, 23, 15, .94),
+    0 22px 74px rgba(0, 0, 0, .56);
+}
+
+body[data-room-id="house"] .room-stage {
+  border-radius: 14px;
+}
+
+body[data-room-id="house"] .room-background {
+  object-fit: cover !important;
 }
 
 body[data-room-id="house"] .house-status {
@@ -122,7 +113,7 @@ body[data-room-id="house"] .house-side-menu.open {
 body[data-room-id="house"] .house-side-menu-card {
   width: min(360px, calc(100vw - 28px));
   height: calc(100dvh - 18px);
-  margin: 9px 9px 9px 72px;
+  margin: 9px 9px 9px 58px;
   overflow: auto;
   padding: 14px;
   border: 4px solid #5a3825;
@@ -219,34 +210,26 @@ body[data-room-id="house"] .house-side-wallet {
 
 @media (max-width: 760px) {
   body[data-room-id="house"] .house-shell {
-    grid-template-columns: 48px minmax(0, 1fr) !important;
-    gap: 6px !important;
-    padding: 5px !important;
+    padding: 4px !important;
   }
 
   body[data-room-id="house"] .house-header {
-    width: 48px !important;
-    height: calc(100dvh - 10px) !important;
-    padding: 7px 4px !important;
-    border-radius: 14px;
-  }
-
-  body[data-room-id="house"] .house-header h1 {
-    font-size: .78rem;
+    left: 7px !important;
   }
 
   body[data-room-id="house"] .house-menu-button {
-    width: 34px;
-    height: 34px;
+    width: 38px;
+    height: 48px;
   }
 
   body[data-room-id="house"] .room-shell.room-viewport-frame {
-    max-width: calc(100vw - 64px) !important;
-    max-height: calc(100dvh - 10px) !important;
+    max-width: calc(100vw - 8px) !important;
+    max-height: calc(100dvh - 8px) !important;
+    transform: scale(1.06);
   }
 
   body[data-room-id="house"] .house-side-menu-card {
-    width: min(330px, calc(100vw - 64px));
-    margin-left: 56px;
+    width: min(330px, calc(100vw - 56px));
+    margin-left: 48px;
   }
 }
