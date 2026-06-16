@@ -4,14 +4,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay XP Garden</title>
-    <link rel="stylesheet" href="garden.css?v=2">
+    <link rel="stylesheet" href="room-viewport.css?v=1">
+    <link rel="stylesheet" href="garden.css?v=3">
   </head>
-  <body data-room-id="garden">
-    <main class="garden-shell">
-      <section class="garden-room" aria-label="XP Garden room">
+  <body data-room-id="garden" data-room-viewport-active="true">
+    <main
+      class="room-viewport-shell garden-shell"
+      data-room-viewport
+      data-room-id="garden"
+      data-room-aspect="1.7777777778"
+      data-room-max-width="1540"
+      data-room-safe-bottom="84"
+      data-room-default-scale="0.86"
+    >
+      <section class="room-viewport-frame garden-room" data-room-viewport-frame aria-label="XP Garden room">
         <img
           id="garden-room-image"
-          class="garden-room-image"
+          class="room-viewport-art garden-room-image"
           src="assets/rooms/garden/xp-garden-stage-01-newly-planted.jpg?v=1"
           alt="Cliffside XP Garden terrace with a newly planted magical sapling"
         >
@@ -36,6 +45,7 @@
       </section>
     </main>
 
+    <script src="room-viewport.js?v=1"></script>
     <script src="garden.js?v=1"></script>
   </body>
 </html>
