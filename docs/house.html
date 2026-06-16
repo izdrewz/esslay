@@ -4,13 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Home Base</title>
-    <link rel="stylesheet" href="room-viewport.css?v=4">
+    <link rel="stylesheet" href="room-viewport.css?v=5">
     <link rel="stylesheet" href="house.css?v=8">
     <link rel="stylesheet" href="house-links.css?v=1">
     <link rel="stylesheet" href="avatar-placement.css?v=3">
     <link rel="stylesheet" href="home-life-admin-room-map.css?v=1">
     <link rel="stylesheet" href="house-no-scroll-ui.css?v=4">
     <link rel="stylesheet" href="house-viewport-fix.css?v=1">
+    <link rel="stylesheet" href="house-side-menu.css?v=1">
     <link rel="stylesheet" href="home-life-admin-task-board.css?v=1">
   </head>
   <body data-room-id="house">
@@ -31,12 +32,9 @@
           <p>The house hub is fixed background art. Avatar artwork and future furniture layers sit above it.</p>
         </div>
         <nav class="house-nav" aria-label="House navigation">
-          <a href="hub.html">Village</a>
-          <a href="edit-room.html">Edit Room</a>
           <a href="cave.html">Study Cave</a>
           <a href="garden.html">Garden</a>
-          <a href="index.html">Idle</a>
-          <a href="credits.html">Asset credits</a>
+          <button class="house-menu-button" type="button" data-house-side-menu-open aria-controls="house-side-menu" aria-expanded="false">Menu</button>
         </nav>
       </header>
 
@@ -66,7 +64,7 @@
         </div>
       </section>
 
-      <section class="house-status">
+      <section class="house-status" aria-hidden="true">
         <div>
           <h2 id="room-level-title">House Hub: Living room</h2>
           <p id="room-level-note">Main return room with fixed background art, separate avatar overlay, and links to the edit room, cave, wardrobe, and village.</p>
@@ -76,6 +74,45 @@
           <span><span id="gold-count">75</span> gold available for home items</span>
         </div>
       </section>
+
+      <aside class="house-side-menu" id="house-side-menu" data-house-side-menu aria-hidden="true" aria-labelledby="house-side-menu-title">
+        <div class="house-side-menu-card">
+          <header class="house-side-menu-header">
+            <div>
+              <p class="eyebrow">Home Base</p>
+              <h2 id="house-side-menu-title">Menu</h2>
+            </div>
+            <button type="button" data-house-side-menu-close>Close</button>
+          </header>
+
+          <section class="house-side-menu-section" aria-labelledby="house-side-room-title">
+            <h3 id="house-side-room-title">Room</h3>
+            <button type="button" data-open-life-admin-rooms>Open room map</button>
+            <a href="edit-room.html">Edit Room</a>
+            <button type="button" data-open-asset-library>Wardrobe / home items</button>
+          </section>
+
+          <section class="house-side-menu-section" aria-labelledby="house-side-tasks-title">
+            <h3 id="house-side-tasks-title">Tasks</h3>
+            <button type="button" data-open-life-task-board>Today’s tasks</button>
+            <button type="button" data-open-life-admin-rooms>Life Admin Rooms</button>
+            <p class="house-side-wallet">Wallet: <strong><span data-house-side-gold>75</span> gold</strong></p>
+          </section>
+
+          <section class="house-side-menu-section" aria-labelledby="house-side-travel-title">
+            <h3 id="house-side-travel-title">Travel</h3>
+            <a href="cave.html">Study Cave</a>
+            <a href="garden.html">Garden</a>
+            <a href="hub.html">Village</a>
+            <a href="index.html">Idle</a>
+          </section>
+
+          <section class="house-side-menu-section" aria-labelledby="house-side-info-title">
+            <h3 id="house-side-info-title">Info</h3>
+            <a href="credits.html">Asset credits</a>
+          </section>
+        </div>
+      </aside>
 
       <section class="asset-library" aria-labelledby="asset-library-title">
         <div class="asset-library-header">
@@ -174,5 +211,6 @@
     <script src="home-life-admin-task-board.js?v=1"></script>
     <script src="garden-xp-bridge.js?v=1"></script>
     <script src="room-viewport-auto.js?v=1"></script>
+    <script src="house-side-menu.js?v=1"></script>
   </body>
 </html>
