@@ -16,6 +16,21 @@ The Garden room shell is now implemented through:
 - `docs/garden.css`
 - `docs/garden.js`
 
+Shared room viewport fitting has been added and applied to Garden first through:
+
+- `docs/room-viewport.css`
+- `docs/room-viewport.js`
+
+Shared viewport behaviour:
+
+- dynamically fits a 16:9 room frame to the current browser viewport
+- keeps room art contained rather than cropped
+- adds a medieval fantasy frame/backdrop so gaps look intentional
+- provides a small in-game View control: smaller / reset / larger
+- saves per-room view scale in `localStorage` key `esslay-room-viewport-settings-v1`
+
+Do not mass-apply the shared viewport system to other rooms until the Garden version is visually checked.
+
 Home Base currently links to the Garden with a temporary nav link in `docs/house.html`. This is not the final Home Base door design. Later Home Base redesign should use in-scene doors / room transitions.
 
 Home task completion now credits Garden XP through:
@@ -117,6 +132,8 @@ Home/Garden files:
 - `docs/garden.css`
 - `docs/garden.js`
 - `docs/garden-xp-bridge.js`
+- `docs/room-viewport.css`
+- `docs/room-viewport.js`
 
 Important project notes:
 
@@ -130,6 +147,7 @@ Current localStorage keys:
 - Study Cave: `esslay-study-cave-simple-v1`
 - Home Base: `esslay-house-state-v4`
 - Garden: `esslay-garden-state-v1`
+- Shared room viewport: `esslay-room-viewport-settings-v1`
 
 ## Latest commits of note
 
@@ -148,6 +166,14 @@ Current localStorage keys:
 - `3478deb` — Connect Home tasks to Garden XP
 - `fc14981` — Link Home Base to XP Garden
 - `52077f8` — Update XP Garden implementation note
+- `46a6fab` — Record XP Garden implementation status
+- `0e262c7` — Fit XP Garden room within viewport
+- `48a0ed8` — Bump XP Garden CSS cache
+- `6998383` — Add shared room viewport styles
+- `5590418` — Add shared room viewport controls
+- `62edffc` — Apply shared viewport to XP Garden
+- `de2129d` — Use Garden styles with shared viewport
+- `8108627` — Record shared viewport Garden fitting plan
 
 ## Current Study Cave data chain
 
@@ -186,9 +212,11 @@ Submission Gate uses polish fixes to create final readiness checks at:
 For the current Home Base / Garden direction:
 
 1. Test `garden.html` on GitHub Pages after cache updates.
-2. Confirm each XP threshold swaps the image correctly.
-3. Confirm a Home task marked done adds +5 Garden XP once.
-4. Later, redesign Home Base navigation so Garden is reached through an in-world door / room transition.
+2. Confirm dynamic viewport fitting works on Izzy's screen.
+3. Test the View controls: smaller, reset, larger.
+4. Confirm each XP threshold swaps the image correctly.
+5. Confirm a Home task marked done adds +5 Garden XP once.
+6. Later, redesign Home Base navigation so Garden is reached through an in-world door / room transition.
 
 For Study Cave cleanup later:
 
@@ -205,6 +233,7 @@ For Study Cave cleanup later:
 
 ## Known issues / later polish
 
+- Shared viewport is currently applied only to Garden. Do not apply it to other rooms until Garden fitting is approved.
 - Home Base will be redesigned later so room routes use doors / in-scene transitions instead of only nav links.
 - Garden art is implemented for progression use but not locked final unless Izzy explicitly locks it.
 - Garden XP currently comes from Home task completion. Study Cave completion can be connected later.
