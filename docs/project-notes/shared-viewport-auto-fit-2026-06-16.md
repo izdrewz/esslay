@@ -26,17 +26,16 @@ Implemented structure:
 - `section.room-shell.room-viewport-frame[data-room-viewport-frame]`
 - inner `div.room-stage` fills the frame
 
-## Home Base side menu — 2026-06-16
+## Home Base side rail — 2026-06-16
 
-The Home Base top strip was still too crowded after the viewport fix, so the current Home Base header has been simplified.
+The intended direction is a thin vertical control strip on the far left, not a full top menu bar.
 
-Current top bar:
+Current Home Base structure:
 
-- `Study Cave`
-- `Garden`
-- `Menu`
-
-Everything else is moved into a right-side overlay drawer, not a permanent side column.
+- far-left vertical rail holds the Home Base label and menu button
+- the old top header is no longer used as a horizontal control strip
+- the room scene sits to the right of the rail and can use more vertical screen space
+- the drawer opens from the left side as an overlay instead of pushing or squeezing the scene
 
 Side menu files:
 
@@ -54,16 +53,16 @@ Important behaviour:
 
 - the drawer overlays the scene instead of pushing or squeezing the room image
 - the drawer closes from its Close button, Escape, backdrop click, or when a menu action opens a panel/page
-- `docs/home-life-admin-room-map.js` now skips adding duplicate Life Admin buttons to the top header when the side menu exists
+- `docs/home-life-admin-room-map.js` skips adding duplicate Life Admin buttons to the header when the side menu exists
 - duplicate task/header buttons are suppressed by `docs/house-side-menu.css` while the in-scene Tasks hotspot still remains
 
 ## Current rule
 
 Screen fitting should be automatic first.
 
-Do not expose viewport-size controls in every room header by default. If manual view controls return later, they should be tucked into a small settings/menu interaction, not displayed as a row of pills across the main header.
+Do not expose viewport-size controls in every room header by default. If manual view controls return later, they should be tucked into a small settings/menu interaction, not displayed as a row of pills.
 
-Home Base navigation should stay scene-first. Avoid putting every route/tool in the top header.
+Home Base navigation should stay scene-first. Avoid putting every route/tool in a horizontal top header.
 
 ## Test focus
 
@@ -76,8 +75,10 @@ Expected Home Base result:
 
 - no visible Fit / Wide / Fill / Reset / plus / minus controls
 - no large empty black/right-side frame area
-- top bar is reduced to Study Cave, Garden, and Menu
-- Menu opens a right-side overlay drawer
+- no horizontal top button strip
+- a thin left vertical rail appears on the far left
+- the room image has more vertical space than it did with the top bar
+- the menu button opens a left-side overlay drawer
 - drawer does not resize or push the room scene
 - Today’s tasks opens the task board
 - Open room map / Life Admin Rooms opens the Life Admin room map
