@@ -87,15 +87,27 @@
     shell.style.setProperty("--room-viewport-frame-height", height + "px");
   }
 
+  function controlsMarkup() {
+    return '<span>View</span><button type="button" data-room-viewport-size="smaller" aria-label="Make room view smaller">−</button><button type="button" data-room-viewport-size="reset" aria-label="Reset room view size">Reset</button><button type="button" data-room-viewport-size="larger" aria-label="Make room view larger">+</button>';
+  }
+
   function addControls(shell) {
     if (shell.dataset.roomViewportControls === "false") return;
     if (shell.querySelector(".room-viewport-controls")) return;
 
+    var slot = shell.querySelector("[data-room-viewport-controls-slot]");
     var controls = document.createElement("div");
     controls.className = "room-viewport-controls";
     controls.setAttribute("aria-label", "Room view size controls");
-    controls.innerHTML = '<span>View</span><button type="button" data-room-viewport-size="smaller" aria-label="Make room view smaller">−</button><button type="button" data-room-viewport-size="reset" aria-label="Reset room view size">Reset</button><button type="button" data-room-viewport-size="larger" aria-label="Make room view larger">+</button>';
-    shell.appendChild(controls);
+    controls.innerHTML = controlsMarkup();
+
+    if (slot) {
+      controls.classList.add("room-viewport-controls--inline");
+      slot.appendChild(controls);
+    } else {
+      controls.classList.add("room-viewport-controls--floating");
+      shell.appendChild(controls);
+    }
   }
 
   function installShell(shell) {
