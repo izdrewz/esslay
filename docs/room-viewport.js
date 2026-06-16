@@ -85,9 +85,9 @@
       width = Math.floor(height * aspect);
     }
 
-    frame.style.width = width + "px";
-    frame.style.height = height + "px";
-    frame.style.aspectRatio = "auto";
+    frame.style.setProperty("width", width + "px", "important");
+    frame.style.setProperty("height", height + "px", "important");
+    frame.style.setProperty("aspect-ratio", "auto", "important");
     shell.style.setProperty("--room-viewport-frame-width", width + "px");
     shell.style.setProperty("--room-viewport-frame-height", height + "px");
   }
