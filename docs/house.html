@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="home-life-admin-room-map.css?v=1">
     <link rel="stylesheet" href="house-no-scroll-ui.css?v=4">
     <link rel="stylesheet" href="house-viewport-fix.css?v=1">
-    <link rel="stylesheet" href="house-side-menu.css?v=2">
+    <link rel="stylesheet" href="house-side-menu.css?v=3">
     <link rel="stylesheet" href="home-life-admin-task-board.css?v=1">
   </head>
   <body data-room-id="house">
@@ -20,21 +20,20 @@
       data-room-viewport
       data-room-id="house"
       data-room-aspect="1.7777777778"
-      data-room-max-width="1480"
-      data-room-reserve-top="82"
-      data-room-safe-bottom="40"
-      data-room-default-scale="0.96"
+      data-room-max-width="1600"
+      data-room-reserve-top="0"
+      data-room-safe-bottom="12"
+      data-room-default-scale="1"
+      data-room-viewport-padding="44"
     >
-      <header class="house-header">
+      <header class="house-header" aria-label="Home Base side rail">
         <div>
           <p class="eyebrow">Esslay</p>
           <h1>Home Base</h1>
           <p>The house hub is fixed background art. Avatar artwork and future furniture layers sit above it.</p>
         </div>
         <nav class="house-nav" aria-label="House navigation">
-          <a href="cave.html">Study Cave</a>
-          <a href="garden.html">Garden</a>
-          <button class="house-menu-button" type="button" data-house-side-menu-open aria-controls="house-side-menu" aria-expanded="false">Menu</button>
+          <button class="house-menu-button" type="button" data-house-side-menu-open aria-controls="house-side-menu" aria-expanded="false" aria-label="Open Home Base menu">☰</button>
         </nav>
       </header>
 
