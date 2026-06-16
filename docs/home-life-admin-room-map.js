@@ -142,6 +142,7 @@
   }
 
   function addNavButton() {
+    if (document.querySelector("[data-house-side-menu]")) return;
     var nav = document.querySelector(".house-nav");
     if (!nav || nav.querySelector("[data-open-life-admin-rooms]")) return;
     var button = document.createElement("button");
@@ -153,6 +154,7 @@
   }
 
   function addStatusButton() {
+    if (document.querySelector("[data-house-side-menu]")) return;
     var status = document.querySelector(".house-status .layer-note");
     if (!status || status.querySelector("[data-open-life-admin-rooms]")) return;
     var button = document.createElement("button");
