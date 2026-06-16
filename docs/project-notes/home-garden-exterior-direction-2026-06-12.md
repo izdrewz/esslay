@@ -69,24 +69,35 @@ It should match the room-art direction more closely:
 
 ## Shared viewport direction — 2026-06-16
 
-Garden is now the first room using the shared room viewport system.
+The shared room viewport system has now been rolled out beyond Garden because the fitting issue affects multiple current and future rooms.
 
 Shared viewport files:
 
 - `docs/room-viewport.css`
 - `docs/room-viewport.js`
 
-Current Garden viewport behaviour:
+Current shared viewport behaviour:
 
 - dynamically measures the browser viewport
-- fits the 16:9 room frame within available width and height
-- keeps the image contained rather than cropped
-- reserves bottom safety space for screens where the browser/taskbar area leaves less usable height
+- fits a 16:9 room frame within available width and height
+- supports top reserve and bottom safety spacing for pages with separate headers
+- keeps room art contained rather than cropped where image art is involved
 - adds a medieval fantasy frame/backdrop so any gaps look intentional
 - adds a small in-game View control with smaller / reset / larger buttons
+- places the View control in the room top bar/header when a slot is provided
 - saves the chosen size per room in localStorage key `esslay-room-viewport-settings-v1`
 
-Important: this shared viewport system is intended to be reused by future rooms, but it is only applied to Garden first. Do not mass-apply it to Study Cave, Home Base, or unfinished rooms until Garden fitting is confirmed.
+Applied room/screen shells:
+
+- `docs/garden.html`
+- `docs/house.html`
+- `docs/cave.html`
+- `docs/edit-room.html`
+- `docs/hub.html`
+- `docs/domestic.html`
+- `docs/training.html`
+
+Important: the shared viewport should now be tested across those rooms. If one room breaks, fix the shared viewport or that room's viewport data instead of creating separate one-off screen-size hacks.
 
 ## Implemented XP Garden assets — 2026-06-16
 
@@ -133,7 +144,7 @@ Known follow-up:
 
 - Home Base will later be redesigned so the Garden is reached through an in-scene door / room transition, not just a nav link.
 - Garden art is implemented for progression use, but should not be marked locked final unless Izzy explicitly locks it.
-- Once Garden viewport fitting is approved, the shared viewport system can be considered for other visual-novel rooms and future locked / placeholder room shells.
+- The shared viewport rollout now needs browser testing across current room-style pages.
 
 ## Reference asset warning
 
