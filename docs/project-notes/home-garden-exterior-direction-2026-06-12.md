@@ -2,7 +2,11 @@
 
 ## Status
 
-Direction is approved as a concept. No Garden image is approved yet.
+Garden exterior direction is approved as a concept.
+
+The 8-stage XP Garden image progression set is now installed and implemented as the current Garden asset set.
+
+Status label: approved implementation asset set, not locked final art unless Izzy later explicitly marks it locked final.
 
 A previous SVG/vector-style placeholder was rejected and removed. Do not use SVG/vector diagram placeholders for this room.
 
@@ -63,11 +67,50 @@ It should match the room-art direction more closely:
 - enough negative space for overlays/hotspots
 - central XP tree/sapling must feel integrated into the terrace, not pasted on
 
-## Intended assets
+## Implemented XP Garden assets — 2026-06-16
 
-Expected future asset paths once approved:
+Installed asset paths:
 
-- `docs/assets/rooms/garden/xp-garden-cliff-terrace-approved.webp`
-- `docs/assets/reference/home-exterior-cliffhouse-reference-right.webp`
+- `docs/assets/rooms/garden/xp-garden-stage-01-newly-planted.jpg`
+- `docs/assets/rooms/garden/xp-garden-stage-02-first-growth.jpg`
+- `docs/assets/rooms/garden/xp-garden-stage-03-established.jpg`
+- `docs/assets/rooms/garden/xp-garden-stage-04-strong-growth.jpg`
+- `docs/assets/rooms/garden/xp-garden-stage-05-mature.jpg`
+- `docs/assets/rooms/garden/xp-garden-stage-06-bloom-milestone.jpg`
+- `docs/assets/rooms/garden/xp-garden-stage-07-fruiting.jpg`
+- `docs/assets/rooms/garden/xp-garden-stage-08-harvest-mastery.jpg`
 
-The reference exterior image is reference-only unless confirmed safe/licensed for public repo use.
+Stage meanings:
+
+1. Newly planted
+2. First growth
+3. Established
+4. Strong growth
+5. Mature
+6. Bloom milestone
+7. Fruiting
+8. Harvest / mastery
+
+Implementation files:
+
+- `docs/garden.html`
+- `docs/garden.css`
+- `docs/garden.js`
+- `docs/garden-xp-bridge.js`
+
+Current behaviour:
+
+- `docs/garden.html` loads the staged XP Garden images.
+- `docs/garden.js` selects the tree image from `localStorage` key `esslay-garden-state-v1`.
+- Home Base has a temporary nav link to `garden.html`.
+- `docs/garden-xp-bridge.js` credits +5 Garden XP when a Home task is successfully marked done.
+- The bridge keeps credited Home task instance IDs so the same task instance is not repeatedly credited for Garden XP.
+
+Known follow-up:
+
+- Home Base will later be redesigned so the Garden is reached through an in-scene door / room transition, not just a nav link.
+- Garden art is implemented for progression use, but should not be marked locked final unless Izzy explicitly locks it.
+
+## Reference asset warning
+
+The earlier exterior reference image remains reference-only unless confirmed safe/licensed for public repo use.
