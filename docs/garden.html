@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Esslay XP Garden</title>
+    <link rel="stylesheet" href="garden.css?v=1">
+  </head>
+  <body data-room-id="garden">
+    <main class="garden-shell">
+      <section class="garden-room" aria-label="XP Garden room">
+        <img
+          id="garden-room-image"
+          class="garden-room-image"
+          src="assets/rooms/garden/xp-garden-stage-01-newly-planted.jpg?v=1"
+          alt="Cliffside XP Garden terrace with a newly planted magical sapling"
+        >
+
+        <header class="garden-topbar">
+          <div>
+            <p class="garden-eyebrow">Esslay</p>
+            <h1>XP Garden</h1>
+          </div>
+          <nav class="garden-nav" aria-label="Garden navigation">
+            <a href="house.html">Home Base</a>
+            <a href="cave.html">Study Cave</a>
+          </nav>
+        </header>
+
+        <section class="garden-progress-card" aria-live="polite">
+          <p class="garden-eyebrow">Tree progress</p>
+          <h2 id="garden-stage-label">Stage 1 — Newly planted</h2>
+          <p><strong id="garden-xp-value">0</strong> XP</p>
+          <p id="garden-stage-note">Every saved progress point helps the tree grow.</p>
+        </section>
+      </section>
+    </main>
+
+    <script src="garden.js?v=1"></script>
+  </body>
+</html>
