@@ -4,11 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Esslay Edit Room</title>
+    <link rel="stylesheet" href="room-viewport.css?v=3">
     <link rel="stylesheet" href="edit-room.css?v=7">
     <link rel="stylesheet" href="avatar-placement.css?v=3">
   </head>
   <body data-room-id="edit-room">
-    <main class="edit-room-shell">
+    <main class="edit-room-shell" data-room-viewport data-room-id="edit-room" data-room-aspect="1.7777777778" data-room-max-width="1320" data-room-reserve-top="130" data-room-safe-bottom="140" data-room-default-scale="0.9">
       <header class="edit-room-header">
         <div>
           <p class="eyebrow">Esslay</p>
@@ -16,6 +17,7 @@
           <p>A cosy scholar-planning and interior-design room for the design board, writing desk, sources, and fix-later scraps.</p>
         </div>
         <nav class="edit-room-nav" aria-label="Edit room navigation">
+          <div data-room-viewport-controls-slot aria-label="Edit Room view size controls"></div>
           <a href="house.html">Home Base</a>
           <a href="hub.html">Village</a>
           <a href="cave.html">Study Cave</a>
@@ -23,7 +25,7 @@
       </header>
 
       <section class="edit-room-stage-shell" aria-label="Static edit room scene">
-        <div class="edit-room-stage">
+        <div class="edit-room-stage room-viewport-frame" data-room-viewport-frame>
           <img class="edit-room-background" src="assets/rooms/edit-room/edit-room-background.jpg?v=2" onerror="this.onerror=null; this.src='assets/rooms/edit-room/edit-room-placeholder.svg?v=2';" alt="Characterless cosy fantasy scholar edit room with interior design board, desk, source shelf, and scrap chest">
           <span class="avatar-floor-shadow" aria-hidden="true"></span>
           <img class="edit-room-avatar" data-character-layer data-room-id="edit-room" src="assets/characters/academic-adventurer/final/avatar_default_teal_explorer.png?v=4" alt="Current edit room outfit">
@@ -67,6 +69,6 @@
     <script src="edit-room.js?v=2"></script>
     <script src="edit-room-lighting.js?v=1"></script>
     <script src="character-layer.js?v=3"></script>
+    <script src="room-viewport.js?v=3"></script>
   </body>
 </html>
-
