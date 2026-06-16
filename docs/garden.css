@@ -50,6 +50,24 @@ body {
   border-radius: 14px;
 }
 
+.garden-title-block {
+  min-width: 0;
+}
+
+.garden-topbar-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  min-width: 0;
+}
+
+.garden-view-slot {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
 .garden-eyebrow {
   margin: 0 0 2px;
   color: #8a6338;
@@ -71,6 +89,7 @@ body {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: clamp(1.18rem, 2vw, 1.85rem);
   line-height: .95;
+  white-space: nowrap;
 }
 
 .garden-nav {
@@ -129,6 +148,16 @@ body {
 .garden-progress-card strong {
   color: #4d3022;
   font-size: 1.05em;
+}
+
+@media (max-width: 980px) {
+  .garden-topbar {
+    align-items: flex-start;
+  }
+
+  .garden-topbar-actions {
+    flex-wrap: wrap;
+  }
 }
 
 @media (max-width: 780px) {
