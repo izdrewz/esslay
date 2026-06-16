@@ -1,6 +1,34 @@
 # Main repo status
 
-Last updated: 2026-06-11
+Last updated: 2026-06-16
+
+## Current Home Base / Garden status
+
+Current active focus: Home Base + Garden / XP progression direction.
+
+The 8-stage XP Garden progression image assets are installed in:
+
+- `docs/assets/rooms/garden/`
+
+The Garden room shell is now implemented through:
+
+- `docs/garden.html`
+- `docs/garden.css`
+- `docs/garden.js`
+
+Home Base currently links to the Garden with a temporary nav link in `docs/house.html`. This is not the final Home Base door design. Later Home Base redesign should use in-scene doors / room transitions.
+
+Home task completion now credits Garden XP through:
+
+- `docs/garden-xp-bridge.js`
+
+This bridge listens for successful Home task completion and credits +5 Garden XP to `localStorage` key `esslay-garden-state-v1`. It stores credited Home task instance IDs so the same task instance is not repeatedly credited.
+
+Garden art status: approved implementation asset set, not locked final art unless Izzy later explicitly marks it locked final.
+
+Relevant note:
+
+- `docs/project-notes/home-garden-exterior-direction-2026-06-12.md`
 
 ## Current Study Cave route status
 
@@ -17,9 +45,9 @@ Full Study Cave v1 route is now browser-tested and passing end-to-end:
 7. Polish Pool v1
 8. Submission Gate / Final Spell v1
 
-Current status: route logic works. Next work should be cleanup, consolidation, UX polish, and stronger real-assignment content handling.
+Current status: route logic works. Next Study Cave work should be cleanup, consolidation, UX polish, and stronger real-assignment content handling. Do not casually rewrite working Study Cave routes while Garden/Home Base is the active task.
 
-## Current confirmed flow
+## Current confirmed Study Cave flow
 
 The current working chain is:
 
@@ -75,15 +103,33 @@ Active shell and room scripts:
 - `docs/study-cave-route-rooms-v1.js`
 - `docs/study-cave-test-mode-v1.js`
 
+Home/Garden files:
+
+- `docs/house.html`
+- `docs/house.css`
+- `docs/house-no-scroll-ui.css`
+- `docs/house-no-scroll-ui.js`
+- `docs/home-life-admin-room-map.css`
+- `docs/home-life-admin-room-map.js`
+- `docs/home-life-admin-task-board.css`
+- `docs/home-life-admin-task-board.js`
+- `docs/garden.html`
+- `docs/garden.css`
+- `docs/garden.js`
+- `docs/garden-xp-bridge.js`
+
 Important project notes:
 
 - `docs/project-notes/cave-next-todo-2026-06-04.md`
 - `docs/project-notes/source-mine-crystal-sieve-2026-06-08.md`
+- `docs/project-notes/home-garden-exterior-direction-2026-06-12.md`
 - `docs/project-notes/main-repo-status.md`
 
-Current localStorage key:
+Current localStorage keys:
 
-- `esslay-study-cave-simple-v1`
+- Study Cave: `esslay-study-cave-simple-v1`
+- Home Base: `esslay-house-state-v4`
+- Garden: `esslay-garden-state-v1`
 
 ## Latest commits of note
 
@@ -95,8 +141,15 @@ Current localStorage key:
 - `5533a80` — Add Polish Pool v1
 - `6ccd594` — Add Submission Gate v1
 - `851736b` — Load Submission Gate v1
+- `e9ab047` — Add XP Garden progression image assets
+- `cf90d8d` — Add XP Garden room shell
+- `acb06a6` — Style XP Garden room
+- `e4076d6` — Add XP Garden progression logic
+- `3478deb` — Connect Home tasks to Garden XP
+- `fc14981` — Link Home Base to XP Garden
+- `52077f8` — Update XP Garden implementation note
 
-## Current data chain
+## Current Study Cave data chain
 
 Brief Fog produces task buckets.
 
@@ -128,11 +181,16 @@ Submission Gate uses polish fixes to create final readiness checks at:
 
 - `state.routeRooms["submission-gate"].checks`
 
-## Current active next work: cleanup and route hardening
+## Current active next work
 
-The next phase should not be another new room. The next phase should stabilise and clean up the completed v1 route.
+For the current Home Base / Garden direction:
 
-Priority cleanup:
+1. Test `garden.html` on GitHub Pages after cache updates.
+2. Confirm each XP threshold swaps the image correctly.
+3. Confirm a Home task marked done adds +5 Garden XP once.
+4. Later, redesign Home Base navigation so Garden is reached through an in-world door / room transition.
+
+For Study Cave cleanup later:
 
 1. Consolidate old route placeholder handling so the new v1 rooms cannot fall back into old generic shells.
 2. Clean Task Map status labels so locked / current / complete states reflect the new v1 route accurately.
@@ -147,6 +205,9 @@ Priority cleanup:
 
 ## Known issues / later polish
 
+- Home Base will be redesigned later so room routes use doors / in-scene transitions instead of only nav links.
+- Garden art is implemented for progression use but not locked final unless Izzy explicitly locks it.
+- Garden XP currently comes from Home task completion. Study Cave completion can be connected later.
 - Source Mine needs a first-time Begin Source Mine intro.
 - Source Mine layout needs compaction.
 - Draft Route marker ordering/editing is not polished yet.
@@ -155,16 +216,12 @@ Priority cleanup:
 - Some room scripts are temporary/hotfix-style and should be consolidated after route logic is stable.
 - Test Mode can open rooms directly, but normal route navigation should remain the source of truth.
 - GitHub Pages cache needs version bumps and hard refreshes after changes.
-- Final room art and character pose work are not blocking the current route build.
+- Final Study Cave room art and character pose work are not blocking the current route build.
 
 ## Do not spend time on yet
-
-Do not prioritise final art, pose swaps, imp/monster animation, or room background polish until the route cleanup pass is done.
 
 Do not rewrite working Brief Fog, Source Mine, Draft Route, Paragraph Forge, Bridge Hall, Citation Vault, Polish Pool, or Submission Gate unless a specific browser test fails.
 
 Do not restore the old blank/cream Source Notes drawer.
 
-## Next immediate action
-
-Start a cleanup pass for the completed v1 route, beginning with old-route-shell fallback prevention and Task Map status clarity.
+Do not mark Garden art as locked final unless Izzy explicitly approves it as locked final.
