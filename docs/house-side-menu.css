@@ -13,6 +13,11 @@ body[data-room-id="house"] .house-nav {
   flex-wrap: nowrap !important;
 }
 
+body[data-room-id="house"] .house-nav .life-task-nav-button,
+body[data-room-id="house"] .house-nav .life-admin-nav-button {
+  display: none !important;
+}
+
 body[data-room-id="house"] .house-nav a,
 body[data-room-id="house"] .house-menu-button {
   border: 2px solid #5a3825;
