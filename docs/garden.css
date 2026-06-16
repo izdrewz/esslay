@@ -3,17 +3,9 @@
   --garden-paper: rgba(255, 245, 224, .94);
   --garden-border: #4d3022;
   --garden-gold: #e4b667;
-  --garden-safe-bottom: 68px;
 }
 
 * { box-sizing: border-box; }
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
 
 body {
   margin: 0;
@@ -23,46 +15,15 @@ body {
 }
 
 .garden-shell {
-  height: 100dvh;
-  min-height: 0;
-  display: grid;
-  place-items: start center;
-  padding: 8px 8px var(--garden-safe-bottom);
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 50% 12%, rgba(238, 205, 138, .2), transparent 34%),
-    linear-gradient(180deg, #2d2118 0%, #17120f 100%);
-}
-
-.garden-room {
-  position: relative;
-  width: min(1480px, calc(100vw - 16px), calc((100dvh - var(--garden-safe-bottom) - 16px) * 16 / 9));
-  max-width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  border: 4px solid #5a3825;
-  border-radius: 18px;
-  background: #211713;
-  box-shadow: 0 18px 56px rgba(0, 0, 0, .42);
-}
-
-.garden-room::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  box-shadow:
-    inset 0 0 0 5px rgba(255, 244, 223, .12),
-    inset 0 -34px 50px rgba(0, 0, 0, .18);
+  --room-viewport-backdrop:
+    radial-gradient(circle at 50% 8%, rgba(238, 205, 138, .18), transparent 32%),
+    radial-gradient(circle at 50% 108%, rgba(64, 38, 24, .74), transparent 48%),
+    linear-gradient(180deg, #302219 0%, #17120f 100%);
+  --room-viewport-gap: #1e1511;
 }
 
 .garden-room-image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
   object-fit: contain;
-  background: #211713;
 }
 
 .garden-topbar,
@@ -171,20 +132,6 @@ body {
 }
 
 @media (max-width: 780px) {
-  :root {
-    --garden-safe-bottom: 12px;
-  }
-
-  .garden-shell {
-    align-items: start;
-    padding: 5px;
-  }
-
-  .garden-room {
-    width: min(calc(100vw - 10px), calc((100dvh - 10px) * 16 / 9));
-    border-radius: 14px;
-  }
-
   .garden-topbar {
     top: 7px;
     left: 7px;
