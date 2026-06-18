@@ -28,6 +28,8 @@ Implemented structure:
 
 ## Home Base floating menu button + zoom — 2026-06-16
 
+Status: approved layout direction by Izzy after browser check.
+
 The left rail was still too much UI and made the menu feel inaccessible. The corrected direction is now:
 
 - no top control bar
@@ -71,6 +73,13 @@ Screen fitting should be automatic first.
 Do not expose viewport-size controls in every room header by default. If manual view controls return later, they should be tucked into a small settings/menu interaction, not displayed as a row of pills.
 
 Home Base navigation should stay scene-first. Avoid putting every route/tool in a horizontal top header.
+
+For future rooms, prefer the approved Home Base pattern:
+
+- scene-first frame
+- tiny floating menu tab if a room needs navigation/tools
+- overlay drawer for secondary actions
+- image zoom/border treatment for wide-screen gaps
 
 ## Test focus
 
