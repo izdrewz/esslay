@@ -25,7 +25,8 @@ body {
   display: none !important;
 }
 
-.game-cave.room-viewport-frame {
+.game-cave.room-viewport-frame,
+html body .studyquest-shell.scene-first .game-cave.room-viewport-frame {
   width: min(1700px, calc(100vw - 8px), calc((100dvh - 8px) * 16 / 9)) !important;
   height: min(calc(100dvh - 8px), calc((100vw - 8px) * 9 / 16)) !important;
   max-width: calc(100vw - 8px) !important;
@@ -237,14 +238,21 @@ body {
 
 .quest-board-panel,
 .map-board-panel,
-.flags-panel {
+.flags-panel,
+html body .game-cave.room-viewport-frame .quest-board-panel,
+html body .game-cave.room-viewport-frame .map-board-panel,
+html body .game-cave.room-viewport-frame .flags-panel {
   position: absolute !important;
   top: 14px !important;
   right: 14px !important;
   bottom: 14px !important;
   left: auto !important;
+  inset: auto 14px 14px auto !important;
   z-index: 8500 !important;
   width: min(430px, calc(100% - 28px)) !important;
+  max-width: 430px !important;
+  height: auto !important;
+  max-height: none !important;
   overflow: auto !important;
   padding: 50px 14px 14px !important;
   border: 4px solid #5a3825 !important;
@@ -256,13 +264,19 @@ body {
 
 .quest-board-panel:not([open]),
 .map-board-panel:not([open]),
-.flags-panel:not([open]) {
+.flags-panel:not([open]),
+html body .game-cave.room-viewport-frame .quest-board-panel:not([open]),
+html body .game-cave.room-viewport-frame .map-board-panel:not([open]),
+html body .game-cave.room-viewport-frame .flags-panel:not([open]) {
   display: none !important;
 }
 
 .quest-board-panel summary,
 .map-board-panel summary,
-.flags-panel summary {
+.flags-panel summary,
+html body .game-cave.room-viewport-frame .quest-board-panel summary,
+html body .game-cave.room-viewport-frame .map-board-panel summary,
+html body .game-cave.room-viewport-frame .flags-panel summary {
   position: absolute !important;
   top: 12px !important;
   left: 16px !important;
@@ -275,7 +289,8 @@ body {
   cursor: pointer !important;
 }
 
-.panel-close {
+.panel-close,
+html body .game-cave.room-viewport-frame .panel-close {
   position: absolute !important;
   top: 8px !important;
   right: 8px !important;
@@ -307,5 +322,8 @@ body {
   .stage-scene .simple-room .flow-hotspot { min-width: 92px !important; padding: 7px 9px !important; font-size: .72rem !important; }
   .quest-board-panel,
   .map-board-panel,
-  .flags-panel { left: 48px !important; right: 8px !important; width: auto !important; }
+  .flags-panel,
+  html body .game-cave.room-viewport-frame .quest-board-panel,
+  html body .game-cave.room-viewport-frame .map-board-panel,
+  html body .game-cave.room-viewport-frame .flags-panel { left: 48px !important; right: 8px !important; width: auto !important; max-width: none !important; }
 }
