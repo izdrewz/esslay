@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="quest-board.css?v=2">
     <link rel="stylesheet" href="study-cave-flow.css?v=4">
     <link rel="stylesheet" href="study-cave-stage-scene.css?v=11">
+    <link rel="stylesheet" href="study-cave-map-image-v1.css?v=3">
     <style>
       .studyquest-shell.scene-first { height: 100dvh !important; min-height: 0 !important; overflow: hidden !important; box-sizing: border-box !important; }
       .game-cave { height: calc(100dvh - 8px) !important; min-height: 0 !important; overflow: hidden !important; }
@@ -68,7 +69,7 @@
       <section class="game-cave room-viewport-frame" data-room-viewport-frame aria-label="Study Cave opening scene">
         <section class="quest-hud" aria-label="Active quest summary">
           <div><span class="label">Quest</span><strong data-flow-quest-title>The Study Skills Trial</strong></div>
-          <div><span class="label">Route</span><strong data-flow-progress>0 / 7</strong></div>
+          <div><span class="label">Route</span><strong data-flow-progress>0 / 8</strong></div>
         </section>
 
         <div class="scene-hotspots" aria-label="Clickable Study Cave objects">
@@ -104,7 +105,7 @@
         </details>
 
         <details class="map-board-panel" id="map-board-panel">
-          <summary>Task Map threshold</summary>
+          <summary>Task Map</summary>
           <button type="button" class="panel-close" data-close-panel aria-label="Close popup">×</button>
           <div data-task-map></div>
         </details>
@@ -167,6 +168,6 @@
         }
       });
     </script>
-    <script src="study-cave-frame-fix-v2.js?v=2"></script>
+    <script src="study-cave-map-image-v1.js?v=3"></script>
   </body>
 </html>
