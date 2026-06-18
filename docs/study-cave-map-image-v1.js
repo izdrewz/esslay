@@ -33,6 +33,28 @@
     if (mount) mount.innerHTML = "";
   }
 
+  function closeOtherPanels() {
+    document.querySelectorAll("details[open]").forEach(function (details) {
+      if (details.id !== "map-board-panel") details.open = false;
+    });
+  }
+
+  function hideStage() {
+    var stage = document.getElementById("stage-scene");
+    if (!stage) return;
+    stage.innerHTML = "";
+    stage.hidden = true;
+  }
+
+  function openTaskMapPanel() {
+    var panel = document.getElementById("map-board-panel");
+    if (!panel) return;
+    hideStage();
+    closeOtherPanels();
+    panel.open = true;
+    scheduleRender();
+  }
+
   function renderIllustratedMap() {
     var mount = document.querySelector("[data-task-map]");
     if (!mount || !isMapOpen()) return;
@@ -64,9 +86,10 @@
   }
 
   document.addEventListener("click", function (event) {
-    if (event.target.closest('[data-action="open-task-map"]')) {
-      scheduleRender();
-    }
+    if (!event.target.closest('[data-action="open-task-map"]')) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    openTaskMapPanel();
   }, true);
 
   document.addEventListener("click", function (event) {
@@ -93,6 +116,9 @@
     observeMapPanel();
     clearIllustratedMap();
   }
+
+  window.esslayOpenStudyCaveTaskMap = openTaskMapPanel;
+  window.esslayRenderStudyCaveTaskMap = scheduleRender;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
