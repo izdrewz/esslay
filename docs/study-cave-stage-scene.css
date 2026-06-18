@@ -1,31 +1,62 @@
-/* Study Cave stage scene base + simple-room UI cleanup.
-   The current cave.html keeps most temporary room styling inline.
-   These higher-specificity rules clean the working simple cave UI without touching route logic. */
+/* Study Cave scene-first UI rescue. */
+
+html,
+body {
+  height: 100%;
+  overflow: hidden !important;
+  background: #120c10 !important;
+}
+
+.studyquest-shell.scene-first {
+  height: 100dvh !important;
+  min-height: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 4px !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(58, 38, 68, .50), transparent 42%),
+    linear-gradient(180deg, #211728 0%, #09070d 100%) !important;
+}
+
+.studyquest-header.compact-header,
+.room-viewport-controls,
+[data-room-viewport-controls-slot] {
+  display: none !important;
+}
+
+.game-cave.room-viewport-frame {
+  width: min(1700px, calc(100vw - 8px), calc((100dvh - 8px) * 16 / 9)) !important;
+  height: min(calc(100dvh - 8px), calc((100vw - 8px) * 9 / 16)) !important;
+  max-width: calc(100vw - 8px) !important;
+  max-height: calc(100dvh - 8px) !important;
+  aspect-ratio: 16 / 9 !important;
+  transform: scale(1.08) !important;
+  transform-origin: center center !important;
+  overflow: hidden !important;
+  border: 6px solid #382215 !important;
+  border-radius: 20px !important;
+  background: #080609 !important;
+  box-shadow:
+    0 0 0 2px rgba(218, 169, 91, .45),
+    0 0 0 12px rgba(22, 12, 16, .95),
+    0 22px 74px rgba(0, 0, 0, .58) !important;
+}
 
 .stage-scene[hidden] {
   display: none !important;
 }
 
-.stage-scene {
-  position: absolute;
-  inset: 0;
-  z-index: 160;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  color: #fff7dd;
-  background: #080609;
-}
-
+.stage-scene,
 .stage-room,
 .simple-room {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  color: #fff7dd;
   background: #080609;
-  box-shadow: inset 0 0 58px rgba(0, 0, 0, .26);
 }
 
 .stage-room::before {
@@ -37,8 +68,6 @@
   background-position: center;
   background-repeat: no-repeat;
   filter: brightness(1.06) contrast(1.12) saturate(1.08);
-  transform: scale(1.002);
-  transform-origin: center;
 }
 
 .stage-room::after {
@@ -61,159 +90,41 @@
   background-image: url("assets/study-cave/brief-fog-placeholder-v01.jpg"), linear-gradient(135deg, #151724, #4f5361);
 }
 
-.stage-close {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 60;
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border: 3px solid #2b1d17;
-  border-radius: 999px;
-  color: #fff1cf;
-  background: #4b1710;
-  font-size: 1.45rem;
-  font-weight: 900;
-  line-height: 1;
-  box-shadow: 0 4px 0 rgba(0,0,0,.24);
+.stage-scene .scene-label {
+  position: absolute !important;
+  left: 18px !important;
+  top: 14px !important;
+  z-index: 90 !important;
+  max-width: calc(100% - 190px) !important;
+  padding: 7px 10px !important;
+  border-radius: 999px !important;
+  background: rgba(8, 8, 18, .78) !important;
+  color: #f5f0e6 !important;
+  font-weight: 900 !important;
 }
 
-.stage-close:hover,
-.stage-close:focus-visible {
-  background: #6e2318;
-  outline: 3px solid rgba(255, 210, 112, .8);
+.stage-close,
+.simple-close {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  z-index: 200 !important;
+  width: 38px !important;
+  height: 38px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid rgba(97, 70, 45, .22) !important;
+  border-radius: 999px !important;
+  color: #2f2118 !important;
+  background: rgba(255, 255, 255, .92) !important;
+  font-size: 1.15rem !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
 }
 
+.stage-scene .simple-room .simple-card,
 .stage-card {
-  position: absolute;
-  top: 58px;
-  left: 16px;
-  bottom: auto;
-  width: min(300px, 28%);
-  max-height: 210px;
-  overflow: auto;
-  border: 2px solid rgba(255, 210, 112, .35);
-  border-radius: 16px;
-  padding: 10px 12px;
-  color: #fff7dd;
-  background: rgba(10, 7, 7, .54);
-  backdrop-filter: blur(2px);
-  box-shadow: 0 8px 18px rgba(0,0,0,.28);
-  z-index: 18;
-  font-size: .82rem;
-  text-shadow: 0 2px 4px rgba(0,0,0,.7);
-}
-
-.stage-card h2 {
-  margin-top: 0;
-  margin-bottom: 6px;
-  font-size: 1.05rem;
-  color: #fff1cf;
-}
-
-.stage-card p {
-  margin: 0 0 4px;
-}
-
-.stage-room .scene-label {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  z-index: 35;
-}
-
-.stage-room .flow-hotspot {
-  position: absolute;
-  z-index: 36;
-  display: block;
-  padding: 0;
-  border: 2px solid rgba(255, 210, 112, .08);
-  border-radius: 18px;
-  color: transparent;
-  background: rgba(255, 225, 139, .015);
-  text-shadow: none;
-  font-size: 0;
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.stage-room .flow-hotspot::after {
-  content: attr(data-hotspot-label);
-  position: absolute;
-  left: 50%;
-  bottom: 6px;
-  transform: translateX(-50%);
-  opacity: 0;
-  white-space: nowrap;
-  padding: 5px 8px;
-  border: 1px solid rgba(255, 221, 147, .38);
-  border-radius: 999px;
-  color: #fff8dc;
-  background: rgba(15, 10, 8, .78);
-  font-size: .78rem;
-  text-shadow: 0 2px 4px rgba(0,0,0,.9);
-  box-shadow: 0 0 14px rgba(255, 210, 112, .3);
-}
-
-.stage-character {
-  position: absolute;
-  z-index: 16;
-  background-image: url("assets/characters/academic-adventurer/final/avatar_default_teal_explorer.png?v=4");
-  background-size: contain;
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  filter: brightness(.86) contrast(.95) saturate(.9) sepia(.08) drop-shadow(0 24px 21px rgba(0,0,0,.68));
-  pointer-events: none;
-  transform-origin: center bottom;
-}
-
-.stage-character-base {
-  left: 49%;
-  bottom: 2%;
-  width: clamp(390px, 33vw, 540px);
-  height: 76%;
-}
-
-.stage-character-brief {
-  left: 1.5%;
-  bottom: 2%;
-  width: clamp(360px, 30vw, 470px);
-  height: 76%;
-  z-index: 14;
-  opacity: .92;
-  filter: brightness(.66) contrast(.86) saturate(.62) sepia(.06) hue-rotate(4deg) drop-shadow(0 28px 24px rgba(0,0,0,.82));
-}
-
-.light-beam {
-  position: absolute;
-  left: 25%;
-  top: 43%;
-  z-index: 15;
-  width: 40%;
-  height: 6px;
-  opacity: 0;
-  pointer-events: none;
-  background: linear-gradient(90deg, transparent, rgba(255, 245, 183, .75), rgba(170, 217, 255, .62), transparent);
-  box-shadow: 0 0 22px rgba(255, 241, 169, .68), 0 0 44px rgba(133, 175, 255, .34);
-  transform: rotate(-8deg);
-  transform-origin: left center;
-}
-
-.light-beam.active {
-  animation: beamFlash 1.2s ease-in-out both;
-}
-
-@keyframes beamFlash {
-  0% { opacity: 0; transform: scaleX(.12) rotate(-8deg); }
-  30% { opacity: .95; transform: scaleX(1) rotate(-8deg); }
-  70% { opacity: .85; transform: scaleX(.98) rotate(-8deg); }
-  100% { opacity: 0; transform: scaleX(.1) rotate(-8deg); }
-}
-
-/* Current simple-room cleanup: compact action rail instead of debug hitboxes. */
-html body .stage-scene .simple-room .simple-card {
+  position: absolute !important;
   top: 58px !important;
   left: 18px !important;
   width: min(440px, 38vw) !important;
@@ -221,40 +132,53 @@ html body .stage-scene .simple-room .simple-card {
   overflow: auto !important;
   padding: 14px !important;
   border-radius: 18px !important;
+  color: #fff7df !important;
   background: rgba(11, 13, 25, .76) !important;
   border: 1px solid rgba(236, 215, 170, .58) !important;
-  box-shadow: 0 18px 48px rgba(0,0,0,.36) !important;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, .36) !important;
+  z-index: 80 !important;
 }
 
-html body .stage-scene .simple-room .simple-card h2 {
+.stage-scene .simple-room .simple-card h2,
+.stage-card h2 {
   margin: 0 0 6px !important;
   font-size: 1.08rem !important;
+  color: #fff1cf !important;
 }
 
-html body .stage-scene .simple-room .simple-card p {
+.stage-scene .simple-room .simple-card p,
+.stage-card p {
   margin: 0 0 6px !important;
   line-height: 1.25 !important;
 }
 
-html body .stage-scene .simple-room .simple-actions {
+.stage-scene .simple-room .simple-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
   gap: 6px !important;
   margin-top: 10px !important;
 }
 
-html body .stage-scene .simple-room .simple-actions button {
+.stage-scene .simple-room .simple-actions button,
+.simple-actions .secondary-button {
+  border: 1px solid rgba(236, 215, 170, .75) !important;
+  border-radius: 999px !important;
   padding: 7px 10px !important;
+  background: rgba(25, 16, 10, .88) !important;
+  color: #fff7df !important;
   font-size: .8rem !important;
-  line-height: 1 !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
 }
 
-html body .stage-scene .simple-room .flow-hotspot {
+.stage-room .flow-hotspot,
+.stage-scene .simple-room .flow-hotspot {
   position: absolute !important;
   left: auto !important;
   bottom: auto !important;
   width: auto !important;
   height: auto !important;
   min-width: 116px !important;
-  min-height: 0 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -266,98 +190,122 @@ html body .stage-scene .simple-room .flow-hotspot {
   font-size: .78rem !important;
   font-weight: 900 !important;
   line-height: 1 !important;
-  text-shadow: 0 2px 4px rgba(0,0,0,.75) !important;
-  box-shadow: 0 7px 18px rgba(0,0,0,.26), 0 0 14px rgba(255,210,112,.16) !important;
+  box-shadow: 0 7px 18px rgba(0, 0, 0, .26), 0 0 14px rgba(255, 210, 112, .16) !important;
   pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
-html body .stage-scene .simple-room .flow-hotspot::after {
+.stage-room .flow-hotspot::after,
+.stage-scene .simple-room .flow-hotspot::after {
   content: none !important;
   display: none !important;
 }
 
-html body .stage-scene .simple-room .flow-hotspot:hover,
-html body .stage-scene .simple-room .flow-hotspot:focus-visible {
-  background: rgba(53, 39, 20, .90) !important;
-  border-color: rgba(255, 232, 174, .92) !important;
-  outline: 2px solid rgba(255, 240, 188, .56) !important;
+.stage-scene .cave-base-room .hotspot-continue,
+.stage-scene .brief-fog-room .hotspot-parchment,
+.stage-scene .source-mine-room .hotspot-parchment { top: 72px !important; right: 22px !important; }
+
+.stage-scene .cave-base-room .hotspot-shelf,
+.stage-scene .brief-fog-room .hotspot-brief-loot,
+.stage-scene .source-mine-room .hotspot-brief-loot { top: 116px !important; right: 22px !important; }
+
+.stage-scene .cave-base-room .hotspot-return,
+.stage-scene .brief-fog-room .hotspot-forward,
+.stage-scene .source-mine-room .hotspot-forward { top: 160px !important; right: 22px !important; }
+
+.stage-scene .cave-base-room .hotspot-flags,
+.stage-scene .brief-fog-room .hotspot-brief-flag,
+.stage-scene .source-mine-room .hotspot-brief-flag { top: 204px !important; right: 22px !important; }
+
+.stage-scene .cave-base-room .hotspot-chest { top: 248px !important; right: 22px !important; }
+
+.simple-drawer {
+  position: absolute !important;
+  top: 18px !important;
+  right: 18px !important;
+  bottom: 18px !important;
+  width: min(720px, calc(100% - 36px)) !important;
+  overflow: auto !important;
+  z-index: 160 !important;
+  padding: 18px !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(139, 91, 46, .34) !important;
+  background: rgba(250, 242, 225, .98) !important;
+  color: #2f2118 !important;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, .42) !important;
 }
 
-html body .stage-scene .cave-base-room .hotspot-continue,
-html body .stage-scene .brief-fog-room .hotspot-parchment,
-html body .stage-scene .source-mine-room .hotspot-parchment {
-  top: 72px !important;
-  right: 22px !important;
+.quest-board-panel,
+.map-board-panel,
+.flags-panel {
+  position: absolute !important;
+  top: 14px !important;
+  right: 14px !important;
+  bottom: 14px !important;
+  left: auto !important;
+  z-index: 8500 !important;
+  width: min(430px, calc(100% - 28px)) !important;
+  overflow: auto !important;
+  padding: 50px 14px 14px !important;
+  border: 4px solid #5a3825 !important;
+  border-radius: 20px !important;
+  background: linear-gradient(180deg, rgba(255, 246, 226, .98), rgba(224, 199, 151, .98)) !important;
+  color: #2f2118 !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .52) !important;
 }
 
-html body .stage-scene .cave-base-room .hotspot-shelf,
-html body .stage-scene .brief-fog-room .hotspot-brief-loot,
-html body .stage-scene .source-mine-room .hotspot-brief-loot {
-  top: 116px !important;
-  right: 22px !important;
+.quest-board-panel:not([open]),
+.map-board-panel:not([open]),
+.flags-panel:not([open]) {
+  display: none !important;
 }
 
-html body .stage-scene .cave-base-room .hotspot-return,
-html body .stage-scene .brief-fog-room .hotspot-forward,
-html body .stage-scene .source-mine-room .hotspot-forward {
-  top: 160px !important;
-  right: 22px !important;
+.quest-board-panel summary,
+.map-board-panel summary,
+.flags-panel summary {
+  position: absolute !important;
+  top: 12px !important;
+  left: 16px !important;
+  right: 62px !important;
+  padding: 0 !important;
+  font-family: Georgia, 'Times New Roman', serif !important;
+  font-size: 1rem !important;
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+  cursor: pointer !important;
 }
 
-html body .stage-scene .cave-base-room .hotspot-flags,
-html body .stage-scene .brief-fog-room .hotspot-brief-flag,
-html body .stage-scene .source-mine-room .hotspot-brief-flag {
-  top: 204px !important;
-  right: 22px !important;
+.panel-close {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  z-index: 9000 !important;
+  width: 38px !important;
+  height: 38px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 999px !important;
+  background: #fff !important;
+  color: #2f2118 !important;
+  font-weight: 900 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  cursor: pointer !important;
 }
 
-html body .stage-scene .cave-base-room .hotspot-chest {
-  top: 248px !important;
-  right: 22px !important;
-}
-
-html body .stage-scene .save-status {
+.save-status {
   display: block !important;
   width: fit-content !important;
   max-width: 100% !important;
   white-space: normal !important;
 }
 
-html body .stage-scene .scene-label {
-  left: 18px !important;
-  top: 14px !important;
-  max-width: calc(100% - 190px) !important;
-}
-
 @media (max-width: 820px) {
-  html body .stage-scene .simple-room .simple-card {
-    top: 54px !important;
-    left: 12px !important;
-    width: calc(100% - 24px) !important;
-    max-height: 52% !important;
-  }
-
-  html body .stage-scene .simple-room .flow-hotspot {
-    min-width: 92px !important;
-    padding: 7px 9px !important;
-    font-size: .72rem !important;
-  }
-
-  html body .stage-scene .cave-base-room .hotspot-continue,
-  html body .stage-scene .brief-fog-room .hotspot-parchment,
-  html body .stage-scene .source-mine-room .hotspot-parchment { top: auto !important; bottom: 90px !important; left: 12px !important; right: auto !important; }
-
-  html body .stage-scene .cave-base-room .hotspot-shelf,
-  html body .stage-scene .brief-fog-room .hotspot-brief-loot,
-  html body .stage-scene .source-mine-room .hotspot-brief-loot { top: auto !important; bottom: 90px !important; left: 112px !important; right: auto !important; }
-
-  html body .stage-scene .cave-base-room .hotspot-return,
-  html body .stage-scene .brief-fog-room .hotspot-forward,
-  html body .stage-scene .source-mine-room .hotspot-forward { top: auto !important; bottom: 48px !important; left: 12px !important; right: auto !important; }
-
-  html body .stage-scene .cave-base-room .hotspot-flags,
-  html body .stage-scene .brief-fog-room .hotspot-brief-flag,
-  html body .stage-scene .source-mine-room .hotspot-brief-flag { top: auto !important; bottom: 48px !important; left: 112px !important; right: auto !important; }
-
-  html body .stage-scene .cave-base-room .hotspot-chest { top: auto !important; bottom: 6px !important; left: 12px !important; right: auto !important; }
+  .game-cave.room-viewport-frame { transform: scale(1.04) !important; }
+  .stage-scene .simple-room .simple-card { top: 54px !important; left: 12px !important; width: calc(100% - 24px) !important; max-height: 52% !important; }
+  .stage-room .flow-hotspot,
+  .stage-scene .simple-room .flow-hotspot { min-width: 92px !important; padding: 7px 9px !important; font-size: .72rem !important; }
+  .quest-board-panel,
+  .map-board-panel,
+  .flags-panel { left: 48px !important; right: 8px !important; width: auto !important; }
 }
