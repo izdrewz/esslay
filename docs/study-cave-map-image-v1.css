@@ -97,12 +97,19 @@ body .cave-opening-screen [data-task-map] {
 .study-cave-art-map__image {
   position: absolute;
   inset: 0;
-  background-image: url("assets/study-cave/study-cave-map-v01.jpg?v=1");
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-image: url("assets/study-cave/study-cave-map-v01.jpg?v=2") !important;
+  background-size: contain !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
   background-color: #d8ad6b;
   filter: saturate(1.02) contrast(1.02);
+}
+
+html body .cave-opening-screen .study-cave-art-map .study-cave-art-map__image {
+  background-image: url("assets/study-cave/study-cave-map-v01.jpg?v=2") !important;
+  background-size: contain !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
 }
 
 .study-cave-map-hotspot {
