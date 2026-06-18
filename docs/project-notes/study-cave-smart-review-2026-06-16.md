@@ -4,11 +4,28 @@
 
 First real Grammarly-like Study Cave support layer added.
 
-Implemented in:
+Current frame/layout status: working again after browser check.
 
-- `docs/study-cave-test-mode-v1.js`
+The Study Cave opening scene is now using the Home Base-style frame approach:
 
-This file already loads on `docs/cave.html`, so the feature is active without changing the core cave route files.
+- scene-first layout
+- hidden old top header
+- zoomed framed room image
+- small left Cave Coach tab
+- overlay panels instead of permanent UI clutter
+
+Important fix that made the current visible frame work:
+
+- `docs/cave.html` loads `docs/study-cave-frame-fix-v2.js`
+- `docs/study-cave-frame-fix-v2.js` now directly forces the active Cave frame to `scale(1.08)`
+- the earlier over-zoomed attempt was too cropped and should not be restored
+
+Do not reintroduce the previous broken Cave frame behaviour:
+
+- do not replace the opening cave art with a plain dark background
+- do not let Flags / Quest Board / Task Map become full-screen cream sheets
+- do not re-add the horizontal cave header as the main UI
+- do not increase Cave zoom back to `scale(1.32)` without Izzy explicitly asking
 
 ## What changed
 
@@ -68,6 +85,16 @@ The next stronger version should connect the checks to actual route rooms:
 - Polish Pool: wordiness, repetition, sentence length
 - Submission Gate: final checklist
 
+## Next recommended work
+
+Now that the frame is usable again, the next work should be feature quality, not more layout churn.
+
+Suggested next step:
+
+1. Test Cave Coach and Smart Review with one pasted paragraph.
+2. Fix any broken open/close actions in Cave Coach / Smart Review.
+3. Start connecting Smart Review suggestion cards to the relevant route rooms, beginning with Brief Fog and Source Mine.
+
 ## Test
 
 Open:
@@ -78,6 +105,8 @@ Hard refresh with Ctrl + F5.
 
 Expected:
 
+- Study Cave opening art is visible and framed
+- Cave scene size is acceptable with `scale(1.08)`
 - left Cave Coach tab opens
 - Cave Coach shows a Smart Review card
 - Open writing checks opens Smart Review
