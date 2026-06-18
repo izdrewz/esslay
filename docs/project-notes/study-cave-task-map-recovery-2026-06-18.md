@@ -15,6 +15,21 @@ Main causes:
 - `docs/study-cave-map-image-v1.js` had been disabled, so the intended illustrated map renderer was not running.
 - `docs/study-cave-map-asset-v1.css` contained a stale embedded base64 map image override and could replace the intended uploaded map asset if reloaded.
 
+## Follow-up responsiveness issue
+
+After the visual fix, the cave looked correct but clicks were still not responding reliably.
+
+Cause:
+
+- `docs/study-cave-route-count-fix-v1.js` was using a broad `MutationObserver` and rewriting `.stage-card`, `.flow-card`, and `.study-cave-map-status` with `innerHTML`.
+- That could repeatedly rewrite live panels/buttons and break interaction or make the page feel frozen.
+
+Follow-up fix:
+
+- `study-cave-route-count-fix-v1.js` now only updates `[data-flow-progress]` text.
+- It no longer observes the whole document.
+- It no longer rewrites panels/buttons with `innerHTML`.
+
 ## Fix applied
 
 - Restored `study-cave-map-image-v1.css` loading in `docs/cave.html`.
@@ -22,6 +37,7 @@ Main causes:
 - Removed `study-cave-frame-fix-v2.js` from the page and deleted it from the repo.
 - Deleted stale embedded `study-cave-map-asset-v1.css`.
 - Added a small route count display fix for the current 8-step Study Cave route.
+- Reworked the route count display fix so it does not touch live buttons/panels.
 
 ## Files changed
 
@@ -35,15 +51,16 @@ Main causes:
 
 Use a fresh cache URL:
 
-`https://izdrewz.github.io/esslay/docs/cave.html?fresh=task-map-recovery-1`
+`https://izdrewz.github.io/esslay/docs/cave.html?fresh=task-map-recovery-2`
 
 Check:
 
 1. Cave entrance is not zoomed/cropped unexpectedly.
 2. Entrance hotspots line up with the visible entrance image.
-3. Task Map opens.
+3. Clicking Enter Cave / Task Map opens the Task Map.
 4. Task Map shows the uploaded `study-cave-map-v01.jpg` image, not the stale embedded asset.
-5. Task Map progress shows `/ 8`.
+5. Task Map buttons respond.
+6. Task Map progress shows `/ 8`.
 
 ## Remaining risk
 
