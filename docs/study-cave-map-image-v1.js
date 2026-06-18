@@ -23,9 +23,19 @@
     return completedCount ? "Source Mine" : "Brief Fog";
   }
 
+  function isMapOpen() {
+    var panel = document.getElementById("map-board-panel");
+    return !!(panel && panel.open);
+  }
+
+  function clearIllustratedMap() {
+    var mount = document.querySelector("[data-task-map]");
+    if (mount) mount.innerHTML = "";
+  }
+
   function renderIllustratedMap() {
     var mount = document.querySelector("[data-task-map]");
-    if (!mount) return;
+    if (!mount || !isMapOpen()) return;
 
     var saved = readState();
     var completed = Array.isArray(saved.completed) ? Math.min(saved.completed.length, ROUTE_TOTAL) : 0;
@@ -59,12 +69,21 @@
     }
   }, true);
 
+  document.addEventListener("click", function (event) {
+    if (event.target.closest('[data-close-panel]')) {
+      window.setTimeout(function () {
+        if (!isMapOpen()) clearIllustratedMap();
+      }, 0);
+    }
+  });
+
   function observeMapPanel() {
     var panel = document.getElementById("map-board-panel");
     if (!panel || typeof MutationObserver === "undefined") return;
 
     var observer = new MutationObserver(function () {
       if (panel.open) scheduleRender();
+      else clearIllustratedMap();
     });
 
     observer.observe(panel, { attributes: true, attributeFilter: ["open"] });
@@ -72,7 +91,7 @@
 
   function init() {
     observeMapPanel();
-    scheduleRender();
+    clearIllustratedMap();
   }
 
   if (document.readyState === "loading") {
