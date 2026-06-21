@@ -15,8 +15,8 @@
 
     panel.style.cssText = [
       "position:absolute !important",
-      "left:48.5% !important",
-      "top:48% !important",
+      "left:47% !important",
+      "top:47% !important",
       "width:min(580px, calc(100% - 42px)) !important",
       "max-width:none !important",
       "max-height:calc(100% - 28px) !important",
