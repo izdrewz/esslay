@@ -1,6 +1,6 @@
 # Cave Base UI repair — 2026-06-21
 
-Status: needs approval
+Status: completed needs further edits
 
 ## Scope
 
@@ -25,17 +25,33 @@ Commit `4ae4e92` updates `docs/cave.html` only.
 - Duplicate hotspot label pseudo-elements are disabled.
 - Existing Cave Base background, route buttons, room actions, Task Map element, Task Map script, Cave entrance, and localStorage keys are unchanged.
 
-## What still needs visible browser approval
+## User acceptance on 2026-06-21
 
-1. The Cave Base card must stay fully visible with no clipped left text.
-2. The right-side controls must be compact and individually clickable.
-3. Task Map must still open centred with its approved image, close button, and hotspots unchanged.
-4. Cave entrance and normal room navigation must still work.
-5. The Source Mine PDF import flow must still open from the normal route.
+The repaired Cave Base is accepted for now so PDF/source-import testing can continue. Do not make further Cave Base layout or viewport changes during the PDF test.
 
-## Known separate issue
+## Future fixes
 
-The Cave Base card can still display `Current chamber: Source Mine` because this older base-card copy reflects the next route state rather than the physical Cave Base screen. This wording was not changed in the layout repair, so it remains a separate, non-blocking route-copy cleanup item.
+1. **Study Cave screen size / viewport presentation**
+   - The repair changed the perceived Cave Base screen size from the previously approved presentation.
+   - This does not block current use, but it needs a later isolated viewport pass.
+   - Restore the intended larger Cave Base presentation without clipping the left panel, reintroducing overflow, or changing the approved Task Map presentation.
+
+2. **Environmental clickable zones**
+   - The oversized translucent boxes were removed because they were visually and functionally wrong.
+   - The compact right-side controls are acceptable as a temporary placeholder.
+   - Later, replace these placeholder controls with correctly positioned, compact in-scene click zones over the actual Cave Base objects. Do not restore generic oversized rectangles.
+
+3. **Cave Base route copy**
+   - The base card can still display `Current chamber: Source Mine` because this older line reflects the next route state rather than the physical Cave Base screen.
+   - This is non-blocking copy cleanup for a later pass.
+
+## What still needs visible browser approval for the PDF task
+
+1. Open Source Mine from the Cave Base normal route.
+2. Confirm pasted text still creates cards.
+3. Import a selectable-text PDF, then confirm filename, source title, citation label, page number, and chunk number reach a saved evidence gem and Draft Route.
+4. Confirm Park, Discard, Restore, Source Library JSON export/import, and OCR-needed handling.
+5. Confirm the approved Task Map still opens centred with its image, close button, hotspots, Cave entrance, and cave UI unchanged.
 
 ## Outside scope
 
