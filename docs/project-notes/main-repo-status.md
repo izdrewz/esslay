@@ -1,10 +1,10 @@
 # Main repo status
 
-Last updated: 2026-06-16
+Last updated: 2026-06-21
 
 ## Current Home Base / Garden status
 
-Current active focus: Home Base + Garden / XP progression direction.
+Current active focus: Source Mine PDF/source-import system inside the existing Study Cave browser game. Home Base + Garden / XP progression direction remains recorded here for later work.
 
 The 8-stage XP Garden progression image assets are installed in:
 
@@ -123,6 +123,7 @@ Active Study Cave shell and room scripts:
 - `docs/study-cave-clicks-v1.js`
 - `docs/study-cave-brief-fog-compass-stable-v1.js`
 - `docs/study-cave-source-mine-sieve-v2.js`
+- `docs/study-cave-pdf-import-v1.js`
 - `docs/study-cave-draft-route-v1.js`
 - `docs/study-cave-paragraph-forge-v1.js`
 - `docs/study-cave-bridge-hall-v1.js`
@@ -131,6 +132,8 @@ Active Study Cave shell and room scripts:
 - `docs/study-cave-submission-gate-v1.js`
 - `docs/study-cave-route-rooms-v1.js`
 - `docs/study-cave-test-mode-v1.js`
+- `docs/assets/vendor/pdfjs/pdf.mjs`
+- `docs/assets/vendor/pdfjs/pdf.worker.mjs`
 
 Home/Garden/room shell files:
 
@@ -201,6 +204,8 @@ Current localStorage keys:
 - `5e33556` — Bump training viewport mode cache
 - `ca81917` — Bump Study Cave viewport mode cache
 - `3038196` — Record viewport view modes
+- `cebdb2e` — Add local Source Mine PDF import module
+- `ee550da` — Record Source Mine PDF import for approval
 
 ## Current Study Cave data chain
 
@@ -235,6 +240,15 @@ Submission Gate uses polish fixes to create final readiness checks at:
 - `state.routeRooms["submission-gate"].checks`
 
 ## Current active next work
+
+PDF/source import status: needs approval. The feature is installed in Source Mine but must be checked in the visible GitHub Pages cave before it can be locked.
+
+Visible PDF/source import test:
+
+1. Confirm pasted text still creates cards.
+2. Import a selectable-text PDF, then confirm filename/page/chunk details reach a saved evidence gem and Draft Route.
+3. Confirm Park, Discard, Restore, JSON export/import, and OCR-needed handling behave as recorded in the Source Mine note.
+4. Confirm opening and closing the approved Task Map still leaves its size, placement, close button, cave entrance, cave UI, and hotspots unchanged. The old-map flash is issue #5 and remains out of scope.
 
 Viewport rollout test order:
 
@@ -277,6 +291,9 @@ For Study Cave cleanup later:
 - Draft Route marker ordering/editing is not polished yet.
 - Large hotspot boxes are visually noisy and should be reduced outside test mode.
 - Task Map status labels can lag behind newer route logic because older scripts still normalise route state.
+- The illustrated Task Map is approved and centred. A brief old-map flash before it resolves is GitHub issue #5; it is future isolated polish, not part of the PDF/source-import task.
+- Selectable-text PDFs are supported locally. Scanned/image-only PDFs need OCR or pasted text.
+- Source Library backups currently use browser JSON export/import rather than account or cloud sync.
 - Some room scripts are temporary/hotfix-style and should be consolidated after route logic is stable.
 - Test Mode can open rooms directly, but normal route navigation should remain the source of truth.
 - GitHub Pages cache needs version bumps and hard refreshes after changes.
@@ -287,5 +304,7 @@ For Study Cave cleanup later:
 Do not rewrite working Brief Fog, Source Mine, Draft Route, Paragraph Forge, Bridge Hall, Citation Vault, Polish Pool, or Submission Gate unless a specific browser test fails.
 
 Do not restore the old blank/cream Source Notes drawer.
+
+Do not change the approved illustrated Task Map, its size, placement, close button, hotspots, cave entrance, or cave UI during the PDF/source-import task. Issue #5 remains separate.
 
 Do not mark Garden art as locked final unless Izzy explicitly approves it as locked final.
