@@ -3,8 +3,8 @@
   var TOTAL = 8;
   var TASK_SCROLL_SCRIPTS = [
     "study-cave-task-scroll-core-v1.js?v=1",
-    "study-cave-task-scroll-ui-v1.js?v=1",
-    "study-cave-task-scroll-controller-v1.js?v=1"
+    "study-cave-task-scroll-ui-v1.js?v=2",
+    "study-cave-task-scroll-controller-v1.js?v=2"
   ];
 
   function fixHudOnly() {
