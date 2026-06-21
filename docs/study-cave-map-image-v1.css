@@ -40,6 +40,7 @@
 
 .cave-opening-screen .map-board-panel[open] [data-task-map] {
   padding: 0 !important;
+  translate: -5% 0 !important;
 }
 
 .cave-opening-screen .map-board-panel[open] [data-task-map] > section {
