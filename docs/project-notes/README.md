@@ -12,10 +12,9 @@ How to use this folder:
 
 Current active repo focus:
 - Study Cave route has moved to: Quest Board to Task Map threshold to Cave Base to Brief Fog / Question-Unpacking Chamber.
-- Cave Base opens and the character now appears at a workable size.
-- The avatar blends better than before, but the cave background still needs sharpening later.
-- Area 3 pose-swapping has now been added to the active project-notes handover because it was previously only recorded in PROJECT_PLAN.md.
-- The next build priority is retesting Brief Fog after the Quest Board to Task Map route handoff fix.
+- Cave Base is accepted for now and must not be altered during the PDF task. Its intended larger screen presentation and correctly placed environmental click zones are recorded as later isolated fixes.
+- Brief Fog Quest Scroll PDF import is the current active feature. It is installed and needs a visible browser test before it can be approved.
+- Source Mine PDF import remains installed and needs to be tested as the second part of the same full assignment run.
 - Asset reference intake is being set up in asset-reference-system.md. Reference images are not approved game assets unless Izzy explicitly approves them.
 
 Files in this folder:
