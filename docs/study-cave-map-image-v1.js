@@ -70,7 +70,7 @@
     mount.style.cssText = [
       "position:relative !important",
       "display:block !important",
-      "left:-70px !important",
+      "left:-140px !important",
       "translate:none !important",
       "width:min(580px, calc(100% - 42px)) !important",
       "margin:0 !important",
@@ -120,3 +120,4 @@
     observeMapPanel();
   }
 })();
+
