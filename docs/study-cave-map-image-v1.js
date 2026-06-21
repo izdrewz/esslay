@@ -1,6 +1,6 @@
-// Safe illustrated Task Map loader.
-// This does nothing on normal cave load. It only replaces the existing map content
-// after the native Task Map details panel opens.
+// Illustrated Study Cave Task Map.
+// This does nothing on normal cave load. It replaces the existing Task Map
+// content and styles only after the native Task Map details panel opens.
 (function () {
   var PANEL_ID = "map-board-panel";
   var MAP_IMAGE = "assets/study-cave/study-cave-map-v01.jpg?v=3";
@@ -9,14 +9,67 @@
     return '<button type="button" data-action="' + action + '" aria-label="' + label + '" title="' + label + '" style="position:absolute;left:' + left + '%;top:' + top + '%;width:' + width + '%;height:' + height + '%;z-index:2;border:0;border-radius:14px;background:transparent;color:transparent;cursor:pointer;"></button>';
   }
 
+  function applyMapOverlayStyle(panel) {
+    var summary = panel.querySelector("summary");
+    var closeButton = panel.querySelector(".panel-close");
+
+    panel.style.cssText = [
+      "position:absolute !important",
+      "left:40% !important",
+      "top:50% !important",
+      "width:min(1160px, calc(100% - 42px)) !important",
+      "max-width:none !important",
+      "max-height:calc(100% - 28px) !important",
+      "overflow:visible !important",
+      "transform:translate(-50%, -50%) !important",
+      "margin:0 !important",
+      "padding:0 !important",
+      "z-index:170 !important",
+      "border:0 !important",
+      "border-radius:0 !important",
+      "background:transparent !important",
+      "box-shadow:none !important",
+      "color:inherit !important"
+    ].join(";");
+
+    if (summary) {
+      summary.style.cssText = "display:none !important;";
+    }
+
+    if (closeButton) {
+      closeButton.style.cssText = [
+        "position:absolute !important",
+        "top:-16px !important",
+        "right:-16px !important",
+        "float:none !important",
+        "margin:0 !important",
+        "z-index:6 !important",
+        "width:42px !important",
+        "height:42px !important",
+        "border:2px solid rgba(255,232,177,.92) !important",
+        "border-radius:999px !important",
+        "background:rgba(43,29,23,.96) !important",
+        "color:#fff1cf !important",
+        "font-size:1.35rem !important",
+        "font-weight:900 !important",
+        "line-height:1 !important",
+        "cursor:pointer !important",
+        "box-shadow:0 5px 16px rgba(0,0,0,.42) !important"
+      ].join(";");
+    }
+  }
+
   function renderImageMap() {
     var panel = document.getElementById(PANEL_ID);
     var mount = panel && panel.querySelector("[data-task-map]");
     if (!panel || !panel.open || !mount) return;
 
+    applyMapOverlayStyle(panel);
+
+    mount.style.cssText = "padding:0 !important;margin:0 !important;width:100% !important;";
     mount.innerHTML = '' +
-      '<section aria-label="Illustrated Study Cave map" style="position:relative;width:100%;aspect-ratio:16 / 9;min-height:280px;overflow:hidden;border-radius:14px;background:#d8ad6b;">' +
-        '<img src="' + MAP_IMAGE + '" alt="Illustrated Study Cave task map" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;">' +
+      '<section aria-label="Illustrated Study Cave map" style="position:relative;width:100%;aspect-ratio:4 / 3;min-height:0;overflow:hidden;border-radius:18px;background:transparent;box-shadow:0 20px 52px rgba(0,0,0,.52);">' +
+        '<img src="' + MAP_IMAGE + '" alt="Illustrated Study Cave task map" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">' +
         hotspot("Open Cave Base", "enter-cave-base", 4, 9, 28, 26) +
         hotspot("Open Brief Fog", "open-brief-fog", 35, 12, 28, 21) +
         hotspot("Open Source Mine", "open-source-mine", 70, 8, 25, 26) +
