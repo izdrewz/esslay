@@ -12,6 +12,19 @@
     return fragment;
   }
 
+  function repairSavedScroll() {
+    var state = core.load();
+    var scroll = state && state.briefFog && state.briefFog.taskScroll;
+    if (!scroll || !Array.isArray(scroll.fragments)) return;
+    var changed = false;
+    scroll.fragments.forEach(function (fragment) {
+      var before = fragment.suggestedRole;
+      correct(fragment);
+      if (fragment.suggestedRole !== before) changed = true;
+    });
+    if (changed) core.save(state, "Quest Scroll Current Boss hint repaired");
+  }
+
   var originalCreateScroll = core.createScroll;
   core.createScroll = function (data) {
     if (data && Array.isArray(data.fragments)) data.fragments.forEach(correct);
@@ -25,5 +38,6 @@
     return result;
   };
 
+  repairSavedScroll();
   core.__currentBossHintPatch = true;
 })();
