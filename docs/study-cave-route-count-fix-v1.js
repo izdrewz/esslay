@@ -6,7 +6,8 @@
     "study-cave-task-scroll-split-patch-v1.js?v=1",
     "study-cave-task-scroll-hints-patch-v1.js?v=2",
     "study-cave-task-scroll-ui-v1.js?v=2",
-    "study-cave-task-scroll-controller-v1.js?v=2"
+    "study-cave-task-scroll-controller-v1.js?v=2",
+    "study-cave-task-scroll-edit-v1.js?v=1"
   ];
 
   function fixHudOnly() {
