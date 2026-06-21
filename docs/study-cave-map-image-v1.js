@@ -9,17 +9,31 @@
     return '<button type="button" data-action="' + action + '" aria-label="' + label + '" title="' + label + '" style="position:absolute;left:' + left + '%;top:' + top + '%;width:' + width + '%;height:' + height + '%;z-index:2;border:0;border-radius:14px;background:transparent;color:transparent;cursor:pointer;"></button>';
   }
 
+  function caveFramePosition(panel) {
+    var frame = panel.closest(".game-cave") || document.querySelector(".game-cave");
+    if (!frame) {
+      return { left: window.innerWidth / 2, top: window.innerHeight * 0.47 };
+    }
+
+    var rect = frame.getBoundingClientRect();
+    return {
+      left: rect.left + rect.width / 2,
+      top: rect.top + rect.height * 0.47
+    };
+  }
+
   function applyMapOverlayStyle(panel) {
     var summary = panel.querySelector("summary");
     var closeButton = panel.querySelector(".panel-close");
+    var position = caveFramePosition(panel);
 
     panel.style.cssText = [
-      "position:absolute !important",
-      "left:47% !important",
-      "top:47% !important",
-      "width:min(580px, calc(100% - 42px)) !important",
+      "position:fixed !important",
+      "left:" + Math.round(position.left) + "px !important",
+      "top:" + Math.round(position.top) + "px !important",
+      "width:min(580px, calc(100vw - 42px)) !important",
       "max-width:none !important",
-      "max-height:calc(100% - 28px) !important",
+      "max-height:calc(100vh - 28px) !important",
       "overflow:visible !important",
       "transform:translate(-50%, -50%) !important",
       "margin:0 !important",
@@ -91,6 +105,10 @@
     });
 
     observer.observe(panel, { attributes: true, attributeFilter: ["open"] });
+
+    window.addEventListener("resize", function () {
+      if (panel.open) window.setTimeout(renderImageMap, 0);
+    });
   }
 
   if (document.readyState === "loading") {
