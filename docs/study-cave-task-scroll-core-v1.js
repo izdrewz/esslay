@@ -104,7 +104,7 @@
   }
 
   function heading(value) {
-    return /^(part\s*\d+\b|task\b|emTMA\b|TMA\b|important\b|guidance\b|marking grid\b|writing style\b|engaging with\b|resubmission\b|overall word limit\b|module pass threshold\b|reflection\b)/i.test(text(value, 220));
+    return /^(part\s*\d+\b|task(?:\s*[:\-]|\s+(?:write|complete|produce|respond|answer)\b|\s*$)|emTMA\b|TMA\b|important\b|guidance\b|reference rule\b|marking grid\b|writing style\b|engaging with\b|resubmission\b|overall word limit\b|module pass threshold\b|reflection\b)/i.test(text(value, 220));
   }
 
   function splitTaskText(raw) {
@@ -123,14 +123,14 @@
 
   function suggest(raw) {
     var value = String(raw || "").toLowerCase();
-    if (/\bpart\s+\d+\b/.test(value)) return "quest-part";
-    if (/\b(task|evaluate|analyse|analyze|compare|discuss|explain|write an essay|write a report)\b/.test(value)) return "current-boss";
-    if (/\bmust include|at least one|at least two|required|specific evidence|videos?|transcripts?\b/.test(value)) return "required-evidence";
-    if (/\bbiological|neurological|psychological|social context|scope|focus on\b/.test(value)) return "key-scope";
-    if (/\bthird person|first person|objective writing|introduction|conclusion|structure|paragraph\b/.test(value)) return "crafting-rule";
-    if (/\breference|referencing|citation|reference list|own words|paraphras\b/.test(value)) return "reference-rule";
-    if (/\bmarking grid|focus on the task|understanding of concepts|quality of writing|use of evidence|pass\b/.test(value)) return "boss-success-condition";
-    if (/\bdeadline|cut-off|per cent|resubmission|overall assessment|submit\b/.test(value)) return "admin-detail";
+    if (/\bpart\s+\d+\b|\breflection\b/.test(value)) return "quest-part";
+    if (/\bmarking grid\b|\bfocus on the task\b|\buse of evidence\b|\bevaluation\b|\borganisation\b|\bsource care\b/.test(value)) return "boss-success-condition";
+    if (/\breference rule\b|\breferencing\b|\bcitation\b|\breference list\b|\bown words\b|\bparaphras\b/.test(value)) return "reference-rule";
+    if (/\bdeadline\b|\bcut-off\b|\bper cent\b|\bresubmission\b|\boverall assessment\b|\bsubmit\b|\bno grade\b/.test(value)) return "admin-detail";
+    if (/\bwriting style\b|\bobjective academic\b|\bthird person\b|\bfirst person\b|\bopening answer\b|\bconnected points\b|\bweigh up\b/.test(value)) return "crafting-rule";
+    if (/\buse the supplied practice source\b|\bsave at least one evidence crystal\b|\borganising extracts\b|\bchanging a plan\b|\blimitation\b|\bcounterpoint\b/.test(value)) return "required-evidence";
+    if (/\bbiological\b|\bneurological\b|\bpsychological\b|\bsocial context\b|\bscope\b|\bfocus on\b/.test(value)) return "key-scope";
+    if (/^(task\b|current test task\b)|\bwrite a short\b|\bwrite an essay\b|\bevaluate\b|\banalyse\b|\banalyze\b|\bcompare\b|\bdiscuss\b/.test(value)) return "current-boss";
     return "";
   }
 
