@@ -73,7 +73,7 @@
       "width:min(580px, calc(100% - 42px)) !important",
       "margin:0 !important",
       "padding:0 !important",
-      "transform:translateY(-3%) !important",
+      "transform:translate(-5%, -3%) !important",
       "flex:0 0 auto !important"
     ].join(";");
 
