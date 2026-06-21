@@ -141,7 +141,16 @@
   async function extractPdf(file, progress) {
     if (!file || !/\.pdf$/i.test(file.name || "")) throw new Error("Choose an assignment PDF first.");
     var pdfjs = await loadPdfJs();
-    var documentProxy = await pdfjs.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
+    var task = pdfjs.getDocument({data:new Uint8Array(await file.arrayBuffer())});
+    var documentProxy;
+    try {
+      documentProxy = await task.promise;
+    } catch (error) {
+      if (error && (error.name === "PasswordException" || error.code === 1 || error.code === 2)) {
+        throw new Error("This PDF is password-protected. Unlock it first, then import it again.");
+      }
+      throw new Error("This file could not be read as an assignment PDF.");
+    }
     var pageCount = documentProxy.numPages, totalText = 0, fragments = [];
     for (var page = 1; page <= pageCount; page += 1) {
       if (progress) progress(page, pageCount);
