@@ -31,14 +31,30 @@ jobs:
           cp .pdfjs-package/package/build/pdf.mjs docs/assets/vendor/pdfjs/pdf.mjs
           cp .pdfjs-package/package/build/pdf.worker.mjs docs/assets/vendor/pdfjs/pdf.worker.mjs
 
-      - name: Commit local PDF.js files when changed
+      - name: Load the Source Mine importer after its existing module
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          cave = Path("docs/cave.html")
+          text = cave.read_text(encoding="utf-8")
+          current = '    <script src="study-cave-source-mine-sieve-v2.js?v=7"></script>'
+          addition = current + '\n    <script src="study-cave-pdf-import-v1.js?v=1"></script>'
+          if addition not in text:
+              if current not in text:
+                  raise SystemExit("Source Mine script anchor changed; cave.html was not modified.")
+              cave.write_text(text.replace(current, addition, 1), encoding="utf-8")
+          PY
+
+      - name: Commit local PDF.js files and Source Mine loader when changed
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/assets/vendor/pdfjs/pdf.mjs docs/assets/vendor/pdfjs/pdf.worker.mjs
+          git add docs/assets/vendor/pdfjs/pdf.mjs docs/assets/vendor/pdfjs/pdf.worker.mjs docs/cave.html
           if git diff --cached --quiet; then
             exit 0
           fi
-          git commit -m "Vendor PDF.js 4.10.38"
+          git commit -m "Install local PDF.js Source Mine importer"
           git push
