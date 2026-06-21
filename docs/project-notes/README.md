@@ -31,3 +31,4 @@ Files in this folder:
 - area-12-route-behaviour.md
 - area-12-route-handoff-fix-2026-06-03.md
 - area-13-draft-support.md
+- cave-base-ui-repair-2026-06-21.md
