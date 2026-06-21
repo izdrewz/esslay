@@ -1,2 +1,45 @@
-/* Emergency disabled: illustrated Task Map overlay caused black/non-responsive Study Cave screen.
-   Keep this file inert until the map is rebuilt safely. */
+/*
+  Safe illustrated Task Map layout.
+  This file is intentionally scoped to the Task Map details panel only.
+  It must not alter the cave scene, stage scene, route panels, or normal cave load.
+*/
+
+.cave-opening-screen .map-board-panel[open] {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  width: min(1320px, calc(100% - 48px)) !important;
+  max-width: none !important;
+  max-height: calc(100% - 36px) !important;
+  overflow: auto !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important;
+  z-index: 170 !important;
+}
+
+.cave-opening-screen .map-board-panel[open] [data-task-map] {
+  padding: 18px 22px 24px !important;
+}
+
+.cave-opening-screen .map-board-panel[open] [data-task-map] > section {
+  width: 100% !important;
+  min-height: 0 !important;
+  aspect-ratio: 16 / 9 !important;
+}
+
+.cave-opening-screen .map-board-panel[open] [data-task-map] img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
+@media (max-width: 820px) {
+  .cave-opening-screen .map-board-panel[open] {
+    width: calc(100% - 20px) !important;
+    max-height: calc(100% - 20px) !important;
+  }
+
+  .cave-opening-screen .map-board-panel[open] [data-task-map] {
+    padding: 12px !important;
+  }
+}
