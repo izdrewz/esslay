@@ -19,6 +19,7 @@ Current active repo focus:
 
 Files in this folder:
 - main-repo-status.md
+- main-repo-status-brief-fog-task-scroll-addendum-2026-06-21.md
 - master-recovery-status.md
 - asset-reference-system.md
 - area-1-character-assets.md
