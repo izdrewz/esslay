@@ -48,7 +48,7 @@
     var c = core();
     if (!items.length) return '<p>' + esc(empty) + '</p>';
     return '<ul class="ts-list">' + items.map(function (item) {
-      return '<li><strong>' + esc(c.text(item.text,170)) + '</strong><small>' + esc(meta(scroll,item)) + '</small>' + (item.note ? '<em>' + esc(item.note) + '</em>' : '') + '</li>';
+      return '<li><strong>' + esc(item.note || c.text(item.text,170)) + '</strong><small>' + esc(meta(scroll,item)) + '</small>' + (item.note ? '<em>' + esc(c.text(item.text,170)) + '</em>' : '') + '</li>';
     }).join("") + "</ul>";
   }
 
@@ -65,7 +65,7 @@
     if (!scroll.fragments.length) return home("Bring a Quest Scroll before opening the Fog Sieve.");
     var item = c.unsorted(scroll)[0];
     if (!item) return recipeView();
-    render('<article class="stage-card simple-card ts-card"><h2>Brief Fog</h2><p><strong>Fog Sieve</strong> · Reviewed: ' + (scroll.fragments.length - c.unsorted(scroll).length) + ' · Unsorted: ' + c.unsorted(scroll).length + '</p><section class="ts-fragment"><p class="ts-meta">' + esc(meta(scroll,item)) + '</p><div class="ts-text">' + esc(item.text) + '</div><form data-task-scroll-form data-id="' + esc(item.id) + '"><label>What does this fragment do?<select name="role">' + options(item.role,item.suggestedRole) + '</select></label><p class="ts-note">' + (item.suggestedRole ? 'Possible role: <strong>' + esc(c.ROLES[item.suggestedRole]) + '</strong>. You decide.' : "No role suggested. Decide what it is for, or park it.") + '</p><label>Your note / why it matters<textarea name="note" rows="3" placeholder="Optional"></textarea></label><div class="simple-actions"><button type="button" data-action="task-scroll-save">Keep in recipe → next</button><button type="button" data-action="task-scroll-park">Park for later → next</button><button type="button" data-action="task-scroll-recipe">Check Spell Recipe</button></div></form></section><div class="simple-actions"><button type="button" data-action="task-scroll-home">Quest Scroll</button></div></article>');
+    render('<article class="stage-card simple-card ts-card"><h2>Brief Fog</h2><p><strong>Fog Sieve</strong> · Reviewed: ' + (scroll.fragments.length - c.unsorted(scroll).length) + ' · Unsorted: ' + c.unsorted(scroll).length + '</p><section class="ts-fragment"><p class="ts-meta">' + esc(meta(scroll,item)) + '</p><div class="ts-text">' + esc(item.text) + '</div><form data-task-scroll-form data-id="' + esc(item.id) + '"><label>What does this fragment do?<select name="role">' + options(item.role,item.suggestedRole) + '</select></label><p class="ts-note">' + (item.suggestedRole ? 'Possible role: <strong>' + esc(c.ROLES[item.suggestedRole]) + '</strong>. You decide.' : "No role suggested. Decide what it is for, or park it.") + '</p><label>Why it matters / crystal-slot name<textarea name="note" rows="3" placeholder="For a Source Mine ingredient, give it a short name, e.g. Social context evidence."></textarea></label><div class="simple-actions"><button type="button" data-action="task-scroll-save">Keep in recipe → next</button><button type="button" data-action="task-scroll-park">Park for later → next</button><button type="button" data-action="task-scroll-recipe">Check Spell Recipe</button></div></form></section><div class="simple-actions"><button type="button" data-action="task-scroll-home">Quest Scroll</button></div></article>');
   }
 
   function recipeView(message) {
