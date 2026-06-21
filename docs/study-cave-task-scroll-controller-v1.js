@@ -80,14 +80,30 @@
     }) || "understand";
   }
 
+  function ingredientRecord(c, item) {
+    return {
+      id: item.id,
+      label: c.text(item.note || item.text, 180),
+      text: c.text(item.text, 2200),
+      role: item.role,
+      pageNumber: item.pageNumber || null,
+      chunkIndex: item.chunkIndex || 0,
+      originalFilename: ""
+    };
+  }
+
   function confirmRecipe() {
     var c = core();
     var state = c.load(), scroll = state.briefFog.taskScroll, data = c.recipe(scroll);
     if (data.bosses.length !== 1 || !data.ingredients.length) return ui().recipe("Choose one Current Boss and at least one ingredient first.");
+    var ingredients = data.ingredients.map(function (item) {
+      var record = ingredientRecord(c, item);
+      record.originalFilename = scroll.originalFilename || "";
+      return record;
+    });
     var names = [];
-    data.ingredients.forEach(function (item) {
-      var name = c.text(item.text, 180);
-      if (name && names.indexOf(name) === -1) names.push(name);
+    ingredients.forEach(function (ingredient) {
+      if (ingredient.label && names.indexOf(ingredient.label) === -1) names.push(ingredient.label);
     });
     var boss = data.bosses[0];
     state.briefFog.taskMap = {
@@ -103,7 +119,8 @@
         title: scroll.title,
         originalFilename: scroll.originalFilename,
         currentBossId: boss.id,
-        ingredientIds: data.ingredients.map(function (item) { return item.id; }),
+        ingredientIds: ingredients.map(function (ingredient) { return ingredient.id; }),
+        ingredients: ingredients,
         recipeConfirmedAt: c.iso()
       }
     };
