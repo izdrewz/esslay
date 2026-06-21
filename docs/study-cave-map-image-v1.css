@@ -1,45 +1,71 @@
 /*
-  Safe illustrated Task Map layout.
-  This file is intentionally scoped to the Task Map details panel only.
-  It must not alter the cave scene, stage scene, route panels, or normal cave load.
+  Illustrated Task Map overlay.
+  Scoped to the Task Map details panel only so the cave, route rooms,
+  and normal cave load are not affected.
 */
 
 .cave-opening-screen .map-board-panel[open] {
   position: absolute !important;
-  left: 50% !important;
+  left: 42% !important;
   top: 50% !important;
-  width: min(1320px, calc(100% - 48px)) !important;
+  width: min(1120px, calc(100% - 44px)) !important;
   max-width: none !important;
-  max-height: calc(100% - 36px) !important;
-  overflow: auto !important;
+  max-height: calc(100% - 28px) !important;
+  overflow: visible !important;
   transform: translate(-50%, -50%) !important;
   margin: 0 !important;
   z-index: 170 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+
+.cave-opening-screen .map-board-panel[open] > summary {
+  display: none !important;
+}
+
+.cave-opening-screen .map-board-panel[open] > .panel-close {
+  position: absolute !important;
+  top: -14px !important;
+  right: -14px !important;
+  float: none !important;
+  margin: 0 !important;
+  z-index: 5 !important;
+  border-color: rgba(255, 232, 177, .86) !important;
+  background: rgba(43, 29, 23, .94) !important;
+  color: #fff1cf !important;
 }
 
 .cave-opening-screen .map-board-panel[open] [data-task-map] {
-  padding: 18px 22px 24px !important;
+  padding: 0 !important;
 }
 
 .cave-opening-screen .map-board-panel[open] [data-task-map] > section {
   width: 100% !important;
   min-height: 0 !important;
-  aspect-ratio: 16 / 9 !important;
+  aspect-ratio: 4 / 3 !important;
+  overflow: hidden !important;
+  border-radius: 18px !important;
+  background: transparent !important;
+  box-shadow: 0 18px 46px rgba(0, 0, 0, .5) !important;
 }
 
 .cave-opening-screen .map-board-panel[open] [data-task-map] img {
   width: 100% !important;
   height: 100% !important;
-  object-fit: contain !important;
+  object-fit: cover !important;
 }
 
 @media (max-width: 820px) {
   .cave-opening-screen .map-board-panel[open] {
+    left: 50% !important;
     width: calc(100% - 20px) !important;
     max-height: calc(100% - 20px) !important;
   }
 
-  .cave-opening-screen .map-board-panel[open] [data-task-map] {
-    padding: 12px !important;
+  .cave-opening-screen .map-board-panel[open] [data-task-map] > section {
+    border-radius: 12px !important;
   }
 }
