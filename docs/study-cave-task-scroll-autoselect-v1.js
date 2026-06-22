@@ -37,6 +37,27 @@
     document.querySelectorAll("[data-task-scroll-form]").forEach(applyEstimate);
   }
 
+  function scrollReady() {
+    var core = window.EsslayTaskScrollCore;
+    if (!core || typeof core.load !== "function") return false;
+    var state = core.load();
+    return !!(state && state.briefFog && state.briefFog.taskScroll && Array.isArray(state.briefFog.taskScroll.fragments) && state.briefFog.taskScroll.fragments.length);
+  }
+
+  function showAutomaticFogAfterImport() {
+    var attempts = 0;
+    function tryOpen() {
+      var autoUi = window.EsslayTaskScrollAutoFogUI;
+      if (scrollReady() && autoUi && typeof autoUi.reading === "function") {
+        autoUi.reading();
+        return;
+      }
+      attempts += 1;
+      if (attempts < 120) window.setTimeout(tryOpen, 50);
+    }
+    window.setTimeout(tryOpen, 0);
+  }
+
   function loadAutoFog() {
     if (window.__esslayTaskScrollAutoFogLoading || window.__esslayTaskScrollAutoFogLoaded) return;
     window.__esslayTaskScrollAutoFogLoading = true;
@@ -68,7 +89,14 @@
     scan();
     loadAutoFog();
   });
-  document.addEventListener("click", function () { window.setTimeout(scan, 0); }, true);
+
+  document.addEventListener("click", function (event) {
+    var button = event.target.closest("button, a");
+    if (button && (button.dataset.action === "task-scroll-import-pdf" || button.dataset.action === "task-scroll-import-paste")) {
+      showAutomaticFogAfterImport();
+    }
+    window.setTimeout(scan, 0);
+  }, true);
 
   var stage = document.getElementById("stage-scene");
   if (stage && window.MutationObserver) {
