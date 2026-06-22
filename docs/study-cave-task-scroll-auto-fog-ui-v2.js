@@ -95,5 +95,6 @@
   }, true);
 
   attach();
+  window.EsslayTaskScrollAutoFogUI = { reading: reading, knot: knot };
   document.addEventListener("DOMContentLoaded", attach);
 })();
