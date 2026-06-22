@@ -453,7 +453,7 @@
     document.head.appendChild(style);
   }
 
-  document.addEventListener("click", function (event) {
+  window.addEventListener("click", function (event) {
     var button = event.target.closest("button, a");
     if (!button || button.dataset.action !== "source-import-pdf") return;
     event.preventDefault();
