@@ -1,6 +1,6 @@
 # Source Mine PDF import test findings — 2026-06-22
 
-Status: **blocked for next isolated fix pass**
+Status: **implementation complete; visible retest required**
 
 ## Scope of the test
 
@@ -13,75 +13,81 @@ The Brief Fog → Source Mine handoff did succeed in one important respect: the 
 - `Flexible revision`
 - `Avoid over-planning`
 
-## Confirmed Source Mine failures
+## Confirmed Source Mine failures before this pass
 
-### 1. The PDF source is massively over-split
+### 1. The PDF source was massively over-split
 
-The imported one-page practice source produced **97 waiting cards**.
+The imported three-page practice source produced **97 waiting cards**.
 
-This is not usable as a study-game review interaction. A normal reading should become a manageable set of meaningful extracts, not one card per tiny line/item.
+This was caused by the importer joining each positioned PDF line as a separate paragraph and then turning those lines into cards. It was code behaviour, not a corrupt or image-only PDF.
 
-Required correction:
-
-- Replace the current PDF-to-card splitting policy with semantic chunking.
-- Keep paragraphs together where possible.
-- Apply a target range such as roughly 40–140 words per card, with a hard upper bound only where needed.
-- Never create a card for a title, isolated heading, page number, or decorative/empty line.
-- Preserve page number and chunk index after the new chunking.
-
-### 2. Title and heading material is saved as source cards
+### 2. Title and heading material was saved as source cards
 
 The first two generated cards were:
 
 1. `Esslay practice source - selectable-text PDF for Source Mine testing Page 1`
 2. `Planning Before Drafting`
 
-Neither is evidence. They should be filtered before the Crystal Sieve opens.
+Neither is evidence.
 
-Required correction:
-
-- Remove document titles, repeated running headings, short heading-only lines, page labels, and similar boilerplate during import.
-- Do not make the player discard boilerplate manually.
-- Use the source title field / PDF filename for provenance rather than treating title text as evidence.
-
-### 3. Empty or boilerplate cards receive an automatic bucket tick
+### 3. Empty or boilerplate cards received an automatic bucket tick
 
 The first title-only card displayed `Suggested bucket: needs sorting`, but `task clarity evidence` was already ticked. The second title-only card also arrived with that bucket ticked.
 
-This is internally contradictory and risks accidental saving of irrelevant gems.
-
-Required correction:
-
-- A card whose suggestion is `needs sorting` must begin with **no bucket selected**.
-- Automatic bucket preselection must happen only where the confidence threshold is met and the card contains substantive text.
-- Boilerplate/heading cards must be filtered before any bucket suggestion is made.
-
-### 4. The source-card classifier is not providing a useful estimate
+### 4. The source-card classifier did not provide a useful estimate
 
 The first visible cards showed `Suggested bucket: needs sorting`, with no explanation of why a bucket checkbox was preselected.
 
-Required correction:
+### 5. The first visible source card did not provide a readable extract
 
-- Show a preselected bucket only for a genuine high-confidence estimate.
-- For uncertain cards, show no selected checkbox and use clear wording such as `No bucket selected yet`.
-- For any automatic suggestion, show the matching phrases / rule used and a confidence label.
-- The player must still be able to select another bucket or multiple buckets deliberately if the design permits it.
+Filename, page, and chunk metadata were preserved, but the extracted source passages were too fragmented to judge as evidence.
 
-### 5. The first visible source card needs a better reading surface
+## Implementation completed in this pass
 
-The card exposes filename/page/chunk metadata correctly, but the extracted text is too fragmented to judge evidence meaningfully. The provenance display is usable; the card content is not.
+New file:
 
-Required correction:
+- `docs/study-cave-source-mine-import-fix-v1.js`
 
-- Keep filename, page number, and stable chunk index.
-- Show a readable evidence passage first, then provenance in a compact line.
-- Ensure no title/heading gets assigned a source-card index presented as usable evidence.
+Loader update:
 
-### 6. The current source-import test must stop
+- `docs/study-cave-route-count-fix-v1.js`
 
-After two title-only cards and 97 total cards, continuing would not test user decision-making; it would only create manual cleanup work.
+The new import layer deliberately leaves Brief Fog, Cave Base, Task Map, existing Source Library JSON, and the existing paste-text route untouched.
 
-Do not attempt to classify the remaining imported cards. Fix the import/chunking/preselection layer first, then run a new clean source import test from an empty Source Mine library.
+It changes only local PDF import and PDF-card presentation:
+
+1. Rebuilds positioned PDF text into visual lines, detects larger vertical gaps, and reconstructs paragraphs.
+2. Removes repeated running headers and page-label lines before card creation.
+3. Attaches short headings to the following passage rather than emitting a heading-only card.
+4. Groups short passages together and splits only longer passages at sentence boundaries, targeting roughly 180–760 characters per card.
+5. Keeps page number, source title, citation label, filename, and a per-page chunk index on every imported card.
+6. Adds high-confidence source-bucket suggestions only when one bucket has at least two distinct matched terms and beats any competing bucket.
+7. Leaves every low-confidence / mixed / no-match card with no bucket selected.
+8. Shows either `High-confidence suggestion` with matched terms or `No bucket selected yet` with a reason.
+
+The existing OCR-needed route remains in place. Scanned/image-only PDFs should continue to show an OCR-needed message rather than making empty cards.
+
+## Local checks completed
+
+- JavaScript syntax check passed for the new import-fix file.
+- The supplied source PDF was inspected directly: it has three selectable-text pages with readable paragraph content, so it is suitable for the browser PDF workflow.
+- A reconstruction test using the supplied source reduced the expected output from the observed 97 micro-cards to paragraph-sized cards. The exact browser output must still be checked because PDF.js layout items can differ from the local inspection library.
+
+## Retest instructions
+
+The old 96/97-card source remains in the current browser save. Do not continue sorting it.
+
+1. Hard refresh the cave page with `Ctrl + Shift + R` so the new Source Mine import layer loads.
+2. Clear the existing Source Mine test cards before importing again. This should be done with a fresh Source Mine library; do not reset Brief Fog decisions unless the current interface gives no other safe way to clear only the Source Mine test source.
+3. Return to Source Mine → Add Source.
+4. Choose `esslay_practice_source_planning_before_drafting.pdf` again.
+5. Click `Read PDF into Crystal Sieve`.
+6. Confirm the card count is a manageable number of readable cards, not 97.
+7. Confirm the first card is not a title-only or page-label card.
+8. Confirm a card with `needs sorting` / low confidence has no checkbox preselected.
+9. Confirm a genuine high-confidence card shows its matched terms and can still be changed.
+10. Save one gem and confirm its filename, source title/citation label, page number, and chunk index remain visible in the later evidence record.
+11. Export and import Source Library JSON after a saved gem to confirm provenance survives.
 
 ## Brief Fog issues carried into the next pass
 
@@ -102,25 +108,12 @@ The source-import pass must not be edited together with Brief Fog logic unless e
 - A stale/old background briefly appears before the intended Brief Fog background during entry. This is separately logged in `brief-fog-background-transition-2026-06-22.md`.
 - Use UK English throughout the game: UI, source guidance, spell-check/proofreading, generated text, and test fixtures.
 
-## Next fix pass: required implementation order
-
-1. Inspect the actual Source Mine PDF extractor and card-creation code before editing.
-2. Add test fixtures for title-only, heading-only, paragraph, multi-page, image-only/scanned, and repeated-header PDFs.
-3. Fix text cleanup and semantic chunking first.
-4. Filter boilerplate before suggestion or UI rendering.
-5. Repair bucket suggestion/preselection rules: no automatic tick for `needs sorting` or low-confidence cards.
-6. Add source-card suggestion explanation and confidence state.
-7. Verify provenance is retained on imported cards and saved gems.
-8. Test paste-text and local-PDF routes separately.
-9. Start with a fresh Source Mine library and rerun a short readable source PDF.
-10. Only after Source Mine is stable, return to the separate Brief Fog classifier/chunking/theme pass.
-
 ## Acceptance criteria for the retest
 
-- A one-page short source produces a small, readable number of cards; titles/headings do not appear as cards.
+- A short, readable source produces a manageable set of meaningful cards; titles/headings do not appear as standalone cards.
 - No empty/boilerplate card receives a selected bucket.
-- A `needs sorting` card has all buckets unchecked.
-- A high-confidence card can show one suggested bucket with a visible reason; the player can change it.
+- A `needs sorting` / low-confidence card has all buckets unchecked.
+- A high-confidence card can show one suggested bucket with visible matching terms; the player can change it.
 - Filename, source title/citation label, page, and stable chunk index remain attached to the card and resulting evidence gem.
 - Scanned/image-only PDFs show an OCR-needed message rather than empty cards.
 - Source Library export/import remains intact after the changes.
