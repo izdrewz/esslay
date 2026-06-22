@@ -335,8 +335,28 @@
     if (node) node.textContent = text;
   }
 
+  function removeEarlierUnsavedImport(state, filename) {
+    var name = clean(filename, 260).toLowerCase();
+    if (!name) return 0;
+    var removable = arr(state.sourceMine.sourceLibrary).filter(function (source) {
+      return clean(source.originalFilename, 260).toLowerCase() === name && !arr(state.sourceMine.evidenceGems).some(function (gem) {
+        return gem.sourceId === source.id;
+      });
+    }).map(function (source) { return source.id; });
+    if (!removable.length) return 0;
+    function keep(card) { return removable.indexOf(card.sourceId) === -1; }
+    state.sourceMine.sourceLibrary = arr(state.sourceMine.sourceLibrary).filter(function (source) { return removable.indexOf(source.id) === -1; });
+    state.sourceMine.sources = arr(state.sourceMine.sources).filter(function (source) { return removable.indexOf(source.id) === -1; });
+    state.sourceMine.sieveQueue = arr(state.sourceMine.sieveQueue).filter(keep);
+    state.sourceMine.parkedChunks = arr(state.sourceMine.parkedChunks).filter(keep);
+    state.sourceMine.discardedChunks = arr(state.sourceMine.discardedChunks).filter(keep);
+    if (removable.indexOf(state.sourceMine.activeCardId) !== -1) state.sourceMine.activeCardId = "";
+    return removable.length;
+  }
+
   function createPdfCards(file, title, citationLabel, extracted) {
     var state = load();
+    var replacedSources = removeEarlierUnsavedImport(state, file.name);
     var buckets = getBuckets(state);
     var source = {
       id: uid(),
@@ -393,7 +413,7 @@
     state.sourceMine.activeCardId = imported[0].id;
     state.sourceMine.activeTab = "sieve";
     state.sourceMine.userOpenedEmptySieve = true;
-    save(state, "Created " + imported.length + " readable PDF source card" + (imported.length === 1 ? "" : "s"));
+    save(state, (replacedSources ? "Replaced earlier unsaved copy. " : "") + "Created " + imported.length + " readable PDF source card" + (imported.length === 1 ? "" : "s"));
     var tab = document.querySelector('[data-action="source-tab"][data-tab="sieve"]');
     if (tab) tab.click();
   }
