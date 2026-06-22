@@ -37,7 +37,37 @@
     document.querySelectorAll("[data-task-scroll-form]").forEach(applyEstimate);
   }
 
-  document.addEventListener("DOMContentLoaded", scan);
+  function loadAutoFog() {
+    if (window.__esslayTaskScrollAutoFogLoading || window.__esslayTaskScrollAutoFogLoaded) return;
+    window.__esslayTaskScrollAutoFogLoading = true;
+    var paths = [
+      "study-cave-task-scroll-auto-fog-v1.js?v=1",
+      "study-cave-task-scroll-auto-fog-ui-v2.js?v=1"
+    ];
+    var index = 0;
+
+    function next() {
+      if (index >= paths.length) return;
+      var script = document.createElement("script");
+      script.src = paths[index];
+      script.onload = function () {
+        index += 1;
+        next();
+      };
+      script.onerror = function () {
+        window.__esslayTaskScrollAutoFogLoading = false;
+        console.error("Esslay automatic Fog module failed to load:", paths[index]);
+      };
+      document.head.appendChild(script);
+    }
+
+    next();
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    scan();
+    loadAutoFog();
+  });
   document.addEventListener("click", function () { window.setTimeout(scan, 0); }, true);
 
   var stage = document.getElementById("stage-scene");
@@ -45,5 +75,8 @@
     new MutationObserver(scan).observe(stage, { childList: true, subtree: true });
   }
 
-  window.setTimeout(scan, 0);
+  window.setTimeout(function () {
+    scan();
+    loadAutoFog();
+  }, 0);
 })();
