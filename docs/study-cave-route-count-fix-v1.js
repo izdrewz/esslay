@@ -44,29 +44,35 @@
     next();
   }
 
-  function loadSourceMineImportFix() {
+  function loadScript(src, onload, errorText) {
+    var script = document.createElement("script");
+    script.src = src;
+    script.onload = onload || function () {};
+    script.onerror = function () { console.error(errorText || ("Failed to load " + src)); };
+    document.head.appendChild(script);
+  }
+
+  function loadSourceMineImportFixes() {
     if (window.__esslaySourceMineImportFixLoading || window.__esslaySourceMineImportFixV1) return;
     window.__esslaySourceMineImportFixLoading = true;
-    var script = document.createElement("script");
-    script.src = "study-cave-source-mine-import-fix-v1.js?v=1";
-    script.onload = function () { window.__esslaySourceMineImportFixLoading = false; };
-    script.onerror = function () {
+    loadScript("study-cave-source-mine-import-fix-v1.js?v=2", function () {
       window.__esslaySourceMineImportFixLoading = false;
-      console.error("Esslay Source Mine import fix failed to load.");
-    };
-    document.head.appendChild(script);
+      if (!window.__esslaySourceMineFrontmatterCleanupV1) {
+        loadScript("study-cave-source-mine-frontmatter-cleanup-v1.js?v=1", null, "Esslay Source Mine front matter cleanup failed to load.");
+      }
+    }, "Esslay Source Mine import fix failed to load.");
   }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
       fixHudOnly();
       loadTaskScrollModules();
-      loadSourceMineImportFix();
+      loadSourceMineImportFixes();
     });
   } else {
     fixHudOnly();
     loadTaskScrollModules();
-    loadSourceMineImportFix();
+    loadSourceMineImportFixes();
   }
 
   document.addEventListener("click", function () {
