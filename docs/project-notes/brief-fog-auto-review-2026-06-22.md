@@ -71,3 +71,9 @@ This is not a server model, shared account learning, or a guarantee that one cor
 8. Recast one estimate through Review / edit fragments and confirm the local-learning count increases.
 9. Confirm Spell Recipe → Source Mine still passes player-named ingredients as buckets.
 10. Keep Task Map issue #5 and Cave Base future viewport/click-zone fixes outside this test.
+
+## Future design change — room theme
+
+Izzy dislikes the name and presentation of **Fog Knots**. The mechanic is accepted as a useful automatic-review function, but the current knot metaphor does not fit the Brief Fog room or the wider game theme.
+
+Do not change this during the current functional PDF test. In a later focused visual/narrative pass, rename and redesign the uncertain-fragment interaction so it reads as an in-world Brief Fog activity rather than a generic knot mini-game. Preserve the underlying behavior: automatic estimates, transparent trigger words, user corrections, local learning, and editable decisions.
