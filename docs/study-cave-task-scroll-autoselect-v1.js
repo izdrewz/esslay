@@ -96,7 +96,8 @@
     var paths = [
       "study-cave-task-scroll-auto-fog-v1.js?v=1",
       "study-cave-task-scroll-auto-fog-ui-v2.js?v=1",
-      "study-cave-task-scroll-choice-learning-v1.js?v=1"
+      "study-cave-task-scroll-choice-learning-v1.js?v=1",
+      "study-cave-task-scroll-chronological-review-v1.js?v=1"
     ];
     var index = 0;
     function next() {
