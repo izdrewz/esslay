@@ -13,7 +13,7 @@ How to use this folder:
 Current active repo focus:
 - Study Cave route has moved to: Quest Board to Task Map threshold to Cave Base to Brief Fog / Question-Unpacking Chamber.
 - Cave Base is accepted for now and must not be altered during the PDF task. Its intended larger screen presentation and correctly placed environmental click zones are recorded as later isolated fixes.
-- Brief Fog Quest Scroll PDF import is the current active feature. It is installed and needs a visible browser test before it can be approved.
+- Brief Fog automatic Quest Scroll review is the current active feature. It is installed and needs a visible browser test before it can be approved.
 - Source Mine PDF import remains installed and needs to be tested as the second part of the same full assignment run.
 - Asset reference intake is being set up in asset-reference-system.md. Reference images are not approved game assets unless Izzy explicitly approves them.
 
@@ -33,3 +33,4 @@ Files in this folder:
 - area-13-draft-support.md
 - cave-base-ui-repair-2026-06-21.md
 - brief-fog-task-scroll-pdf-2026-06-21.md
+- brief-fog-auto-review-2026-06-22.md
