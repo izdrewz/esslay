@@ -72,10 +72,33 @@ This is not a server model, shared account learning, or a guarantee that one cor
 9. Confirm Spell Recipe → Source Mine still passes player-named ingredients as buckets.
 10. Keep Task Map issue #5 and Cave Base future viewport/click-zone fixes outside this test.
 
+## Current observed functional findings
+
+The current practice-PDF run exposed real issues that must be fixed in a later isolated Brief Fog/classifier pass. Do not alter these during the active source-mine handoff test.
+
+- The current sentence splitter over-fragments the one-page test brief into 24 cards and carries layout headings such as `Important` into usable card text.
+- Repeated source setup wording is treated as a separate ingredient when it should be recognised as repeated context rather than a fifth Source Mine slot.
+- Task-part language and later-task language can be misclassified. Izzy corrected cards 5, 10, 13, and 14 from Park for later; card 22 was initially marked as a Boss Success Condition.
+- The Spell Recipe visible test showed an optional reflection/later-task fragment under Current Boss. The later pass must enforce exactly one Current Boss at the data level, not only warn at confirmation time.
+- The review order and displayed PDF fragment identifiers are not sufficiently trustworthy after splitting and must be stabilised before this is approved.
+
+Required classifier test cases for that pass:
+
+1. `The other part is a separate quest part.` → Quest Part.
+2. `You do not need to write the full response while testing the route.` → Admin Detail.
+3. Evidence-organising and flexible-revision requirements → Required Evidence with their own named ingredient slots.
+4. `This is a separate later task, not required for the Current Boss.` → Quest Part, never Current Boss or Boss Success Condition.
+5. The pure supplied-source setup line → context/parked, not a Source Mine ingredient.
+6. Headings such as `Important` must be removed before classification.
+
 ## Future design change — room theme and language
 
 Izzy dislikes the name and presentation of **Fog Knots**. The mechanic is accepted as a useful automatic-review function, but the current knot metaphor does not fit the Brief Fog room or the wider game theme.
 
 The Fog is a villain. The player must not be framed as **teaching the Fog** or helping it improve. In the later focused visual/narrative pass, replace language such as “teach the Fog why this role fits,” “the Fog learns,” and “local learning” with a player-controlled framing. The system may still store local adaptive patterns technically, but the fiction should present this as the player calibrating, warding against, decoding, or recording their own countermeasure — never educating the villain.
 
-Do not change this during the current functional PDF test. Preserve the underlying behavior: automatic estimates, transparent trigger words, user corrections, local adaptive behavior, and editable decisions.
+## UK English requirement
+
+All game UI, task labels, test PDFs, generated guidance, spelling checks, suggestions, and future proofreading support must use **UK English** by default. This includes spellings such as `organisation`, `analyse`, `behaviour`, `programme`, and `colour` where applicable. American English must not be presented as the default or as the sole accepted spelling.
+
+Do not change these during the current functional PDF test. Preserve the underlying behavior: automatic estimates, transparent trigger words, user corrections, local adaptive behavior, and editable decisions.
