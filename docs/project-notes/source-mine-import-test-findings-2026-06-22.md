@@ -64,6 +64,7 @@ It changes only local PDF import and PDF-card presentation:
 6. Adds high-confidence source-bucket suggestions only when one bucket has at least two distinct matched terms and beats any competing bucket.
 7. Leaves every low-confidence / mixed / no-match card with no bucket selected.
 8. Shows either `High-confidence suggestion` with matched terms or `No bucket selected yet` with a reason.
+9. Reimporting the same PDF replaces its earlier copy only when that earlier copy has no saved evidence gems. This clears the current malformed test import without resetting Brief Fog or touching a source that already has saved evidence.
 
 The existing OCR-needed route remains in place. Scanned/image-only PDFs should continue to show an OCR-needed message rather than making empty cards.
 
@@ -78,10 +79,10 @@ The existing OCR-needed route remains in place. Scanned/image-only PDFs should c
 The old 96/97-card source remains in the current browser save. Do not continue sorting it.
 
 1. Hard refresh the cave page with `Ctrl + Shift + R` so the new Source Mine import layer loads.
-2. Clear the existing Source Mine test cards before importing again. This should be done with a fresh Source Mine library; do not reset Brief Fog decisions unless the current interface gives no other safe way to clear only the Source Mine test source.
-3. Return to Source Mine → Add Source.
-4. Choose `esslay_practice_source_planning_before_drafting.pdf` again.
-5. Click `Read PDF into Crystal Sieve`.
+2. Return to Source Mine → Add Source.
+3. Choose `esslay_practice_source_planning_before_drafting.pdf` again.
+4. Click `Read PDF into Crystal Sieve`.
+5. Because the earlier copy has no saved gems, the new import should remove that malformed old copy automatically before creating the new cards. Do not reset Brief Fog or manually discard the old queue.
 6. Confirm the card count is a manageable number of readable cards, not 97.
 7. Confirm the first card is not a title-only or page-label card.
 8. Confirm a card with `needs sorting` / low confidence has no checkbox preselected.
