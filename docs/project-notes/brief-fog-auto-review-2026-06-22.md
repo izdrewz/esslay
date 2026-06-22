@@ -72,8 +72,10 @@ This is not a server model, shared account learning, or a guarantee that one cor
 9. Confirm Spell Recipe → Source Mine still passes player-named ingredients as buckets.
 10. Keep Task Map issue #5 and Cave Base future viewport/click-zone fixes outside this test.
 
-## Future design change — room theme
+## Future design change — room theme and language
 
 Izzy dislikes the name and presentation of **Fog Knots**. The mechanic is accepted as a useful automatic-review function, but the current knot metaphor does not fit the Brief Fog room or the wider game theme.
 
-Do not change this during the current functional PDF test. In a later focused visual/narrative pass, rename and redesign the uncertain-fragment interaction so it reads as an in-world Brief Fog activity rather than a generic knot mini-game. Preserve the underlying behavior: automatic estimates, transparent trigger words, user corrections, local learning, and editable decisions.
+The Fog is a villain. The player must not be framed as **teaching the Fog** or helping it improve. In the later focused visual/narrative pass, replace language such as “teach the Fog why this role fits,” “the Fog learns,” and “local learning” with a player-controlled framing. The system may still store local adaptive patterns technically, but the fiction should present this as the player calibrating, warding against, decoding, or recording their own countermeasure — never educating the villain.
+
+Do not change this during the current functional PDF test. Preserve the underlying behavior: automatic estimates, transparent trigger words, user corrections, local adaptive behavior, and editable decisions.
