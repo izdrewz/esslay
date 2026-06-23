@@ -245,7 +245,7 @@
       '<form data-sieve-sort-form data-card-id="' + esc(card.id) + '">' +
       '<div class="source-suggestions"><label>Save this evidence in<select name="bucket"><option value="">Choose a bucket</option>' + options + '</select></label></div>' +
       '<label>Your note / why useful<textarea name="note" rows="3" placeholder="Optional"></textarea></label>' +
-      '<div class="simple-actions"><button type="button" data-action="source-sort-card">Save gem</button><button type="button" data-action="source-park-card">Park</button><button type="button" data-action="source-discard-card">Discard</button></div>' +
+      '<div class="simple-actions"><button type="button" data-action="source-sort-card-select">Save gem</button><button type="button" data-action="source-park-card">Park</button><button type="button" data-action="source-discard-card">Discard</button></div>' +
       '</form></article>';
   }
 
@@ -388,9 +388,27 @@
       return render("sieve", "Choose a bucket");
     }
     var note = clean(new FormData(form).get("note"), 900);
+    var source = sourceById(state, card.sourceId) || {};
     buckets.forEach(function (bucket) {
       var match = arr(card.matchBuckets).find(function (item) { return item.bucket.toLowerCase() === bucket.toLowerCase(); });
-      state.sourceMine.evidenceGems.push({ id: uid(), bucket: bucket, bucketId: bucketId(bucket), sourceId: card.sourceId, sourceTitle: card.sourceTitle, citationLabel: card.citationLabel, evidence: clean(card.text, 1600), note: note, link: note, matchWords: match ? arr(match.matchWords) : [], createdAt: new Date().toISOString() });
+      state.sourceMine.evidenceGems.push({
+        id: uid(),
+        bucket: bucket,
+        bucketId: bucketId(bucket),
+        sourceId: card.sourceId,
+        sourceCardId: card.id,
+        sourceTitle: card.sourceTitle || source.title || "source",
+        citationLabel: card.citationLabel || source.citationLabel || card.sourceTitle || "source",
+        originalFilename: card.originalFilename || source.originalFilename || "",
+        importType: card.importType || source.importType || source.type || "pasted-text",
+        pageNumber: Number(card.pageNumber || 0) || null,
+        chunkIndex: Number(card.chunkIndex || card.index || 0) || 0,
+        evidence: clean(card.text, 1600),
+        note: note,
+        link: note,
+        matchWords: match ? arr(match.matchWords) : [],
+        createdAt: new Date().toISOString()
+      });
     });
     state.sourceMine.reviewedCount += 1;
     if (state.unlocked.indexOf("draft-route") === -1) state.unlocked.push("draft-route");
@@ -483,7 +501,7 @@
       event.stopImmediatePropagation();
       return seedDemo();
     }
-    if (action === "source-sort-card") {
+    if (action === "source-sort-card-select") {
       event.preventDefault();
       event.stopImmediatePropagation();
       return sortCard();
