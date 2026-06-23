@@ -47,6 +47,23 @@
     actions.insertBefore(button, actions.firstChild);
   }
 
+  function addQuestBoardButton() {
+    var actions = document.querySelector(".quest-board-card[data-category='archive_test'] .quest-card-actions");
+    if (!actions || actions.querySelector("[data-source-mine-checkpoint-open]")) return;
+
+    var button = document.createElement("button");
+    button.type = "button";
+    button.dataset.sourceMineCheckpointOpen = "true";
+    button.textContent = "Source Mine checkpoint";
+    button.title = "Resume your saved Source Mine cards and gems";
+    actions.appendChild(button);
+  }
+
+  function installButtons() {
+    addTestButton();
+    addQuestBoardButton();
+  }
+
   document.addEventListener("click", function (event) {
     if (!event.target.closest("[data-source-mine-checkpoint-open]")) return;
     event.preventDefault();
@@ -55,11 +72,11 @@
   }, true);
 
   if (window.MutationObserver) {
-    new MutationObserver(addTestButton).observe(document.documentElement, { childList: true, subtree: true });
+    new MutationObserver(installButtons).observe(document.documentElement, { childList: true, subtree: true });
   }
 
   window.addEventListener("DOMContentLoaded", function () {
-    addTestButton();
+    installButtons();
     try {
       if (new URLSearchParams(window.location.search).get("checkpoint") === "source-mine") resume();
     } catch (error) {}
