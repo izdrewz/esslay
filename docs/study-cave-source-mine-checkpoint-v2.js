@@ -7,6 +7,10 @@
     return Array.isArray(value) ? value.filter(Boolean) : [];
   }
 
+  function closeTestPanel() {
+    document.querySelectorAll(".study-cave-test-panel").forEach(function (panel) { panel.remove(); });
+  }
+
   function resume() {
     var state = null;
     try { state = JSON.parse(window.localStorage.getItem(KEY)); } catch (error) { state = null; }
@@ -21,6 +25,7 @@
     state.lastAction = "Source Mine checkpoint opened";
     try { window.localStorage.setItem(KEY, JSON.stringify(state)); } catch (error) {}
 
+    closeTestPanel();
     var button = document.createElement("button");
     button.type = "button";
     button.hidden = true;
@@ -30,7 +35,31 @@
     button.remove();
   }
 
+  function addTestButton() {
+    var panel = document.querySelector(".study-cave-test-panel");
+    var actions = panel && panel.querySelector(".study-cave-test-actions");
+    if (!actions || actions.querySelector("[data-source-mine-checkpoint-open]")) return;
+
+    var button = document.createElement("button");
+    button.type = "button";
+    button.dataset.sourceMineCheckpointOpen = "true";
+    button.textContent = "Jump to Source Mine checkpoint";
+    actions.insertBefore(button, actions.firstChild);
+  }
+
+  document.addEventListener("click", function (event) {
+    if (!event.target.closest("[data-source-mine-checkpoint-open]")) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    resume();
+  }, true);
+
+  if (window.MutationObserver) {
+    new MutationObserver(addTestButton).observe(document.documentElement, { childList: true, subtree: true });
+  }
+
   window.addEventListener("DOMContentLoaded", function () {
+    addTestButton();
     try {
       if (new URLSearchParams(window.location.search).get("checkpoint") === "source-mine") resume();
     } catch (error) {}
