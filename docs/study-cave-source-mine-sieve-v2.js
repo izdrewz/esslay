@@ -191,6 +191,7 @@
       '.source-card-text{max-height:155px;overflow:auto;padding:8px;border-radius:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:.9rem;}' +
       '.source-chip,.source-gem-count{display:inline-block;padding:3px 7px;border-radius:999px;background:rgba(255,231,171,.9);color:#2f2118;font-weight:900;font-size:.78rem;margin:2px;}' +
       '.source-bucket-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:8px 0}.source-bucket-card strong{display:block;color:#fff7df;margin-bottom:4px;}' +
+      '.source-vault-gem{list-style:none;margin:8px 0;padding:8px;border:1px solid rgba(255,231,171,.22);border-radius:10px;background:rgba(255,255,255,.05)}.source-vault-evidence{font-weight:800}.source-vault-note,.source-vault-meta{font-size:.82rem;line-height:1.3;opacity:.94;overflow-wrap:anywhere;}.source-vault-meta{margin-top:4px!important;}' +
       '.source-suggestions{display:grid;grid-template-columns:1fr;gap:5px;margin:8px 0}.source-suggestions label{display:block;padding:6px;border-radius:10px;border:1px solid rgba(255,231,171,.26);background:rgba(255,255,255,.06);font-weight:800}.source-suggestions select{display:block;width:100%;box-sizing:border-box;margin-top:4px;padding:8px;border-radius:10px;border:1px solid rgba(236,215,170,.36);font:inherit;background:#fff;color:#2f2118}.source-suggestions small{display:block;opacity:.82;font-weight:700;margin-top:2px;}' +
       '.source-small-note{font-size:.86rem;opacity:.92}.source-review-list{margin:0;padding-left:18px}.source-review-list li{margin:6px 0}' +
       '.source-mine-card textarea,.source-mine-card input,.source-mine-card select{width:100%;box-sizing:border-box;margin-top:4px;padding:8px;border-radius:10px;border:1px solid rgba(236,215,170,.36);font:inherit}.source-mine-card label{display:block;margin:8px 0;font-weight:900}.source-constellation textarea{min-height:48px;}' +
@@ -249,6 +250,27 @@
       '</form></article>';
   }
 
+  function vaultGemMarkup(gem) {
+    var title = clean(gem.sourceTitle, 240) || "Source title not stored for this older gem";
+    var citation = clean(gem.citationLabel, 240) || "Citation label not stored for this older gem";
+    var filename = clean(gem.originalFilename, 260);
+    var page = Number(gem.pageNumber || 0);
+    var chunk = Number(gem.chunkIndex || 0);
+    var note = clean(gem.note || gem.link, 900);
+    var location = [];
+    if (filename) location.push("PDF file: " + filename);
+    if (page) location.push("page " + page);
+    if (chunk) location.push("chunk " + chunk);
+    if (!location.length) location.push("Pasted source or older gem with no PDF location stored");
+    return '<li class="source-vault-gem">' +
+      '<p class="source-vault-evidence">' + esc(clean(gem.evidence, 500)) + '</p>' +
+      '<p class="source-vault-note"><strong>Your note:</strong> ' + esc(note || "No note added") + '</p>' +
+      '<p class="source-vault-meta"><strong>Source title:</strong> ' + esc(title) + '</p>' +
+      '<p class="source-vault-meta"><strong>Citation label:</strong> ' + esc(citation) + '</p>' +
+      '<p class="source-vault-meta"><strong>Location:</strong> ' + esc(location.join(" · ")) + '</p>' +
+      '</li>';
+  }
+
   function vaultPanel(state) {
     var buckets = getBuckets(state);
     var html = '<h3>Bucket Vault</h3><div class="source-bucket-grid">';
@@ -256,7 +278,7 @@
       var gems = evidenceFor(state, bucket);
       html += '<article class="source-bucket-card"><strong>' + esc(bucket) + '</strong><span class="source-gem-count">' + gems.length + ' evidence gem' + (gems.length === 1 ? '' : 's') + '</span>';
       if (gems.length) {
-        html += '<ul class="source-review-list">' + gems.slice(0, 4).map(function (gem) { return '<li>' + esc(clean(gem.evidence, 120)) + '</li>'; }).join('') + '</ul>';
+        html += '<ul class="source-review-list">' + gems.map(vaultGemMarkup).join('') + '</ul>';
       }
       html += '</article>';
     });
