@@ -191,9 +191,9 @@
       '.source-card-text{max-height:155px;overflow:auto;padding:8px;border-radius:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:.9rem;}' +
       '.source-chip,.source-gem-count{display:inline-block;padding:3px 7px;border-radius:999px;background:rgba(255,231,171,.9);color:#2f2118;font-weight:900;font-size:.78rem;margin:2px;}' +
       '.source-bucket-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:8px 0}.source-bucket-card strong{display:block;color:#fff7df;margin-bottom:4px;}' +
-      '.source-suggestions{display:grid;grid-template-columns:1fr;gap:5px;margin:8px 0}.source-suggestions label{display:flex;gap:7px;align-items:flex-start;padding:6px;border-radius:10px;border:1px solid rgba(255,231,171,.26);background:rgba(255,255,255,.06);font-weight:800}.source-suggestions small{display:block;opacity:.82;font-weight:700;margin-top:2px;}' +
+      '.source-suggestions{display:grid;grid-template-columns:1fr;gap:5px;margin:8px 0}.source-suggestions label{display:block;padding:6px;border-radius:10px;border:1px solid rgba(255,231,171,.26);background:rgba(255,255,255,.06);font-weight:800}.source-suggestions select{display:block;width:100%;box-sizing:border-box;margin-top:4px;padding:8px;border-radius:10px;border:1px solid rgba(236,215,170,.36);font:inherit;background:#fff;color:#2f2118}.source-suggestions small{display:block;opacity:.82;font-weight:700;margin-top:2px;}' +
       '.source-small-note{font-size:.86rem;opacity:.92}.source-review-list{margin:0;padding-left:18px}.source-review-list li{margin:6px 0}' +
-      '.source-mine-card textarea,.source-mine-card input{width:100%;box-sizing:border-box;margin-top:4px;padding:8px;border-radius:10px;border:1px solid rgba(236,215,170,.36);font:inherit}.source-mine-card label{display:block;margin:8px 0;font-weight:900}.source-constellation textarea{min-height:48px;}' +
+      '.source-mine-card textarea,.source-mine-card input,.source-mine-card select{width:100%;box-sizing:border-box;margin-top:4px;padding:8px;border-radius:10px;border:1px solid rgba(236,215,170,.36);font:inherit}.source-mine-card label{display:block;margin:8px 0;font-weight:900}.source-constellation textarea{min-height:48px;}' +
       '@media(max-width:920px){.source-mine-card{width:calc(100% - 28px)!important;max-height:calc(100% - 86px)!important}.source-bucket-grid{grid-template-columns:1fr}}' +
       '</style>';
   }
@@ -232,11 +232,8 @@
     var buckets = getBuckets(state);
     var source = sourceById(state, card.sourceId);
     var label = card.citationLabel || (source && source.citationLabel) || (source && source.title) || card.sourceTitle || "source";
-    var boxes = buckets.map(function (bucket, index) {
-      var match = matches.find(function (item) { return item.bucket.toLowerCase() === bucket.toLowerCase(); });
-      var checked = match || (!matches.length && index === 0) ? " checked" : "";
-      var words = match && arr(match.matchWords).length ? '<small>Matched: ' + esc(match.matchWords.join(", ")) + '</small>' : '';
-      return '<label><input type="checkbox" name="bucket" value="' + esc(bucket) + '"' + checked + '> <span>' + esc(bucket) + words + '</span></label>';
+    var options = buckets.map(function (bucket) {
+      return '<option value="' + esc(bucket) + '">' + esc(bucket) + '</option>';
     }).join('');
     var suggested = matches.length ? matches.map(function (match) { return '<span class="source-chip">' + esc(match.bucket) + '</span>'; }).join('') : '<span class="source-chip">needs sorting</span>';
     return '<h3>Crystal Sieve</h3>' +
@@ -246,7 +243,7 @@
       '<p><strong>Suggested bucket:</strong> ' + suggested + '</p>' +
       '<div class="source-card-text">' + esc(card.text) + '</div>' +
       '<form data-sieve-sort-form data-card-id="' + esc(card.id) + '">' +
-      '<div class="source-suggestions">' + boxes + '</div>' +
+      '<div class="source-suggestions"><label>Save this evidence in<select name="bucket"><option value="">Choose a bucket</option>' + options + '</select></label></div>' +
       '<label>Your note / why useful<textarea name="note" rows="3" placeholder="Optional"></textarea></label>' +
       '<div class="simple-actions"><button type="button" data-action="source-sort-card">Save gem</button><button type="button" data-action="source-park-card">Park</button><button type="button" data-action="source-discard-card">Discard</button></div>' +
       '</form></article>';
@@ -372,7 +369,9 @@
   }
 
   function selectedBuckets(form) {
-    return Array.prototype.slice.call(form.querySelectorAll('input[name="bucket"]:checked')).map(function (input) { return clean(input.value, 80); }).filter(Boolean);
+    var select = form.querySelector('select[name="bucket"]');
+    var bucket = clean(select && select.value, 80);
+    return bucket ? [bucket] : [];
   }
 
   function sortCard() {
@@ -385,8 +384,8 @@
     if (!buckets.length) {
       state.sourceMine.sieveQueue.unshift(card);
       state.sourceMine.activeCardId = card.id;
-      save(state, "Choose at least one bucket");
-      return render("sieve", "Choose at least one bucket");
+      save(state, "Choose a bucket");
+      return render("sieve", "Choose a bucket");
     }
     var note = clean(new FormData(form).get("note"), 900);
     buckets.forEach(function (bucket) {
