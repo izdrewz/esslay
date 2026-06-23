@@ -20,11 +20,8 @@
   }
 
   function stamp() {
-    try {
-      return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-    } catch (error) {
-      return new Date().toISOString();
-    }
+    try { return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }); }
+    catch (error) { return new Date().toISOString(); }
   }
 
   function load() {
@@ -59,9 +56,7 @@
     });
   }
 
-  function stage() {
-    return document.getElementById("stage-scene");
-  }
+  function stage() { return document.getElementById("stage-scene"); }
 
   function closePanels() {
     document.querySelectorAll("details[open]").forEach(function (details) { details.open = false; });
@@ -139,16 +134,13 @@
     var paragraphs = String(text || "").replace(/\r/g, "\n").split(/\n{2,}/).map(function (part) { return clean(part, 1100); }).filter(Boolean);
     var chunks = [];
     paragraphs.forEach(function (paragraph) {
-      if (paragraph.length <= 420) {
-        chunks.push(paragraph);
-      } else {
+      if (paragraph.length <= 420) chunks.push(paragraph);
+      else {
         var sentencePieces = paragraph.match(/[^.!?]+[.!?]?/g) || [paragraph];
         sentencePieces.map(function (part) { return clean(part, 500); }).filter(function (part) { return part.length > 30; }).forEach(function (part) { chunks.push(part); });
       }
     });
-    if (!chunks.length) {
-      chunks = (String(text || "").match(/[^.!?]+[.!?]?/g) || []).map(function (part) { return clean(part, 500); }).filter(function (part) { return part.length > 30; });
-    }
+    if (!chunks.length) chunks = (String(text || "").match(/[^.!?]+[.!?]?/g) || []).map(function (part) { return clean(part, 500); }).filter(function (part) { return part.length > 30; });
     return chunks.slice(0, 80);
   }
 
@@ -190,12 +182,12 @@
       '.source-empty-sieve,.source-sieve-card,.source-bucket-card,.source-constellation{padding:10px;border-radius:14px;border:1px solid rgba(255,231,171,.38);background:rgba(7,10,18,.72);margin:8px 0;}' +
       '.source-card-text{max-height:155px;overflow:auto;padding:8px;border-radius:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:.9rem;}' +
       '.source-chip,.source-gem-count{display:inline-block;padding:3px 7px;border-radius:999px;background:rgba(255,231,171,.9);color:#2f2118;font-weight:900;font-size:.78rem;margin:2px;}' +
-      '.source-bucket-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:8px 0}.source-bucket-card strong{display:block;color:#fff7df;margin-bottom:4px;}' +
-      '.source-vault-gem{list-style:none;margin:8px 0;padding:8px;border:1px solid rgba(255,231,171,.22);border-radius:10px;background:rgba(255,255,255,.05)}.source-vault-evidence{font-weight:800}.source-vault-note,.source-vault-meta{font-size:.82rem;line-height:1.3;opacity:.94;overflow-wrap:anywhere;}.source-vault-meta{margin-top:4px!important;}' +
+      '.source-bucket-grid{display:grid;grid-template-columns:1fr;gap:8px;margin:8px 0}.source-bucket-card strong{display:block;color:#fff7df;margin-bottom:4px;}' +
+      '.source-vault-gems{display:grid;gap:7px;margin-top:8px}.source-vault-gem{border:1px solid rgba(255,231,171,.28);border-radius:12px;background:linear-gradient(145deg,rgba(82,54,105,.28),rgba(8,12,24,.82));box-shadow:inset 0 1px 0 rgba(255,241,194,.1)}.source-vault-gem summary{display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 8px;align-items:center;padding:9px 10px;cursor:pointer;list-style:none}.source-vault-gem summary::-webkit-details-marker{display:none}.source-vault-gem summary::before{content:"✦";grid-row:span 2;color:#ffe3a3;font-size:1.05rem;text-shadow:0 0 10px rgba(208,157,255,.55)}.source-vault-gem[open] summary{border-bottom:1px solid rgba(255,231,171,.18);background:rgba(255,231,171,.06)}.source-vault-gem-title{font-family:Georgia,serif;font-weight:900;color:#fff1ca}.source-vault-gem-preview{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.86rem}.source-vault-gem-trail{grid-column:2;font-size:.76rem;opacity:.86;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.source-vault-dossier{padding:9px 10px 10px}.source-vault-extract{max-height:132px;overflow:auto;padding:8px;border-radius:9px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1);font-size:.86rem}.source-vault-note,.source-vault-meta{font-size:.82rem;line-height:1.32;overflow-wrap:anywhere}.source-vault-meta{opacity:.9}' +
       '.source-suggestions{display:grid;grid-template-columns:1fr;gap:5px;margin:8px 0}.source-suggestions label{display:block;padding:6px;border-radius:10px;border:1px solid rgba(255,231,171,.26);background:rgba(255,255,255,.06);font-weight:800}.source-suggestions select{display:block;width:100%;box-sizing:border-box;margin-top:4px;padding:8px;border-radius:10px;border:1px solid rgba(236,215,170,.36);font:inherit;background:#fff;color:#2f2118}.source-suggestions small{display:block;opacity:.82;font-weight:700;margin-top:2px;}' +
       '.source-small-note{font-size:.86rem;opacity:.92}.source-review-list{margin:0;padding-left:18px}.source-review-list li{margin:6px 0}' +
       '.source-mine-card textarea,.source-mine-card input,.source-mine-card select{width:100%;box-sizing:border-box;margin-top:4px;padding:8px;border-radius:10px;border:1px solid rgba(236,215,170,.36);font:inherit}.source-mine-card label{display:block;margin:8px 0;font-weight:900}.source-constellation textarea{min-height:48px;}' +
-      '@media(max-width:920px){.source-mine-card{width:calc(100% - 28px)!important;max-height:calc(100% - 86px)!important}.source-bucket-grid{grid-template-columns:1fr}}' +
+      '@media(max-width:920px){.source-mine-card{width:calc(100% - 28px)!important;max-height:calc(100% - 86px)!important}}' +
       '</style>';
   }
 
@@ -233,9 +225,7 @@
     var buckets = getBuckets(state);
     var source = sourceById(state, card.sourceId);
     var label = card.citationLabel || (source && source.citationLabel) || (source && source.title) || card.sourceTitle || "source";
-    var options = buckets.map(function (bucket) {
-      return '<option value="' + esc(bucket) + '">' + esc(bucket) + '</option>';
-    }).join('');
+    var options = buckets.map(function (bucket) { return '<option value="' + esc(bucket) + '">' + esc(bucket) + '</option>'; }).join('');
     var suggested = matches.length ? matches.map(function (match) { return '<span class="source-chip">' + esc(match.bucket) + '</span>'; }).join('') : '<span class="source-chip">needs sorting</span>';
     return '<h3>Crystal Sieve</h3>' +
       '<p><strong>Waiting:</strong> ' + waiting + ' · <strong>Reviewed:</strong> ' + state.sourceMine.reviewedCount + '</p>' +
@@ -250,36 +240,47 @@
       '</form></article>';
   }
 
-  function vaultGemMarkup(gem) {
-    var title = clean(gem.sourceTitle, 240) || "Source title not stored for this older gem";
-    var citation = clean(gem.citationLabel, 240) || "Citation label not stored for this older gem";
+  function gemTrail(gem, compact) {
+    var parts = [];
+    var citation = clean(gem.citationLabel, 120);
     var filename = clean(gem.originalFilename, 260);
     var page = Number(gem.pageNumber || 0);
     var chunk = Number(gem.chunkIndex || 0);
+    if (compact) {
+      if (citation) parts.push(citation);
+      else if (filename) parts.push(filename);
+    } else {
+      if (filename) parts.push("PDF file: " + filename);
+      else parts.push(gem.importType === "pasted-text" ? "Pasted source" : "PDF file not stored for this older gem");
+    }
+    if (page) parts.push("page " + page);
+    if (chunk) parts.push("shard " + chunk);
+    return parts.join(" · ");
+  }
+
+  function vaultGemMarkup(gem) {
+    var title = clean(gem.sourceTitle, 240) || "Source title not stored for this older gem";
+    var citation = clean(gem.citationLabel, 240) || "Citation label not stored for this older gem";
     var note = clean(gem.note || gem.link, 900);
-    var location = [];
-    if (filename) location.push("PDF file: " + filename);
-    if (page) location.push("page " + page);
-    if (chunk) location.push("chunk " + chunk);
-    if (!location.length) location.push("Pasted source or older gem with no PDF location stored");
-    return '<li class="source-vault-gem">' +
-      '<p class="source-vault-evidence">' + esc(clean(gem.evidence, 500)) + '</p>' +
-      '<p class="source-vault-note"><strong>Your note:</strong> ' + esc(note || "No note added") + '</p>' +
+    var preview = clean(gem.evidence, 130) || "Saved evidence gem";
+    return '<details class="source-vault-gem">' +
+      '<summary><span class="source-vault-gem-title">Unseal evidence gem</span><span class="source-vault-gem-preview">' + esc(preview) + '</span><span class="source-vault-gem-trail">' + esc(gemTrail(gem, true)) + '</span></summary>' +
+      '<div class="source-vault-dossier">' +
+      '<p class="source-vault-extract"><strong>Evidence extract</strong><br>' + esc(clean(gem.evidence, 1600)) + '</p>' +
+      '<p class="source-vault-note"><strong>Your study note:</strong> ' + esc(note || "No note added") + '</p>' +
       '<p class="source-vault-meta"><strong>Source title:</strong> ' + esc(title) + '</p>' +
       '<p class="source-vault-meta"><strong>Citation label:</strong> ' + esc(citation) + '</p>' +
-      '<p class="source-vault-meta"><strong>Location:</strong> ' + esc(location.join(" · ")) + '</p>' +
-      '</li>';
+      '<p class="source-vault-meta"><strong>Source trail:</strong> ' + esc(gemTrail(gem, false)) + '</p>' +
+      '</div></details>';
   }
 
   function vaultPanel(state) {
     var buckets = getBuckets(state);
-    var html = '<h3>Bucket Vault</h3><div class="source-bucket-grid">';
+    var html = '<h3>Bucket Vault</h3><p class="source-small-note">Each evidence gem holds its source trail. Unseal one only when you need its full extract or provenance.</p><div class="source-bucket-grid">';
     buckets.forEach(function (bucket) {
       var gems = evidenceFor(state, bucket);
       html += '<article class="source-bucket-card"><strong>' + esc(bucket) + '</strong><span class="source-gem-count">' + gems.length + ' evidence gem' + (gems.length === 1 ? '' : 's') + '</span>';
-      if (gems.length) {
-        html += '<ul class="source-review-list">' + gems.map(vaultGemMarkup).join('') + '</ul>';
-      }
+      if (gems.length) html += '<section class="source-vault-gems" aria-label="' + esc(bucket) + ' evidence gems">' + gems.map(vaultGemMarkup).join('') + '</section>';
       html += '</article>';
     });
     return html + '</div>';
@@ -324,9 +325,7 @@
     state.current = "source-mine";
     state.sourceMine.started = true;
     var chosenTab = tab || state.sourceMine.activeTab || "add";
-    if (!state.sourceMine.sourceLibrary.length && !activeCards(state).length && chosenTab === "sieve" && !state.sourceMine.userOpenedEmptySieve) {
-      chosenTab = "add";
-    }
+    if (!state.sourceMine.sourceLibrary.length && !activeCards(state).length && chosenTab === "sieve" && !state.sourceMine.userOpenedEmptySieve) chosenTab = "add";
     state.sourceMine.activeTab = chosenTab;
     save(state, message || ("Source Mine opened: " + chosenTab));
     node.innerHTML = styles() + '<section class="simple-room source-mine-room"><p class="scene-label">Source Mine</p>' +
@@ -339,8 +338,7 @@
       saveInfo(state) + tabs(chosenTab) + panelFor(state, chosenTab) +
       '<div class="simple-actions"><button type="button" data-action="return-cave-base">Cave Base</button><button type="button" data-action="open-task-map">Task Map</button>' +
       (state.sourceMine.evidenceGems.length ? '<button type="button" data-action="source-draft-route">Draft Route</button>' : "") +
-      '</div>' +
-      '</article></section>';
+      '</div></article></section>';
   }
 
   function createCards(title, citationLabel, text) {
@@ -414,22 +412,15 @@
     buckets.forEach(function (bucket) {
       var match = arr(card.matchBuckets).find(function (item) { return item.bucket.toLowerCase() === bucket.toLowerCase(); });
       state.sourceMine.evidenceGems.push({
-        id: uid(),
-        bucket: bucket,
-        bucketId: bucketId(bucket),
-        sourceId: card.sourceId,
-        sourceCardId: card.id,
+        id: uid(), bucket: bucket, bucketId: bucketId(bucket), sourceId: card.sourceId, sourceCardId: card.id,
         sourceTitle: card.sourceTitle || source.title || "source",
         citationLabel: card.citationLabel || source.citationLabel || card.sourceTitle || "source",
         originalFilename: card.originalFilename || source.originalFilename || "",
         importType: card.importType || source.importType || source.type || "pasted-text",
         pageNumber: Number(card.pageNumber || 0) || null,
         chunkIndex: Number(card.chunkIndex || card.index || 0) || 0,
-        evidence: clean(card.text, 1600),
-        note: note,
-        link: note,
-        matchWords: match ? arr(match.matchWords) : [],
-        createdAt: new Date().toISOString()
+        evidence: clean(card.text, 1600), note: note, link: note,
+        matchWords: match ? arr(match.matchWords) : [], createdAt: new Date().toISOString()
       });
     });
     state.sourceMine.reviewedCount += 1;
@@ -490,18 +481,13 @@
     if (!button) return;
     var action = button.dataset.action || "";
     if (action === "open-source-mine") {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return render(null, "Source Mine opened");
+      event.preventDefault(); event.stopImmediatePropagation(); return render(null, "Source Mine opened");
     }
     if (action === "source-begin") {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return render("add", "Source Mine begun");
+      event.preventDefault(); event.stopImmediatePropagation(); return render("add", "Source Mine begun");
     }
     if (action === "source-tab") {
-      event.preventDefault();
-      event.stopImmediatePropagation();
+      event.preventDefault(); event.stopImmediatePropagation();
       var state = load();
       state.sourceMine.activeTab = button.dataset.tab || "sieve";
       if (state.sourceMine.activeTab === "sieve") state.sourceMine.userOpenedEmptySieve = true;
@@ -509,44 +495,28 @@
       return render(state.sourceMine.activeTab, "Opened " + state.sourceMine.activeTab);
     }
     if (action === "source-open-notes" || action === "source-placeholder") {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return render("add", "Add Source opened");
+      event.preventDefault(); event.stopImmediatePropagation(); return render("add", "Add Source opened");
     }
     if (action === "source-save-library" || action === "source-save-note") {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return saveLibrary();
+      event.preventDefault(); event.stopImmediatePropagation(); return saveLibrary();
     }
     if (action === "source-seed-demo") {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return seedDemo();
+      event.preventDefault(); event.stopImmediatePropagation(); return seedDemo();
     }
     if (action === "source-sort-card-select") {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return sortCard();
+      event.preventDefault(); event.stopImmediatePropagation(); return sortCard();
     }
     if (action === "source-park-card") {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return moveCard("parked");
+      event.preventDefault(); event.stopImmediatePropagation(); return moveCard("parked");
     }
     if (action === "source-discard-card") {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return moveCard("discarded");
+      event.preventDefault(); event.stopImmediatePropagation(); return moveCard("discarded");
     }
     if (action === "source-restore-card") {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return restore(button.dataset.cardId);
+      event.preventDefault(); event.stopImmediatePropagation(); return restore(button.dataset.cardId);
     }
     if (action === "source-save-constellations") {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return saveWords();
+      event.preventDefault(); event.stopImmediatePropagation(); return saveWords();
     }
   }, true);
 })();
