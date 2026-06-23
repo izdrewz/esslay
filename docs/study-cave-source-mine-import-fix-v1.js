@@ -335,6 +335,16 @@
     if (node) node.textContent = text;
   }
 
+  function savedSourceWithFilename(state, filename) {
+    var name = clean(filename, 260).toLowerCase();
+    if (!name) return null;
+    return arr(state.sourceMine.sourceLibrary).find(function (source) {
+      return clean(source.originalFilename, 260).toLowerCase() === name && arr(state.sourceMine.evidenceGems).some(function (gem) {
+        return gem.sourceId === source.id;
+      });
+    }) || null;
+  }
+
   function removeEarlierUnsavedImport(state, filename) {
     var name = clean(filename, 260).toLowerCase();
     if (!name) return 0;
@@ -356,6 +366,9 @@
 
   function createPdfCards(file, title, citationLabel, extracted) {
     var state = load();
+    if (savedSourceWithFilename(state, file.name)) {
+      throw new Error("This PDF is already in Source Mine and has saved evidence gems. Your existing source was left unchanged.");
+    }
     var replacedSources = removeEarlierUnsavedImport(state, file.name);
     var buckets = getBuckets(state);
     var source = {
@@ -423,6 +436,9 @@
     var fileInput = form && form.querySelector("[data-source-pdf-file]");
     var file = fileInput && fileInput.files ? fileInput.files[0] : null;
     if (!file) return status("Choose a PDF file first.");
+    if (savedSourceWithFilename(load(), file.name)) {
+      return status("This PDF is already in Source Mine and has saved evidence gems. Your existing source was left unchanged.");
+    }
     status("Reading “" + clean(file.name, 120) + "”…");
     try {
       var extracted = await extractPdf(file, function (current, total) {
