@@ -63,6 +63,44 @@
     }, "Esslay Source Mine import fix failed to load.");
   }
 
+  function currentRoom() {
+    try {
+      var state = JSON.parse(localStorage.getItem("esslay-study-cave-simple-v1"));
+      return state && typeof state === "object" ? String(state.current || "") : "";
+    } catch (error) {
+      return "";
+    }
+  }
+
+  function directRoomAction(roomId) {
+    return {
+      "bridge-hall": "open-bridge-hall",
+      "citation-vault": "open-citation-vault",
+      "polish-pool": "open-polish-pool",
+      "submission-gate": "open-submission-gate"
+    }[roomId] || "";
+  }
+
+  function openDedicatedRoom(action) {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.hidden = true;
+    button.dataset.action = action;
+    document.body.appendChild(button);
+    button.click();
+    button.remove();
+  }
+
+  function routeLegacyContinuation(event) {
+    var button = event.target.closest("button, a");
+    if (!button || button.dataset.action !== "continue-quest") return;
+    var action = directRoomAction(currentRoom());
+    if (!action) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    openDedicatedRoom(action);
+  }
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
       fixHudOnly();
@@ -75,7 +113,8 @@
     loadSourceMineImportFixes();
   }
 
-  document.addEventListener("click", function () {
+  document.addEventListener("click", function (event) {
+    routeLegacyContinuation(event);
     window.setTimeout(fixHudOnly, 0);
   }, true);
 })();
