@@ -2,18 +2,49 @@ import { and, desc, eq, sql } from "drizzle-orm";
 import { getDb } from "../../../db";
 import {
   activityEvents,
+  archiveArtifacts,
+  archiveBundles,
   assignments,
   drafts,
   evidenceSpans,
+  feedbackNotes,
   sourceDocuments,
   sourcePages,
 } from "../../../db/schema";
 import { ownerIdForRequest } from "../../../lib/server/auth";
 import { apiError } from "../../../lib/server/http";
-import type { QuestionBreakdown, RoomId, WorkspacePayload } from "../../../lib/types";
+import type {
+  ArchiveRole,
+  FeedbackCategory,
+  FeedbackTone,
+  QuestionBreakdown,
+  RoomId,
+  WorkspacePayload,
+} from "../../../lib/types";
 
 const EMPTY_DOC = { type: "doc", content: [{ type: "paragraph" }] };
-const ROOMS: RoomId[] = ["question", "sources", "draft", "review"];
+const ROOMS: RoomId[] = ["archive", "question", "sources", "draft", "review"];
+const ARCHIVE_ROLES: ArchiveRole[] = [
+  "question",
+  "plan",
+  "draft",
+  "submission",
+  "revision",
+  "feedback",
+  "source",
+  "other",
+];
+const FEEDBACK_CATEGORIES: FeedbackCategory[] = [
+  "task_focus",
+  "analysis",
+  "evidence",
+  "structure",
+  "writing",
+  "referencing",
+  "reflection",
+  "other",
+];
+const FEEDBACK_TONES: FeedbackTone[] = ["strength", "improve", "neutral"];
 
 export async function GET(request: Request) {
   try {
@@ -224,7 +255,15 @@ export async function POST(request: Request) {
 
 async function loadWorkspace(ownerId: string): Promise<WorkspacePayload> {
   const db = getDb();
-  const [assignmentRows, sourceRows, evidenceRows, draftRows] = await Promise.all([
+  const [
+    assignmentRows,
+    sourceRows,
+    evidenceRows,
+    draftRows,
+    archiveBundleRows,
+    archiveArtifactRows,
+    feedbackRows,
+  ] = await Promise.all([
     db
       .select()
       .from(assignments)
@@ -245,6 +284,21 @@ async function loadWorkspace(ownerId: string): Promise<WorkspacePayload> {
       .from(drafts)
       .where(eq(drafts.ownerId, ownerId))
       .orderBy(desc(drafts.updatedAt)),
+    db
+      .select()
+      .from(archiveBundles)
+      .where(eq(archiveBundles.ownerId, ownerId))
+      .orderBy(desc(archiveBundles.updatedAt)),
+    db
+      .select()
+      .from(archiveArtifacts)
+      .where(eq(archiveArtifacts.ownerId, ownerId))
+      .orderBy(desc(archiveArtifacts.createdAt)),
+    db
+      .select()
+      .from(feedbackNotes)
+      .where(eq(feedbackNotes.ownerId, ownerId))
+      .orderBy(desc(feedbackNotes.createdAt)),
   ]);
 
   return {
@@ -287,6 +341,43 @@ async function loadWorkspace(ownerId: string): Promise<WorkspacePayload> {
       plainText: row.plainText,
       createdAt: row.createdAt,
       updatedAt: row.updatedAt,
+    })),
+    archiveBundles: archiveBundleRows.map((row) => ({
+      id: row.id,
+      title: row.title,
+      moduleCode: row.moduleCode,
+      assessmentCode: row.assessmentCode,
+      score: row.score,
+      createdAt: row.createdAt,
+      updatedAt: row.updatedAt,
+    })),
+    archiveArtifacts: archiveArtifactRows.map((row) => ({
+      id: row.id,
+      bundleId: row.bundleId,
+      role: ARCHIVE_ROLES.includes(row.role as ArchiveRole)
+        ? (row.role as ArchiveRole)
+        : "other",
+      filename: row.filename,
+      contentType: row.contentType,
+      byteSize: row.byteSize,
+      pageCount: row.pageCount,
+      commentCount: row.commentCount,
+      createdAt: row.createdAt,
+    })),
+    feedbackNotes: feedbackRows.map((row) => ({
+      id: row.id,
+      bundleId: row.bundleId,
+      artifactId: row.artifactId,
+      anchorText: row.anchorText,
+      commentText: row.commentText,
+      category: FEEDBACK_CATEGORIES.includes(row.category as FeedbackCategory)
+        ? (row.category as FeedbackCategory)
+        : "other",
+      tone: FEEDBACK_TONES.includes(row.tone as FeedbackTone)
+        ? (row.tone as FeedbackTone)
+        : "neutral",
+      locationLabel: row.locationLabel,
+      createdAt: row.createdAt,
     })),
   };
 }

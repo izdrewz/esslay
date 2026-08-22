@@ -1,4 +1,26 @@
-export type RoomId = "question" | "sources" | "draft" | "review";
+export type RoomId = "archive" | "question" | "sources" | "draft" | "review";
+
+export type ArchiveRole =
+  | "question"
+  | "plan"
+  | "draft"
+  | "submission"
+  | "revision"
+  | "feedback"
+  | "source"
+  | "other";
+
+export type FeedbackCategory =
+  | "task_focus"
+  | "analysis"
+  | "evidence"
+  | "structure"
+  | "writing"
+  | "referencing"
+  | "reflection"
+  | "other";
+
+export type FeedbackTone = "strength" | "improve" | "neutral";
 
 export type QuestionBreakdown = {
   command: string;
@@ -57,9 +79,53 @@ export type Draft = {
   updatedAt: string;
 };
 
+export type ArchiveBundle = {
+  id: string;
+  title: string;
+  moduleCode: string;
+  assessmentCode: string;
+  score: number | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ArchiveArtifact = {
+  id: string;
+  bundleId: string;
+  role: ArchiveRole;
+  filename: string;
+  contentType: string;
+  byteSize: number;
+  pageCount: number;
+  commentCount: number;
+  createdAt: string;
+};
+
+export type ArchiveSection = {
+  artifactId: string;
+  sectionNumber: number;
+  pageNumber: number | null;
+  textContent: string;
+};
+
+export type FeedbackNote = {
+  id: string;
+  bundleId: string;
+  artifactId: string;
+  anchorText: string;
+  commentText: string;
+  category: FeedbackCategory;
+  tone: FeedbackTone;
+  locationLabel: string;
+  createdAt: string;
+};
+
 export type WorkspacePayload = {
   assignments: Assignment[];
   sources: SourceDocument[];
   evidence: EvidenceSpan[];
   drafts: Draft[];
+  archiveBundles: ArchiveBundle[];
+  archiveArtifacts: ArchiveArtifact[];
+  feedbackNotes: FeedbackNote[];
 };

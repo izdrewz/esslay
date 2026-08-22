@@ -4,17 +4,22 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { fetchWorkspace, workspaceAction } from "../../lib/client-api";
 import { mapQuestion } from "../../lib/question-map";
 import type {
+  ArchiveArtifact,
+  ArchiveBundle,
   Assignment,
   Draft,
   EvidenceSpan,
+  FeedbackNote,
   RoomId,
   SourceDocument,
   WorkspacePayload,
 } from "../../lib/types";
+import { ArchiveRoom } from "./archive-room";
 import { EvidenceEditor } from "./evidence-editor";
 import { SourceRoom } from "./source-room";
 
 const ROOMS: Array<{ id: RoomId; number: string; label: string }> = [
+  { id: "archive", number: "00", label: "Archive" },
   { id: "question", number: "01", label: "Question" },
   { id: "sources", number: "02", label: "Sources" },
   { id: "draft", number: "03", label: "Draft" },
@@ -107,11 +112,15 @@ export function EsslayWorkspace() {
     );
   }
 
-  if (!assignment || creating) {
+  if ((!assignment && room !== "archive") || creating) {
     return (
       <NewRun
         hasExisting={workspace.assignments.length > 0}
         onCancel={() => setCreating(false)}
+        onOpenArchive={() => {
+          setCreating(false);
+          setRoom("archive");
+        }}
         onCreate={async (title, question) => {
           setError("");
           const before = new Set(workspace.assignments.map((item) => item.id));
@@ -133,7 +142,22 @@ export function EsslayWorkspace() {
     );
   }
 
-  const roomState = completionState(assignment, sources, evidence, draft);
+  const roomState = assignment
+    ? completionState(
+        assignment,
+        sources,
+        evidence,
+        draft,
+        workspace.archiveBundles,
+        workspace.feedbackNotes,
+      )
+    : {
+        archive: workspace.archiveBundles.length ? "complete" as const : "empty" as const,
+        question: "empty" as const,
+        sources: "empty" as const,
+        draft: "empty" as const,
+        review: "empty" as const,
+      };
 
   return (
     <main className="esslay-app">
@@ -146,18 +170,22 @@ export function EsslayWorkspace() {
           </span>
         </a>
 
-        <div className="assignment-picker">
-          <label htmlFor="assignment-select">Exam run</label>
-          <select
-            id="assignment-select"
-            value={assignment.id}
-            onChange={(event) => chooseAssignment(event.target.value)}
-          >
-            {workspace.assignments.map((item) => (
-              <option key={item.id} value={item.id}>{item.title}</option>
-            ))}
-          </select>
-        </div>
+        {assignment ? (
+          <div className="assignment-picker">
+            <label htmlFor="assignment-select">Exam run</label>
+            <select
+              id="assignment-select"
+              value={assignment.id}
+              onChange={(event) => chooseAssignment(event.target.value)}
+            >
+              {workspace.assignments.map((item) => (
+                <option key={item.id} value={item.id}>{item.title}</option>
+              ))}
+            </select>
+          </div>
+        ) : (
+          <p className="no-active-run">Archive mode · no active exam</p>
+        )}
 
         <button type="button" className="new-run-button" onClick={() => setCreating(true)}>
           + New exam run
@@ -171,6 +199,7 @@ export function EsslayWorkspace() {
             key={item.id}
             className={room === item.id ? "room-tab is-active" : "room-tab"}
             onClick={() => chooseRoom(item.id)}
+            disabled={!assignment && item.id !== "archive"}
           >
             <span className={`room-status room-status--${roomState[item.id]}`} aria-hidden="true" />
             <span className="room-number">{item.number}</span>
@@ -188,7 +217,16 @@ export function EsslayWorkspace() {
           </div>
         )}
 
-        {room === "question" && (
+        {room === "archive" && (
+          <ArchiveRoom
+            bundles={workspace.archiveBundles}
+            artifacts={workspace.archiveArtifacts}
+            feedback={workspace.feedbackNotes}
+            onReload={load}
+          />
+        )}
+
+        {room === "question" && assignment && (
           <QuestionRoom
             key={assignment.id}
             assignment={assignment}
@@ -197,7 +235,7 @@ export function EsslayWorkspace() {
           />
         )}
 
-        {room === "sources" && (
+        {room === "sources" && assignment && (
           <SourceRoom
             assignmentId={assignment.id}
             sources={sources}
@@ -209,7 +247,7 @@ export function EsslayWorkspace() {
           />
         )}
 
-        {room === "draft" && draft && (
+        {room === "draft" && assignment && draft && (
           <DraftRoom
             key={draft.id}
             assignment={assignment}
@@ -223,7 +261,7 @@ export function EsslayWorkspace() {
           />
         )}
 
-        {room === "review" && draft && (
+        {room === "review" && assignment && draft && (
           <ReviewRoom
             key={`review-${draft.id}`}
             draft={draft}
@@ -232,6 +270,10 @@ export function EsslayWorkspace() {
             selectedEvidence={selectedEvidence}
             onSelectEvidence={setSelectedEvidenceId}
             onOpenSource={() => chooseRoom("sources")}
+            feedbackNotes={workspace.feedbackNotes}
+            archiveBundles={workspace.archiveBundles}
+            archiveArtifacts={workspace.archiveArtifacts}
+            onOpenArchive={() => chooseRoom("archive")}
           />
         )}
       </div>
@@ -242,10 +284,12 @@ export function EsslayWorkspace() {
 function NewRun({
   hasExisting,
   onCancel,
+  onOpenArchive,
   onCreate,
 }: {
   hasExisting: boolean;
   onCancel: () => void;
+  onOpenArchive: () => void;
   onCreate: (title: string, question: string) => Promise<void>;
 }) {
   const [title, setTitle] = useState("");
@@ -301,6 +345,7 @@ function NewRun({
         {error && <p className="error-banner" role="alert">{error}</p>}
         <div className="form-actions">
           {hasExisting && <button type="button" className="secondary-button" onClick={onCancel}>Cancel</button>}
+          <button type="button" className="secondary-button" onClick={onOpenArchive}>Import old work first</button>
           <button type="button" className="primary-button primary-button--large" onClick={submit} disabled={busy}>
             {busy ? "Creating…" : "Break down this question"}
           </button>
@@ -575,6 +620,10 @@ function ReviewRoom({
   selectedEvidence,
   onSelectEvidence,
   onOpenSource,
+  feedbackNotes,
+  archiveBundles,
+  archiveArtifacts,
+  onOpenArchive,
 }: {
   draft: Draft;
   sources: SourceDocument[];
@@ -582,6 +631,10 @@ function ReviewRoom({
   selectedEvidence: EvidenceSpan | null;
   onSelectEvidence: (evidenceId: string) => void;
   onOpenSource: () => void;
+  feedbackNotes: FeedbackNote[];
+  archiveBundles: ArchiveBundle[];
+  archiveArtifacts: ArchiveArtifact[];
+  onOpenArchive: () => void;
 }) {
   const coverage = inspectDraft(draft.contentJson);
   const linkedEvidence = evidence.filter((item) => coverage.evidenceIds.has(item.id));
@@ -596,6 +649,13 @@ function ReviewRoom({
             <p>This checks source connections, not whether a claim is universally true. Click any amber text to inspect its origin.</p>
           </div>
         </div>
+
+        <PastFeedbackPanel
+          notes={feedbackNotes}
+          bundles={archiveBundles}
+          artifacts={archiveArtifacts}
+          onOpenArchive={onOpenArchive}
+        />
 
         <div className="review-metrics">
           <Metric value={coverage.linkedWords} label="words linked" />
@@ -626,6 +686,59 @@ function ReviewRoom({
         onSelectEvidence={onSelectEvidence}
         onOpenSource={onOpenSource}
       />
+    </section>
+  );
+}
+
+function PastFeedbackPanel({
+  notes,
+  bundles,
+  artifacts,
+  onOpenArchive,
+}: {
+  notes: FeedbackNote[];
+  bundles: ArchiveBundle[];
+  artifacts: ArchiveArtifact[];
+  onOpenArchive: () => void;
+}) {
+  const carryForward = notes
+    .filter(
+      (note) =>
+        note.tone === "improve" &&
+        note.category !== "other" &&
+        note.commentText.trim().length >= 20,
+    )
+    .sort((left, right) => {
+      if (Boolean(left.anchorText) !== Boolean(right.anchorText)) {
+        return left.anchorText ? -1 : 1;
+      }
+      return Math.abs(left.commentText.length - 140) - Math.abs(right.commentText.length - 140);
+    })
+    .slice(0, 4);
+  if (!carryForward.length) return null;
+  return (
+    <section className="past-feedback-panel" aria-labelledby="past-feedback-title">
+      <div className="past-feedback-heading">
+        <div>
+          <p className="eyebrow">Past tutor signals</p>
+          <h3 id="past-feedback-title">Carry these exact notes into review</h3>
+          <p>These are reminders from imported feedback. They do not change or score your writing.</p>
+        </div>
+        <button type="button" className="secondary-button" onClick={onOpenArchive}>Open archive</button>
+      </div>
+      <div className="past-feedback-list">
+        {carryForward.map((note) => {
+          const artifact = artifacts.find((item) => item.id === note.artifactId);
+          const bundle = bundles.find((item) => item.id === note.bundleId);
+          return (
+            <article key={note.id}>
+              <q>{note.commentText}</q>
+              {note.anchorText && <span>Attached to “{note.anchorText}”</span>}
+              <small>{bundle?.title || artifact?.filename || "Imported feedback"}</small>
+            </article>
+          );
+        })}
+      </div>
     </section>
   );
 }
@@ -697,9 +810,12 @@ function completionState(
   sources: SourceDocument[],
   evidence: EvidenceSpan[],
   draft: Draft | null,
+  archiveBundles: ArchiveBundle[],
+  feedbackNotes: FeedbackNote[],
 ): Record<RoomId, "empty" | "started" | "complete"> {
   const coverage = inspectDraft(draft?.contentJson ?? {});
   return {
+    archive: feedbackNotes.length ? "complete" : archiveBundles.length ? "started" : "empty",
     question: assignment.breakdownConfirmedAt ? "complete" : assignment.question ? "started" : "empty",
     sources: evidence.length ? "complete" : sources.length ? "started" : "empty",
     draft: draft?.plainText.trim() ? "complete" : "empty",

@@ -7,6 +7,9 @@ This repository is a clean rebuild of the original `izdrewz/esslay` experiment. 
 ## Working vertical slice
 
 - Create separate exam runs.
+- Import old assessment bundles from ZIP, DOCX, PDF, HTML, or HTM files.
+- Preserve exact Word tutor comments and the words each comment was attached to.
+- Connect questions, plans, marked submissions, feedback, revisions, and sources in one archive set.
 - Break down a question, edit the map, and explicitly confirm it.
 - Upload a PDF while retaining the original file.
 - Extract selectable text by page.
@@ -22,6 +25,7 @@ Esslay never silently rewrites a draft. The automatic question map is provisiona
 
 | Room | Purpose |
 | --- | --- |
+| Archive | Import old work and retain exact tutor feedback in context. |
 | Question | Turn the exact prompt into an editable task map. |
 | Sources | Read PDFs and save precise passages. |
 | Draft | Write and attach evidence to selected words. |
@@ -31,7 +35,7 @@ The room order is guidance, not a lock. There is no global XP tree. A task garde
 
 ## Data ownership
 
-Structured workspace data is stored in D1. Original PDFs are stored in R2. Every record is scoped to the signed-in ChatGPT user header, with a development-only local identity for localhost previews.
+Structured workspace data is stored in D1. Original source and archive files are stored in R2. Every record is scoped to the signed-in ChatGPT user header, with a development-only local identity for localhost previews.
 
 The source validation endpoint confirms that a saved quote still matches the stored page text at the submitted offsets.
 
@@ -40,6 +44,7 @@ The source validation endpoint confirms that a saved quote still matches the sto
 - Vinext, React, and TypeScript
 - Tiptap for the evidence-aware editor
 - PDF.js for browser-side extraction and page rendering
+- JSZip for ZIP and DOCX archive inspection
 - Drizzle with Cloudflare D1
 - Cloudflare R2 for source files
 
@@ -61,4 +66,4 @@ npm run db:generate
 
 ## Current boundary
 
-This build deliberately focuses on the writing engine. Importing old drafts and teacher feedback, legacy migration, household-task crops, narrative scenes, and AI-assisted feedback are later slices. Those features should consume the same domain events instead of maintaining separate progress systems.
+This build deliberately focuses on the writing engine and its evidence-backed memory. Household-task crops, narrative scenes, OCR for scanned PDFs, and broader AI assistance remain later slices. The archive labels feedback deterministically and always presents the tutor's original wording; it does not train a model or silently rewrite a draft.
